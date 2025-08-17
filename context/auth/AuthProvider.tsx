@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useMemo, useState } from "react"
 import { AuthContext } from "./AuthContext"
 import { AuthTypes } from "./AuthTypes"
-import { userLogin, jobseekerRegister } from "firebase/firebaseAuth"
+import { userLogin, userRegister } from "firebase/firebaseAuth"
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 

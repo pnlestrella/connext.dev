@@ -1,113 +1,226 @@
 import { useState } from 'react';
-import { Text, TextInput, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from 'navigation/types/RootStackParamList';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import Constants from 'expo-constants';
+
+import { RootStackParamList } from 'navigation/types/RootStackParamList';
 import { useAuth } from 'context/auth/AuthHook';
-import { jobseekerRegister } from 'firebase/firebaseAuth';
-import Constants from 'expo-constants'
-//otp
+import { userRegister } from 'firebase/firebaseAuth';
 import { OTPModal } from 'components/OTP.modal';
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const JSRegisterScreen = () => {
-  const { setLoading, userType,loading } = useAuth()
+  const { setLoading, userType, loading } = useAuth();
+  const navigation = useNavigation<NavigationProp>();
 
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [middleInitial, setMiddleInitial] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const navigation = useNavigation<NavigationProp>();
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-
-  //for OTP
-  const [showOTP, setShowOTP] = useState(false)
-
+  // OTP modal
+  const [showOTP, setShowOTP] = useState(false);
 
   async function handleRegister() {
-    //verification first
+    // Required fields
     if (!email || !password || !firstName || !lastName) {
-      alert("Please fill in all required fields");
+      alert('Please fill in all required fields');
       return;
     }
-    //email Validation
+
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      alert("Please enter a valid email address");
+      alert('Please enter a valid email address');
       return;
     }
-    //passwords validation
+
+    // Password validation
     if (password !== confirmPassword) {
       alert("Passwords don't match");
       return;
     }
 
-    if (password.length < 6 && confirmPassword.length < 6) {
-      alert("Password must be at least 6 characters");
+    if (password.length < 6) {
+      alert('Password must be at least 6 characters');
       return;
     }
 
-    setShowOTP(true)
-    //after verifying
-    
+    setShowOTP(true);
   }
 
-  
-  async function onVerify(){
-    //register user in firebase AUTH
-    const registerFirebaseUser = await jobseekerRegister(email, password)
-    
-    // USER Registration MONGODB
+  async function onVerify() {
+    // Register in Firebase
+    const registerFirebaseUser = await userRegister(email, password);
+
+    // Build user object
     const user = {
       seekerUID: registerFirebaseUser.user.uid,
-      email: email,
-      fullName: {
-        firstName: firstName,
-        middleInitial: middleInitial,
-        lastName: lastName
-      },
+      email,
+      fullName: { firstName, middleInitial, lastName },
       industries: null,
       skills: null,
       status: true,
-      accountIncomplete: true
-    }
-    console.log(user)
+      accountIncomplete: true,
+    };
 
     try {
-      const response = await fetch(`${Constants?.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/registerJobSeeker`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-      })
-      console.log(response)
-      console.log("Account created successfully")
+      const response = await fetch(
+        `${Constants?.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/registerJobSeeker`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(user),
+        }
+      );
+      console.log(await response.json());
+      console.log('Account created successfully');
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-
   }
 
-  // alert(Constants.expoConfig?.extra?.FIREBASE_API_KEY)
-
   return (
-    <SafeAreaView className='h-full'>
-      <Text>JOBSEEKER Register Screen</Text>
-      <TextInput style={styles.input} onChangeText={setEmail} value={email} placeholder='Enter your email'></TextInput>
-      <TextInput style={styles.input} onChangeText={setFirstName} value={firstName} placeholder='Enter your First Name'></TextInput>
-      <TextInput style={styles.input} onChangeText={setMiddleInitial} value={middleInitial} placeholder='Enter your Middle initial'></TextInput>
-      <TextInput style={styles.input} onChangeText={setLastName} value={lastName} placeholder='Enter your Last Name'></TextInput>
-      <TextInput style={styles.input} onChangeText={setPassword} value={password} placeholder='Enter your Password'></TextInput>
-      <TextInput style={styles.input} onChangeText={setConfirmPassword} value={confirmPassword} placeholder='Confirm Your Password'></TextInput>
-      <Button title={"Submit"} onPress={() => handleRegister()} />
-      <Text>Already have an accounnt? <TouchableOpacity onPress={() => navigation.navigate('login')}><Text>SignIn here</Text></TouchableOpacity></Text>
+    <SafeAreaView className="flex-1 bg-white pt-3">
+      <View className="items-center justify-center  px-10">
+        {/* Header with logo and title */}
+        <View className="flex-row items-center ">
+          <Image source={require('../../assets/images/justLogo.png')} className="w-20 h-20" resizeMode="contain" />
+          <View className="ml-1 flex-1">
+            <Text style={style.titleText}>Create an account</Text>
+            <Text style={style.subHeaderText} className="ml-1">
+              Find your jobs with one swipe
+            </Text>
+          </View>
+        </View>
 
-      <OTPModal 
+        {/* Form fields */}
+        <View className="w-full max-w-md mt-8">
+          {/* Email */}
+          <View className="mb-4">
+            <View className="flex-row items-center mb-2">
+              <Text style={style.fieldHeader} className="ml-2">
+                Email
+              </Text>
+            </View>
+            <TextInput
+              style={style.textInput}
+              className="border border-gray-300 rounded-md p-3"
+              placeholder="johndoe@gmail.com"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={email}
+              onChangeText={setEmail}
+            />
+          </View>
+
+          {/* First Name */}
+          <View className="mb-4">
+            <Text style={style.fieldHeader} className="mb-2">
+              First Name
+            </Text>
+            <TextInput
+              style={style.textInput}
+              className="border border-gray-300 rounded-md p-3"
+              placeholder="John"
+              value={firstName}
+              onChangeText={setFirstName}
+            />
+          </View>
+
+          {/* Middle Initial */}
+          <View className="mb-4">
+            <Text style={style.fieldHeader} className="mb-2">
+              Middle Initial (If applicable)
+            </Text>
+            <TextInput
+              style={style.textInput}
+              className="border border-gray-300 rounded-md p-3"
+              placeholder="i.e M."
+              maxLength={2}
+              value={middleInitial}
+              onChangeText={setMiddleInitial}
+            />
+          </View>
+
+          {/* Last Name */}
+          <View className="mb-4">
+            <Text style={style.fieldHeader} className="mb-2">
+              Last Name
+            </Text>
+            <TextInput
+              style={style.textInput}
+              className="border border-gray-300 rounded-md p-3"
+              placeholder="Doe"
+              value={lastName}
+              onChangeText={setLastName}
+            />
+          </View>
+
+          {/* Password */}
+          <View className="mb-4">
+            <View className="flex-row items-center mb-2">
+              <Text style={style.fieldHeader} className="ml-2">
+                Password
+              </Text>
+            </View>
+            <TextInput
+              style={style.textInput}
+              className="border border-gray-300 rounded-md p-3"
+              placeholder="Create a password"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
+
+          {/* Confirm Password */}
+          <View className="mb-10">
+            <View className="flex-row items-center mb-2">
+              <Text style={style.fieldHeader} className="ml-2">
+                Confirm Password
+              </Text>
+            </View>
+            <TextInput
+              style={style.textInput}
+              className="border border-gray-300 rounded-md p-3"
+              placeholder="Confirm your password"
+              secureTextEntry
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
+          </View>
+
+          {/* Submit Button */}
+          <TouchableOpacity
+            onPress={handleRegister}
+            className="bg-[#6C63FF] px-6 py-4 rounded-xl w-full"
+          >
+            <Text className="text-white font-bold text-center">Proceed</Text>
+          </TouchableOpacity>
+
+          {/* Already have account? */}
+          <Text className="mt-4 text-center">
+            Already have an account?{' '}
+            <Text
+              className="text-[#6C63FF] font-bold"
+              onPress={() => navigation.navigate('login')}
+            >
+              Sign In here
+            </Text>
+          </Text>
+        </View>
+      </View>
+
+      {/* OTP Modal */}
+      <OTPModal
         loading={loading}
         setLoading={setLoading}
         userType={userType}
@@ -116,14 +229,28 @@ export const JSRegisterScreen = () => {
         visible={showOTP}
         onClose={() => setShowOTP(false)}
         onSubmit={() => setShowOTP(false)}
-        
-        />
-
+      />
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: { padding: 16 },
-  input: { borderWidth: 1, marginVertical: 8, padding: 8, borderRadius: 4 }
+const style = StyleSheet.create({
+  titleText: {
+    fontFamily: 'Lexend-Bold',
+    fontSize: 24,
+    marginBottom: 2,
+  },
+  subHeaderText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    color: '#A1A1A1',
+  },
+  fieldHeader: {
+    fontFamily: 'Lexend-Bold',
+    color: '#37424F',
+    fontSize: 14,
+  },
+  textInput: {
+    fontFamily: 'Poppins-Regular',
+  },
 });

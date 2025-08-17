@@ -12,16 +12,21 @@ import {
     Image,
     TouchableOpacity,
     Alert,
-    StyleSheet
-} from "react-native"; import { SafeAreaView } from 'react-native-safe-area-context';
+    StyleSheet,
+    TextInput
+} from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from 'navigation/types/RootStackParamList';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import Constants from 'expo-constants';
+import { OTPModal } from 'components/OTP.modal';
 import { useAuth } from 'context/auth/AuthHook';
-import Constants from 'expo-constants'
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>
+//firebase imports
+import { userRegister } from 'firebase/firebaseAuth';
 
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 interface PickedFile {
     uri: string;
@@ -31,27 +36,30 @@ interface PickedFile {
 }
 
 export const EmployerRegisterScreen = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('')
-    const [companyAddress, setCompanyAddress] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const { setLoading, userType, loading } = useAuth();
 
+    //Navigation
     const navigation = useNavigation<NavigationProp>();
 
+    const [email, setEmail] = useState('');
+    const [companyName, setCompanyName] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-    //FILE & Cloudinary Upload
+
+    // OTP modal
+    const [showOTP, setShowOTP] = useState(false);
+
+
+    // FILE states
     const [documents, setDocuments] = useState<PickedFile[]>([]);
-    const [filepaths, setFilepaths] = useState<string[]>([])
+    const [filepaths, setFilepaths] = useState<string[]>([]);
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
     const MAX_FILES = 3;
 
-    console.log(documents.length)
-
-    //Uploading Files in Mobile
+    // Pick a file
     const pickFile = async () => {
-        console.log(documents.length)
         try {
-
             if (documents.length >= MAX_FILES) {
                 Alert.alert(`You can only upload up to ${MAX_FILES} documents.`);
                 return;
@@ -92,7 +100,7 @@ export const EmployerRegisterScreen = () => {
         }
     };
 
-    //Opening files Functionality
+    // Open file
     const openFile = async (uri: string, mimeType: string) => {
         if (Platform.OS === "android") {
             const cUri = await FileSystem.getContentUriAsync(uri);
@@ -106,47 +114,42 @@ export const EmployerRegisterScreen = () => {
         }
     };
 
-    //Deleting the file
-    const removeFile = (index: any) => {
+    // Remove file
+    const removeFile = (index: number) => {
         setDocuments((prev) => prev.filter((_, i) => i !== index));
     };
 
-    //For icon file visibility/UX
+    // Get file icon
     const getIcon = (mimeType: string) => {
         if (mimeType?.includes("pdf")) {
-            return require("../../assets/images/pdf-icon.png"); // Replace with your PDF icon
+            return require("../../assets/images/pdf-icon.png");
         }
         if (mimeType?.includes("image")) {
-            return require("../../assets/images/image-icon.png"); // Replace with your image icon
+            return require("../../assets/images/image-icon.png");
         }
-        return require("../../assets/images/file-icon.png"); // Fallback icon
+        return require("../../assets/images/file-icon.png");
     };
 
-
-    //Uploading it to ImageKit
+    // Upload files to ImageKit
     const uploadAllDocuments = async () => {
-        alert("upload")
         if (!documents || documents.length === 0) {
-            alert("No files to upload.");
+            Alert.alert("No files to upload.");
             return;
         }
 
-
         try {
-            //fetch data from Cloudinary
-
-            //Passing each files into the DB
             const uploadedUrls = await Promise.all(
                 documents.map(async (file) => {
                     const getUploadKeys = async () => {
-                        const res = await fetch(`${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/imagekit/getUploadKeys`);
+                        const res = await fetch(
+                            `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/imagekit/getUploadKeys`
+                        );
                         return res.json();
                     };
 
                     const { message, public_key } = await getUploadKeys();
-                    const authParams = message
+                    const authParams = message;
 
-                    //Convert the data into object
                     const formData = new FormData();
                     formData.append("file", {
                         uri: file.uri,
@@ -154,37 +157,29 @@ export const EmployerRegisterScreen = () => {
                         type: file.mimeType,
                     } as unknown as Blob);
                     formData.append("fileName", file.name);
-                    formData.append("isPrivateFile", "true"); // must be string
+                    formData.append("isPrivateFile", "true");
                     formData.append("signature", authParams.signature);
                     formData.append("expire", authParams.expire.toString());
                     formData.append("token", authParams.token);
                     formData.append("publicKey", public_key);
 
-                    //upload response
                     const res = await fetch(
                         "https://upload.imagekit.io/api/v1/files/upload",
                         {
                             method: "POST",
-                            headers: {
-                                "Content-Type": "multipart/form-data"
-                            },
-                            body: formData
+                            headers: { "Content-Type": "multipart/form-data" },
+                            body: formData,
                         }
                     );
                     const data = await res.json();
-                    console.log(data)
                     if (data.fileId) {
-                        const urlObj = new URL(data.url)
+                        const urlObj = new URL(data.url);
                         const pathParts = urlObj.pathname.split("/");
                         pathParts.shift();
                         pathParts.shift();
                         const filePath = "/" + pathParts.join("/");
-                        setFilepaths(prev => [...prev, filePath])
-                        return {
-                            fileId: data.fileId,
-                            url: data.url, // this will be the **unsigned URL**
-                            filePath
-                        };
+                        setFilepaths((prev) => [...prev, filePath]);
+                        return { fileId: data.fileId, url: data.url, filePath };
                     } else {
                         throw new Error(data.error?.message || "Upload failed");
                     }
@@ -193,88 +188,291 @@ export const EmployerRegisterScreen = () => {
 
             console.log("Uploaded files:", uploadedUrls);
             alert("All files uploaded!");
-            // return uploadedUrls; // you can store this in state if needed
         } catch (err) {
             console.error("Upload error:", err);
-            alert("Upload failed. Please try again.");
+            Alert.alert("Upload failed. Please try again.");
         }
     };
 
+    async function handleSubmit() {
+        // trim inputs
+        const trimmedEmail = email.trim();
+        const trimmedCompanyName = companyName.trim();
+
+        // --- Email validation ---
+        if (!trimmedEmail) {
+            alert("Email is required.");
+            return;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(trimmedEmail)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        // --- Company name validation ---
+        if (!trimmedCompanyName) {
+            alert("Company name is required.");
+            return;
+        }
+        if (trimmedCompanyName.length < 3) {
+            alert("Company name must be at least 3 characters long.");
+            return;
+        }
+
+        // --- Documents validation ---
+        if (!documents || documents.length === 0) {
+            alert("At least one document must be uploaded.");
+            return;
+        }
+
+        // --- Password validation ---
+        if (!password) {
+            alert("Password is required.");
+            return;
+        }
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters long.");
+            return;
+        }
+
+        // --- Confirm password validation ---
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
+
+        //show OTP modal
+        setShowOTP(true)
+     
+    }
+
+
+   async function onVerify() {
+        alert("verified")
+           //Registration of the EMPLOYER
+        try {
+            //uploading the company documents to ImageKIT
+            await uploadAllDocuments();
+            //firebase AUTH registration
+            const firebaseRegister = await userRegister(email, password)
+            const firebaseUserUID =  firebaseRegister.user.uid
+            //MongoDB Employer Registration
+            const user = {
+                employerUID: firebaseUserUID,
+                email,
+                companyName,
+                verificationDocs: filepaths
+            };
+
+            const mongoDBRegister =  await fetch(
+                `${Constants?.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/registerEmployers`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(user)
+                })
+
+            console.log(mongoDBRegister, '----------------------')
+            alert("successfully created the account")
+        } catch (err) {
+            alert(err);
+            return
+        }
+    }
+
     return (
-        <SafeAreaView>
-            <Text>EMPLOYERS Register Screen</Text>
-            <Button title="Submit files" onPress={pickFile} />
-            <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 16 }}>
-                {documents.map((file, i) => (
-                    <View
-                        key={i}
-                        style={{
-                            width: 85,
-                            height: 25,
-                            margin: 2,
-                            borderWidth: 1,
-                            borderColor: "#ccc",
-                            borderRadius: 8,
-                            position: "relative",
-                            backgroundColor: "#f9f9f9",
-                            overflow: "hidden",
-                        }}
-                    >
-                        {/* Clickable area to open */}
-                        <Pressable
-                            style={{
-                                flex: 1,
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                paddingHorizontal: 4,
-                            }}
-                            onPress={() => openFile(file.uri, file.mimeType)}
-                        >
-                            <Image
-                                source={getIcon(file.mimeType)}
-                                style={{ width: 12, height: 12, marginRight: 4 }}
-                                resizeMode="contain"
-                            />
-                            <Text
-                                style={{
-                                    fontSize: 10,
-                                    flexShrink: 1,
-                                }}
-                                numberOfLines={1}
-                                ellipsizeMode="tail"
-                            >
-                                {file.name}
-                            </Text>
-                        </Pressable>
-
-                        {/* Delete Button */}
-                        <TouchableOpacity
-                            onPress={() => removeFile(i)}
-                            style={{
-                                position: "absolute",
-                                top: 4,
-                                right: 4,
-                                backgroundColor: "#ff4444",
-                                width: 14,
-                                height: 14,
-                                borderRadius: 7,
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <Text style={{ color: "#fff", fontSize: 10 }}>✕</Text>
-                        </TouchableOpacity>
+        <View className="flex-1 bg-white py-10">
+            <View className="items-center justify-center pt-6 mt-10 px-10">
+                {/* Header */}
+                <View className="flex-row items-center w-full max-w-md">
+                    <Image
+                        source={require("../../assets/images/justLogo.png")}
+                        className="w-20 h-20"
+                        resizeMode="contain"
+                    />
+                    <View className="ml-4 flex-1">
+                        <Text style={style.titleText}>Create an account</Text>
+                        <Text style={style.subHeaderText}>
+                            Find your employees with one swipe
+                        </Text>
                     </View>
-                ))}
-                <Button title="Submit" onPress={uploadAllDocuments} />
-            </View>
+                </View>
 
-        </SafeAreaView>
+                {/* Form */}
+                <View className="w-full max-w-md mt-8">
+                    {/* Email */}
+                    <View className="mb-4">
+                        <Text style={style.fieldHeader}>Email</Text>
+                        <TextInput
+                            style={style.textInput}
+                            placeholder="companyname@gmail.com"
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            value={email}
+                            onChangeText={setEmail}
+                        />
+                    </View>
+
+                    {/* Company Name */}
+                    <View className="mb-4">
+                        <Text style={style.fieldHeader}>Company Name</Text>
+                        <TextInput
+                            style={style.textInput}
+                            placeholder="Ateneo de Naga University"
+                            value={companyName}
+                            onChangeText={setCompanyName}
+                        />
+                    </View>
+
+                    {/* Documents */}
+                    <View className="mb-4">
+                        <Text style={style.fieldHeader}>
+                            Company Documents (Required for verification)
+                        </Text>
+                        <Pressable
+                            onPress={pickFile}
+                            className="border border-gray-300 rounded-md p-3 bg-gray-100"
+                        >
+                            <Text className="text-gray-700">Upload Documents</Text>
+                        </Pressable>
+                    </View>
+
+                    {/* File List */}
+                    <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                        {documents.map((file, i) => (
+                            <View
+                                key={i}
+                                style={{
+                                    width: 100,
+                                    margin: 4,
+                                    padding: 6,
+                                    borderWidth: 1,
+                                    borderColor: "#ccc",
+                                    borderRadius: 8,
+                                    backgroundColor: "#f9f9f9",
+                                }}
+                            >
+                                <Pressable
+                                    style={{ flexDirection: "row", alignItems: "center" }}
+                                    onPress={() => openFile(file.uri, file.mimeType)}
+                                >
+                                    <Image
+                                        source={getIcon(file.mimeType)}
+                                        style={{ width: 16, height: 16, marginRight: 6 }}
+                                        resizeMode="contain"
+                                    />
+                                    <Text
+                                        style={{ fontSize: 10, flexShrink: 1 }}
+                                        numberOfLines={1}
+                                    >
+                                        {file.name}
+                                    </Text>
+                                </Pressable>
+
+                                <TouchableOpacity
+                                    onPress={() => removeFile(i)}
+                                    style={{
+                                        position: "absolute",
+                                        top: 4,
+                                        right: 4,
+                                        backgroundColor: "#ff4444",
+                                        width: 16,
+                                        height: 16,
+                                        borderRadius: 8,
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <Text style={{ color: "#fff", fontSize: 10 }}>✕</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                    </View>
+
+                    {/* Password */}
+                    <View className="mb-4">
+                        <Text style={style.fieldHeader}>Password</Text>
+                        <TextInput
+                            style={style.textInput}
+                            placeholder="Create a password"
+                            secureTextEntry
+                            value={password}
+                            onChangeText={setPassword}
+                        />
+                    </View>
+
+                    {/* Confirm Password */}
+                    <View className="mb-4">
+                        <Text style={style.fieldHeader}>Confirm Password</Text>
+                        <TextInput
+                            style={style.textInput}
+                            placeholder="Confirm your password"
+                            secureTextEntry
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                        />
+                    </View>
+
+                    {/* Buttons */}
+                    <Button title="Upload Documents" onPress={uploadAllDocuments} />
+                    <View style={{ height: 10 }} />
+                    <TouchableOpacity
+                        onPress={handleSubmit}
+                        className="bg-[#6C63FF] px-6 py-4 rounded-xl w-full"
+                    >
+                        <Text className="text-white font-bold text-center">Proceed</Text>
+                    </TouchableOpacity>
+                    <Text className="mt-4 text-center">
+                        Already have an account?{' '}
+                        <Text
+                            className="text-[#6C63FF] font-bold"
+                            onPress={() => navigation.navigate('login')}
+                        >
+                            Sign In here
+                        </Text></Text>
+                </View>
+            </View>
+            {/* OTP Modal */}
+            <OTPModal
+                loading={loading}
+                setLoading={setLoading}
+                userType={userType}
+                email={email}
+                onVerify={onVerify}
+                visible={showOTP}
+                onClose={() => setShowOTP(false)}
+                onSubmit={() => setShowOTP(false)}
+            />
+        </View>
     );
 };
 
-const styles = StyleSheet.create({
-    container: { padding: 16 },
-    input: { borderWidth: 1, marginVertical: 8, padding: 8, borderRadius: 4 }
+const style = StyleSheet.create({
+    titleText: {
+        fontFamily: "Lexend-Bold",
+        fontSize: 24,
+        marginBottom: 2,
+        color: "#000000",
+    },
+    subHeaderText: {
+        fontFamily: "Poppins-Regular",
+        fontSize: 14,
+        color: "#A1A1A1",
+    },
+    fieldHeader: {
+        fontFamily: "Lexend-Bold",
+        color: "#37424F",
+        fontSize: 14,
+        marginBottom: 6,
+    },
+    textInput: {
+        fontFamily: "Poppins-Regular",
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 6,
+        padding: 10,
+    },
 });
