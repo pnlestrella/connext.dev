@@ -2,27 +2,63 @@ import { StyleSheet, View, Text, Image, TextInput, Pressable } from 'react-nativ
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'navigation/types/RootStackParamList';
-import { useAuth } from 'context/auth/AuthHook';
 import { useState } from 'react';
-
+import Constants from 'expo-constants'
+import { userLogin } from 'firebase/firebaseAuth';
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'login'>
 
-export  function LoginScreen() {
+export function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [keepSignedIn, setKeepSignedIn] = useState(false);
 
   const navigation = useNavigation<NavigationProp>();
-  const { login } = useAuth();
 
   const handleLogin = async (role: 'jobseeker' | 'employer') => {
+    console.log("hey")
+    console.log(role)
+
+    if (!email) {
+      alert("Email is required")
+      return
+    }
+    if (!password) {
+      alert("Password is required")
+      return
+    }
+    // await userLogin(email,password)
+
     try {
-      await login(email, password);
-        navigation.navigate('home');
-   
+      if (role === 'jobseeker') {
+
+        //check if the user exist in JOBSEEKER DB
+        const res = await fetch(
+          `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/getJobseeker?email=${encodeURIComponent(email)}`
+        );
+
+        if (!res.ok) {
+          console.log("Hey")
+          throw new Error("Account Does not exist")
+        }
+
+        await userLogin(email, password)
+
+      } else {
+        const res = await fetch(
+          `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/getEmployer?email=${encodeURIComponent(email)}`
+        );
+
+        if (!res.ok) {
+          console.log("Hey")
+          throw new Error("Account Does not exist")
+        }
+
+        await userLogin(email, password)
+      }
+
     } catch (err: any) {
       alert(err.code || 'Login failed');
-      console.log(err);
+      console.log(err, '--=====================================================-');
     }
   };
 
@@ -107,7 +143,7 @@ export  function LoginScreen() {
           </View>
 
           <Pressable
-            onPress={() => alert('Feature in progress')}
+            onPress={() => handleLogin('employer')}
             className="bg-[#1572DB] px-6 py-3 rounded-lg items-center justify-center"
           >
             <Text className="text-white font-bold text-center">Login as Employer</Text>

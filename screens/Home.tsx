@@ -10,18 +10,18 @@ import { useAuth } from 'context/auth/AuthHook';
 type NavigationType = NativeStackNavigationProp<RootStackParamList>
 
 export const Home = () => {
-    const {user} = useAuth()
+    const {user,userMDB, signOutUser} = useAuth()
     const navigation = useNavigation<NavigationType>()
 
     
   return (
     <SafeAreaView>
       <Text>{user?.email}</Text>
-        <Text>This is Home</Text>
+        <Text>This is Home {userMDB?.companyName}</Text>
         {/* <Text>Welcome {user?.email}</Text> */}
         <Button title="logout" onPress={async() => {
           try{
-            const signout = userSignOut()
+            const signout = signOutUser()
             console.log(signout)
             
             alert("Signed out successfully")

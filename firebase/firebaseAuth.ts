@@ -22,7 +22,7 @@ export const userRegister = async (email: string, password: string) => {
 
 export const userSignOut = async () => {
     try{
-        const logout = signOut(auth);
+        const logout = await signOut(auth);
         return(logout)
     }catch(err:any){
         throw err;

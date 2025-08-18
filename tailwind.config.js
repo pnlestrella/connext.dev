@@ -7,5 +7,5 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-  darkMode:false
+  darkMode: "class"
 };
