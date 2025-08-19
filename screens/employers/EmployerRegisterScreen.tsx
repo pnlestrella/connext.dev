@@ -416,8 +416,7 @@ export const EmployerRegisterScreen = () => {
                         />
                     </View>
 
-                    {/* Buttons */}
-                    <Button title="Upload Documents" onPress={uploadAllDocuments} />
+            
                     <View style={{ height: 10 }} />
                     <TouchableOpacity
                         onPress={handleSubmit}

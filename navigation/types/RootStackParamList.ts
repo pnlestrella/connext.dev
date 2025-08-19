@@ -9,5 +9,6 @@ export type RootStackParamList = {
     login: undefined;
     accountType:undefined;
     register: undefined;
+    address:undefined;
 
 }

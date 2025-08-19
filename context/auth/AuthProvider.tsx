@@ -1,8 +1,8 @@
 import { ReactNode, useEffect, useMemo, useState } from "react"
 import { AuthContext } from "./AuthContext"
 import { AuthTypes } from "./AuthTypes"
-import { userLogin, userSignOut } from "firebase/firebaseAuth"
-import { Auth, onAuthStateChanged } from 'firebase/auth';
+import {  userSignOut } from "firebase/firebaseAuth"
+import {  onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from 'expo-constants'
@@ -72,8 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         })
         return unsubscribe
     }, [user])
-    console.log("REOWPRER=======================", userMDB, userType)
-    console.log(userType, '----------------')
+
 
     //check if the APP was launched for the first time
     useEffect(() => {
@@ -101,7 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-    const value = useMemo(() => ({ user, userMDB, userType, loading, firstLaunch, setUserType, setLoading, setFirstLaunch, signOutUser }), [user, userType, loading, firstLaunch])
+    const value = useMemo(() => ({ user, userMDB, userType, loading, firstLaunch, setUserType, setLoading, setFirstLaunch, signOutUser }), [user, userType, loading, firstLaunch, userMDB])
     return (
         <AuthContext value={value}>
             {children}
