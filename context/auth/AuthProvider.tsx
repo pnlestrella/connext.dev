@@ -1,8 +1,8 @@
 import { ReactNode, useEffect, useMemo, useState } from "react"
 import { AuthContext } from "./AuthContext"
 import { AuthTypes } from "./AuthTypes"
-import {  userSignOut } from "firebase/firebaseAuth"
-import {  onAuthStateChanged } from 'firebase/auth';
+import { userSignOut } from "firebase/firebaseAuth"
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from 'expo-constants'
@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     //To check if the app is ran for the firsttime
     const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
 
+    console.log(userMDB,'--heeeey')
 
     //check if user is logged in -- PERSISTENCY
     useEffect(() => {
@@ -40,10 +41,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     console.log(err.message)
                     return null
                 }
-
             }
             getJobseeker()
-            if(user){
+            if (user) {
                 return
             }
             //if its not in the jobseeker - call employer
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-    const value = useMemo(() => ({ user, userMDB, userType, loading, firstLaunch, setUserType, setLoading, setFirstLaunch, signOutUser }), [user, userType, loading, firstLaunch, userMDB])
+    const value = useMemo(() => ({ user, userMDB, userType, loading, firstLaunch, setUserType, setLoading, setFirstLaunch, signOutUser, setUserMDB}), [user, userType, loading, firstLaunch, userMDB])
     return (
         <AuthContext value={value}>
             {children}

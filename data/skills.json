@@ -1,0 +1,9872 @@
+[
+  {
+    "Skills": "Python"
+  },
+  {
+    "Skills": "Java"
+  },
+  {
+    "Skills": "JavaScript"
+  },
+  {
+    "Skills": "C++"
+  },
+  {
+    "Skills": "C#"
+  },
+  {
+    "Skills": "PHP"
+  },
+  {
+    "Skills": "Ruby"
+  },
+  {
+    "Skills": "Swift"
+  },
+  {
+    "Skills": "Kotlin"
+  },
+  {
+    "Skills": "Go"
+  },
+  {
+    "Skills": "Rust"
+  },
+  {
+    "Skills": "TypeScript"
+  },
+  {
+    "Skills": "Perl"
+  },
+  {
+    "Skills": "Shell Scripting"
+  },
+  {
+    "Skills": "Scala"
+  },
+  {
+    "Skills": "R"
+  },
+  {
+    "Skills": "MATLAB"
+  },
+  {
+    "Skills": "PowerShell"
+  },
+  {
+    "Skills": "Groovy"
+  },
+  {
+    "Skills": "VB.NET"
+  },
+  {
+    "Skills": "HTML"
+  },
+  {
+    "Skills": "CSS"
+  },
+  {
+    "Skills": "React"
+  },
+  {
+    "Skills": "Angular"
+  },
+  {
+    "Skills": "Vue.js"
+  },
+  {
+    "Skills": "Node.js"
+  },
+  {
+    "Skills": "Express.js"
+  },
+  {
+    "Skills": "ASP.NET"
+  },
+  {
+    "Skills": "Django"
+  },
+  {
+    "Skills": "Flask"
+  },
+  {
+    "Skills": "Laravel"
+  },
+  {
+    "Skills": "Symfony"
+  },
+  {
+    "Skills": "Responsive design"
+  },
+  {
+    "Skills": "SQL"
+  },
+  {
+    "Skills": "RDBMS"
+  },
+  {
+    "Skills": "MySQL"
+  },
+  {
+    "Skills": "PostgreSQL"
+  },
+  {
+    "Skills": "Oracle"
+  },
+  {
+    "Skills": "Microsoft SQL Server"
+  },
+  {
+    "Skills": "MongoDB"
+  },
+  {
+    "Skills": "Cassandra"
+  },
+  {
+    "Skills": "Database administration"
+  },
+  {
+    "Skills": "Amazon Web Services (AWS)"
+  },
+  {
+    "Skills": "Microsoft Azure"
+  },
+  {
+    "Skills": "Google Cloud Platform (GCP)"
+  },
+  {
+    "Skills": "Cloud architecture"
+  },
+  {
+    "Skills": "DevOps"
+  },
+  {
+    "Skills": "Serverless computing"
+  },
+  {
+    "Skills": "Docker"
+  },
+  {
+    "Skills": "Kubernetes"
+  },
+  {
+    "Skills": "TCP/IP"
+  },
+  {
+    "Skills": "Routing and Switching"
+  },
+  {
+    "Skills": "Network security"
+  },
+  {
+    "Skills": "VPN"
+  },
+  {
+    "Skills": "Firewall configuration"
+  },
+  {
+    "Skills": "Network monitoring"
+  },
+  {
+    "Skills": "Wireless networking"
+  },
+  {
+    "Skills": "VoIP"
+  },
+  {
+    "Skills": "Ethical hacking"
+  },
+  {
+    "Skills": "Penetration testing"
+  },
+  {
+    "Skills": "Incident response"
+  },
+  {
+    "Skills": "Intrusion detection"
+  },
+  {
+    "Skills": "Security auditing"
+  },
+  {
+    "Skills": "Cryptography"
+  },
+  {
+    "Skills": "Malware analysis"
+  },
+  {
+    "Skills": "Linux"
+  },
+  {
+    "Skills": "Windows Server"
+  },
+  {
+    "Skills": "macOS"
+  },
+  {
+    "Skills": "Unix"
+  },
+  {
+    "Skills": "Bash"
+  },
+  {
+    "Skills": "PowerShell"
+  },
+  {
+    "Skills": "Android development"
+  },
+  {
+    "Skills": "iOS development"
+  },
+  {
+    "Skills": "Flutter"
+  },
+  {
+    "Skills": "React Native"
+  },
+  {
+    "Skills": "Mobile UI/UX design"
+  },
+  {
+    "Skills": "Data manipulation (Pandas, NumPy)"
+  },
+  {
+    "Skills": "Data visualization (Matplotlib, Seaborn, Tableau)"
+  },
+  {
+    "Skills": "Machine learning"
+  },
+  {
+    "Skills": "TensorFlow"
+  },
+  {
+    "Skills": "PyTorch"
+  },
+  {
+    "Skills": "Deep learning"
+  },
+  {
+    "Skills": "NLP"
+  },
+  {
+    "Skills": "Hadoop"
+  },
+  {
+    "Skills": "Spark"
+  },
+  {
+    "Skills": "Git"
+  },
+  {
+    "Skills": "Jenkins"
+  },
+  {
+    "Skills": "Travis CI"
+  },
+  {
+    "Skills": "CircleCI"
+  },
+  {
+    "Skills": "TeamCity"
+  },
+  {
+    "Skills": "Ansible"
+  },
+  {
+    "Skills": "Puppet"
+  },
+  {
+    "Skills": "Chef"
+  },
+  {
+    "Skills": "Manual testing"
+  },
+  {
+    "Skills": "Selenium"
+  },
+  {
+    "Skills": "JUnit"
+  },
+  {
+    "Skills": "pytest"
+  },
+  {
+    "Skills": "TDD"
+  },
+  {
+    "Skills": "Performance testing"
+  },
+  {
+    "Skills": "Agile methodologies"
+  },
+  {
+    "Skills": "Scrum"
+  },
+  {
+    "Skills": "Kanban"
+  },
+  {
+    "Skills": "Waterfall methodology"
+  },
+  {
+    "Skills": "Project planning"
+  },
+  {
+    "Skills": "Budgeting"
+  },
+  {
+    "Skills": "IT Support"
+  },
+  {
+    "Skills": "Troubleshooting"
+  },
+  {
+    "Skills": "Customer support"
+  },
+  {
+    "Skills": "ServiceNow"
+  },
+  {
+    "Skills": "Jira Service Desk"
+  },
+  {
+    "Skills": "Virtualization"
+  },
+  {
+    "Skills": "VMware"
+  },
+  {
+    "Skills": "Hyper-V"
+  },
+  {
+    "Skills": "SAN"
+  },
+  {
+    "Skills": "NAS"
+  },
+  {
+    "Skills": "Active Directory"
+  },
+  {
+    "Skills": "System administration"
+  },
+  {
+    "Skills": "Backup and recovery"
+  },
+  {
+    "Skills": "Disaster recovery planning"
+  },
+  {
+    "Skills": "IoT"
+  },
+  {
+    "Skills": "Embedded systems"
+  },
+  {
+    "Skills": "Sensor integration"
+  },
+  {
+    "Skills": "MQTT"
+  },
+  {
+    "Skills": "CoAP"
+  },
+  {
+    "Skills": "Smart contracts"
+  },
+  {
+    "Skills": "Cryptocurrency development"
+  },
+  {
+    "Skills": "Blockchain security"
+  },
+  {
+    "Skills": "Unity"
+  },
+  {
+    "Skills": "Unreal Engine"
+  },
+  {
+    "Skills": "Game design"
+  },
+  {
+    "Skills": "3D modeling and animation"
+  },
+  {
+    "Skills": "User research"
+  },
+  {
+    "Skills": "Wireframing and prototyping (e.g., Sketch, Adobe XD)"
+  },
+  {
+    "Skills": "Usability testing"
+  },
+  {
+    "Skills": "GDPR compliance"
+  },
+  {
+    "Skills": "ISO/IEC 27001"
+  },
+  {
+    "Skills": "ITIL (Information Technology Infrastructure Library)"
+  },
+  {
+    "Skills": "SAP"
+  },
+  {
+    "Skills": "Oracle ERP"
+  },
+  {
+    "Skills": "ERP implementation and customization"
+  },
+  {
+    "Skills": "Extract, Transform, Load (ETL)"
+  },
+  {
+    "Skills": "Data modeling"
+  },
+  {
+    "Skills": "Data mining"
+  },
+  {
+    "Skills": "Natural Language Processing (NLP)"
+  },
+  {
+    "Skills": "Computer Vision"
+  },
+  {
+    "Skills": "Speech recognition"
+  },
+  {
+    "Skills": "AI ethics"
+  },
+  {
+    "Skills": "Adobe Premiere Pro"
+  },
+  {
+    "Skills": "Final Cut Pro"
+  },
+  {
+    "Skills": "Audacity"
+  },
+  {
+    "Skills": "Adobe After Effects"
+  },
+  {
+    "Skills": "Documentation creation"
+  },
+  {
+    "Skills": "API documentation"
+  },
+  {
+    "Skills": "User manuals"
+  },
+  {
+    "Skills": "Data visualization tools (Tableau, Power BI)"
+  },
+  {
+    "Skills": "Reporting and dashboards"
+  },
+  {
+    "Skills": "Video editing"
+  },
+  {
+    "Skills": "Audio editing"
+  },
+  {
+    "Skills": "Technical writing"
+  },
+  {
+    "Skills": "Business Intelligence (BI)"
+  },
+  {
+    "Skills": "Mobile app testing"
+  },
+  {
+    "Skills": "Quality assurance"
+  },
+  {
+    "Skills": "API testing"
+  },
+  {
+    "Skills": "RESTful APIs"
+  },
+  {
+    "Skills": "GraphQL"
+  },
+  {
+    "Skills": "Microservices architecture"
+  },
+  {
+    "Skills": "OAuth"
+  },
+  {
+    "Skills": "JSON Web Tokens (JWT)"
+  },
+  {
+    "Skills": "Amazon DynamoDB"
+  },
+  {
+    "Skills": "Elasticsearch"
+  },
+  {
+    "Skills": "Apache Kafka"
+  },
+  {
+    "Skills": "Redis"
+  },
+  {
+    "Skills": "GraphQL"
+  },
+  {
+    "Skills": "Full-stack development"
+  },
+  {
+    "Skills": "Frontend development"
+  },
+  {
+    "Skills": "Backend development"
+  },
+  {
+    "Skills": "Responsive web design"
+  },
+  {
+    "Skills": "Cross-browser compatibility"
+  },
+  {
+    "Skills": "Web accessibility"
+  },
+  {
+    "Skills": "User experience design"
+  },
+  {
+    "Skills": "User interface design"
+  },
+  {
+    "Skills": "Wireframing"
+  },
+  {
+    "Skills": "Prototyping"
+  },
+  {
+    "Skills": "Responsive design"
+  },
+  {
+    "Skills": "CSS preprocessors (e.g., Sass, Less)"
+  },
+  {
+    "Skills": "Web performance optimization"
+  },
+  {
+    "Skills": "SEO (Search Engine Optimization)"
+  },
+  {
+    "Skills": "Google Analytics"
+  },
+  {
+    "Skills": "Content Management Systems (CMS)"
+  },
+  {
+    "Skills": "WordPress"
+  },
+  {
+    "Skills": "Joomla"
+  },
+  {
+    "Skills": "Drupal"
+  },
+  {
+    "Skills": "Magento"
+  },
+  {
+    "Skills": "E-commerce platforms"
+  },
+  {
+    "Skills": "Payment gateways"
+  },
+  {
+    "Skills": "API integration"
+  },
+  {
+    "Skills": "RESTful architecture"
+  },
+  {
+    "Skills": "SOAP"
+  },
+  {
+    "Skills": "GraphQL"
+  },
+  {
+    "Skills": "Real-time systems"
+  },
+  {
+    "Skills": "Embedded systems"
+  },
+  {
+    "Skills": "Arduino"
+  },
+  {
+    "Skills": "Raspberry Pi"
+  },
+  {
+    "Skills": "FPGA"
+  },
+  {
+    "Skills": "PLC programming"
+  },
+  {
+    "Skills": "Real-time operating systems (RTOS)"
+  },
+  {
+    "Skills": "Control systems"
+  },
+  {
+    "Skills": "SCADA"
+  },
+  {
+    "Skills": "Human-Machine Interface (HMI)"
+  },
+  {
+    "Skills": "Digital Signal Processing (DSP)"
+  },
+  {
+    "Skills": "VHDL"
+  },
+  {
+    "Skills": "Verilog"
+  },
+  {
+    "Skills": "PLC programming"
+  },
+  {
+    "Skills": "Object-Oriented Design (OOD)"
+  },
+  {
+    "Skills": "Design Patterns"
+  },
+  {
+    "Skills": "Software Architecture"
+  },
+  {
+    "Skills": "System Analysis"
+  },
+  {
+    "Skills": "Requirements Engineering"
+  },
+  {
+    "Skills": "Object-Oriented Programming (OOP)"
+  },
+  {
+    "Skills": "Functional Programming"
+  },
+  {
+    "Skills": "Low-level programming (Assembly, Embedded C)"
+  },
+  {
+    "Skills": "Real-time Operating Systems (RTOS)"
+  },
+  {
+    "Skills": "Safety-critical systems"
+  },
+  {
+    "Skills": "Wireless communication"
+  },
+  {
+    "Skills": "RF systems"
+  },
+  {
+    "Skills": "PCB design"
+  },
+  {
+    "Skills": "Signal integrity"
+  },
+  {
+    "Skills": "Microwave engineering"
+  },
+  {
+    "Skills": "Antenna design"
+  },
+  {
+    "Skills": "RFID systems"
+  },
+  {
+    "Skills": "PCB layout design"
+  },
+  {
+    "Skills": "Network protocols (e.g., TCP/IP, UDP, HTTP)"
+  },
+  {
+    "Skills": "Network monitoring tools"
+  },
+  {
+    "Skills": "Network simulation tools"
+  },
+  {
+    "Skills": "SDN (Software-Defined Networking)"
+  },
+  {
+    "Skills": "Optical networking"
+  },
+  {
+    "Skills": "Network troubleshooting"
+  },
+  {
+    "Skills": "Network performance optimization"
+  },
+  {
+    "Skills": "Virtual Private Networks (VPNs)"
+  },
+  {
+    "Skills": "Cloud networking"
+  },
+  {
+    "Skills": "Content delivery networks (CDNs)"
+  },
+  {
+    "Skills": "Software-defined storage (SDS)"
+  },
+  {
+    "Skills": "Data deduplication"
+  },
+  {
+    "Skills": "Data compression"
+  },
+  {
+    "Skills": "RAID technologies"
+  },
+  {
+    "Skills": "Fiber Channel"
+  },
+  {
+    "Skills": "Storage area network (SAN)"
+  },
+  {
+    "Skills": "Network-Attached Storage (NAS)"
+  },
+  {
+    "Skills": "Cloud storage"
+  },
+  {
+    "Skills": "Wireless security"
+  },
+  {
+    "Skills": "VPN technologies"
+  },
+  {
+    "Skills": "Intrusion Detection System (IDS)"
+  },
+  {
+    "Skills": "Firewall configuration"
+  },
+  {
+    "Skills": "Identity and Access Management (IAM)"
+  },
+  {
+    "Skills": "Penetration testing tools"
+  },
+  {
+    "Skills": "Vulnerability assessment"
+  },
+  {
+    "Skills": "Security Information and Event Management (SIEM)"
+  },
+  {
+    "Skills": "Security Incident Response"
+  },
+  {
+    "Skills": "Data Loss Prevention (DLP)"
+  },
+  {
+    "Skills": "Endpoint Security"
+  },
+  {
+    "Skills": "Network Security"
+  },
+  {
+    "Skills": "Cryptography"
+  },
+  {
+    "Skills": "SSL/TLS protocols"
+  },
+  {
+    "Skills": "Public Key Infrastructure (PKI)"
+  },
+  {
+    "Skills": "Application Security"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Secure SDLC"
+  },
+  {
+    "Skills": "Security Auditing"
+  },
+  {
+    "Skills": "Reverse Engineering"
+  },
+  {
+    "Skills": "Malware Analysis"
+  },
+  {
+    "Skills": "Threat Hunting"
+  },
+  {
+    "Skills": "Security Operations Center (SOC)"
+  },
+  {
+    "Skills": "Business Continuity Planning (BCP)"
+  },
+  {
+    "Skills": "Disaster Recovery Planning (DRP)"
+  },
+  {
+    "Skills": "Incident Response Plan"
+  },
+  {
+    "Skills": "Backup and Restore procedures"
+  },
+  {
+    "Skills": "High Availability (HA)"
+  },
+  {
+    "Skills": "Cloud Computing Security"
+  },
+  {
+    "Skills": "DevSecOps"
+  },
+  {
+    "Skills": "Secure Software Development Life Cycle (SSDLC)"
+  },
+  {
+    "Skills": "Security Risk Assessment"
+  },
+  {
+    "Skills": "GDPR Compliance"
+  },
+  {
+    "Skills": "ISO/IEC 27001"
+  },
+  {
+    "Skills": "ITIL (Information Technology Infrastructure Library)"
+  },
+  {
+    "Skills": "Service-Oriented Architecture (SOA)"
+  },
+  {
+    "Skills": "Microservices"
+  },
+  {
+    "Skills": "Web Services (SOAP, REST)"
+  },
+  {
+    "Skills": "Service Bus"
+  },
+  {
+    "Skills": "ESB (Enterprise Service Bus)"
+  },
+  {
+    "Skills": "Message Queues"
+  },
+  {
+    "Skills": "API Gateway"
+  },
+  {
+    "Skills": "API Management"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Progressive Web Apps (PWAs)"
+  },
+  {
+    "Skills": "Single Page Applications (SPAs)"
+  },
+  {
+    "Skills": "GraphQL"
+  },
+  {
+    "Skills": "WebSocket"
+  },
+  {
+    "Skills": "Authentication and Authorization"
+  },
+  {
+    "Skills": "OAuth 2.0"
+  },
+  {
+    "Skills": "OpenID Connect"
+  },
+  {
+    "Skills": "JWT (JSON Web Tokens)"
+  },
+  {
+    "Skills": "SAML (Security Assertion Markup Language)"
+  },
+  {
+    "Skills": "OAuth 1.0"
+  },
+  {
+    "Skills": "Public Key Infrastructure (PKI)"
+  },
+  {
+    "Skills": "Identity Federation"
+  },
+  {
+    "Skills": "LDAP (Lightweight Directory Access Protocol)"
+  },
+  {
+    "Skills": "Multi-Factor Authentication (MFA)"
+  },
+  {
+    "Skills": "Cross-Site Scripting (XSS)"
+  },
+  {
+    "Skills": "Cross-Site Request Forgery (CSRF)"
+  },
+  {
+    "Skills": "SQL Injection"
+  },
+  {
+    "Skills": "Clickjacking"
+  },
+  {
+    "Skills": "Security Headers"
+  },
+  {
+    "Skills": "Content Security Policy (CSP)"
+  },
+  {
+    "Skills": "SSL/TLS Protocols"
+  },
+  {
+    "Skills": "Secure Sockets Layer (SSL)"
+  },
+  {
+    "Skills": "Transport Layer Security (TLS)"
+  },
+  {
+    "Skills": "Virtualization"
+  },
+  {
+    "Skills": "VMware"
+  },
+  {
+    "Skills": "Hyper-V"
+  },
+  {
+    "Skills": "KVM (Kernel-based Virtual Machine)"
+  },
+  {
+    "Skills": "Xen"
+  },
+  {
+    "Skills": "QEMU"
+  },
+  {
+    "Skills": "VirtualBox"
+  },
+  {
+    "Skills": "Cloud Computing"
+  },
+  {
+    "Skills": "Amazon Web Services (AWS)"
+  },
+  {
+    "Skills": "Microsoft Azure"
+  },
+  {
+    "Skills": "Google Cloud Platform (GCP)"
+  },
+  {
+    "Skills": "IBM Cloud"
+  },
+  {
+    "Skills": "Oracle Cloud"
+  },
+  {
+    "Skills": "Cloud Architecture"
+  },
+  {
+    "Skills": "Cloud Security"
+  },
+  {
+    "Skills": "Cloud Storage"
+  },
+  {
+    "Skills": "Cloud Networking"
+  },
+  {
+    "Skills": "Cloud Governance"
+  },
+  {
+    "Skills": "Cloud Migration"
+  },
+  {
+    "Skills": "Cloud Monitoring"
+  },
+  {
+    "Skills": "Cloud DevOps"
+  },
+  {
+    "Skills": "Cloud Data Management"
+  },
+  {
+    "Skills": "Cloud Automation"
+  },
+  {
+    "Skills": "Cloud Cost Optimization"
+  },
+  {
+    "Skills": "Blockchain"
+  },
+  {
+    "Skills": "Smart Contracts"
+  },
+  {
+    "Skills": "Decentralized Applications (DApps)"
+  },
+  {
+    "Skills": "Consensus Mechanisms"
+  },
+  {
+    "Skills": "Hyperledger"
+  },
+  {
+    "Skills": "Corda"
+  },
+  {
+    "Skills": "Solidity"
+  },
+  {
+    "Skills": "Truffle Framework"
+  },
+  {
+    "Skills": "Ethereum"
+  },
+  {
+    "Skills": "EOSIO"
+  },
+  {
+    "Skills": "Corda"
+  },
+  {
+    "Skills": "Quorum"
+  },
+  {
+    "Skills": "Privacy-Preserving Techniques"
+  },
+  {
+    "Skills": "Homomorphic Encryption"
+  },
+  {
+    "Skills": "Differential Privacy"
+  },
+  {
+    "Skills": "Federated Learning"
+  },
+  {
+    "Skills": "Secure Multi-Party Computation (SMPC)"
+  },
+  {
+    "Skills": "Edge Computing"
+  },
+  {
+    "Skills": "Fog Computing"
+  },
+  {
+    "Skills": "Mobile Edge Computing (MEC)"
+  },
+  {
+    "Skills": "Blockchain Interoperability"
+  },
+  {
+    "Skills": "Cross-Chain Communication"
+  },
+  {
+    "Skills": "Sharding"
+  },
+  {
+    "Skills": "Sidechains"
+  },
+  {
+    "Skills": "InterPlanetary File System (IPFS)"
+  },
+  {
+    "Skills": "Artificial Intelligence (AI)"
+  },
+  {
+    "Skills": "Machine Learning (ML)"
+  },
+  {
+    "Skills": "Deep Learning"
+  },
+  {
+    "Skills": "Natural Language Processing (NLP)"
+  },
+  {
+    "Skills": "Computer Vision"
+  },
+  {
+    "Skills": "Speech Recognition"
+  },
+  {
+    "Skills": "Neural Networks"
+  },
+  {
+    "Skills": "Reinforcement Learning"
+  },
+  {
+    "Skills": "GANs (Generative Adversarial Networks)"
+  },
+  {
+    "Skills": "Transfer Learning"
+  },
+  {
+    "Skills": "Explainable AI"
+  },
+  {
+    "Skills": "Robotics Process Automation (RPA)"
+  },
+  {
+    "Skills": "Intelligent Virtual Assistants"
+  },
+  {
+    "Skills": "Chatbots"
+  },
+  {
+    "Skills": "Recommendation Systems"
+  },
+  {
+    "Skills": "Predictive Analytics"
+  },
+  {
+    "Skills": "Data Preprocessing"
+  },
+  {
+    "Skills": "Feature Engineering"
+  },
+  {
+    "Skills": "Model Evaluation and Selection"
+  },
+  {
+    "Skills": "Neural Network Architectures"
+  },
+  {
+    "Skills": "Image Recognition"
+  },
+  {
+    "Skills": "Object Detection"
+  },
+  {
+    "Skills": "Sentiment Analysis"
+  },
+  {
+    "Skills": "Data Augmentation"
+  },
+  {
+    "Skills": "Data Labeling"
+  },
+  {
+    "Skills": "Big Data"
+  },
+  {
+    "Skills": "Hadoop"
+  },
+  {
+    "Skills": "Apache Spark"
+  },
+  {
+    "Skills": "Apache Kafka"
+  },
+  {
+    "Skills": "HBase"
+  },
+  {
+    "Skills": "Apache Hive"
+  },
+  {
+    "Skills": "Data Lake"
+  },
+  {
+    "Skills": "NoSQL Databases"
+  },
+  {
+    "Skills": "MongoDB"
+  },
+  {
+    "Skills": "Cassandra"
+  },
+  {
+    "Skills": "Couchbase"
+  },
+  {
+    "Skills": "Redis"
+  },
+  {
+    "Skills": "Apache Cassandra"
+  },
+  {
+    "Skills": "Elasticsearch"
+  },
+  {
+    "Skills": "Apache HBase"
+  },
+  {
+    "Skills": "BigTable"
+  },
+  {
+    "Skills": "Time Series Databases"
+  },
+  {
+    "Skills": "InfluxDB"
+  },
+  {
+    "Skills": "OpenTSDB"
+  },
+  {
+    "Skills": "Prometheus"
+  },
+  {
+    "Skills": "TimeScaleDB"
+  },
+  {
+    "Skills": "Data Warehousing"
+  },
+  {
+    "Skills": "Data Integration"
+  },
+  {
+    "Skills": "Data Governance"
+  },
+  {
+    "Skills": "Data Quality"
+  },
+  {
+    "Skills": "Data Cleaning"
+  },
+  {
+    "Skills": "Data Transformation"
+  },
+  {
+    "Skills": "Extract, Load, Transform (ELT)"
+  },
+  {
+    "Skills": "Online Analytical Processing (OLAP)"
+  },
+  {
+    "Skills": "Data Visualization"
+  },
+  {
+    "Skills": "Tableau"
+  },
+  {
+    "Skills": "Microsoft Power BI"
+  },
+  {
+    "Skills": "QlikView"
+  },
+  {
+    "Skills": "Apache Superset"
+  },
+  {
+    "Skills": "Data Reporting"
+  },
+  {
+    "Skills": "Data Analytics"
+  },
+  {
+    "Skills": "Data Mining"
+  },
+  {
+    "Skills": "Data Wrangling"
+  },
+  {
+    "Skills": "Data Exploration"
+  },
+  {
+    "Skills": "Business Intelligence (BI)"
+  },
+  {
+    "Skills": "Data Governance"
+  },
+  {
+    "Skills": "Data Security"
+  },
+  {
+    "Skills": "Data Privacy"
+  },
+  {
+    "Skills": "Data Ethics"
+  },
+  {
+    "Skills": "Data Regulations"
+  },
+  {
+    "Skills": "Predictive Analytics"
+  },
+  {
+    "Skills": "Prescriptive Analytics"
+  },
+  {
+    "Skills": "Data Modeling"
+  },
+  {
+    "Skills": "Entity-Relationship Diagram (ERD)"
+  },
+  {
+    "Skills": "Relational Database Design"
+  },
+  {
+    "Skills": "Dimensional Modeling"
+  },
+  {
+    "Skills": "Star Schema"
+  },
+  {
+    "Skills": "Snowflake Schema"
+  },
+  {
+    "Skills": "Normalization"
+  },
+  {
+    "Skills": "Database Management"
+  },
+  {
+    "Skills": "Data Security"
+  },
+  {
+    "Skills": "Backup and Recovery"
+  },
+  {
+    "Skills": "Disaster Recovery"
+  },
+  {
+    "Skills": "Replication"
+  },
+  {
+    "Skills": "Indexing"
+  },
+  {
+    "Skills": "Query Optimization"
+  },
+  {
+    "Skills": "Performance Tuning"
+  },
+  {
+    "Skills": "Database Administration"
+  },
+  {
+    "Skills": "SQL Programming"
+  },
+  {
+    "Skills": "Stored Procedures"
+  },
+  {
+    "Skills": "Triggers"
+  },
+  {
+    "Skills": "Views"
+  },
+  {
+    "Skills": "Indexes"
+  },
+  {
+    "Skills": "Database Monitoring"
+  },
+  {
+    "Skills": "Database Replication"
+  },
+  {
+    "Skills": "Database Clustering"
+  },
+  {
+    "Skills": "Database Sharding"
+  },
+  {
+    "Skills": "Database Backup and Restore"
+  },
+  {
+    "Skills": "Database Security"
+  },
+  {
+    "Skills": "Data Encryption"
+  },
+  {
+    "Skills": "Database Auditing"
+  },
+  {
+    "Skills": "Performance Monitoring"
+  },
+  {
+    "Skills": "Network Protocols (e.g., TCP/IP, UDP, HTTP)"
+  },
+  {
+    "Skills": "Network Monitoring Tools"
+  },
+  {
+    "Skills": "Network Simulation Tools"
+  },
+  {
+    "Skills": "SDN (Software-Defined Networking)"
+  },
+  {
+    "Skills": "Optical Networking"
+  },
+  {
+    "Skills": "Network Troubleshooting"
+  },
+  {
+    "Skills": "Network Performance Optimization"
+  },
+  {
+    "Skills": "Virtual Private Networks (VPNs)"
+  },
+  {
+    "Skills": "Cloud Networking"
+  },
+  {
+    "Skills": "Content Delivery Networks (CDNs)"
+  },
+  {
+    "Skills": "Software-Defined Storage (SDS)"
+  },
+  {
+    "Skills": "Data Deduplication"
+  },
+  {
+    "Skills": "Data Compression"
+  },
+  {
+    "Skills": "RAID Technologies"
+  },
+  {
+    "Skills": "Fiber Channel"
+  },
+  {
+    "Skills": "Storage Area Network (SAN)"
+  },
+  {
+    "Skills": "Network-Attached Storage (NAS)"
+  },
+  {
+    "Skills": "Cloud Storage"
+  },
+  {
+    "Skills": "Wireless Security"
+  },
+  {
+    "Skills": "VPN Technologies"
+  },
+  {
+    "Skills": "Intrusion Detection System (IDS)"
+  },
+  {
+    "Skills": "Firewall Configuration"
+  },
+  {
+    "Skills": "Identity and Access Management (IAM)"
+  },
+  {
+    "Skills": "Penetration Testing Tools"
+  },
+  {
+    "Skills": "Vulnerability Assessment"
+  },
+  {
+    "Skills": "Security Information and Event Management (SIEM)"
+  },
+  {
+    "Skills": "Security Incident Response"
+  },
+  {
+    "Skills": "Data Loss Prevention (DLP)"
+  },
+  {
+    "Skills": "Endpoint Security"
+  },
+  {
+    "Skills": "Network Security"
+  },
+  {
+    "Skills": "Cryptography"
+  },
+  {
+    "Skills": "SSL/TLS Protocols"
+  },
+  {
+    "Skills": "Secure Sockets Layer (SSL)"
+  },
+  {
+    "Skills": "Transport Layer Security (TLS)"
+  },
+  {
+    "Skills": "Virtualization"
+  },
+  {
+    "Skills": "VMware"
+  },
+  {
+    "Skills": "Hyper-V"
+  },
+  {
+    "Skills": "KVM (Kernel-based Virtual Machine)"
+  },
+  {
+    "Skills": "Xen"
+  },
+  {
+    "Skills": "QEMU"
+  },
+  {
+    "Skills": "VirtualBox"
+  },
+  {
+    "Skills": "Cloud Computing"
+  },
+  {
+    "Skills": "Amazon Web Services (AWS)"
+  },
+  {
+    "Skills": "Microsoft Azure"
+  },
+  {
+    "Skills": "Google Cloud Platform (GCP)"
+  },
+  {
+    "Skills": "IBM Cloud"
+  },
+  {
+    "Skills": "Oracle Cloud"
+  },
+  {
+    "Skills": "Cloud Architecture"
+  },
+  {
+    "Skills": "Cloud Security"
+  },
+  {
+    "Skills": "Cloud Storage"
+  },
+  {
+    "Skills": "Cloud Networking"
+  },
+  {
+    "Skills": "Cloud Governance"
+  },
+  {
+    "Skills": "Data Engineering"
+  },
+  {
+    "Skills": "Data Pipelines"
+  },
+  {
+    "Skills": "Data Governance"
+  },
+  {
+    "Skills": "Data Security"
+  },
+  {
+    "Skills": "Data Privacy Compliance"
+  },
+  {
+    "Skills": "Robotic Process Automation (RPA)"
+  },
+  {
+    "Skills": "Chatbot Development"
+  },
+  {
+    "Skills": "Natural Language Generation (NLG)"
+  },
+  {
+    "Skills": "Conversational AI"
+  },
+  {
+    "Skills": "Data Warehouse Design"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "Cloud Foundry"
+  },
+  {
+    "Skills": "Serverless Architecture"
+  },
+  {
+    "Skills": "Cloud Security Best Practices"
+  },
+  {
+    "Skills": "Cloud Cost Management"
+  },
+  {
+    "Skills": "Cloud Migration Strategies"
+  },
+  {
+    "Skills": "Cloud Monitoring and Optimization"
+  },
+  {
+    "Skills": "Cloud Governance and Compliance"
+  },
+  {
+    "Skills": "Virtual Reality (VR) Development"
+  },
+  {
+    "Skills": "Augmented Reality (AR) Development"
+  },
+  {
+    "Skills": "Mixed Reality (MR) Development"
+  },
+  {
+    "Skills": "Quantum Computing"
+  },
+  {
+    "Skills": "Quantum Algorithms"
+  },
+  {
+    "Skills": "Quantum Cryptography"
+  },
+  {
+    "Skills": "5G Network Technology"
+  },
+  {
+    "Skills": "Edge Computing"
+  },
+  {
+    "Skills": "Cloud-Native Security"
+  },
+  {
+    "Skills": "Secure Software Development"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Secure SDLC (Software Development Life Cycle)"
+  },
+  {
+    "Skills": "Cyber Threat Intelligence"
+  },
+  {
+    "Skills": "Threat Hunting"
+  },
+  {
+    "Skills": "Threat Modeling"
+  },
+  {
+    "Skills": "Security Operations Center (SOC)"
+  },
+  {
+    "Skills": "Network Packet Analysis"
+  },
+  {
+    "Skills": "Malware Reverse Engineering"
+  },
+  {
+    "Skills": "Incident Response Planning"
+  },
+  {
+    "Skills": "Security Risk Assessment"
+  },
+  {
+    "Skills": "Secure DevOps"
+  },
+  {
+    "Skills": "Web Application Security"
+  },
+  {
+    "Skills": "Mobile Application Security"
+  },
+  {
+    "Skills": "Cloud Security Architecture"
+  },
+  {
+    "Skills": "Security Automation and Orchestration"
+  },
+  {
+    "Skills": "Biometric Security Systems"
+  },
+  {
+    "Skills": "Quantum Key Distribution (QKD)"
+  },
+  {
+    "Skills": "DevSecOps"
+  },
+  {
+    "Skills": "Cryptocurrency Trading and Investment"
+  },
+  {
+    "Skills": "Data Science in Finance"
+  },
+  {
+    "Skills": "Fintech Solutions"
+  },
+  {
+    "Skills": "Algorithmic Trading"
+  },
+  {
+    "Skills": "Market Analysis and Forecasting"
+  },
+  {
+    "Skills": "Sentiment Analysis for Finance"
+  },
+  {
+    "Skills": "Financial Modeling and Simulation"
+  },
+  {
+    "Skills": "Healthcare IT Systems"
+  },
+  {
+    "Skills": "Electronic Health Records (EHR)"
+  },
+  {
+    "Skills": "Medical Imaging Systems"
+  },
+  {
+    "Skills": "Healthcare Data Security"
+  },
+  {
+    "Skills": "Telemedicine Solutions"
+  },
+  {
+    "Skills": "E-commerce Platforms"
+  },
+  {
+    "Skills": "Online Payment Systems"
+  },
+  {
+    "Skills": "Cybersecurity Risk Assessment"
+  },
+  {
+    "Skills": "Cloud Risk Management"
+  },
+  {
+    "Skills": "Privacy Engineering"
+  },
+  {
+    "Skills": "Cyber Insurance Management"
+  },
+  {
+    "Skills": "Secure Cloud Networking"
+  },
+  {
+    "Skills": "Secure IoT Communication"
+  },
+  {
+    "Skills": "Industrial Control Systems (ICS) Security"
+  },
+  {
+    "Skills": "Data Center Design and Management"
+  },
+  {
+    "Skills": "Cloud Data Storage Solutions"
+  },
+  {
+    "Skills": "Data Visualization with D3.js"
+  },
+  {
+    "Skills": "Time Series Analysis"
+  },
+  {
+    "Skills": "Predictive Maintenance"
+  },
+  {
+    "Skills": "Data-driven Decision Making"
+  },
+  {
+    "Skills": "Cloud Native Database Solutions"
+  },
+  {
+    "Skills": "Cloud Identity and Access Management"
+  },
+  {
+    "Skills": "Cloud Compliance and Auditing"
+  },
+  {
+    "Skills": "Network Function Virtualization (NFV)"
+  },
+  {
+    "Skills": "Software-Defined Wide Area Network (SD-WAN)"
+  },
+  {
+    "Skills": "Blockchain Scalability Solutions"
+  },
+  {
+    "Skills": "Smart Contract Auditing"
+  },
+  {
+    "Skills": "Zero-Knowledge Proofs"
+  },
+  {
+    "Skills": "Homomorphic Encryption"
+  },
+  {
+    "Skills": "Privacy-Preserving Machine Learning"
+  },
+  {
+    "Skills": "Federated Learning"
+  },
+  {
+    "Skills": "Secure AI Model Deployment"
+  },
+  {
+    "Skills": "AI Model Explainability"
+  },
+  {
+    "Skills": "Generative AI Models"
+  },
+  {
+    "Skills": "AI for Cybersecurity"
+  },
+  {
+    "Skills": "AI for Natural Language Generation"
+  },
+  {
+    "Skills": "AI for Computer Vision Applications"
+  },
+  {
+    "Skills": "AI in Robotics and Automation"
+  },
+  {
+    "Skills": "AI in Healthcare Diagnosis"
+  },
+  {
+    "Skills": "AI in Financial Analysis"
+  },
+  {
+    "Skills": "AI in Customer Support"
+  },
+  {
+    "Skills": "AI in Content Creation"
+  },
+  {
+    "Skills": "AI in Game Design and NPCs"
+  },
+  {
+    "Skills": "Robotic Vision Systems"
+  },
+  {
+    "Skills": "Robotics Simulation"
+  },
+  {
+    "Skills": "Swarm Robotics"
+  },
+  {
+    "Skills": "Industrial Robotics Programming"
+  },
+  {
+    "Skills": "Voice User Interface (VUI) Design"
+  },
+  {
+    "Skills": "Cloud-Native CI/CD"
+  },
+  {
+    "Skills": "GraphQL API Development"
+  },
+  {
+    "Skills": "Decentralized Finance (DeFi)"
+  },
+  {
+    "Skills": "Cybersecurity for Internet of Things (IoT)"
+  },
+  {
+    "Skills": "Secure Mobile App Development"
+  },
+  {
+    "Skills": "Blockchain Development with Hyperledger Fabric"
+  },
+  {
+    "Skills": "Natural Language Understanding (NLU)"
+  },
+  {
+    "Skills": "Automated Testing for Mobile Apps"
+  },
+  {
+    "Skills": "Cloud-Native Database Management"
+  },
+  {
+    "Skills": "DataOps (Data Operations)"
+  },
+  {
+    "Skills": "Data Cataloging and Metadata Management"
+  },
+  {
+    "Skills": "Robotic Process Automation (RPA) Governance"
+  },
+  {
+    "Skills": "DevSecOps Automation"
+  },
+  {
+    "Skills": "Quantum Secure Communication"
+  },
+  {
+    "Skills": "Federated Identity Management"
+  },
+  {
+    "Skills": "AI Fairness and Bias Mitigation"
+  },
+  {
+    "Skills": "Explainable AI in Financial Services"
+  },
+  {
+    "Skills": "Healthcare Data Analytics"
+  },
+  {
+    "Skills": "Cybersecurity in Cloud-Native Environments"
+  },
+  {
+    "Skills": "Multi-Experience Development (MXD)"
+  },
+  {
+    "Skills": "Cross-Platform Mobile App Development"
+  },
+  {
+    "Skills": "Secure Containerization"
+  },
+  {
+    "Skills": "Blockchain Interoperability Protocols"
+  },
+  {
+    "Skills": "Delegated Proof of Stake (DPoS) Consensus"
+  },
+  {
+    "Skills": "Homomorphic Encryption Applications"
+  },
+  {
+    "Skills": "Privacy-Preserving Data Sharing"
+  },
+  {
+    "Skills": "Edge AI"
+  },
+  {
+    "Skills": "AI in Cyber Threat Intelligence"
+  },
+  {
+    "Skills": "AI-Driven Fraud Detection"
+  },
+  {
+    "Skills": "AI in Supply Chain Management"
+  },
+  {
+    "Skills": "AI in Climate Modeling"
+  },
+  {
+    "Skills": "AI in Drug Discovery"
+  },
+  {
+    "Skills": "AI in Marketing Automation"
+  },
+  {
+    "Skills": "AI in Personalized Medicine"
+  },
+  {
+    "Skills": "AI in Virtual Reality Applications"
+  },
+  {
+    "Skills": "AI in Natural Language Generation"
+  },
+  {
+    "Skills": "AI in Content Moderation"
+  },
+  {
+    "Skills": "AI in Urban Planning"
+  },
+  {
+    "Skills": "AI in Renewable Energy Optimization"
+  },
+  {
+    "Skills": "AI in Precision Agriculture"
+  },
+  {
+    "Skills": "AI in Wildlife Conservation"
+  },
+  {
+    "Skills": "AI in Sentiment Analysis for Social Media"
+  },
+  {
+    "Skills": "AI in Fashion and Design"
+  },
+  {
+    "Skills": "AI in Autonomous Vehicles"
+  },
+  {
+    "Skills": "AI in Human-Robot Interaction"
+  },
+  {
+    "Skills": "AI in Gaming Industry Analytics"
+  },
+  {
+    "Skills": "AI in Music Composition and Generation"
+  },
+  {
+    "Skills": "AI in Sports Analytics"
+  },
+  {
+    "Skills": "AI in Predictive Maintenance for Industrial Equipment"
+  },
+  {
+    "Skills": "AI in Financial Fraud Prevention"
+  },
+  {
+    "Skills": "AI in Speech Therapy Applications"
+  },
+  {
+    "Skills": "AI in Disability Assistance"
+  },
+  {
+    "Skills": "AI in Mental Health Diagnosis"
+  },
+  {
+    "Skills": "AI in Language Translation"
+  },
+  {
+    "Skills": "AI in Wildlife Monitoring and Conservation"
+  },
+  {
+    "Skills": "AI in Content Recommendation Systems"
+  },
+  {
+    "Skills": "AI in Traffic Management"
+  },
+  {
+    "Skills": "AI in Online Education and Personalized Learning"
+  },
+  {
+    "Skills": "AI in Biomedical Imaging Analysis"
+  },
+  {
+    "Skills": "AI in Environmental Monitoring"
+  },
+  {
+    "Skills": "AI in Retail Customer Experience"
+  },
+  {
+    "Skills": "AI in Oil and Gas Exploration"
+  },
+  {
+    "Skills": "AI in Air Quality Prediction"
+  },
+  {
+    "Skills": "AI in Autonomous Drones and Robotics"
+  },
+  {
+    "Skills": "AI in Predictive Maintenance for Transportation"
+  },
+  {
+    "Skills": "AI in Food Safety and Quality Assurance"
+  },
+  {
+    "Skills": "AI in E-commerce Product Recommendations"
+  },
+  {
+    "Skills": "AI in Fraud Detection for Financial Institutions"
+  },
+  {
+    "Skills": "AI in Cybersecurity Threat Detection"
+  },
+  {
+    "Skills": "AI in Data Center Cooling Optimization"
+  },
+  {
+    "Skills": "AI in Predictive Inventory Management"
+  },
+  {
+    "Skills": "AI in Healthcare Resource Allocation"
+  },
+  {
+    "Skills": "AI in Traffic Accident Prediction"
+  },
+  {
+    "Skills": "AI in Smart Grid Management"
+  },
+  {
+    "Skills": "AI in Agricultural Yield Prediction"
+  },
+  {
+    "Skills": "AI in Wildlife Behavior Analysis"
+  },
+  {
+    "Skills": "AI in Customer Churn Prediction"
+  },
+  {
+    "Skills": "AI in Natural Disaster Response and Recovery"
+  },
+  {
+    "Skills": "AI in Energy Consumption Optimization"
+  },
+  {
+    "Skills": "AI in Personalized Advertising"
+  },
+  {
+    "Skills": "AI in Sentiment Analysis for Brand Reputation Management"
+  },
+  {
+    "Skills": "AI in Autonomous Underwater Vehicles"
+  },
+  {
+    "Skills": "AI in Water Quality Monitoring"
+  },
+  {
+    "Skills": "AI in Credit Risk Assessment"
+  },
+  {
+    "Skills": "AI in Cybersecurity Incident Response"
+  },
+  {
+    "Skills": "AI in Food Quality Inspection"
+  },
+  {
+    "Skills": "AI in Real-Time Video Analysis"
+  },
+  {
+    "Skills": "AI in Document Classification and Extraction"
+  },
+  {
+    "Skills": "AI in Waste Management and Recycling"
+  },
+  {
+    "Skills": "AI in Drug Adverse Event Monitoring"
+  },
+  {
+    "Skills": "AI in Demand Forecasting"
+  },
+  {
+    "Skills": "AI in Oil Spill Detection and Cleanup"
+  },
+  {
+    "Skills": "AI in Supply Chain Predictive Maintenance"
+  },
+  {
+    "Skills": "AI in Climate Change Mitigation Strategies"
+  },
+  {
+    "Skills": "AI in Financial Trading Algorithms"
+  },
+  {
+    "Skills": "AI in Healthcare Triage and Patient Routing"
+  },
+  {
+    "Skills": "AI in Sports Performance Analysis"
+  },
+  {
+    "Skills": "AI in Social Media Content Moderation"
+  },
+  {
+    "Skills": "AI in Humanitarian Aid and Disaster Response"
+  },
+  {
+    "Skills": "Algorithm Design and Analysis"
+  },
+  {
+    "Skills": "Data Structures"
+  },
+  {
+    "Skills": "Object-Oriented Programming (OOP)"
+  },
+  {
+    "Skills": "Functional Programming"
+  },
+  {
+    "Skills": "Error Handling and Debugging"
+  },
+  {
+    "Skills": "Version Control (e.g., Git)"
+  },
+  {
+    "Skills": "Testing and Test-Driven Development (TDD)"
+  },
+  {
+    "Skills": "Problem-Solving Skills"
+  },
+  {
+    "Skills": "Code Refactoring"
+  },
+  {
+    "Skills": "Code Review"
+  },
+  {
+    "Skills": "API Integration"
+  },
+  {
+    "Skills": "Web Scraping"
+  },
+  {
+    "Skills": "Regular Expressions"
+  },
+  {
+    "Skills": "Error Handling and Exception Handling"
+  },
+  {
+    "Skills": "Multithreading and Concurrency"
+  },
+  {
+    "Skills": "File Handling and I/O Operations"
+  },
+  {
+    "Skills": "Database Interaction"
+  },
+  {
+    "Skills": "Networking and Socket Programming"
+  },
+  {
+    "Skills": "RESTful API Design"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Web Development (HTML, CSS, JavaScript)"
+  },
+  {
+    "Skills": "Backend Development (Node.js, Flask, Django)"
+  },
+  {
+    "Skills": "Frontend Development Frameworks (React, Angular)"
+  },
+  {
+    "Skills": "Mobile App Development (Android, iOS)"
+  },
+  {
+    "Skills": "Cross-Platform App Development (Flutter, React Native)"
+  },
+  {
+    "Skills": "Desktop Application Development (Electron, PyQt)"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "DevOps and Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Containerization (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Cloud Computing (AWS, Azure, GCP)"
+  },
+  {
+    "Skills": "Machine Learning and AI (TensorFlow, PyTorch, scikit-learn)"
+  },
+  {
+    "Skills": "Data Analysis and Visualization (Pandas, Matplotlib)"
+  },
+  {
+    "Skills": "Data Manipulation and Cleaning"
+  },
+  {
+    "Skills": "Database Management Systems (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Web API Development (REST, GraphQL)"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Cryptography and Data Encryption"
+  },
+  {
+    "Skills": "Network Security and Firewalls"
+  },
+  {
+    "Skills": "Software Design Patterns"
+  },
+  {
+    "Skills": "Unit Testing and Test Automation"
+  },
+  {
+    "Skills": "Agile Software Development"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Technical Documentation"
+  },
+  {
+    "Skills": "Agile Methodologies (Scrum, Kanban)"
+  },
+  {
+    "Skills": "UX/UI Design and Prototyping"
+  },
+  {
+    "Skills": "User-Centric Design"
+  },
+  {
+    "Skills": "Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Scalability and Performance Optimization"
+  },
+  {
+    "Skills": "Memory Management and Performance Profiling"
+  },
+  {
+    "Skills": "Integration Testing and System Testing"
+  },
+  {
+    "Skills": "Functional Testing and Regression Testing"
+  },
+  {
+    "Skills": "Load Testing and Stress Testing"
+  },
+  {
+    "Skills": "Version Control Systems (Git, SVN)"
+  },
+  {
+    "Skills": "Build Automation (Make, Gradle, Maven)"
+  },
+  {
+    "Skills": "Security Best Practices"
+  },
+  {
+    "Skills": "Code Optimization"
+  },
+  {
+    "Skills": "Code Modularity and Reusability"
+  },
+  {
+    "Skills": "Real-Time Systems"
+  },
+  {
+    "Skills": "RESTful Architecture"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Web Development (HTML, CSS, JavaScript)"
+  },
+  {
+    "Skills": "Backend Development (Node.js, Flask, Django)"
+  },
+  {
+    "Skills": "Frontend Development Frameworks (React, Angular)"
+  },
+  {
+    "Skills": "Mobile App Development (Android, iOS)"
+  },
+  {
+    "Skills": "Cross-Platform App Development (Flutter, React Native)"
+  },
+  {
+    "Skills": "Desktop Application Development (Electron, PyQt)"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "DevOps and Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Containerization (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Cloud Computing (AWS, Azure, GCP)"
+  },
+  {
+    "Skills": "Machine Learning and AI (TensorFlow, PyTorch, scikit-learn)"
+  },
+  {
+    "Skills": "Data Analysis and Visualization (Pandas, Matplotlib)"
+  },
+  {
+    "Skills": "Data Manipulation and Cleaning"
+  },
+  {
+    "Skills": "Database Management Systems (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Web API Development (REST, GraphQL)"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Cryptography and Data Encryption"
+  },
+  {
+    "Skills": "Network Security and Firewalls"
+  },
+  {
+    "Skills": "Software Design Patterns"
+  },
+  {
+    "Skills": "Unit Testing and Test Automation"
+  },
+  {
+    "Skills": "Agile Software Development"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Technical Documentation"
+  },
+  {
+    "Skills": "Agile Methodologies (Scrum, Kanban)"
+  },
+  {
+    "Skills": "UX/UI Design and Prototyping"
+  },
+  {
+    "Skills": "User-Centric Design"
+  },
+  {
+    "Skills": "Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Scalability and Performance Optimization"
+  },
+  {
+    "Skills": "Memory Management and Performance Profiling"
+  },
+  {
+    "Skills": "Integration Testing and System Testing"
+  },
+  {
+    "Skills": "Functional Testing and Regression Testing"
+  },
+  {
+    "Skills": "Load Testing and Stress Testing"
+  },
+  {
+    "Skills": "Version Control Systems (Git, SVN)"
+  },
+  {
+    "Skills": "Build Automation (Make, Gradle, Maven)"
+  },
+  {
+    "Skills": "Security Best Practices"
+  },
+  {
+    "Skills": "Code Optimization"
+  },
+  {
+    "Skills": "Code Modularity and Reusability"
+  },
+  {
+    "Skills": "Real-Time Systems"
+  },
+  {
+    "Skills": "RESTful Architecture"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Web Development (HTML, CSS, JavaScript)"
+  },
+  {
+    "Skills": "Backend Development (Node.js, Flask, Django)"
+  },
+  {
+    "Skills": "Frontend Development Frameworks (React, Angular)"
+  },
+  {
+    "Skills": "Mobile App Development (Android, iOS)"
+  },
+  {
+    "Skills": "Cross-Platform App Development (Flutter, React Native)"
+  },
+  {
+    "Skills": "Desktop Application Development (Electron, PyQt)"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "DevOps and Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Containerization (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Cloud Computing (AWS, Azure, GCP)"
+  },
+  {
+    "Skills": "Machine Learning and AI (TensorFlow, PyTorch, scikit-learn)"
+  },
+  {
+    "Skills": "Data Analysis and Visualization (Pandas, Matplotlib)"
+  },
+  {
+    "Skills": "Data Manipulation and Cleaning"
+  },
+  {
+    "Skills": "Database Management Systems (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Web API Development (REST, GraphQL)"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Cryptography and Data Encryption"
+  },
+  {
+    "Skills": "Network Security and Firewalls"
+  },
+  {
+    "Skills": "Software Design Patterns"
+  },
+  {
+    "Skills": "Unit Testing and Test Automation"
+  },
+  {
+    "Skills": "Agile Software Development"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Technical Documentation"
+  },
+  {
+    "Skills": "Agile Methodologies (Scrum, Kanban)"
+  },
+  {
+    "Skills": "UX/UI Design and Prototyping"
+  },
+  {
+    "Skills": "User-Centric Design"
+  },
+  {
+    "Skills": "Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Scalability and Performance Optimization"
+  },
+  {
+    "Skills": "Memory Management and Performance Profiling"
+  },
+  {
+    "Skills": "Integration Testing and System Testing"
+  },
+  {
+    "Skills": "Functional Testing and Regression Testing"
+  },
+  {
+    "Skills": "Load Testing and Stress Testing"
+  },
+  {
+    "Skills": "Version Control Systems (Git, SVN)"
+  },
+  {
+    "Skills": "Build Automation (Make, Gradle, Maven)"
+  },
+  {
+    "Skills": "Security Best Practices"
+  },
+  {
+    "Skills": "Code Optimization"
+  },
+  {
+    "Skills": "Code Modularity and Reusability"
+  },
+  {
+    "Skills": "Real-Time Systems"
+  },
+  {
+    "Skills": "RESTful Architecture"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Web Development (HTML, CSS, JavaScript)"
+  },
+  {
+    "Skills": "Backend Development (Node.js, Flask, Django)"
+  },
+  {
+    "Skills": "Frontend Development Frameworks (React, Angular)"
+  },
+  {
+    "Skills": "Mobile App Development (Android, iOS)"
+  },
+  {
+    "Skills": "Cross-Platform App Development (Flutter, React Native)"
+  },
+  {
+    "Skills": "Desktop Application Development (Electron, PyQt)"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "DevOps and Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Containerization (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Cloud Computing (AWS, Azure, GCP)"
+  },
+  {
+    "Skills": "Machine Learning and AI (TensorFlow, PyTorch, scikit-learn)"
+  },
+  {
+    "Skills": "Data Analysis and Visualization (Pandas, Matplotlib)"
+  },
+  {
+    "Skills": "Data Manipulation and Cleaning"
+  },
+  {
+    "Skills": "Database Management Systems (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Web API Development (REST, GraphQL)"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Cryptography and Data Encryption"
+  },
+  {
+    "Skills": "Network Security and Firewalls"
+  },
+  {
+    "Skills": "Software Design Patterns"
+  },
+  {
+    "Skills": "Unit Testing and Test Automation"
+  },
+  {
+    "Skills": "Agile Software Development"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Technical Documentation"
+  },
+  {
+    "Skills": "Agile Methodologies (Scrum, Kanban)"
+  },
+  {
+    "Skills": "UX/UI Design and Prototyping"
+  },
+  {
+    "Skills": "User-Centric Design"
+  },
+  {
+    "Skills": "Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Scalability and Performance Optimization"
+  },
+  {
+    "Skills": "Memory Management and Performance Profiling"
+  },
+  {
+    "Skills": "Integration Testing and System Testing"
+  },
+  {
+    "Skills": "Functional Testing and Regression Testing"
+  },
+  {
+    "Skills": "Load Testing and Stress Testing"
+  },
+  {
+    "Skills": "Version Control Systems (Git, SVN)"
+  },
+  {
+    "Skills": "Build Automation (Make, Gradle, Maven)"
+  },
+  {
+    "Skills": "Security Best Practices"
+  },
+  {
+    "Skills": "Code Optimization"
+  },
+  {
+    "Skills": "Code Modularity and Reusability"
+  },
+  {
+    "Skills": "Real-Time Systems"
+  },
+  {
+    "Skills": "RESTful Architecture"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Web Development (HTML, CSS, JavaScript)"
+  },
+  {
+    "Skills": "Backend Development (Node.js, Flask, Django)"
+  },
+  {
+    "Skills": "Frontend Development Frameworks (React, Angular)"
+  },
+  {
+    "Skills": "Mobile App Development (Android, iOS)"
+  },
+  {
+    "Skills": "Cross-Platform App Development (Flutter, React Native)"
+  },
+  {
+    "Skills": "Desktop Application Development (Electron, PyQt)"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "DevOps and Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Containerization (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Cloud Computing (AWS, Azure, GCP)"
+  },
+  {
+    "Skills": "Machine Learning and AI (TensorFlow, PyTorch, scikit-learn)"
+  },
+  {
+    "Skills": "Data Analysis and Visualization (Pandas, Matplotlib)"
+  },
+  {
+    "Skills": "Data Manipulation and Cleaning"
+  },
+  {
+    "Skills": "Database Management Systems (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Web API Development (REST, GraphQL)"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Cryptography and Data Encryption"
+  },
+  {
+    "Skills": "Network Security and Firewalls"
+  },
+  {
+    "Skills": "Software Design Patterns"
+  },
+  {
+    "Skills": "Unit Testing and Test Automation"
+  },
+  {
+    "Skills": "Agile Software Development"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Technical Documentation"
+  },
+  {
+    "Skills": "Agile Methodologies (Scrum, Kanban)"
+  },
+  {
+    "Skills": "UX/UI Design and Prototyping"
+  },
+  {
+    "Skills": "User-Centric Design"
+  },
+  {
+    "Skills": "Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Scalability and Performance Optimization"
+  },
+  {
+    "Skills": "Memory Management and Performance Profiling"
+  },
+  {
+    "Skills": "Integration Testing and System Testing"
+  },
+  {
+    "Skills": "Functional Testing and Regression Testing"
+  },
+  {
+    "Skills": "Load Testing and Stress Testing"
+  },
+  {
+    "Skills": "Version Control Systems (Git, SVN)"
+  },
+  {
+    "Skills": "Build Automation (Make, Gradle, Maven)"
+  },
+  {
+    "Skills": "Security Best Practices"
+  },
+  {
+    "Skills": "Code Optimization"
+  },
+  {
+    "Skills": "Code Modularity and Reusability"
+  },
+  {
+    "Skills": "Real-Time Systems"
+  },
+  {
+    "Skills": "RESTful Architecture"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Web Development (HTML, CSS, JavaScript)"
+  },
+  {
+    "Skills": "Backend Development (Node.js, Flask, Django)"
+  },
+  {
+    "Skills": "Frontend Development Frameworks (React, Angular)"
+  },
+  {
+    "Skills": "Mobile App Development (Android, iOS)"
+  },
+  {
+    "Skills": "Cross-Platform App Development (Flutter, React Native)"
+  },
+  {
+    "Skills": "Desktop Application Development (Electron, PyQt)"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "DevOps and Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Containerization (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Cloud Computing (AWS, Azure, GCP)"
+  },
+  {
+    "Skills": "Machine Learning and AI (TensorFlow, PyTorch, scikit-learn)"
+  },
+  {
+    "Skills": "Data Analysis and Visualization (Pandas, Matplotlib)"
+  },
+  {
+    "Skills": "Data Manipulation and Cleaning"
+  },
+  {
+    "Skills": "Database Management Systems (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Web API Development (REST, GraphQL)"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Cryptography and Data Encryption"
+  },
+  {
+    "Skills": "Network Security and Firewalls"
+  },
+  {
+    "Skills": "Software Design Patterns"
+  },
+  {
+    "Skills": "Unit Testing and Test Automation"
+  },
+  {
+    "Skills": "Agile Software Development"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Technical Documentation"
+  },
+  {
+    "Skills": "Agile Methodologies (Scrum, Kanban)"
+  },
+  {
+    "Skills": "UX/UI Design and Prototyping"
+  },
+  {
+    "Skills": "User-Centric Design"
+  },
+  {
+    "Skills": "Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Scalability and Performance Optimization"
+  },
+  {
+    "Skills": "Memory Management and Performance Profiling"
+  },
+  {
+    "Skills": "Integration Testing and System Testing"
+  },
+  {
+    "Skills": "Functional Testing and Regression Testing"
+  },
+  {
+    "Skills": "Load Testing and Stress Testing"
+  },
+  {
+    "Skills": "Version Control Systems (Git, SVN)"
+  },
+  {
+    "Skills": "Build Automation (Make, Gradle, Maven)"
+  },
+  {
+    "Skills": "Security Best Practices"
+  },
+  {
+    "Skills": "Code Optimization"
+  },
+  {
+    "Skills": "Code Modularity and Reusability"
+  },
+  {
+    "Skills": "Real-Time Systems"
+  },
+  {
+    "Skills": "RESTful Architecture"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Web Development (HTML, CSS, JavaScript)"
+  },
+  {
+    "Skills": "Backend Development (Node.js, Flask, Django)"
+  },
+  {
+    "Skills": "Frontend Development Frameworks (React, Angular)"
+  },
+  {
+    "Skills": "Mobile App Development (Android, iOS)"
+  },
+  {
+    "Skills": "Cross-Platform App Development (Flutter, React Native)"
+  },
+  {
+    "Skills": "Desktop Application Development (Electron, PyQt)"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "DevOps and Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Containerization (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Cloud Computing (AWS, Azure, GCP)"
+  },
+  {
+    "Skills": "Machine Learning and AI (TensorFlow, PyTorch, scikit-learn)"
+  },
+  {
+    "Skills": "Data Analysis and Visualization (Pandas, Matplotlib)"
+  },
+  {
+    "Skills": "Data Manipulation and Cleaning"
+  },
+  {
+    "Skills": "Database Management Systems (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Web API Development (REST, GraphQL)"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Cryptography and Data Encryption"
+  },
+  {
+    "Skills": "Network Security and Firewalls"
+  },
+  {
+    "Skills": "Software Design Patterns"
+  },
+  {
+    "Skills": "Unit Testing and Test Automation"
+  },
+  {
+    "Skills": "Agile Software Development"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Technical Documentation"
+  },
+  {
+    "Skills": "Agile Methodologies (Scrum, Kanban)"
+  },
+  {
+    "Skills": "UX/UI Design and Prototyping"
+  },
+  {
+    "Skills": "User-Centric Design"
+  },
+  {
+    "Skills": "Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Scalability and Performance Optimization"
+  },
+  {
+    "Skills": "Memory Management and Performance Profiling"
+  },
+  {
+    "Skills": "Integration Testing and System Testing"
+  },
+  {
+    "Skills": "Functional Testing and Regression Testing"
+  },
+  {
+    "Skills": "Load Testing and Stress Testing"
+  },
+  {
+    "Skills": "Version Control Systems (Git, SVN)"
+  },
+  {
+    "Skills": "Build Automation (Make, Gradle, Maven)"
+  },
+  {
+    "Skills": "Security Best Practices"
+  },
+  {
+    "Skills": "Code Optimization"
+  },
+  {
+    "Skills": "Code Modularity and Reusability"
+  },
+  {
+    "Skills": "Real-Time Systems"
+  },
+  {
+    "Skills": "RESTful Architecture"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Web Development (HTML, CSS, JavaScript)"
+  },
+  {
+    "Skills": "Backend Development (Node.js, Flask, Django)"
+  },
+  {
+    "Skills": "Frontend Development Frameworks (React, Angular)"
+  },
+  {
+    "Skills": "Mobile App Development (Android, iOS)"
+  },
+  {
+    "Skills": "Cross-Platform App Development (Flutter, React Native)"
+  },
+  {
+    "Skills": "Desktop Application Development (Electron, PyQt)"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "DevOps and Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Containerization (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Cloud Computing (AWS, Azure, GCP)"
+  },
+  {
+    "Skills": "Machine Learning and AI (TensorFlow, PyTorch, scikit-learn)"
+  },
+  {
+    "Skills": "Data Analysis and Visualization (Pandas, Matplotlib)"
+  },
+  {
+    "Skills": "Data Manipulation and Cleaning"
+  },
+  {
+    "Skills": "Database Management Systems (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Web API Development (REST, GraphQL)"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Cryptography and Data Encryption"
+  },
+  {
+    "Skills": "Network Security and Firewalls"
+  },
+  {
+    "Skills": "Software Design Patterns"
+  },
+  {
+    "Skills": "Unit Testing and Test Automation"
+  },
+  {
+    "Skills": "Agile Software Development"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Technical Documentation"
+  },
+  {
+    "Skills": "Agile Methodologies (Scrum, Kanban)"
+  },
+  {
+    "Skills": "UX/UI Design and Prototyping"
+  },
+  {
+    "Skills": "User-Centric Design"
+  },
+  {
+    "Skills": "Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Scalability and Performance Optimization"
+  },
+  {
+    "Skills": "Memory Management and Performance Profiling"
+  },
+  {
+    "Skills": "Integration Testing and System Testing"
+  },
+  {
+    "Skills": "Functional Testing and Regression Testing"
+  },
+  {
+    "Skills": "Load Testing and Stress Testing"
+  },
+  {
+    "Skills": "Version Control Systems (Git, SVN)"
+  },
+  {
+    "Skills": "Build Automation (Make, Gradle, Maven)"
+  },
+  {
+    "Skills": "Security Best Practices"
+  },
+  {
+    "Skills": "Code Optimization"
+  },
+  {
+    "Skills": "Code Modularity and Reusability"
+  },
+  {
+    "Skills": "Real-Time Systems"
+  },
+  {
+    "Skills": "RESTful Architecture"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Web Development (HTML, CSS, JavaScript)"
+  },
+  {
+    "Skills": "Backend Development (Node.js, Flask, Django)"
+  },
+  {
+    "Skills": "Frontend Development Frameworks (React, Angular)"
+  },
+  {
+    "Skills": "Mobile App Development (Android, iOS)"
+  },
+  {
+    "Skills": "Cross-Platform App Development (Flutter, React Native)"
+  },
+  {
+    "Skills": "Desktop Application Development (Electron, PyQt)"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "DevOps and Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Containerization (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Cloud Computing (AWS, Azure, GCP)"
+  },
+  {
+    "Skills": "Machine Learning and AI (TensorFlow, PyTorch, scikit-learn)"
+  },
+  {
+    "Skills": "Data Analysis and Visualization (Pandas, Matplotlib)"
+  },
+  {
+    "Skills": "Data Manipulation and Cleaning"
+  },
+  {
+    "Skills": "Database Management Systems (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Web API Development (REST, GraphQL)"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Cryptography and Data Encryption"
+  },
+  {
+    "Skills": "Network Security and Firewalls"
+  },
+  {
+    "Skills": "Software Design Patterns"
+  },
+  {
+    "Skills": "Unit Testing and Test Automation"
+  },
+  {
+    "Skills": "Agile Software Development"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Technical Documentation"
+  },
+  {
+    "Skills": "Agile Methodologies (Scrum, Kanban)"
+  },
+  {
+    "Skills": "UX/UI Design and Prototyping"
+  },
+  {
+    "Skills": "User-Centric Design"
+  },
+  {
+    "Skills": "Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Scalability and Performance Optimization"
+  },
+  {
+    "Skills": "Memory Management and Performance Profiling"
+  },
+  {
+    "Skills": "Integration Testing and System Testing"
+  },
+  {
+    "Skills": "Functional Testing and Regression Testing"
+  },
+  {
+    "Skills": "Load Testing and Stress Testing"
+  },
+  {
+    "Skills": "Version Control Systems (Git, SVN)"
+  },
+  {
+    "Skills": "Build Automation (Make, Gradle, Maven)"
+  },
+  {
+    "Skills": "Security Best Practices"
+  },
+  {
+    "Skills": "Code Optimization"
+  },
+  {
+    "Skills": "Code Modularity and Reusability"
+  },
+  {
+    "Skills": "Real-Time Systems"
+  },
+  {
+    "Skills": "RESTful Architecture"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Web Development (HTML, CSS, JavaScript)"
+  },
+  {
+    "Skills": "Backend Development (Node.js, Flask, Django)"
+  },
+  {
+    "Skills": "Frontend Development Frameworks (React, Angular)"
+  },
+  {
+    "Skills": "Mobile App Development (Android, iOS)"
+  },
+  {
+    "Skills": "Cross-Platform App Development (Flutter, React Native)"
+  },
+  {
+    "Skills": "Desktop Application Development (Electron, PyQt)"
+  },
+  {
+    "Skills": "Cloud-Native Application Development"
+  },
+  {
+    "Skills": "DevOps and Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Containerization (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Cloud Computing (AWS, Azure, GCP)"
+  },
+  {
+    "Skills": "Machine Learning and AI (TensorFlow, PyTorch, scikit-learn)"
+  },
+  {
+    "Skills": "Data Analysis and Visualization (Pandas, Matplotlib)"
+  },
+  {
+    "Skills": "Data Manipulation and Cleaning"
+  },
+  {
+    "Skills": "Database Management Systems (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Web API Development (REST, GraphQL)"
+  },
+  {
+    "Skills": "Secure Coding Practices"
+  },
+  {
+    "Skills": "Cryptography and Data Encryption"
+  },
+  {
+    "Skills": "Network Security and Firewalls"
+  },
+  {
+    "Skills": "Software Design Patterns"
+  },
+  {
+    "Skills": "Unit Testing and Test Automation"
+  },
+  {
+    "Skills": "Agile Software Development"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Technical Documentation"
+  },
+  {
+    "Skills": "Agile Methodologies (Scrum, Kanban)"
+  },
+  {
+    "Skills": "UX/UI Design and Prototyping"
+  },
+  {
+    "Skills": "User-Centric Design"
+  },
+  {
+    "Skills": "Continuous Integration/Continuous Deployment (CI/CD)"
+  },
+  {
+    "Skills": "Scalability and Performance Optimization"
+  },
+  {
+    "Skills": "Memory Management and Performance Profiling"
+  },
+  {
+    "Skills": "Integration Testing and System Testing"
+  },
+  {
+    "Skills": "Functional Testing and Regression Testing"
+  },
+  {
+    "Skills": "Load Testing and Stress Testing"
+  },
+  {
+    "Skills": "Version Control Systems (Git, SVN)"
+  },
+  {
+    "Skills": "Build Automation (Make, Gradle, Maven)"
+  },
+  {
+    "Skills": "Security Best Practices"
+  },
+  {
+    "Skills": "Code Optimization"
+  },
+  {
+    "Skills": "Code Modularity and Reusability"
+  },
+  {
+    "Skills": "Real-Time Systems"
+  },
+  {
+    "Skills": "RESTful Architecture"
+  },
+  {
+    "Skills": "Microservices Architecture"
+  },
+  {
+    "Skills": "Server-Side Rendering"
+  },
+  {
+    "Skills": "Client-Side Rendering"
+  },
+  {
+    "Skills": "Objective-C"
+  },
+  {
+    "Skills": "Shell scripting languages (Bash, PowerShell, etc.)"
+  },
+  {
+    "Skills": "Groovy"
+  },
+  {
+    "Skills": "Julia"
+  },
+  {
+    "Skills": "Haskell"
+  },
+  {
+    "Skills": "Lisp"
+  },
+  {
+    "Skills": "Prolog"
+  },
+  {
+    "Skills": "Smalltalk"
+  },
+  {
+    "Skills": "COBOL"
+  },
+  {
+    "Skills": "Fortran"
+  },
+  {
+    "Skills": "Ada"
+  },
+  {
+    "Skills": "Pascal"
+  },
+  {
+    "Skills": "Tcl"
+  },
+  {
+    "Skills": "Scheme"
+  },
+  {
+    "Skills": "Erlang"
+  },
+  {
+    "Skills": "Clojure"
+  },
+  {
+    "Skills": "Crystal"
+  },
+  {
+    "Skills": "Elm"
+  },
+  {
+    "Skills": "F#"
+  },
+  {
+    "Skills": "Elixir"
+  },
+  {
+    "Skills": "Forth"
+  },
+  {
+    "Skills": "VHDL (hardware description language)"
+  },
+  {
+    "Skills": "Verilog (hardware description language)"
+  },
+  {
+    "Skills": "BAP (Advanced Business Application Programming)"
+  },
+  {
+    "Skills": "ActionScript"
+  },
+  {
+    "Skills": "Apex (Salesforce)"
+  },
+  {
+    "Skills": "AutoHotkey"
+  },
+  {
+    "Skills": "AWK"
+  },
+  {
+    "Skills": "C"
+  },
+  {
+    "Skills": "COQ"
+  },
+  {
+    "Skills": "Crystal"
+  },
+  {
+    "Skills": "D"
+  },
+  {
+    "Skills": "Delphi/Object Pascal"
+  },
+  {
+    "Skills": "Eiffel"
+  },
+  {
+    "Skills": "ELM"
+  },
+  {
+    "Skills": "Emacs Lisp"
+  },
+  {
+    "Skills": "Factor"
+  },
+  {
+    "Skills": "Forth"
+  },
+  {
+    "Skills": "FORTH"
+  },
+  {
+    "Skills": "GLSL (OpenGL Shading Language)"
+  },
+  {
+    "Skills": "Hack (Facebook)"
+  },
+  {
+    "Skills": "IDL (Interface Definition Language)"
+  },
+  {
+    "Skills": "Inform"
+  },
+  {
+    "Skills": "Io"
+  },
+  {
+    "Skills": "J"
+  },
+  {
+    "Skills": "JADE"
+  },
+  {
+    "Skills": "KRL (Kinetic Rule Language)"
+  },
+  {
+    "Skills": "LabVIEW"
+  },
+  {
+    "Skills": "Ladder Logic"
+  },
+  {
+    "Skills": "Logtalk"
+  },
+  {
+    "Skills": "Logo"
+  },
+  {
+    "Skills": "Makefile"
+  },
+  {
+    "Skills": "Mathematica"
+  },
+  {
+    "Skills": "MQL4/MQL5 (MetaQuotes Language 4/5)"
+  },
+  {
+    "Skills": "Nim"
+  },
+  {
+    "Skills": "Objective-J"
+  },
+  {
+    "Skills": "OpenCL"
+  },
+  {
+    "Skills": "OpenEdge ABL (Progress)"
+  },
+  {
+    "Skills": "Oz"
+  },
+  {
+    "Skills": "Pike"
+  },
+  {
+    "Skills": "PowerShell"
+  },
+  {
+    "Skills": "Processing"
+  },
+  {
+    "Skills": "Prolog"
+  },
+  {
+    "Skills": "PureScript"
+  },
+  {
+    "Skills": "Q#"
+  },
+  {
+    "Skills": "Racket"
+  },
+  {
+    "Skills": "Rebol"
+  },
+  {
+    "Skills": "Red"
+  },
+  {
+    "Skills": "Ring"
+  },
+  {
+    "Skills": "Robot Framework"
+  },
+  {
+    "Skills": "SAS"
+  },
+  {
+    "Skills": "SML (Standard ML)"
+  },
+  {
+    "Skills": "Solidity"
+  },
+  {
+    "Skills": "SQL (Structured Query Language)"
+  },
+  {
+    "Skills": "T-SQL (Transact-SQL)"
+  },
+  {
+    "Skills": "Tcl"
+  },
+  {
+    "Skills": "TeX/LaTeX"
+  },
+  {
+    "Skills": "VHDL"
+  },
+  {
+    "Skills": "Verilog"
+  },
+  {
+    "Skills": "VBA (Visual Basic for Applications)"
+  },
+  {
+    "Skills": "VHF (VHSIC Hardware Description Language)"
+  },
+  {
+    "Skills": "Xojo (formerly REALbasic)"
+  },
+  {
+    "Skills": "XPath"
+  },
+  {
+    "Skills": "XQuery"
+  },
+  {
+    "Skills": "YACC (Yet Another Compiler Compiler)"
+  },
+  {
+    "Skills": "YAML (YAML Ain't Markup Language)"
+  },
+  {
+    "Skills": "Z shell (zsh)"
+  },
+  {
+    "Skills": "Digital Marketing"
+  },
+  {
+    "Skills": "Search Engine Optimization (SEO)"
+  },
+  {
+    "Skills": "Search Engine Marketing (SEM)"
+  },
+  {
+    "Skills": "Social Media Marketing (SMM)"
+  },
+  {
+    "Skills": "Email Marketing"
+  },
+  {
+    "Skills": "Content Marketing"
+  },
+  {
+    "Skills": "Influencer Marketing"
+  },
+  {
+    "Skills": "Affiliate Marketing"
+  },
+  {
+    "Skills": "Online Advertising (Google Ads, Facebook Ads, etc.)"
+  },
+  {
+    "Skills": "Web Analytics and Data Analysis"
+  },
+  {
+    "Skills": "Copywriting"
+  },
+  {
+    "Skills": "Blogging"
+  },
+  {
+    "Skills": "Video Production and Editing"
+  },
+  {
+    "Skills": "Graphic Design"
+  },
+  {
+    "Skills": "Infographic Creation"
+  },
+  {
+    "Skills": "Podcasting"
+  },
+  {
+    "Skills": "Brand Strategy"
+  },
+  {
+    "Skills": "Brand Identity Development"
+  },
+  {
+    "Skills": "Positioning and Messaging"
+  },
+  {
+    "Skills": "Logo Design"
+  },
+  {
+    "Skills": "Brand Guidelines"
+  },
+  {
+    "Skills": "Market Research and Analysis"
+  },
+  {
+    "Skills": "Consumer Behavior Analysis"
+  },
+  {
+    "Skills": "Competitive Analysis"
+  },
+  {
+    "Skills": "Market Segmentation"
+  },
+  {
+    "Skills": "Surveys and Data Collection"
+  },
+  {
+    "Skills": "Data Interpretation and Reporting"
+  },
+  {
+    "Skills": "Public Relations (PR)"
+  },
+  {
+    "Skills": "Media Relations"
+  },
+  {
+    "Skills": "Press Releases"
+  },
+  {
+    "Skills": "Crisis Communication"
+  },
+  {
+    "Skills": "Event Planning and Management"
+  },
+  {
+    "Skills": "Written Communication"
+  },
+  {
+    "Skills": "Verbal Communication"
+  },
+  {
+    "Skills": "Negotiation"
+  },
+  {
+    "Skills": "Networking"
+  },
+  {
+    "Skills": "Relationship Building"
+  },
+  {
+    "Skills": "Customer Relationship Management (CRM)"
+  },
+  {
+    "Skills": "Marketing Automation Platforms (e.g., HubSpot, Marketo)"
+  },
+  {
+    "Skills": "Planning and Organization"
+  },
+  {
+    "Skills": "Time Management"
+  },
+  {
+    "Skills": "Budgeting and Cost Management"
+  },
+  {
+    "Skills": "Google Analytics"
+  },
+  {
+    "Skills": "Microsoft Excel/Google Sheets"
+  },
+  {
+    "Skills": "Data Visualization Tools (Tableau, Power BI, etc.)"
+  },
+  {
+    "Skills": "SUM, AVERAGE, MIN, MAX"
+  },
+  {
+    "Skills": "COUNT, COUNTA, COUNTIF, COUNTIFS"
+  },
+  {
+    "Skills": "IF, IFERROR, nested IF functions"
+  },
+  {
+    "Skills": "VLOOKUP, HLOOKUP, INDEX, MATCH"
+  },
+  {
+    "Skills": "SUMIF, SUMIFS, AVERAGEIF, AVERAGEIFS"
+  },
+  {
+    "Skills": "CONCATENATE, TEXTJOIN"
+  },
+  {
+    "Skills": "Sorting data"
+  },
+  {
+    "Skills": "Filtering data using AutoFilter"
+  },
+  {
+    "Skills": "Removing duplicates"
+  },
+  {
+    "Skills": "Text-to-columns feature"
+  },
+  {
+    "Skills": "Find and Replace"
+  },
+  {
+    "Skills": "PivotTables to summarize and analyze data"
+  },
+  {
+    "Skills": "Using slicers and timelines to filter PivotTables"
+  },
+  {
+    "Skills": "Creating PivotCharts for visual representation"
+  },
+  {
+    "Skills": "Various chart types (column, line, pie, bar, etc.)"
+  },
+  {
+    "Skills": "Formatting and customizing charts"
+  },
+  {
+    "Skills": "Adding data labels and data bars"
+  },
+  {
+    "Skills": "Conditional formatting"
+  },
+  {
+    "Skills": "Setting up drop-down lists"
+  },
+  {
+    "Skills": "Defining data entry rules"
+  },
+  {
+    "Skills": "INDEX and MATCH (for more advanced lookups)"
+  },
+  {
+    "Skills": "OFFSET and INDIRECT (for dynamic ranges and references)"
+  },
+  {
+    "Skills": "Creating and managing Excel tables"
+  },
+  {
+    "Skills": "Using structured references in formulas"
+  },
+  {
+    "Skills": "Recording and running macros"
+  },
+  {
+    "Skills": "Writing simple VBA code for automation"
+  },
+  {
+    "Skills": "Data Analysis ToolPak"
+  },
+  {
+    "Skills": "Importing and Exporting Data"
+  },
+  {
+    "Skills": "Power Query (Get & Transform)"
+  },
+  {
+    "Skills": "Named Ranges"
+  },
+  {
+    "Skills": "Data Consolidation"
+  },
+  {
+    "Skills": "Financial Functions"
+  },
+  {
+    "Skills": "Array Formulas"
+  },
+  {
+    "Skills": "Customizing Excel"
+  },
+  {
+    "Skills": "Data Analysis with Solver"
+  },
+  {
+    "Skills": "Protecting and Securing Workbooks"
+  },
+  {
+    "Skills": "Branding and Identity Development"
+  },
+  {
+    "Skills": "Creative Campaign Planning"
+  },
+  {
+    "Skills": "Market Segmentation and Targeting"
+  },
+  {
+    "Skills": "Customer Persona Development"
+  },
+  {
+    "Skills": "Customer Journey Mapping"
+  },
+  {
+    "Skills": "Customer Retention Strategies"
+  },
+  {
+    "Skills": "Customer Loyalty Programs"
+  },
+  {
+    "Skills": "Sales Funnel Optimization"
+  },
+  {
+    "Skills": "Lead Generation Techniques"
+  },
+  {
+    "Skills": "Landing Page Optimization"
+  },
+  {
+    "Skills": "A/B Testing and Conversion Rate Optimization"
+  },
+  {
+    "Skills": "Customer Feedback Analysis"
+  },
+  {
+    "Skills": "Competitor Analysis"
+  },
+  {
+    "Skills": "Market Trend Analysis"
+  },
+  {
+    "Skills": "Marketing ROI Analysis"
+  },
+  {
+    "Skills": "Marketing Budget Management"
+  },
+  {
+    "Skills": "Marketing Strategy Development"
+  },
+  {
+    "Skills": "Integrated Marketing Communication"
+  },
+  {
+    "Skills": "Public Speaking and Presentation Skills"
+  },
+  {
+    "Skills": "Influencer Management"
+  },
+  {
+    "Skills": "Brand Partnerships and Collaborations"
+  },
+  {
+    "Skills": "User Experience (UX) Design"
+  },
+  {
+    "Skills": "Customer Advocacy Programs"
+  },
+  {
+    "Skills": "Growth Hacking Strategies"
+  },
+  {
+    "Skills": "Community Management"
+  },
+  {
+    "Skills": "Mobile Marketing"
+  },
+  {
+    "Skills": "Voice Search Optimization"
+  },
+  {
+    "Skills": "Local SEO and Local Marketing"
+  },
+  {
+    "Skills": "Webinar and Event Marketing"
+  },
+  {
+    "Skills": "Marketing Automation and Workflows"
+  },
+  {
+    "Skills": "Account-Based Marketing (ABM)"
+  },
+  {
+    "Skills": "CRM Integration and Management"
+  },
+  {
+    "Skills": "Customer Segmentation Strategies"
+  },
+  {
+    "Skills": "Personalization and Targeted Marketing"
+  },
+  {
+    "Skills": "Omnichannel Marketing"
+  },
+  {
+    "Skills": "Artificial Intelligence in Marketing"
+  },
+  {
+    "Skills": "Video Marketing and YouTube Advertising"
+  },
+  {
+    "Skills": "Data Privacy and GDPR Compliance"
+  },
+  {
+    "Skills": "Email Automation and Drip Campaigns"
+  },
+  {
+    "Skills": "Storytelling in Marketing"
+  },
+  {
+    "Skills": "Emotional Marketing and Brand Emotions"
+  },
+  {
+    "Skills": "Influencer Outreach and Negotiation"
+  },
+  {
+    "Skills": "Sustainable and Cause Marketing"
+  },
+  {
+    "Skills": "Multi-lingual and International Marketing"
+  },
+  {
+    "Skills": "Virtual and Augmented Reality Marketing"
+  },
+  {
+    "Skills": "Chatbot Integration for Customer Support"
+  },
+  {
+    "Skills": "Social Listening and Online Reputation Management"
+  },
+  {
+    "Skills": "Crisis Management and Damage Control"
+  },
+  {
+    "Skills": "Consumer Surveys and Market Research"
+  },
+  {
+    "Skills": "Consumer Psychology and Behavior Analysis"
+  },
+  {
+    "Skills": "Marketing Analytics and Data Visualization"
+  },
+  {
+    "Skills": "Emotional Intelligence in Marketing"
+  },
+  {
+    "Skills": "Social Media Advertising"
+  },
+  {
+    "Skills": "Social Media Management"
+  },
+  {
+    "Skills": "Social Media Analytics"
+  },
+  {
+    "Skills": "Social Media Content Strategy"
+  },
+  {
+    "Skills": "Social Media Influencer Marketing"
+  },
+  {
+    "Skills": "Social Media Community Engagement"
+  },
+  {
+    "Skills": "Video Content Strategy"
+  },
+  {
+    "Skills": "YouTube Channel Management"
+  },
+  {
+    "Skills": "Web Design and User Interface (UI) for Marketing"
+  },
+  {
+    "Skills": "User Experience (UX) Testing"
+  },
+  {
+    "Skills": "E-commerce Marketing Strategies"
+  },
+  {
+    "Skills": "E-commerce Conversion Optimization"
+  },
+  {
+    "Skills": "Customer Reviews and Testimonials Management"
+  },
+  {
+    "Skills": "Local Business Listings and SEO"
+  },
+  {
+    "Skills": "Mobile App Marketing"
+  },
+  {
+    "Skills": "App Store Optimization (ASO)"
+  },
+  {
+    "Skills": "SMS Marketing and Text Message Campaigns"
+  },
+  {
+    "Skills": "Gamification in Marketing"
+  },
+  {
+    "Skills": "Virtual Events and Webinars"
+  },
+  {
+    "Skills": "Podcast Marketing"
+  },
+  {
+    "Skills": "Augmented Reality (AR) Marketing"
+  },
+  {
+    "Skills": "Voice Search Optimization"
+  },
+  {
+    "Skills": "Chatbot Marketing"
+  },
+  {
+    "Skills": "Dark Social Marketing"
+  },
+  {
+    "Skills": "Personal Branding"
+  },
+  {
+    "Skills": "Influencer Marketing Analytics"
+  },
+  {
+    "Skills": "Subscription and Membership Marketing"
+  },
+  {
+    "Skills": "Visual Storytelling in Marketing"
+  },
+  {
+    "Skills": "Data-driven Marketing Strategies"
+  },
+  {
+    "Skills": "NeuroMarketing"
+  },
+  {
+    "Skills": "Cross-promotion and Partnerships"
+  },
+  {
+    "Skills": "Customer Upselling and Cross-selling"
+  },
+  {
+    "Skills": "Referral Marketing"
+  },
+  {
+    "Skills": "Interactive Content Marketing"
+  },
+  {
+    "Skills": "Brand Storytelling and Narrative Marketing"
+  },
+  {
+    "Skills": "Social Proof and FOMO (Fear of Missing Out)"
+  },
+  {
+    "Skills": "Loyalty Rewards Programs"
+  },
+  {
+    "Skills": "Viral Marketing and Growth Loops"
+  },
+  {
+    "Skills": "Marketing to Generation Z"
+  },
+  {
+    "Skills": "Marketing to Baby Boomers"
+  },
+  {
+    "Skills": "Marketing to Millennials"
+  },
+  {
+    "Skills": "Marketing to B2B Clients"
+  },
+  {
+    "Skills": "Marketing to B2C Customers"
+  },
+  {
+    "Skills": "Account-Based Advertising"
+  },
+  {
+    "Skills": "Emotional Marketing"
+  },
+  {
+    "Skills": "Omnichannel Customer Experience"
+  },
+  {
+    "Skills": "Agile Marketing"
+  },
+  {
+    "Skills": "Community Building and Engagement"
+  },
+  {
+    "Skills": "Market Research Tools"
+  },
+  {
+    "Skills": "Social Media Listening Tools"
+  },
+  {
+    "Skills": "Customer Relationship Tools"
+  },
+  {
+    "Skills": "Email Marketing Platforms"
+  },
+  {
+    "Skills": "Marketing Automation Software"
+  },
+  {
+    "Skills": "CRM Software"
+  },
+  {
+    "Skills": "Data Visualization Tools"
+  },
+  {
+    "Skills": "Project Management Tools"
+  },
+  {
+    "Skills": "Collaboration and Team Communication Tools"
+  },
+  {
+    "Skills": "Analytics and Reporting Platforms"
+  },
+  {
+    "Skills": "Data Analysis"
+  },
+  {
+    "Skills": "Data Visualization"
+  },
+  {
+    "Skills": "Advanced Formulas"
+  },
+  {
+    "Skills": "PivotTables"
+  },
+  {
+    "Skills": "Conditional Formatting"
+  },
+  {
+    "Skills": "Data Validation"
+  },
+  {
+    "Skills": "Macros and Automation (VBA)"
+  },
+  {
+    "Skills": "Collaboration"
+  },
+  {
+    "Skills": "Data Cleaning"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Budgeting and Financial Analysis"
+  },
+  {
+    "Skills": "Forecasting"
+  },
+  {
+    "Skills": "Scenario Analysis"
+  },
+  {
+    "Skills": "Database Management"
+  },
+  {
+    "Skills": "Problem Solving"
+  },
+  {
+    "Skills": "Training and Support"
+  },
+  {
+    "Skills": "Time Management"
+  },
+  {
+    "Skills": "Communication Skills"
+  },
+  {
+    "Skills": "Risk Management"
+  },
+  {
+    "Skills": "Continuous Learning"
+  },
+  {
+    "Skills": "Resource Planning"
+  },
+  {
+    "Skills": "Performance Tracking"
+  },
+  {
+    "Skills": "Inventory Management"
+  },
+  {
+    "Skills": "Supplier Management"
+  },
+  {
+    "Skills": "Quality Control"
+  },
+  {
+    "Skills": "Marketing Analysis"
+  },
+  {
+    "Skills": "Sales Forecasting"
+  },
+  {
+    "Skills": "Customer Relationship Management (CRM)"
+  },
+  {
+    "Skills": "Human Resources Management"
+  },
+  {
+    "Skills": "Strategic Planning"
+  },
+  {
+    "Skills": "Decision Support"
+  },
+  {
+    "Skills": "Executive Reporting"
+  },
+  {
+    "Skills": "Workflow Optimization"
+  },
+  {
+    "Skills": "Process Documentation"
+  },
+  {
+    "Skills": "Market Research"
+  },
+  {
+    "Skills": "Team Collaboration"
+  },
+  {
+    "Skills": "Business Intelligence"
+  },
+  {
+    "Skills": "Competitive Analysis"
+  },
+  {
+    "Skills": "Trend Analysis"
+  },
+  {
+    "Skills": "Stakeholder Reporting"
+  },
+  {
+    "Skills": "Cash Flow Analysis"
+  },
+  {
+    "Skills": "Cost Benefit Analysis"
+  },
+  {
+    "Skills": "Risk Assessment"
+  },
+  {
+    "Skills": "Compliance Tracking"
+  },
+  {
+    "Skills": "Regulatory Reporting"
+  },
+  {
+    "Skills": "Data Mining"
+  },
+  {
+    "Skills": "Sales Analysis"
+  },
+  {
+    "Skills": "Productivity Tracking"
+  },
+  {
+    "Skills": "Project Scheduling"
+  },
+  {
+    "Skills": "Asset Management"
+  },
+  {
+    "Skills": "Performance Metrics"
+  },
+  {
+    "Skills": "KPI Tracking"
+  },
+  {
+    "Skills": "Resource Allocation"
+  },
+  {
+    "Skills": "Vendor Analysis"
+  },
+  {
+    "Skills": "Marketing Campaign Analysis"
+  },
+  {
+    "Skills": "Strategic Goal Setting"
+  },
+  {
+    "Skills": "Training Program Development"
+  },
+  {
+    "Skills": "Process Improvement"
+  },
+  {
+    "Skills": "Business Forecasting"
+  },
+  {
+    "Skills": "Workflow Automation"
+  },
+  {
+    "Skills": "Resource Optimization"
+  },
+  {
+    "Skills": "Cost Tracking"
+  },
+  {
+    "Skills": "Cash Flow Forecasting"
+  },
+  {
+    "Skills": "ROI Analysis"
+  },
+  {
+    "Skills": "Project Budgeting"
+  },
+  {
+    "Skills": "Market Segmentation"
+  },
+  {
+    "Skills": "Data Cleansing"
+  },
+  {
+    "Skills": "Inventory Analysis"
+  },
+  {
+    "Skills": "Employee Performance Evaluation"
+  },
+  {
+    "Skills": "Product Pricing Analysis"
+  },
+  {
+    "Skills": "Competitor Benchmarking"
+  },
+  {
+    "Skills": "Demand Forecasting"
+  },
+  {
+    "Skills": "Customer Segmentation"
+  },
+  {
+    "Skills": "Performance Dashboards"
+  },
+  {
+    "Skills": "Strategic Alignment"
+  },
+  {
+    "Skills": "Task Prioritization"
+  },
+  {
+    "Skills": "Business Process Mapping"
+  },
+  {
+    "Skills": "Root Cause Analysis"
+  },
+  {
+    "Skills": "Time Tracking"
+  },
+  {
+    "Skills": "Change Management"
+  },
+  {
+    "Skills": "Product Development Planning"
+  },
+  {
+    "Skills": "Stakeholder Engagement"
+  },
+  {
+    "Skills": "Operational Efficiency Analysis"
+  },
+  {
+    "Skills": "Marketing ROI Measurement"
+  },
+  {
+    "Skills": "Team Capacity Planning"
+  },
+  {
+    "Skills": "Performance Appraisal"
+  },
+  {
+    "Skills": "Customer Satisfaction Analysis"
+  },
+  {
+    "Skills": "Sales Funnel Tracking"
+  },
+  {
+    "Skills": "Market Share Analysis"
+  },
+  {
+    "Skills": "Supplier Performance Evaluation"
+  },
+  {
+    "Skills": "Revenue Projection"
+  },
+  {
+    "Skills": "Employee Training Tracking"
+  },
+  {
+    "Skills": "Talent Management"
+  },
+  {
+    "Skills": "Recruitment Analysis"
+  },
+  {
+    "Skills": "Cost Control"
+  },
+  {
+    "Skills": "Customer Retention Analysis"
+  },
+  {
+    "Skills": "Market Trend Analysis"
+  },
+  {
+    "Skills": "Customer Feedback Analysis"
+  },
+  {
+    "Skills": "Asset Tracking"
+  },
+  {
+    "Skills": "IT Project Management"
+  },
+  {
+    "Skills": "Relationship Building"
+  },
+  {
+    "Skills": "Communication"
+  },
+  {
+    "Skills": "Active Listening"
+  },
+  {
+    "Skills": "Empathy"
+  },
+  {
+    "Skills": "Negotiation"
+  },
+  {
+    "Skills": "Conflict Resolution"
+  },
+  {
+    "Skills": "Information Sharing"
+  },
+  {
+    "Skills": "Influencing"
+  },
+  {
+    "Skills": "Trust Building"
+  },
+  {
+    "Skills": "Collaboration"
+  },
+  {
+    "Skills": "Problem Solving"
+  },
+  {
+    "Skills": "Follow-Up"
+  },
+  {
+    "Skills": "Rapport Building"
+  },
+  {
+    "Skills": "Social Media Networking"
+  },
+  {
+    "Skills": "Personal Branding"
+  },
+  {
+    "Skills": "Public Speaking"
+  },
+  {
+    "Skills": "Professional Etiquette"
+  },
+  {
+    "Skills": "Event Networking"
+  },
+  {
+    "Skills": "Business Card Exchange"
+  },
+  {
+    "Skills": "Referral Networking"
+  },
+  {
+    "Skills": "Building Alliances"
+  },
+  {
+    "Skills": "Cross-functional Collaboration"
+  },
+  {
+    "Skills": "Networking Strategy"
+  },
+  {
+    "Skills": "Elevator Pitch"
+  },
+  {
+    "Skills": "Mentorship"
+  },
+  {
+    "Skills": "Leadership Networking"
+  },
+  {
+    "Skills": "Online Networking Groups"
+  },
+  {
+    "Skills": "Industry Knowledge Sharing"
+  },
+  {
+    "Skills": "Cultural Sensitivity"
+  },
+  {
+    "Skills": "Relationship Management"
+  },
+  {
+    "Skills": "Building Strategic Partnerships"
+  },
+  {
+    "Skills": "Relationship Maintenance"
+  },
+  {
+    "Skills": "Networking in Conferences/Events"
+  },
+  {
+    "Skills": "Conflict Management"
+  },
+  {
+    "Skills": "Small Talk"
+  },
+  {
+    "Skills": "Interpersonal Skills"
+  },
+  {
+    "Skills": "Cross-Cultural Communication"
+  },
+  {
+    "Skills": "Online Profile Optimization"
+  },
+  {
+    "Skills": "Follow-Up Strategy"
+  },
+  {
+    "Skills": "LinkedIn Networking"
+  },
+  {
+    "Skills": "Business Networking Groups"
+  },
+  {
+    "Skills": "Building a Network Ecosystem"
+  },
+  {
+    "Skills": "Networking Etiquette"
+  },
+  {
+    "Skills": "Peer Networking"
+  },
+  {
+    "Skills": "Referral Strategy"
+  },
+  {
+    "Skills": "Thought Leadership"
+  },
+  {
+    "Skills": "Information Exchange"
+  },
+  {
+    "Skills": "Building a Network Map"
+  },
+  {
+    "Skills": "Networking with Influencers"
+  },
+  {
+    "Skills": "Team Networking"
+  },
+  {
+    "Skills": "Cybersecurity Threat Assessment"
+  },
+  {
+    "Skills": "Information Security Management"
+  },
+  {
+    "Skills": "Security Policy Development"
+  },
+  {
+    "Skills": "Risk Assessment and Management"
+  },
+  {
+    "Skills": "Security Auditing"
+  },
+  {
+    "Skills": "Vulnerability Assessment"
+  },
+  {
+    "Skills": "Penetration Testing"
+  },
+  {
+    "Skills": "Identity and Access Management"
+  },
+  {
+    "Skills": "Encryption Technologies"
+  },
+  {
+    "Skills": "Security Incident Response"
+  },
+  {
+    "Skills": "Firewall Management"
+  },
+  {
+    "Skills": "Malware Detection and Prevention"
+  },
+  {
+    "Skills": "Data Loss Prevention"
+  },
+  {
+    "Skills": "Security Awareness Training"
+  },
+  {
+    "Skills": "Security Patch Management"
+  },
+  {
+    "Skills": "Security Architecture Design"
+  },
+  {
+    "Skills": "Network Hardening"
+  },
+  {
+    "Skills": "Security Monitoring"
+  },
+  {
+    "Skills": "Security Compliance Management"
+  },
+  {
+    "Skills": "Authentication Methods (2FA, MFA, etc.)"
+  },
+  {
+    "Skills": "Endpoint Security"
+  },
+  {
+    "Skills": "Cloud Security"
+  },
+  {
+    "Skills": "Mobile Device Security"
+  },
+  {
+    "Skills": "Web Application Security"
+  },
+  {
+    "Skills": "Security Information and Event Management (SIEM)"
+  },
+  {
+    "Skills": "Threat Intelligence Analysis"
+  },
+  {
+    "Skills": "Social Engineering Awareness"
+  },
+  {
+    "Skills": "Security Risk Mitigation"
+  },
+  {
+    "Skills": "Security Documentation"
+  },
+  {
+    "Skills": "Security Governance"
+  },
+  {
+    "Skills": "Load Balancing Strategies"
+  },
+  {
+    "Skills": "Network Performance Monitoring Tools"
+  },
+  {
+    "Skills": "Network Automation Frameworks (e.g., Ansible)"
+  },
+  {
+    "Skills": "Software-Defined Networking (SDN)"
+  },
+  {
+    "Skills": "Network Capacity Management"
+  },
+  {
+    "Skills": "Network Configuration Automation"
+  },
+  {
+    "Skills": "Cloud Networking (Azure, AWS, Google Cloud)"
+  },
+  {
+    "Skills": "IPv6 Implementation"
+  },
+  {
+    "Skills": "Network Traffic Engineering"
+  },
+  {
+    "Skills": "Network Resilience Planning"
+  },
+  {
+    "Skills": "Quality of Service (QoS) Management"
+  },
+  {
+    "Skills": "Wide Area Network Optimization"
+  },
+  {
+    "Skills": "Network Segmentation Best Practices"
+  },
+  {
+    "Skills": "Network Recovery and Failover Strategies"
+  },
+  {
+    "Skills": "Network Documentation Tools (e.g., Visio)"
+  },
+  {
+    "Skills": "Network Security Auditing"
+  },
+  {
+    "Skills": "Network Security Architecture"
+  },
+  {
+    "Skills": "Network Security Policy Enforcement"
+  },
+  {
+    "Skills": "Network Security Incident Management"
+  },
+  {
+    "Skills": "Secure Network Access Control"
+  },
+  {
+    "Skills": "Secure Remote Access (VPN, SSH)"
+  },
+  {
+    "Skills": "Security Information Sharing"
+  },
+  {
+    "Skills": "Threat Hunting"
+  },
+  {
+    "Skills": "Security Awareness Campaigns"
+  },
+  {
+    "Skills": "Security Training Development"
+  },
+  {
+    "Skills": "Cybersecurity Frameworks (NIST, ISO 27001, etc.)"
+  },
+  {
+    "Skills": "Security Risk Assessment Tools"
+  },
+  {
+    "Skills": "Security Compliance Auditing"
+  },
+  {
+    "Skills": "Security Incident Analysis and Reporting"
+  },
+  {
+    "Skills": "Security Incident Containment"
+  },
+  {
+    "Skills": "Security Information and Event Management (SIEM) Tools"
+  },
+  {
+    "Skills": "Network Intrusion Detection Systems (NIDS)"
+  },
+  {
+    "Skills": "Network Intrusion Prevention Systems (NIPS)"
+  },
+  {
+    "Skills": "Cloud Security Best Practices"
+  },
+  {
+    "Skills": "Mobile Device Management (MDM) Security"
+  },
+  {
+    "Skills": "Web Application Firewall (WAF) Management"
+  },
+  {
+    "Skills": "Secure Software Development Lifecycle (SDLC)"
+  },
+  {
+    "Skills": "Incident Response Plan Development"
+  },
+  {
+    "Skills": "Security Incident Playbooks"
+  },
+  {
+    "Skills": "Data Encryption Key Management"
+  },
+  {
+    "Skills": "Data Masking Techniques"
+  },
+  {
+    "Skills": "Security Architecture Reviews"
+  },
+  {
+    "Skills": "Insider Threat Detection"
+  },
+  {
+    "Skills": "Digital Forensics"
+  },
+  {
+    "Skills": "Security Monitoring and Analysis"
+  },
+  {
+    "Skills": "Incident Recovery and Remediation"
+  },
+  {
+    "Skills": "Network Security Assessment Tools"
+  },
+  {
+    "Skills": "Ransomware Prevention and Recovery"
+  },
+  {
+    "Skills": "Security Patch Deployment"
+  },
+  {
+    "Skills": "Endpoint Detection and Response (EDR)"
+  },
+  {
+    "Skills": "Network Protocol Analysis"
+  },
+  {
+    "Skills": "BGP (Border Gateway Protocol) Configuration"
+  },
+  {
+    "Skills": "MPLS (Multiprotocol Label Switching) Implementation"
+  },
+  {
+    "Skills": "Network Segmentation Strategies"
+  },
+  {
+    "Skills": "Network Traffic Shaping"
+  },
+  {
+    "Skills": "Network Configuration Auditing"
+  },
+  {
+    "Skills": "Network Capacity Planning Tools"
+  },
+  {
+    "Skills": "Network Performance Optimization"
+  },
+  {
+    "Skills": "Network Hardware Maintenance"
+  },
+  {
+    "Skills": "Network Automation Scripting (Python, PowerShell, etc.)"
+  },
+  {
+    "Skills": "Network Documentation Standards"
+  },
+  {
+    "Skills": "Network Monitoring and Alerting"
+  },
+  {
+    "Skills": "Network Security Assessment"
+  },
+  {
+    "Skills": "Network Anomaly Detection"
+  },
+  {
+    "Skills": "SDN Controller Management"
+  },
+  {
+    "Skills": "Hybrid Cloud Networking"
+  },
+  {
+    "Skills": "Network Routing Optimization"
+  },
+  {
+    "Skills": "IPv6 Migration Strategies"
+  },
+  {
+    "Skills": "Network Security Policy Development"
+  },
+  {
+    "Skills": "Web Application Security Testing"
+  },
+  {
+    "Skills": "Network Security Assessment Methodologies"
+  },
+  {
+    "Skills": "IoT (Internet of Things) Network Security"
+  },
+  {
+    "Skills": "Zero Trust Networking"
+  },
+  {
+    "Skills": "Network Disaster Recovery Testing"
+  },
+  {
+    "Skills": "Network Security Architecture Review"
+  },
+  {
+    "Skills": "Network Threat Modeling"
+  },
+  {
+    "Skills": "Network Access Management"
+  },
+  {
+    "Skills": "Network Change Management"
+  },
+  {
+    "Skills": "Network Segmentation Techniques"
+  },
+  {
+    "Skills": "Network Security Automation"
+  },
+  {
+    "Skills": "DNS Security Best Practices"
+  },
+  {
+    "Skills": "Email Security (SPF, DKIM, DMARC)"
+  },
+  {
+    "Skills": "Network Security Incident Response Plan"
+  },
+  {
+    "Skills": "Wireless Network Security"
+  },
+  {
+    "Skills": "Intrusion Detection System (IDS) Configuration"
+  },
+  {
+    "Skills": "Intrusion Prevention System (IPS) Configuration"
+  },
+  {
+    "Skills": "Network Security Analytics"
+  },
+  {
+    "Skills": "Application Layer Firewall Configuration"
+  },
+  {
+    "Skills": "Network Security Testing Tools"
+  },
+  {
+    "Skills": "Physical Network Security"
+  },
+  {
+    "Skills": "Network Security Awareness Training"
+  },
+  {
+    "Skills": "Cyber Threat Intelligence Analysis"
+  },
+  {
+    "Skills": "Incident Response Tabletop Exercises"
+  },
+  {
+    "Skills": "Red Team and Blue Team Exercises"
+  },
+  {
+    "Skills": "Network Forensics Analysis"
+  },
+  {
+    "Skills": "Threat Hunting Techniques"
+  },
+  {
+    "Skills": "Cloud Network Security"
+  },
+  {
+    "Skills": "Identity Federation and Single Sign-On (SSO)"
+  },
+  {
+    "Skills": "Network Security Policy Enforcement Mechanisms"
+  },
+  {
+    "Skills": "Security Operations Center (SOC) Setup"
+  },
+  {
+    "Skills": "Security Incident Workflow Development"
+  },
+  {
+    "Skills": "Data Loss Prevention (DLP)"
+  },
+  {
+    "Skills": "Insider Threat Detection Strategies"
+  },
+  {
+    "Skills": "Malware Analysis and Reverse Engineering"
+  },
+  {
+    "Skills": "Mobile Device Security Policies"
+  },
+  {
+    "Skills": "Container Security"
+  },
+  {
+    "Skills": "Network Security Baseline Configuration"
+  },
+  {
+    "Skills": "VPN Tunnel Configuration"
+  },
+  {
+    "Skills": "Network Segmentation Planning"
+  },
+  {
+    "Skills": "Security Information Sharing Platforms"
+  },
+  {
+    "Skills": "Security Awareness Metrics and Reporting"
+  },
+  {
+    "Skills": "Security Incident Playbook Development"
+  },
+  {
+    "Skills": "Network Security Risk Assessment"
+  },
+  {
+    "Skills": "Vulnerability Management Process"
+  },
+  {
+    "Skills": "Security Patch Management Automation"
+  },
+  {
+    "Skills": "Security Compliance Auditing Tools"
+  },
+  {
+    "Skills": "Secure Software Development Guidelines"
+  },
+  {
+    "Skills": "Security Incident Management Workflows"
+  },
+  {
+    "Skills": "Security Incident Containment Strategies"
+  },
+  {
+    "Skills": "Security Incident Recovery Strategies"
+  },
+  {
+    "Skills": "Network Device Configuration Management"
+  },
+  {
+    "Skills": "Network Segmentation Implementation"
+  },
+  {
+    "Skills": "Network Performance Testing"
+  },
+  {
+    "Skills": "Load Balancing Configuration"
+  },
+  {
+    "Skills": "IPv4 Subnetting and Addressing"
+  },
+  {
+    "Skills": "Network Configuration Backup and Restoration"
+  },
+  {
+    "Skills": "Network Scalability Planning"
+  },
+  {
+    "Skills": "Network Traffic Analysis Tools"
+  },
+  {
+    "Skills": "Network Hardware Procurement"
+  },
+  {
+    "Skills": "Network Monitoring System Setup"
+  },
+  {
+    "Skills": "Network Troubleshooting Methodologies"
+  },
+  {
+    "Skills": "Network Automation Frameworks (SaltStack, Puppet, etc.)"
+  },
+  {
+    "Skills": "Network Documentation Management Systems"
+  },
+  {
+    "Skills": "Virtual LAN (VLAN) Configuration"
+  },
+  {
+    "Skills": "Cloud Network Design Patterns"
+  },
+  {
+    "Skills": "Network Virtualization Technologies (VMware NSX, etc.)"
+  },
+  {
+    "Skills": "Network Compliance Auditing"
+  },
+  {
+    "Skills": "Network Incident Response"
+  },
+  {
+    "Skills": "DMZ (Demilitarized Zone) Architecture"
+  },
+  {
+    "Skills": "Network Access Control (NAC) Implementation"
+  },
+  {
+    "Skills": "Network Security Information Sharing Platforms"
+  },
+  {
+    "Skills": "Next-Generation Firewall (NGFW) Configuration"
+  },
+  {
+    "Skills": "Security Information and Event Management (SIEM) Integration"
+  },
+  {
+    "Skills": "Threat Intelligence Platforms"
+  },
+  {
+    "Skills": "Incident Response Tabletop Exercises"
+  },
+  {
+    "Skills": "Blue Team Simulation Exercises"
+  },
+  {
+    "Skills": "Security Orchestration, Automation, and Response (SOAR)"
+  },
+  {
+    "Skills": "Network Threat Modeling Tools"
+  },
+  {
+    "Skills": "Network Security Assessment Tools"
+  },
+  {
+    "Skills": "Security Metrics and KPIs"
+  },
+  {
+    "Skills": "Risk Management Frameworks (ISO 31000, etc.)"
+  },
+  {
+    "Skills": "Security Incident Response Playbooks"
+  },
+  {
+    "Skills": "Security Incident Reporting and Communication"
+  },
+  {
+    "Skills": "Network Security Awareness Training Development"
+  },
+  {
+    "Skills": "Network Access Policies and Procedures"
+  },
+  {
+    "Skills": "Security Information Dissemination"
+  },
+  {
+    "Skills": "Security Architecture Assessment"
+  },
+  {
+    "Skills": "Network Device Hardening"
+  },
+  {
+    "Skills": "VPN Technology Selection and Implementation"
+  },
+  {
+    "Skills": "Intrusion Detection and Prevention Signatures"
+  },
+  {
+    "Skills": "Wireless Network Penetration Testing"
+  },
+  {
+    "Skills": "Security Operations Center (SOC) Tools"
+  },
+  {
+    "Skills": "Cloud Security Monitoring and Governance"
+  },
+  {
+    "Skills": "Identity and Access Management (IAM) Tools"
+  },
+  {
+    "Skills": "Security Information Sharing Standards (STIX/TAXII)"
+  },
+  {
+    "Skills": "Incident Response Workflow Automation"
+  },
+  {
+    "Skills": "Ransomware Incident Handling"
+  },
+  {
+    "Skills": "Network Traffic Anomaly Detection"
+  },
+  {
+    "Skills": "Security Incident Metrics Analysis"
+  },
+  {
+    "Skills": "Insider Threat Detection Tools"
+  },
+  {
+    "Skills": "Container Security Best Practices"
+  },
+  {
+    "Skills": "Security Compliance Assessment Tools"
+  },
+  {
+    "Skills": "Secure DevOps Practices"
+  },
+  {
+    "Skills": "Web Application Firewall (WAF) Configuration"
+  },
+  {
+    "Skills": "Network Security Risk Assessment Tools"
+  },
+  {
+    "Skills": "Security Incident Triage and Prioritization"
+  },
+  {
+    "Skills": "Security Awareness Campaign Evaluation"
+  },
+  {
+    "Skills": "Threat Intelligence Analysis Tools"
+  },
+  {
+    "Skills": "Cloud Security Assessment Tools"
+  },
+  {
+    "Skills": "Incident Response Training and Drills"
+  },
+  {
+    "Skills": "Network Security Configuration Auditing"
+  },
+  {
+    "Skills": "Intrusion Detection System (IDS) Management"
+  },
+  {
+    "Skills": "Intrusion Prevention System (IPS) Management"
+  },
+  {
+    "Skills": "Network Anomaly Detection Solutions"
+  },
+  {
+    "Skills": "Network Security Automation Scripting"
+  },
+  {
+    "Skills": "DNS Security Configuration"
+  },
+  {
+    "Skills": "Email Security Gateway Management"
+  },
+  {
+    "Skills": "Firewall Rule Review and Optimization"
+  },
+  {
+    "Skills": "Network Incident Handling Techniques"
+  },
+  {
+    "Skills": "Security Operations Center (SOC) Workflow"
+  },
+  {
+    "Skills": "Threat Hunting Tools and Techniques"
+  },
+  {
+    "Skills": "Network Forensics Tools"
+  },
+  {
+    "Skills": "Malware Analysis Tools"
+  },
+  {
+    "Skills": "Mobile Device Management (MDM) Solutions"
+  },
+  {
+    "Skills": "IoT Security Considerations"
+  },
+  {
+    "Skills": "Application Security Testing (Static, Dynamic)"
+  },
+  {
+    "Skills": "Secure Code Review"
+  },
+  {
+    "Skills": "Container Security Tools"
+  },
+  {
+    "Skills": "Security Incident Simulation Platforms"
+  },
+  {
+    "Skills": "Network Segmentation Assessment Tools"
+  },
+  {
+    "Skills": "Vulnerability Scanning Solutions"
+  },
+  {
+    "Skills": "Vulnerability Exploitation Testing"
+  },
+  {
+    "Skills": "Web Application Security Assessment"
+  },
+  {
+    "Skills": "Wireless Penetration Testing"
+  },
+  {
+    "Skills": "Social Engineering Testing"
+  },
+  {
+    "Skills": "Security Information Sharing Frameworks"
+  },
+  {
+    "Skills": "Dark Web Monitoring Tools"
+  },
+  {
+    "Skills": "Threat Intelligence Platforms Integration"
+  },
+  {
+    "Skills": "Cloud Security Assessment Frameworks"
+  },
+  {
+    "Skills": "Insider Threat Detection Solutions"
+  },
+  {
+    "Skills": "Security Analytics Platforms"
+  },
+  {
+    "Skills": "Incident Response Platform Integration"
+  },
+  {
+    "Skills": "Security Orchestration and Automation Tools"
+  },
+  {
+    "Skills": "Cyber Range Platforms"
+  },
+  {
+    "Skills": "Zero Trust Architecture Implementation"
+  },
+  {
+    "Skills": "Secure SD-WAN Design and Management"
+  },
+  {
+    "Skills": "Network Security Baseline Review"
+  },
+  {
+    "Skills": "Network Security Risk Assessment Frameworks"
+  },
+  {
+    "Skills": "Security Awareness Program Evaluation"
+  },
+  {
+    "Skills": "Security Policy Frameworks (CIS, NIST, etc.)"
+  },
+  {
+    "Skills": "Cloud Security Certification Standards (CCSP, etc.)"
+  },
+  {
+    "Skills": "Network Security Architecture Diagrams"
+  },
+  {
+    "Skills": "Security Governance Frameworks"
+  },
+  {
+    "Skills": "Secure Development Frameworks"
+  },
+  {
+    "Skills": "Secure DevOps Toolchains"
+  },
+  {
+    "Skills": "Secure API Design and Management"
+  },
+  {
+    "Skills": "Multi-factor Authentication (MFA) Implementation"
+  },
+  {
+    "Skills": "Identity and Access Management (IAM) Integration"
+  },
+  {
+    "Skills": "Privileged Access Management (PAM) Solutions"
+  },
+  {
+    "Skills": "Single Sign-On (SSO) Implementation"
+  },
+  {
+    "Skills": "Security Incident Communication Protocols"
+  },
+  {
+    "Skills": "Business Continuity Planning"
+  },
+  {
+    "Skills": "Disaster Recovery Testing"
+  },
+  {
+    "Skills": "Security Awareness Training Metrics"
+  },
+  {
+    "Skills": "Security Audit and Assessment Metrics"
+  },
+  {
+    "Skills": "Security Risk Assessment Metrics"
+  },
+  {
+    "Skills": "Incident Response Metrics"
+  },
+  {
+    "Skills": "Threat Intelligence Metrics"
+  },
+  {
+    "Skills": "Security Compliance Metrics"
+  },
+  {
+    "Skills": "Network Traffic Analysis Metrics"
+  },
+  {
+    "Skills": "Security Incident Response Performance Metrics"
+  },
+  {
+    "Skills": "Incident Response Playbook Effectiveness"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Metrics"
+  },
+  {
+    "Skills": "Security Event Analysis Metrics"
+  },
+  {
+    "Skills": "Security Incident Severity Assessment"
+  },
+  {
+    "Skills": "Network Security Architecture Assessment"
+  },
+  {
+    "Skills": "Security Configuration Management"
+  },
+  {
+    "Skills": "Network Device Vulnerability Assessment"
+  },
+  {
+    "Skills": "Network Security Policy Compliance"
+  },
+  {
+    "Skills": "Network Penetration Testing"
+  },
+  {
+    "Skills": "Wireless Security Assessment"
+  },
+  {
+    "Skills": "Social Engineering Awareness Training"
+  },
+  {
+    "Skills": "Security Awareness Campaign Metrics"
+  },
+  {
+    "Skills": "Incident Response Time Metrics"
+  },
+  {
+    "Skills": "Threat Intelligence Sharing Metrics"
+  },
+  {
+    "Skills": "Security Compliance Assessment Metrics"
+  },
+  {
+    "Skills": "Security Incident Response Timeframes"
+  },
+  {
+    "Skills": "Security Incident Resolution Metrics"
+  },
+  {
+    "Skills": "Network Security Incident Analysis"
+  },
+  {
+    "Skills": "Intrusion Detection and Prevention Metrics"
+  },
+  {
+    "Skills": "Security Awareness Training Effectiveness"
+  },
+  {
+    "Skills": "Threat Detection and Response Metrics"
+  },
+  {
+    "Skills": "Security Incident Trend Analysis"
+  },
+  {
+    "Skills": "Security Breach Impact Assessment"
+  },
+  {
+    "Skills": "Security Breach Cost Estimation"
+  },
+  {
+    "Skills": "Security Incident Severity Assessment"
+  },
+  {
+    "Skills": "Security Incident Detection Techniques"
+  },
+  {
+    "Skills": "Network Security Analytics Metrics"
+  },
+  {
+    "Skills": "Network Security Visualization Tools"
+  },
+  {
+    "Skills": "Network Security Incident Prioritization"
+  },
+  {
+    "Skills": "Security Incident Escalation Protocols"
+  },
+  {
+    "Skills": "Security Awareness Training Modules"
+  },
+  {
+    "Skills": "Security Incident Documentation"
+  },
+  {
+    "Skills": "Network Security Incident Reporting"
+  },
+  {
+    "Skills": "Network Security Incident Recovery"
+  },
+  {
+    "Skills": "Security Incident Post-Mortem Analysis"
+  },
+  {
+    "Skills": "Security Incident Management Workflows"
+  },
+  {
+    "Skills": "Security Incident Communication Plans"
+  },
+  {
+    "Skills": "Security Incident Reporting Tools"
+  },
+  {
+    "Skills": "Threat Intelligence Sharing Platforms"
+  },
+  {
+    "Skills": "Network Traffic Analysis Techniques"
+  },
+  {
+    "Skills": "Network Forensics Methodologies"
+  },
+  {
+    "Skills": "Incident Response Automation Frameworks"
+  },
+  {
+    "Skills": "Security Incident Triage and Analysis"
+  },
+  {
+    "Skills": "Network Security Incident Coordination"
+  },
+  {
+    "Skills": "Security Event Correlation Techniques"
+  },
+  {
+    "Skills": "Security Incident Resolution Procedures"
+  },
+  {
+    "Skills": "Network Security Incident Collaboration"
+  },
+  {
+    "Skills": "Network Security Incident Containment"
+  },
+  {
+    "Skills": "Incident Response Plan Drills"
+  },
+  {
+    "Skills": "Security Incident Management Training"
+  },
+  {
+    "Skills": "Security Incident Notification Procedures"
+  },
+  {
+    "Skills": "Network Security Incident Recovery Strategies"
+  },
+  {
+    "Skills": "Security Incident Reporting Guidelines"
+  },
+  {
+    "Skills": "Security Incident Stakeholder Communication"
+  },
+  {
+    "Skills": "Security Incident Legal and Regulatory Compliance"
+  },
+  {
+    "Skills": "Security Incident Privacy Considerations"
+  },
+  {
+    "Skills": "Security Incident Public Relations Management"
+  },
+  {
+    "Skills": "Security Incident Lessons Learned"
+  },
+  {
+    "Skills": "Security Incident Impact Assessment"
+  },
+  {
+    "Skills": "Security Incident Attribution Analysis"
+  },
+  {
+    "Skills": "Security Incident Threat Actor Profiling"
+  },
+  {
+    "Skills": "Security Incident Root Cause Analysis"
+  },
+  {
+    "Skills": "Security Incident Documentation Standards"
+  },
+  {
+    "Skills": "Security Incident Data Retention Policies"
+  },
+  {
+    "Skills": "Security Incident Data Protection Measures"
+  },
+  {
+    "Skills": "Security Incident Recovery Time Objectives"
+  },
+  {
+    "Skills": "Security Incident Recovery Point Objectives"
+  },
+  {
+    "Skills": "Security Incident Workflow Optimization"
+  },
+  {
+    "Skills": "Network Security Incident Playbook Development"
+  },
+  {
+    "Skills": "Security Incident Communication Templates"
+  },
+  {
+    "Skills": "Security Incident Follow-Up Procedures"
+  },
+  {
+    "Skills": "Security Incident Detection Automation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Setup"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Roles"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Training"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Exercises"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Collaboration"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Coordination"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Tools"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Escalation Paths"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Stakeholder Communication"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Public Communication"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) After-Action Reviews"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Continuous Improvement"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Metrics Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Training Programs"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Cross-Training"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Simulation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Crisis Management"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Legal Compliance"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Cultural Sensitivity"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Remote Collaboration"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Coordination"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Technology Adoption"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Threat Intelligence Integration"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) External Partnerships"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Reporting"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Forensics"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Documentation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Tracking"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Prioritization"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Triage"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Containment"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Resolution"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Closure"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Lessons Learned"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Communication"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Management Tools"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Playbooks"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Response Timeframes"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Reporting Protocols"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Escalation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Leadership"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Decision-Making"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Strategies"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Notification"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Legal and Regulatory Compliance"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Privacy Considerations"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Media Relations"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Public Relations"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Business Impact Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Technical Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Response Frameworks"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Training Programs"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Simulation Exercises"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Time Objectives"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Point Objectives"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Workflow Optimization"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Follow-Up"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Continuous Monitoring"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Documentation Standards"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Data Retention Policies"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Data Protection Measures"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Impact Assessment"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Attribution Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Root Cause Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Workflow Documentation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Escalation Procedures"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Team Collaboration"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Stakeholder Communication"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Strategies"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Plans"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Testing"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Validation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Lessons Learned"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Documentation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Metrics"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery After-Action Reviews"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Continuous Improvement"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Crisis Management"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Legal Compliance"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Cultural Sensitivity"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Remote Collaboration"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Coordination"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Technology Adoption"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery External Partnerships"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Communication"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Decision-Making"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Leadership"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Incident Playbooks"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Timeframes"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Reporting Protocols"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Escalation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Notification"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Legal and Regulatory Compliance"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Privacy Considerations"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Media Relations"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Public Relations"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Business Impact Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Technical Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Training Programs"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Simulation Exercises"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Workflow Optimization"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Follow-Up"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Continuous Monitoring"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Documentation Standards"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Data Retention Policies"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Data Protection Measures"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Impact Assessment"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Attribution Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Root Cause Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Workflow Documentation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Escalation Procedures"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Team Collaboration"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Stakeholder Communication"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Strategies"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Plans"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Testing"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Validation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Lessons Learned"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Documentation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Metrics"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery After-Action Reviews"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Continuous Improvement"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Crisis Management"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Legal Compliance"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Cultural Sensitivity"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Remote Collaboration"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Coordination"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Technology Adoption"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery External Partnerships"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Communication"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Decision-Making"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Leadership"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Incident Playbooks"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Timeframes"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Reporting Protocols"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Escalation"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Notification"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Legal and Regulatory Compliance"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Privacy Considerations"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Media Relations"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Public Relations"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Business Impact Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Technical Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Training Programs"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Simulation Exercises"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Workflow Optimization"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Follow-Up"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Continuous Monitoring"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Documentation Standards"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Data Retention Policies"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Data Protection Measures"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Impact Assessment"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Attribution Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Root Cause Analysis"
+  },
+  {
+    "Skills": "Security Incident Response Team (SIRT) Incident Recovery Recovery Workflow Documentation"
+  },
+  {
+    "Skills": "Data Analysis"
+  },
+  {
+    "Skills": "Statistical Analysis"
+  },
+  {
+    "Skills": "Data Visualization"
+  },
+  {
+    "Skills": "Machine Learning"
+  },
+  {
+    "Skills": "Predictive Modeling"
+  },
+  {
+    "Skills": "Data Cleaning"
+  },
+  {
+    "Skills": "Exploratory Data Analysis (EDA)"
+  },
+  {
+    "Skills": "Regression Analysis"
+  },
+  {
+    "Skills": "Classification Algorithms"
+  },
+  {
+    "Skills": "Clustering Algorithms"
+  },
+  {
+    "Skills": "Time Series Analysis"
+  },
+  {
+    "Skills": "Natural Language Processing (NLP)"
+  },
+  {
+    "Skills": "Feature Engineering"
+  },
+  {
+    "Skills": "Model Evaluation and Validation"
+  },
+  {
+    "Skills": "Model Interpretation"
+  },
+  {
+    "Skills": "Hypothesis Testing"
+  },
+  {
+    "Skills": "A/B Testing"
+  },
+  {
+    "Skills": "Data Preprocessing"
+  },
+  {
+    "Skills": "Dimensionality Reduction"
+  },
+  {
+    "Skills": "Anomaly Detection"
+  },
+  {
+    "Skills": "Ensemble Methods"
+  },
+  {
+    "Skills": "Neural Networks"
+  },
+  {
+    "Skills": "Deep Learning"
+  },
+  {
+    "Skills": "Reinforcement Learning"
+  },
+  {
+    "Skills": "Decision Trees"
+  },
+  {
+    "Skills": "Random Forests"
+  },
+  {
+    "Skills": "Support Vector Machines (SVM)"
+  },
+  {
+    "Skills": "Naive Bayes"
+  },
+  {
+    "Skills": "Logistic Regression"
+  },
+  {
+    "Skills": "K-Means Clustering"
+  },
+  {
+    "Skills": "Hierarchical Clustering"
+  },
+  {
+    "Skills": "Principal Component Analysis (PCA)"
+  },
+  {
+    "Skills": "t-SNE (t-Distributed Stochastic Neighbor Embedding)"
+  },
+  {
+    "Skills": "Regularization Techniques"
+  },
+  {
+    "Skills": "Cross-Validation"
+  },
+  {
+    "Skills": "Bias-Variance Tradeoff"
+  },
+  {
+    "Skills": "Overfitting and Underfitting"
+  },
+  {
+    "Skills": "Gradient Descent Optimization"
+  },
+  {
+    "Skills": "Model Selection"
+  },
+  {
+    "Skills": "Feature Selection"
+  },
+  {
+    "Skills": "Resampling Methods (Bootstrap, Jackknife, etc.)"
+  },
+  {
+    "Skills": "Web Scraping"
+  },
+  {
+    "Skills": "Data Wrangling"
+  },
+  {
+    "Skills": "SQL (Structured Query Language)"
+  },
+  {
+    "Skills": "Big Data Technologies (Hadoop, Spark, etc.)"
+  },
+  {
+    "Skills": "Data Warehousing"
+  },
+  {
+    "Skills": "Data Governance"
+  },
+  {
+    "Skills": "Data Integration"
+  },
+  {
+    "Skills": "Data Transformation"
+  },
+  {
+    "Skills": "Data Pipelines"
+  },
+  {
+    "Skills": "Data Ingestion"
+  },
+  {
+    "Skills": "Data Architecture"
+  },
+  {
+    "Skills": "Data Mining"
+  },
+  {
+    "Skills": "Time Series Forecasting"
+  },
+  {
+    "Skills": "Text Mining"
+  },
+  {
+    "Skills": "Sentiment Analysis"
+  },
+  {
+    "Skills": "Named Entity Recognition (NER)"
+  },
+  {
+    "Skills": "Image Processing"
+  },
+  {
+    "Skills": "Recommender Systems"
+  },
+  {
+    "Skills": "Customer Segmentation"
+  },
+  {
+    "Skills": "Market Basket Analysis"
+  },
+  {
+    "Skills": "Churn Prediction"
+  },
+  {
+    "Skills": "Fraud Detection"
+  },
+  {
+    "Skills": "Customer Lifetime Value Prediction"
+  },
+  {
+    "Skills": "A/B Testing Analysis"
+  },
+  {
+    "Skills": "Survival Analysis"
+  },
+  {
+    "Skills": "Network Analysis"
+  },
+  {
+    "Skills": "Social Media Analytics"
+  },
+  {
+    "Skills": "Geospatial Analysis"
+  },
+  {
+    "Skills": "Unsupervised Learning"
+  },
+  {
+    "Skills": "Semi-Supervised Learning"
+  },
+  {
+    "Skills": "Feature Scaling and Normalization"
+  },
+  {
+    "Skills": "Imbalanced Data Handling"
+  },
+  {
+    "Skills": "Hyperparameter Tuning"
+  },
+  {
+    "Skills": "Model Deployment"
+  },
+  {
+    "Skills": "Web App Development"
+  },
+  {
+    "Skills": "API Integration"
+  },
+  {
+    "Skills": "Data Ethics and Privacy"
+  },
+  {
+    "Skills": "Data Bias Mitigation"
+  },
+  {
+    "Skills": "Data Governance Frameworks"
+  },
+  {
+    "Skills": "Data Security"
+  },
+  {
+    "Skills": "Data Quality Assurance"
+  },
+  {
+    "Skills": "Data Ethics Compliance"
+  },
+  {
+    "Skills": "Data Profiling"
+  },
+  {
+    "Skills": "Data Cataloging"
+  },
+  {
+    "Skills": "Data Lineage"
+  },
+  {
+    "Skills": "Data Transformation Tools (e.g., Pandas, dplyr)"
+  },
+  {
+    "Skills": "Data Visualization Libraries (e.g., Matplotlib, Seaborn, ggplot2)"
+  },
+  {
+    "Skills": "Machine Learning Libraries (e.g., Scikit-Learn, TensorFlow, PyTorch)"
+  },
+  {
+    "Skills": "Jupyter Notebooks"
+  },
+  {
+    "Skills": "Model Interpretability Libraries (e.g., SHAP, LIME)"
+  },
+  {
+    "Skills": "Version Control (e.g., Git)"
+  },
+  {
+    "Skills": "Cloud Computing Platforms (e.g., AWS, Azure, Google Cloud)"
+  },
+  {
+    "Skills": "Data Science Workflow Management"
+  },
+  {
+    "Skills": "Communication Skills"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Business Domain Knowledge"
+  },
+  {
+    "Skills": "Data Storytelling"
+  },
+  {
+    "Skills": "Collaborative Teamwork"
+  },
+  {
+    "Skills": "Critical Thinking"
+  },
+  {
+    "Skills": "Problem-Solving"
+  },
+  {
+    "Skills": "Experiment Design"
+  },
+  {
+    "Skills": "Data Strategy Development"
+  },
+  {
+    "Skills": "Stakeholder Management"
+  },
+  {
+    "Skills": "Domain-specific Analytics (e.g., Financial Analytics, Healthcare Analytics)"
+  },
+  {
+    "Skills": "Data Warehousing Tools (e.g., Snowflake, Redshift)"
+  },
+  {
+    "Skills": "Data Visualization Tools (e.g., Tableau, Power BI)"
+  },
+  {
+    "Skills": "Business Intelligence Platforms"
+  },
+  {
+    "Skills": "Data Presentation Techniques"
+  },
+  {
+    "Skills": "Data-Driven Decision Making"
+  },
+  {
+    "Skills": "Data Analytics Reporting"
+  },
+  {
+    "Skills": "Data Governance Policies"
+  },
+  {
+    "Skills": "Data Compliance Regulations (e.g., GDPR, HIPAA)"
+  },
+  {
+    "Skills": "Data Privacy Measures"
+  },
+  {
+    "Skills": "Data Storage Solutions"
+  },
+  {
+    "Skills": "Data Science Consulting"
+  },
+  {
+    "Skills": "Business Analytics"
+  },
+  {
+    "Skills": "Data-Backed Strategy Development"
+  },
+  {
+    "Skills": "Experimentation Platforms (e.g., Optimizely, Adobe Target)"
+  },
+  {
+    "Skills": "Data Analysis Tools (e.g., Excel, Google Sheets)"
+  },
+  {
+    "Skills": "Cloud Data Services (e.g., AWS S3, Google BigQuery)"
+  },
+  {
+    "Skills": "Data Visualization Libraries (e.g., Plotly, D3.js)"
+  },
+  {
+    "Skills": "Geospatial Data Analysis Tools (e.g., GeoPandas, Leaflet)"
+  },
+  {
+    "Skills": "Natural Language Processing Libraries (e.g., NLTK, SpaCy)"
+  },
+  {
+    "Skills": "Computer Vision Libraries (e.g., OpenCV)"
+  },
+  {
+    "Skills": "Anomaly Detection Tools (e.g., Isolation Forest, Autoencoders)"
+  },
+  {
+    "Skills": "Data Labeling and Annotation"
+  },
+  {
+    "Skills": "Data Augmentation Techniques"
+  },
+  {
+    "Skills": "Neural Network Frameworks (e.g., Keras, MXNet)"
+  },
+  {
+    "Skills": "Data Science APIs"
+  },
+  {
+    "Skills": "Feature Store Management"
+  },
+  {
+    "Skills": "Time Series Forecasting Tools (e.g., Prophet, ARIMA)"
+  },
+  {
+    "Skills": "Statistical Analysis Tools (e.g., R, SAS, SPSS)"
+  },
+  {
+    "Skills": "Bayesian Statistics"
+  },
+  {
+    "Skills": "Data Interpretation"
+  },
+  {
+    "Skills": "Data Science Project Lifecycle"
+  },
+  {
+    "Skills": "Data Analysis Workflow"
+  },
+  {
+    "Skills": "ETL (Extract, Transform, Load) Processes"
+  },
+  {
+    "Skills": "Data Visualization Best Practices"
+  },
+  {
+    "Skills": "Data Science Ethics"
+  },
+  {
+    "Skills": "Data Science Communication Frameworks"
+  },
+  {
+    "Skills": "Data Governance Implementation"
+  },
+  {
+    "Skills": "Data Catalog Tools"
+  },
+  {
+    "Skills": "Data Privacy Compliance Tools"
+  },
+  {
+    "Skills": "Data Security Frameworks"
+  },
+  {
+    "Skills": "Data Science Leadership"
+  },
+  {
+    "Skills": "Data Science Education and Training"
+  },
+  {
+    "Skills": "Continuous Learning and Skill Development"
+  },
+  {
+    "Skills": "Data Science Research and Innovation"
+  },
+  {
+    "Skills": "Problem-Framing and Goal Definition"
+  },
+  {
+    "Skills": "Anova (Analysis of Variance)"
+  },
+  {
+    "Skills": "Dimensionality Reduction Techniques (e.g., t-SNE, UMAP)"
+  },
+  {
+    "Skills": "Model Deployment Strategies"
+  },
+  {
+    "Skills": "Model Monitoring and Maintenance"
+  },
+  {
+    "Skills": "Model Explainability Techniques"
+  },
+  {
+    "Skills": "Time Series Decomposition"
+  },
+  {
+    "Skills": "Neural Network Architectures (CNN, RNN, LSTM, etc.)"
+  },
+  {
+    "Skills": "Transfer Learning"
+  },
+  {
+    "Skills": "AutoML (Automated Machine Learning)"
+  },
+  {
+    "Skills": "Model Interpretation Libraries (e.g., SHAP, LIME)"
+  },
+  {
+    "Skills": "Model Optimization"
+  },
+  {
+    "Skills": "Natural Language Generation (NLG)"
+  },
+  {
+    "Skills": "Data Integration Platforms (e.g., Talend, Informatica)"
+  },
+  {
+    "Skills": "Data Virtualization"
+  },
+  {
+    "Skills": "Data Lake Management"
+  },
+  {
+    "Skills": "Data Masking and Tokenization"
+  },
+  {
+    "Skills": "Data Encryption"
+  },
+  {
+    "Skills": "Data Resilience and Recovery"
+  },
+  {
+    "Skills": "Data Migration Strategies"
+  },
+  {
+    "Skills": "Data Loss Prevention"
+  },
+  {
+    "Skills": "Data Governance Auditing"
+  },
+  {
+    "Skills": "Data Governance Enforcement"
+  },
+  {
+    "Skills": "Data Stewardship"
+  },
+  {
+    "Skills": "Data Ownership"
+  },
+  {
+    "Skills": "Data Classification and Tagging"
+  },
+  {
+    "Skills": "Data Retention Policies"
+  },
+  {
+    "Skills": "Data Compliance Reporting"
+  },
+  {
+    "Skills": "Data Quality Assessment"
+  },
+  {
+    "Skills": "Data Quality Improvement"
+  },
+  {
+    "Skills": "Data Lineage Visualization"
+  },
+  {
+    "Skills": "Data Catalog and Metadata Management"
+  },
+  {
+    "Skills": "Data Privacy Impact Assessments"
+  },
+  {
+    "Skills": "Data Privacy by Design"
+  },
+  {
+    "Skills": "Data Privacy Training and Awareness"
+  },
+  {
+    "Skills": "Data Privacy Incident Response"
+  },
+  {
+    "Skills": "Blockchain and Data Security"
+  },
+  {
+    "Skills": "Cloud Data Governance"
+  },
+  {
+    "Skills": "DevOps for Data Science"
+  },
+  {
+    "Skills": "Continuous Integration and Deployment (CI/CD) Pipelines for ML"
+  },
+  {
+    "Skills": "ML Model Versioning and Tracking"
+  },
+  {
+    "Skills": "Hyperparameter Optimization Techniques"
+  },
+  {
+    "Skills": "Automated Feature Engineering"
+  },
+  {
+    "Skills": "Explainable AI"
+  },
+  {
+    "Skills": "Causal Inference"
+  },
+  {
+    "Skills": "Bayesian Networks"
+  },
+  {
+    "Skills": "Time Series Forecasting Evaluation Metrics"
+  },
+  {
+    "Skills": "NLP Evaluation Metrics (e.g., BLEU, ROUGE, F1)"
+  },
+  {
+    "Skills": "Model Bias and Fairness Assessment"
+  },
+  {
+    "Skills": "Interpretation of Machine Learning Metrics"
+  },
+  {
+    "Skills": "Model Robustness Testing"
+  },
+  {
+    "Skills": "Advanced SQL Queries"
+  },
+  {
+    "Skills": "Graph Databases (e.g., Neo4j)"
+  },
+  {
+    "Skills": "NoSQL Databases (e.g., MongoDB, Cassandra)"
+  },
+  {
+    "Skills": "Data Serialization Formats (e.g., JSON, Parquet)"
+  },
+  {
+    "Skills": "Data Streaming and Real-time Processing (e.g., Apache Kafka)"
+  },
+  {
+    "Skills": "Batch Processing Frameworks (e.g., Apache Spark)"
+  },
+  {
+    "Skills": "Data Transformation and ETL Tools (e.g., Apache NiFi, Talend)"
+  },
+  {
+    "Skills": "Data Warehousing Solutions (e.g., Snowflake, Amazon Redshift)"
+  },
+  {
+    "Skills": "Data Ingestion Strategies"
+  },
+  {
+    "Skills": "Cloud Data Storage Solutions"
+  },
+  {
+    "Skills": "Cloud Data Processing Services"
+  },
+  {
+    "Skills": "Cloud Machine Learning Services"
+  },
+  {
+    "Skills": "Serverless Data Processing"
+  },
+  {
+    "Skills": "Containerization (e.g., Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Data Science in Edge Computing"
+  },
+  {
+    "Skills": "Federated Learning"
+  },
+  {
+    "Skills": "Meta-Learning"
+  },
+  {
+    "Skills": "One-shot Learning"
+  },
+  {
+    "Skills": "Data Science in Internet of Things (IoT) Applications"
+  },
+  {
+    "Skills": "Streaming Analytics"
+  },
+  {
+    "Skills": "Dashboard Development"
+  },
+  {
+    "Skills": "Geospatial Data Visualization"
+  },
+  {
+    "Skills": "Network Analysis Visualization"
+  },
+  {
+    "Skills": "Interactive Data Dashboards (e.g., Dash, Shiny)"
+  },
+  {
+    "Skills": "Dashboard Deployment and Sharing"
+  },
+  {
+    "Skills": "Data Storytelling with Visualization"
+  },
+  {
+    "Skills": "Exploratory Data Visualization"
+  },
+  {
+    "Skills": "Time Series Visualization"
+  },
+  {
+    "Skills": "Natural Language Processing Visualization"
+  },
+  {
+    "Skills": "Geospatial Data Analysis Visualization"
+  },
+  {
+    "Skills": "Feature Importance Visualization"
+  },
+  {
+    "Skills": "Data Visualization Best Practices"
+  },
+  {
+    "Skills": "Ethical Considerations in Data Science"
+  },
+  {
+    "Skills": "Privacy-Preserving Machine Learning"
+  },
+  {
+    "Skills": "Adversarial Attacks and Defenses in ML"
+  },
+  {
+    "Skills": "Robotic Process Automation (RPA)"
+  },
+  {
+    "Skills": "Big Data Analytics Platforms (e.g., Apache Hadoop, Apache Spark)"
+  },
+  {
+    "Skills": "Cloud-Based Data Science Platforms (e.g., Google Cloud AI, Azure ML)"
+  },
+  {
+    "Skills": "Data Engineering for AI"
+  },
+  {
+    "Skills": "Data Science Collaboration Tools (e.g., Git, JupyterHub)"
+  },
+  {
+    "Skills": "Data Science Project Management Tools"
+  },
+  {
+    "Skills": "Data Science Experiment Tracking Platforms"
+  },
+  {
+    "Skills": "Reproducible Research Practices"
+  },
+  {
+    "Skills": "Data Science Blogs and Publications"
+  },
+  {
+    "Skills": "Data Science Conferences and Events"
+  },
+  {
+    "Skills": "Data Science Competitions (e.g., Kaggle)"
+  },
+  {
+    "Skills": "Data Science Podcasts"
+  },
+  {
+    "Skills": "Data Science Webinars and Workshops"
+  },
+  {
+    "Skills": "Online Data Science Courses and Certifications"
+  },
+  {
+    "Skills": "Data Science Communities and Forums"
+  },
+  {
+    "Skills": "Hadoop Ecosystem (HDFS, MapReduce, Hive, Pig, etc.)"
+  },
+  {
+    "Skills": "Apache Spark"
+  },
+  {
+    "Skills": "Apache Flink"
+  },
+  {
+    "Skills": "Apache Kafka"
+  },
+  {
+    "Skills": "Apache Cassandra"
+  },
+  {
+    "Skills": "Apache HBase"
+  },
+  {
+    "Skills": "NoSQL Databases (MongoDB, Couchbase, Redis, etc.)"
+  },
+  {
+    "Skills": "Data Warehousing (Amazon Redshift, Google BigQuery, etc.)"
+  },
+  {
+    "Skills": "Data Lake Architecture and Implementation"
+  },
+  {
+    "Skills": "Real-time Data Processing"
+  },
+  {
+    "Skills": "Batch Processing"
+  },
+  {
+    "Skills": "Stream Processing"
+  },
+  {
+    "Skills": "Data Ingestion Techniques"
+  },
+  {
+    "Skills": "Data Integration"
+  },
+  {
+    "Skills": "Data Transformation"
+  },
+  {
+    "Skills": "ETL (Extract, Transform, Load) Processes"
+  },
+  {
+    "Skills": "Data Pipeline Design"
+  },
+  {
+    "Skills": "Data Cleansing and Enrichment"
+  },
+  {
+    "Skills": "Data Aggregation"
+  },
+  {
+    "Skills": "Data Sharding"
+  },
+  {
+    "Skills": "Data Partitioning"
+  },
+  {
+    "Skills": "Data Replication Strategies"
+  },
+  {
+    "Skills": "Data Serialization Formats (JSON, Avro, Parquet, etc.)"
+  },
+  {
+    "Skills": "Data Compression Techniques"
+  },
+  {
+    "Skills": "Data Storage Optimization"
+  },
+  {
+    "Skills": "Data Lifecycle Management"
+  },
+  {
+    "Skills": "Data Archiving"
+  },
+  {
+    "Skills": "Data Governance for Big Data"
+  },
+  {
+    "Skills": "Data Security for Big Data"
+  },
+  {
+    "Skills": "Data Privacy for Big Data"
+  },
+  {
+    "Skills": "Data Backup and Recovery"
+  },
+  {
+    "Skills": "Data Quality Assessment for Big Data"
+  },
+  {
+    "Skills": "Data Lineage and Auditing"
+  },
+  {
+    "Skills": "Data Cataloging"
+  },
+  {
+    "Skills": "Data Discovery and Profiling"
+  },
+  {
+    "Skills": "Data Modeling for Big Data"
+  },
+  {
+    "Skills": "Data Schema Design"
+  },
+  {
+    "Skills": "Data Querying and Analysis"
+  },
+  {
+    "Skills": "SQL for Big Data"
+  },
+  {
+    "Skills": "NoSQL Query Languages"
+  },
+  {
+    "Skills": "Data Exploration Tools (Zeppelin, Jupyter, etc.)"
+  },
+  {
+    "Skills": "Data Visualization for Big Data"
+  },
+  {
+    "Skills": "Data Analytics on Big Data"
+  },
+  {
+    "Skills": "Machine Learning on Big Data"
+  },
+  {
+    "Skills": "Deep Learning on Big Data"
+  },
+  {
+    "Skills": "Natural Language Processing on Big Data"
+  },
+  {
+    "Skills": "Graph Analytics on Big Data"
+  },
+  {
+    "Skills": "Predictive Analytics on Big Data"
+  },
+  {
+    "Skills": "Anomaly Detection on Big Data"
+  },
+  {
+    "Skills": "Pattern Recognition on Big Data"
+  },
+  {
+    "Skills": "Data Mining Techniques"
+  },
+  {
+    "Skills": "Data Clustering Algorithms"
+  },
+  {
+    "Skills": "Data Classification Algorithms"
+  },
+  {
+    "Skills": "Data Regression Algorithms"
+  },
+  {
+    "Skills": "Dimensionality Reduction for Big Data"
+  },
+  {
+    "Skills": "Big Data Feature Engineering"
+  },
+  {
+    "Skills": "Big Data Model Evaluation and Validation"
+  },
+  {
+    "Skills": "Performance Tuning for Big Data Systems"
+  },
+  {
+    "Skills": "Scalability and Load Balancing"
+  },
+  {
+    "Skills": "High Availability and Failover"
+  },
+  {
+    "Skills": "Fault Tolerance for Big Data"
+  },
+  {
+    "Skills": "Big Data Architecture Design"
+  },
+  {
+    "Skills": "Cloud Computing for Big Data"
+  },
+  {
+    "Skills": "Hybrid Cloud Big Data Solutions"
+  },
+  {
+    "Skills": "Edge Computing for Big Data"
+  },
+  {
+    "Skills": "Big Data Infrastructure Management"
+  },
+  {
+    "Skills": "Containerization for Big Data (Docker, Kubernetes)"
+  },
+  {
+    "Skills": "Big Data Security Frameworks"
+  },
+  {
+    "Skills": "Big Data Access Control"
+  },
+  {
+    "Skills": "Big Data Encryption"
+  },
+  {
+    "Skills": "Big Data Authentication"
+  },
+  {
+    "Skills": "Big Data Authorization"
+  },
+  {
+    "Skills": "Big Data Monitoring and Logging"
+  },
+  {
+    "Skills": "Big Data Compliance and Auditing"
+  },
+  {
+    "Skills": "Big Data Performance Monitoring"
+  },
+  {
+    "Skills": "Big Data Troubleshooting and Debugging"
+  },
+  {
+    "Skills": "Big Data Disaster Recovery"
+  },
+  {
+    "Skills": "Big Data Backup and Restore"
+  },
+  {
+    "Skills": "Data Governance Policies for Big Data"
+  },
+  {
+    "Skills": "Big Data Privacy Regulations (GDPR, CCPA, etc.)"
+  },
+  {
+    "Skills": "Data Ethics in Big Data"
+  },
+  {
+    "Skills": "Data Sharing and Collaboration in Big Data"
+  },
+  {
+    "Skills": "Data Ownership and Accountability"
+  },
+  {
+    "Skills": "Big Data Project Management"
+  },
+  {
+    "Skills": "Big Data Strategy Development"
+  },
+  {
+    "Skills": "Business Domain Knowledge for Big Data"
+  },
+  {
+    "Skills": "Stakeholder Management for Big Data Projects"
+  },
+  {
+    "Skills": "Data Science in Big Data Analytics"
+  },
+  {
+    "Skills": "Advanced Analytics in Big Data"
+  },
+  {
+    "Skills": "Big Data Consulting and Advisory"
+  },
+  {
+    "Skills": "Big Data Workload Optimization"
+  },
+  {
+    "Skills": "Data Streaming Architecture and Patterns"
+  },
+  {
+    "Skills": "Real-time Analytics on Big Data"
+  },
+  {
+    "Skills": "Big Data Integration Platforms (Apache Nifi, Talend, etc.)"
+  },
+  {
+    "Skills": "Data Ingestion Frameworks (Flume, Sqoop, etc.)"
+  },
+  {
+    "Skills": "Data Transformation Tools for Big Data"
+  },
+  {
+    "Skills": "Big Data Analytics Platforms (Databricks, IBM BigInsights, etc.)"
+  },
+  {
+    "Skills": "Big Data Visualization Tools (Tableau, Power BI, etc.)"
+  },
+  {
+    "Skills": "Big Data ML and AI Frameworks (TensorFlow, PyTorch, etc.)"
+  },
+  {
+    "Skills": "Big Data Experimentation Platforms"
+  },
+  {
+    "Skills": "Big Data Machine Learning Pipelines"
+  },
+  {
+    "Skills": "Big Data Model Deployment"
+  },
+  {
+    "Skills": "Big Data Model Monitoring and Management"
+  },
+  {
+    "Skills": "Big Data Governance Frameworks"
+  },
+  {
+    "Skills": "Data Catalog Tools for Big Data"
+  },
+  {
+    "Skills": "Big Data Privacy and Compliance Tools"
+  },
+  {
+    "Skills": "Big Data Security Monitoring Tools"
+  },
+  {
+    "Skills": "Big Data Performance Monitoring Tools"
+  },
+  {
+    "Skills": "Cloud Services for Big Data"
+  },
+  {
+    "Skills": "Serverless Computing for Big Data"
+  },
+  {
+    "Skills": "Big Data on IoT Platforms"
+  },
+  {
+    "Skills": "Big Data in Healthcare"
+  },
+  {
+    "Skills": "Big Data in Finance"
+  },
+  {
+    "Skills": "Big Data in E-commerce"
+  },
+  {
+    "Skills": "Big Data in Social Media Analytics"
+  },
+  {
+    "Skills": "Big Data in Supply Chain Management"
+  },
+  {
+    "Skills": "Big Data in Energy and Utilities"
+  },
+  {
+    "Skills": "Big Data in Manufacturing"
+  },
+  {
+    "Skills": "Big Data in Retail"
+  },
+  {
+    "Skills": "Big Data in Telecommunications"
+  },
+  {
+    "Skills": "Big Data in Marketing and Advertising"
+  },
+  {
+    "Skills": "Big Data in Government and Public Services"
+  },
+  {
+    "Skills": "Big Data in Education"
+  },
+  {
+    "Skills": "Big Data in Environmental Sciences"
+  },
+  {
+    "Skills": "Big Data in Entertainment and Media"
+  },
+  {
+    "Skills": "Big Data in Sports Analytics"
+  },
+  {
+    "Skills": "Big Data in Agriculture"
+  },
+  {
+    "Skills": "Big Data in Transportation and Logistics"
+  },
+  {
+    "Skills": "Big Data in Urban Planning"
+  },
+  {
+    "Skills": "Big Data in Space Exploration"
+  },
+  {
+    "Skills": "Big Data in Climate Research"
+  },
+  {
+    "Skills": "Big Data in Genomics and Bioinformatics"
+  },
+  {
+    "Skills": "Big Data in Drug Discovery"
+  },
+  {
+    "Skills": "Big Data in Personalized Medicine"
+  },
+  {
+    "Skills": "Big Data in Healthcare Analytics"
+  },
+  {
+    "Skills": "Big Data in Clinical Trials"
+  },
+  {
+    "Skills": "Big Data in Disease Surveillance"
+  },
+  {
+    "Skills": "Big Data in Epidemiology"
+  },
+  {
+    "Skills": "Big Data in Natural Language Processing"
+  },
+  {
+    "Skills": "Big Data in Speech Recognition"
+  },
+  {
+    "Skills": "Big Data in Sentiment Analysis"
+  },
+  {
+    "Skills": "Big Data in Language Translation"
+  },
+  {
+    "Skills": "Big Data in Image Processing"
+  },
+  {
+    "Skills": "Big Data in Video Analytics"
+  },
+  {
+    "Skills": "Big Data in Autonomous Vehicles"
+  },
+  {
+    "Skills": "Big Data in Robotics"
+  },
+  {
+    "Skills": "Big Data in Augmented Reality (AR) and Virtual Reality (VR)"
+  },
+  {
+    "Skills": "Big Data in Machine Vision"
+  },
+  {
+    "Skills": "Big Data in Cognitive Computing"
+  },
+  {
+    "Skills": "Big Data in Artificial Intelligence Research"
+  },
+  {
+    "Skills": "Big Data Pipeline Orchestration (Apache Airflow, Luigi, etc.)"
+  },
+  {
+    "Skills": "Big Data Data Governance Implementation"
+  },
+  {
+    "Skills": "Data Cataloging Tools for Big Data (Collibra, Alation, etc.)"
+  },
+  {
+    "Skills": "Big Data Data Privacy Tools"
+  },
+  {
+    "Skills": "Big Data Access Control Management"
+  },
+  {
+    "Skills": "Big Data Encryption Techniques"
+  },
+  {
+    "Skills": "Big Data Compliance Reporting Tools"
+  },
+  {
+    "Skills": "Big Data Data Lineage Tracking"
+  },
+  {
+    "Skills": "Big Data Data Quality Assessment"
+  },
+  {
+    "Skills": "Big Data Data Profiling"
+  },
+  {
+    "Skills": "Data Streaming Platforms (Apache Kafka, Amazon Kinesis, etc.)"
+  },
+  {
+    "Skills": "Real-time Analytics Architectures"
+  },
+  {
+    "Skills": "Real-time Data Visualization"
+  },
+  {
+    "Skills": "Big Data Batch Processing Optimization"
+  },
+  {
+    "Skills": "Big Data Stream Processing Optimization"
+  },
+  {
+    "Skills": "Advanced SQL Query Optimization for Big Data"
+  },
+  {
+    "Skills": "Big Data Query Performance Tuning"
+  },
+  {
+    "Skills": "Big Data Data Schema Evolution"
+  },
+  {
+    "Skills": "Big Data Data Migration Strategies"
+  },
+  {
+    "Skills": "Multi-Cloud Big Data Architecture"
+  },
+  {
+    "Skills": "Edge Computing in Big Data"
+  },
+  {
+    "Skills": "Big Data Storage Management"
+  },
+  {
+    "Skills": "In-Memory Computing for Big Data"
+  },
+  {
+    "Skills": "Data Lakes vs. Data Warehouses"
+  },
+  {
+    "Skills": "Cloud-Native Big Data Solutions"
+  },
+  {
+    "Skills": "Hybrid Big Data Cloud Deployments"
+  },
+  {
+    "Skills": "Big Data Infrastructure Scaling"
+  },
+  {
+    "Skills": "Big Data Load Balancing Techniques"
+  },
+  {
+    "Skills": "Big Data High Availability Strategies"
+  },
+  {
+    "Skills": "Big Data Disaster Recovery Planning"
+  },
+  {
+    "Skills": "Big Data Backup and Restore Strategies"
+  },
+  {
+    "Skills": "Big Data Monitoring Tools (Prometheus, Grafana, etc.)"
+  },
+  {
+    "Skills": "Big Data Logging and Auditing"
+  },
+  {
+    "Skills": "Big Data Troubleshooting and Debugging"
+  },
+  {
+    "Skills": "Data Governance in Multi-Cloud Environments"
+  },
+  {
+    "Skills": "Data Privacy Compliance in Multi-Cloud Environments"
+  },
+  {
+    "Skills": "Big Data Performance Optimization"
+  },
+  {
+    "Skills": "Big Data Data Compression Techniques"
+  },
+  {
+    "Skills": "Data Serialization Optimizations"
+  },
+  {
+    "Skills": "Data Caching in Big Data Systems"
+  },
+  {
+    "Skills": "Parallel Processing in Big Data"
+  },
+  {
+    "Skills": "Data Replication Strategies for High Availability"
+  },
+  {
+    "Skills": "Data Backup and Restore in Multi-Cloud Environments"
+  },
+  {
+    "Skills": "Big Data Data Lineage Analysis Tools"
+  },
+  {
+    "Skills": "Big Data Data Cataloging Automation"
+  },
+  {
+    "Skills": "Big Data Data Quality Improvement Tools"
+  },
+  {
+    "Skills": "Big Data Metadata Management"
+  },
+  {
+    "Skills": "Data Lake Governance"
+  },
+  {
+    "Skills": "Cloud-Native Big Data Analytics"
+  },
+  {
+    "Skills": "Hybrid Cloud Data Processing"
+  },
+  {
+    "Skills": "Edge-to-Cloud Data Integration"
+  },
+  {
+    "Skills": "Real-time Analytics for IoT Data"
+  },
+  {
+    "Skills": "Big Data in Industrial IoT"
+  },
+  {
+    "Skills": "Big Data in Smart Cities"
+  },
+  {
+    "Skills": "Big Data in Financial Services"
+  },
+  {
+    "Skills": "Big Data in Risk Management"
+  },
+  {
+    "Skills": "Big Data in Fraud Detection"
+  },
+  {
+    "Skills": "Big Data in Credit Scoring"
+  },
+  {
+    "Skills": "Big Data in Algorithmic Trading"
+  },
+  {
+    "Skills": "Big Data in Customer Analytics"
+  },
+  {
+    "Skills": "Big Data in Supply Chain Analytics"
+  },
+  {
+    "Skills": "Big Data in Inventory Management"
+  },
+  {
+    "Skills": "Big Data in Demand Forecasting"
+  },
+  {
+    "Skills": "Big Data in Logistics Optimization"
+  },
+  {
+    "Skills": "Big Data in Energy Consumption Analysis"
+  },
+  {
+    "Skills": "Big Data in Renewable Energy"
+  },
+  {
+    "Skills": "Big Data in Smart Grids"
+  },
+  {
+    "Skills": "Big Data in Oil and Gas Exploration"
+  },
+  {
+    "Skills": "Big Data in Predictive Maintenance"
+  },
+  {
+    "Skills": "Big Data in Manufacturing Quality Control"
+  },
+  {
+    "Skills": "Big Data in Retail Analytics"
+  },
+  {
+    "Skills": "Big Data in Customer Segmentation"
+  },
+  {
+    "Skills": "Big Data in Personalization"
+  },
+  {
+    "Skills": "Big Data in E-commerce Recommendation Systems"
+  },
+  {
+    "Skills": "Big Data in Social Media Analytics"
+  },
+  {
+    "Skills": "Big Data in Sentiment Analysis"
+  },
+  {
+    "Skills": "Big Data in Influencer Marketing"
+  },
+  {
+    "Skills": "Big Data in Campaign Optimization"
+  },
+  {
+    "Skills": "Big Data in Healthcare Predictive Analytics"
+  },
+  {
+    "Skills": "Big Data in Diagnostics"
+  },
+  {
+    "Skills": "Big Data in Genomic Sequencing"
+  },
+  {
+    "Skills": "Big Data in Drug Discovery"
+  },
+  {
+    "Skills": "Big Data in Precision Medicine"
+  },
+  {
+    "Skills": "Big Data in Clinical Research"
+  },
+  {
+    "Skills": "Big Data in Telemedicine"
+  },
+  {
+    "Skills": "Big Data in Disease Surveillance"
+  },
+  {
+    "Skills": "Big Data in Epidemic Modeling"
+  },
+  {
+    "Skills": "Big Data in Climate Change Analysis"
+  },
+  {
+    "Skills": "Big Data in Environmental Monitoring"
+  },
+  {
+    "Skills": "Big Data in Natural Disaster Prediction"
+  },
+  {
+    "Skills": "Big Data in Space Exploration"
+  },
+  {
+    "Skills": "Big Data in Astronomy"
+  },
+  {
+    "Skills": "Big Data in Cosmology"
+  },
+  {
+    "Skills": "Big Data in Particle Physics"
+  },
+  {
+    "Skills": "Big Data in Geospatial Analysis"
+  },
+  {
+    "Skills": "Big Data in Geographical Information Systems (GIS)"
+  },
+  {
+    "Skills": "Big Data in Urban Planning and Design"
+  },
+  {
+    "Skills": "Big Data in Traffic Management"
+  },
+  {
+    "Skills": "Big Data in Emergency Response"
+  },
+  {
+    "Skills": "Big Data in Agriculture and Crop Monitoring"
+  },
+  {
+    "Skills": "Data Analysis"
+  },
+  {
+    "Skills": "Statistical Analysis"
+  },
+  {
+    "Skills": "Data Cleaning"
+  },
+  {
+    "Skills": "Data Visualization"
+  },
+  {
+    "Skills": "Excel Proficiency"
+  },
+  {
+    "Skills": "SQL Querying"
+  },
+  {
+    "Skills": "Data Interpretation"
+  },
+  {
+    "Skills": "Data Wrangling"
+  },
+  {
+    "Skills": "Exploratory Data Analysis (EDA)"
+  },
+  {
+    "Skills": "Data Transformation"
+  },
+  {
+    "Skills": "Data Preprocessing"
+  },
+  {
+    "Skills": "Data Mining"
+  },
+  {
+    "Skills": "Descriptive Statistics"
+  },
+  {
+    "Skills": "Inferential Statistics"
+  },
+  {
+    "Skills": "Hypothesis Testing"
+  },
+  {
+    "Skills": "A/B Testing"
+  },
+  {
+    "Skills": "Regression Analysis"
+  },
+  {
+    "Skills": "Time Series Analysis"
+  },
+  {
+    "Skills": "Pivot Tables"
+  },
+  {
+    "Skills": "VLOOKUP and HLOOKUP"
+  },
+  {
+    "Skills": "INDEX and MATCH Functions"
+  },
+  {
+    "Skills": "Data Dashboard Creation"
+  },
+  {
+    "Skills": "Tableau Proficiency"
+  },
+  {
+    "Skills": "Power BI Proficiency"
+  },
+  {
+    "Skills": "Data Visualization Best Practices"
+  },
+  {
+    "Skills": "Data Storytelling"
+  },
+  {
+    "Skills": "Data Quality Assessment"
+  },
+  {
+    "Skills": "Data Profiling"
+  },
+  {
+    "Skills": "Data Validation"
+  },
+  {
+    "Skills": "Data Aggregation"
+  },
+  {
+    "Skills": "Data Segmentation"
+  },
+  {
+    "Skills": "Data Classification"
+  },
+  {
+    "Skills": "Data Enrichment"
+  },
+  {
+    "Skills": "Data Imputation"
+  },
+  {
+    "Skills": "Data Transformation Techniques"
+  },
+  {
+    "Skills": "Normalization and Standardization"
+  },
+  {
+    "Skills": "Outlier Detection"
+  },
+  {
+    "Skills": "Missing Data Handling"
+  },
+  {
+    "Skills": "Exploring and Analyzing Large Datasets"
+  },
+  {
+    "Skills": "Text Mining and Natural Language Processing (NLP)"
+  },
+  {
+    "Skills": "Sentiment Analysis"
+  },
+  {
+    "Skills": "Named Entity Recognition (NER)"
+  },
+  {
+    "Skills": "Topic Modeling"
+  },
+  {
+    "Skills": "Data Correlation Analysis"
+  },
+  {
+    "Skills": "Cohort Analysis"
+  },
+  {
+    "Skills": "Churn Analysis"
+  },
+  {
+    "Skills": "Customer Segmentation"
+  },
+  {
+    "Skills": "Market Basket Analysis"
+  },
+  {
+    "Skills": "Financial Data Analysis"
+  },
+  {
+    "Skills": "Healthcare Data Analysis"
+  },
+  {
+    "Skills": "Social Media Data Analysis"
+  },
+  {
+    "Skills": "Web Analytics"
+  },
+  {
+    "Skills": "Google Analytics"
+  },
+  {
+    "Skills": "Clickstream Analysis"
+  },
+  {
+    "Skills": "Data Visualization Libraries (Matplotlib, Seaborn, ggplot2)"
+  },
+  {
+    "Skills": "Data Query Languages (SQL, NoSQL)"
+  },
+  {
+    "Skills": "Data Analysis Tools (Python, R)"
+  },
+  {
+    "Skills": "Data Cleaning Tools (OpenRefine, Trifacta, etc.)"
+  },
+  {
+    "Skills": "Data Visualization Tools (Tableau, Power BI, etc.)"
+  },
+  {
+    "Skills": "Data Collection Techniques"
+  },
+  {
+    "Skills": "Data Collection Ethics"
+  },
+  {
+    "Skills": "Data Privacy Awareness"
+  },
+  {
+    "Skills": "Data Governance Understanding"
+  },
+  {
+    "Skills": "Data Ethics Consideration"
+  },
+  {
+    "Skills": "Data Security Awareness"
+  },
+  {
+    "Skills": "Critical Thinking"
+  },
+  {
+    "Skills": "Problem-Solving"
+  },
+  {
+    "Skills": "Decision-Making"
+  },
+  {
+    "Skills": "Attention to Detail"
+  },
+  {
+    "Skills": "Time Management"
+  },
+  {
+    "Skills": "Project Management"
+  },
+  {
+    "Skills": "Communication Skills"
+  },
+  {
+    "Skills": "Collaborative Teamwork"
+  },
+  {
+    "Skills": "Stakeholder Management"
+  },
+  {
+    "Skills": "Presentation Skills"
+  },
+  {
+    "Skills": "Report Writing"
+  },
+  {
+    "Skills": "Data Presentation"
+  },
+  {
+    "Skills": "Basic Programming Skills"
+  },
+  {
+    "Skills": "Data Entry and Validation"
+  },
+  {
+    "Skills": "Data Comparison and Validation"
+  },
+  {
+    "Skills": "Data Auditing"
+  },
+  {
+    "Skills": "Data Manipulation using Python (Pandas, NumPy)"
+  },
+  {
+    "Skills": "Data Manipulation using R (dplyr, tidyr)"
+  },
+  {
+    "Skills": "Data Visualization using Python (Matplotlib, Seaborn, Plotly)"
+  },
+  {
+    "Skills": "Data Visualization using R (ggplot2, Shiny)"
+  },
+  {
+    "Skills": "Data Visualization using Excel Charts and Graphs"
+  },
+  {
+    "Skills": "Data Analysis Pipelines"
+  },
+  {
+    "Skills": "Exploratory Data Analysis Techniques"
+  },
+  {
+    "Skills": "Descriptive Data Analysis Techniques"
+  },
+  {
+    "Skills": "Inferential Data Analysis Techniques"
+  },
+  {
+    "Skills": "Advanced Statistical Analysis Techniques"
+  },
+  {
+    "Skills": "Survey Data Analysis"
+  },
+  {
+    "Skills": "Data Anomaly Detection"
+  },
+  {
+    "Skills": "Data Pattern Recognition"
+  },
+  {
+    "Skills": "Data Trend Analysis"
+  },
+  {
+    "Skills": "Data Forecasting"
+  },
+  {
+    "Skills": "Data Interpretation for Business Impact"
+  },
+  {
+    "Skills": "Data-Driven Decision Making"
+  },
+  {
+    "Skills": "Database Management"
+  },
+  {
+    "Skills": "Data Schema Understanding"
+  },
+  {
+    "Skills": "Data Model Exploration"
+  },
+  {
+    "Skills": "Data Relational Schema Understanding"
+  },
+  {
+    "Skills": "Data Joins and Aggregation"
+  },
+  {
+    "Skills": "Data Entity-Relationship Diagrams (ERDs)"
+  },
+  {
+    "Skills": "Data Entity-Attribute Modeling"
+  },
+  {
+    "Skills": "Database Query Optimization"
+  },
+  {
+    "Skills": "Data Storage Techniques"
+  },
+  {
+    "Skills": "Data Query Performance Tuning"
+  },
+  {
+    "Skills": "Database Reporting and Visualization"
+  },
+  {
+    "Skills": "Data Mining Algorithms"
+  },
+  {
+    "Skills": "Data Visualization Principles"
+  },
+  {
+    "Skills": "Data Visualization Storyboarding"
+  },
+  {
+    "Skills": "Dashboard Design Principles"
+  },
+  {
+    "Skills": "Data Presentation to Non-Technical Audiences"
+  },
+  {
+    "Skills": "Data Analysis for Business Strategy"
+  },
+  {
+    "Skills": "Data Analysis for Marketing Insights"
+  },
+  {
+    "Skills": "Data Analysis for Sales Analytics"
+  },
+  {
+    "Skills": "Data Analysis for Financial Planning"
+  },
+  {
+    "Skills": "Data Analysis for Operational Efficiency"
+  },
+  {
+    "Skills": "Data Analysis for Process Improvement"
+  },
+  {
+    "Skills": "Data Analysis for Product Development"
+  },
+  {
+    "Skills": "Data Analysis for Customer Behavior"
+  },
+  {
+    "Skills": "Data Analysis for User Experience (UX)"
+  },
+  {
+    "Skills": "Data Analysis for Risk Assessment"
+  },
+  {
+    "Skills": "Data Analysis for Quality Control"
+  },
+  {
+    "Skills": "Data Analysis for Performance Evaluation"
+  },
+  {
+    "Skills": "Data Analysis for Trend Identification"
+  },
+  {
+    "Skills": "Data Analysis for Forecasting"
+  },
+  {
+    "Skills": "Data Analysis for Root Cause Analysis"
+  },
+  {
+    "Skills": "Data Analysis for Competitor Analysis"
+  },
+  {
+    "Skills": "Data Analysis for Social Media Engagement"
+  },
+  {
+    "Skills": "Data Analysis for Audience Segmentation"
+  },
+  {
+    "Skills": "Data Analysis for Content Strategy"
+  },
+  {
+    "Skills": "Data Analysis for Website Optimization"
+  },
+  {
+    "Skills": "Data Analysis for Campaign Effectiveness"
+  },
+  {
+    "Skills": "Data Analysis for SEO Performance"
+  },
+  {
+    "Skills": "Data Analysis for Customer Retention"
+  },
+  {
+    "Skills": "Data Analysis for Inventory Management"
+  },
+  {
+    "Skills": "Data Analysis for Supply Chain Optimization"
+  },
+  {
+    "Skills": "Data Analysis for Logistics Planning"
+  },
+  {
+    "Skills": "Data Analysis for Cost Management"
+  },
+  {
+    "Skills": "Data Analysis for Budgeting"
+  },
+  {
+    "Skills": "Data Analysis for Resource Allocation"
+  },
+  {
+    "Skills": "Data Analysis for Project Tracking"
+  },
+  {
+    "Skills": "Data Analysis for Performance Metrics"
+  },
+  {
+    "Skills": "Data Analysis for KPI Measurement"
+  },
+  {
+    "Skills": "Data Analysis for Decision Support"
+  },
+  {
+    "Skills": "Data Analysis for Root Cause Identification"
+  },
+  {
+    "Skills": "Data Analysis for Process Efficiency"
+  },
+  {
+    "Skills": "Data Analysis for Continuous Improvement"
+  },
+  {
+    "Skills": "Basic Formulas (SUM, AVERAGE, COUNT, etc.)"
+  },
+  {
+    "Skills": "Advanced Formulas (IF, VLOOKUP, INDEX/MATCH, etc.)"
+  },
+  {
+    "Skills": "Pivot Tables"
+  },
+  {
+    "Skills": "Pivot Charts"
+  },
+  {
+    "Skills": "Data Sorting and Filtering"
+  },
+  {
+    "Skills": "Data Validation"
+  },
+  {
+    "Skills": "Conditional Formatting"
+  },
+  {
+    "Skills": "Cell Formatting (Font, Alignment, Borders, etc.)"
+  },
+  {
+    "Skills": "Data Entry and Editing"
+  },
+  {
+    "Skills": "Basic Chart Creation"
+  },
+  {
+    "Skills": "Advanced Charting (Combo Charts, Sparklines, etc.)"
+  },
+  {
+    "Skills": "Named Ranges"
+  },
+  {
+    "Skills": "Macros and VBA (Visual Basic for Applications)"
+  },
+  {
+    "Skills": "Worksheet Protection and Security"
+  },
+  {
+    "Skills": "Data Import and Export"
+  },
+  {
+    "Skills": "External Data Connections (Power Query)"
+  },
+  {
+    "Skills": "What-If Analysis (Scenario Manager, Goal Seek, etc.)"
+  },
+  {
+    "Skills": "Data Tables"
+  },
+  {
+    "Skills": "Solver Tool"
+  },
+  {
+    "Skills": "Text Functions (LEFT, RIGHT, CONCATENATE, etc.)"
+  },
+  {
+    "Skills": "Date and Time Functions"
+  },
+  {
+    "Skills": "Logical Functions (AND, OR, NOT, etc.)"
+  },
+  {
+    "Skills": "Lookup Functions (VLOOKUP, HLOOKUP, MATCH, etc.)"
+  },
+  {
+    "Skills": "Financial Functions (PV, NPV, IRR, etc.)"
+  },
+  {
+    "Skills": "Statistical Functions (AVERAGEIF, COUNTIF, STDEV, etc.)"
+  },
+  {
+    "Skills": "Array Formulas"
+  },
+  {
+    "Skills": "Linking and Consolidating Data"
+  },
+  {
+    "Skills": "Grouping and Outlining"
+  },
+  {
+    "Skills": "Subtotals"
+  },
+  {
+    "Skills": "Custom Views"
+  },
+  {
+    "Skills": "Data Analysis ToolPak"
+  },
+  {
+    "Skills": "Forecasting Functions (TREND, FORECAST, etc.)"
+  },
+  {
+    "Skills": "Auditing and Error Tracing"
+  },
+  {
+    "Skills": "Watch Window"
+  },
+  {
+    "Skills": "Data Tables for Sensitivity Analysis"
+  },
+  {
+    "Skills": "Histograms and Data Analysis"
+  },
+  {
+    "Skills": "Goal Seek and Solver for Optimization"
+  },
+  {
+    "Skills": "Scenario Manager for What-If Analysis"
+  },
+  {
+    "Skills": "Power Query for Data Transformation"
+  },
+  {
+    "Skills": "Power Pivot for Data Modeling"
+  },
+  {
+    "Skills": "Power View for Interactive Dashboards"
+  },
+  {
+    "Skills": "Power Map for Geographic Data Visualization"
+  },
+  {
+    "Skills": "Power BI Integration"
+  },
+  {
+    "Skills": "Keyboard Shortcuts"
+  },
+  {
+    "Skills": "Freeze Panes and Splitting"
+  },
+  {
+    "Skills": "Custom Views"
+  },
+  {
+    "Skills": "Printing and Page Layout"
+  },
+  {
+    "Skills": "Data Consolidation"
+  },
+  {
+    "Skills": "Text to Columns"
+  },
+  {
+    "Skills": "Creating Custom Formats"
+  },
+  {
+    "Skills": "Data Subtotaling and Grouping"
+  },
+  {
+    "Skills": "Creating Data Entry Forms"
+  },
+  {
+    "Skills": "Customizing the Ribbon and Quick Access Toolbar"
+  },
+  {
+    "Skills": "Using Templates and Themes"
+  },
+  {
+    "Skills": "Data Validation Rules"
+  },
+  {
+    "Skills": "Dynamic Named Ranges"
+  },
+  {
+    "Skills": "Conditional Logic in Formulas"
+  },
+  {
+    "Skills": "Formatting Cells Based on Rules"
+  },
+  {
+    "Skills": "Creating Interactive Dashboards"
+  },
+  {
+    "Skills": "Advanced Data Visualization Techniques"
+  },
+  {
+    "Skills": "Multi-Sheet Linking and Referencing"
+  },
+  {
+    "Skills": "Combining Data from Multiple Sheets"
+  },
+  {
+    "Skills": "Advanced Pivot Table Techniques"
+  },
+  {
+    "Skills": "Pivot Table Calculated Fields and Items"
+  },
+  {
+    "Skills": "Pivot Table Slicers and Timelines"
+  },
+  {
+    "Skills": "Consolidating Data from Multiple Sources"
+  },
+  {
+    "Skills": "Using Excel Tables for Data Management"
+  },
+  {
+    "Skills": "Advanced Chart Customization"
+  },
+  {
+    "Skills": "Creating Waterfall Charts"
+  },
+  {
+    "Skills": "Creating Gantt Charts"
+  },
+  {
+    "Skills": "Using Data Bars and Icon Sets"
+  },
+  {
+    "Skills": "Using Goal Seek for What-If Analysis"
+  },
+  {
+    "Skills": "Monte Carlo Simulation in Excel"
+  },
+  {
+    "Skills": "Using Solver for Optimization Problems"
+  },
+  {
+    "Skills": "Creating Interactive Forms and Surveys"
+  },
+  {
+    "Skills": "Automating Repetitive Tasks with Macros"
+  },
+  {
+    "Skills": "Recording and Editing Macros"
+  },
+  {
+    "Skills": "Debugging and Troubleshooting Macros"
+  },
+  {
+    "Skills": "Customizing VBA User Forms"
+  },
+  {
+    "Skills": "Using VBA Functions and Procedures"
+  },
+  {
+    "Skills": "Error Handling in VBA"
+  },
+  {
+    "Skills": "Working with Excel Add-ins"
+  },
+  {
+    "Skills": "Protecting Worksheets and Workbooks"
+  },
+  {
+    "Skills": "Data Validation Rules and Custom Error Messages"
+  },
+  {
+    "Skills": "Using Advanced Filter"
+  },
+  {
+    "Skills": "Advanced Text Functions (SUBSTITUTE, LEN, etc.)"
+  },
+  {
+    "Skills": "Using Regular Expressions in Excel"
+  },
+  {
+    "Skills": "Using INDEX and MATCH for Advanced Lookups"
+  },
+  {
+    "Skills": "Advanced Statistical Analysis in Excel"
+  },
+  {
+    "Skills": "Using Data Analysis Add-in (Histogram, Regression, etc.)"
+  },
+  {
+    "Skills": "Creating Custom Functions in VBA"
+  },
+  {
+    "Skills": "Working with External Data Sources (Access, SQL, etc.)"
+  },
+  {
+    "Skills": "Using Power Query Editor for Data Transformation"
+  },
+  {
+    "Skills": "Power Pivot Data Modeling and Relationships"
+  },
+  {
+    "Skills": "Power BI Desktop Integration and Publishing"
+  },
+  {
+    "Skills": "Advanced Power BI Visualizations"
+  },
+  {
+    "Skills": "Data Analysis Expressions (DAX) Language"
+  },
+  {
+    "Skills": "Using DAX Functions for Calculations"
+  },
+  {
+    "Skills": "Creating Advanced Data Models with DAX"
+  },
+  {
+    "Skills": "Dynamic Dashboard Creation and Interactivity"
+  },
+  {
+    "Skills": "Software Engineer"
+  },
+  {
+    "Skills": "Registered Nurse"
+  },
+  {
+    "Skills": "Elementary School Teacher"
+  },
+  {
+    "Skills": "Illustrator"
+  },
+  {
+    "Skills": "Public Relations Manager"
+  },
+  {
+    "Skills": "Plumber"
+  },
+  {
+    "Skills": "Baker"
+  },
+  {
+    "Skills": "Machine Learning Engineer"
+  },
+  {
+    "Skills": "Product Manager"
+  },
+  {
+    "Skills": "Judge"
+  },
+  {
+    "Skills": "Surgeon"
+  },
+  {
+    "Skills": "Account Manager"
+  },
+  {
+    "Skills": "Call Center Agent"
+  },
+  {
+    "Skills": "Community Manager"
+  },
+  {
+    "Skills": "Investment Analyst"
+  },
+  {
+    "Skills": "Recruiter"
+  },
+  {
+    "Skills": "Aerospace Engineer"
+  },
+  {
+    "Skills": "Urban Planner"
+  },
+  {
+    "Skills": "Radiologist"
+  },
+  {
+    "Skills": "Sales Manager"
+  },
+  {
+    "Skills": "Event Coordinator"
+  },
+  {
+    "Skills": "Clinical Psychologist"
+  },
+  {
+    "Skills": "Executive Assistant"
+  },
+  {
+    "Skills": "Computer Technician"
+  },
+  {
+    "Skills": "Mortgage Broker"
+  },
+  {
+    "Skills": "Personal Trainer"
+  },
+  {
+    "Skills": "Flight Instructor"
+  },
+  {
+    "Skills": "Copywriter"
+  },
+  {
+    "Skills": "Police Detective"
+  },
+  {
+    "Skills": "Financial Advisor"
+  },
+  {
+    "Skills": "Social Media Coordinator"
+  },
+  {
+    "Skills": "Civil Engineer"
+  },
+  {
+    "Skills": "Landscape Architect"
+  },
+  {
+    "Skills": "Nutritionist"
+  },
+  {
+    "Skills": "Technical Writer"
+  },
+  {
+    "Skills": "Public Health Specialist"
+  },
+  {
+    "Skills": "Architectural Drafter"
+  },
+  {
+    "Skills": "Data Analyst"
+  },
+  {
+    "Skills": "Software Tester"
+  },
+  {
+    "Skills": "Pediatrician"
+  },
+  {
+    "Skills": "Customer Support Specialist"
+  },
+  {
+    "Skills": "Store Clerk"
+  },
+  {
+    "Skills": "Zoologist"
+  },
+  {
+    "Skills": "Software Architect"
+  },
+  {
+    "Skills": "School Counselor"
+  },
+  {
+    "Skills": "Dental Hygienist"
+  },
+  {
+    "Skills": "Equity Research Analyst"
+  },
+  {
+    "Skills": "Multimedia Artist"
+  },
+  {
+    "Skills": "Marketing Coordinator"
+  },
+  {
+    "Skills": "Electrical Engineer"
+  },
+  {
+    "Skills": "Family Physician"
+  },
+  {
+    "Skills": "Environmental Scientist"
+  },
+  {
+    "Skills": "Wedding Planner"
+  },
+  {
+    "Skills": "Physical Therapist"
+  },
+  {
+    "Skills": "Veterinarian Technician"
+  },
+  {
+    "Skills": "Fashion Designer"
+  },
+  {
+    "Skills": "Speech Therapist"
+  },
+  {
+    "Skills": "Financial Manager"
+  },
+  {
+    "Skills": "Archaeologist"
+  },
+  {
+    "Skills": "Barista"
+  },
+  {
+    "Skills": "Nuclear Engineer"
+  },
+  {
+    "Skills": "Occupational Health and Safety Specialist"
+  },
+  {
+    "Skills": "IT Consultant"
+  },
+  {
+    "Skills": "Landscape Designer"
+  },
+  {
+    "Skills": "Oncologist"
+  },
+  {
+    "Skills": "Tax Accountant"
+  },
+  {
+    "Skills": "Research Assistant"
+  },
+  {
+    "Skills": "Software Quality Assurance Engineer"
+  },
+  {
+    "Skills": "Occupational Therapist Assistant"
+  },
+  {
+    "Skills": "Human Resources Coordinator"
+  },
+  {
+    "Skills": "Mechanical Drafter"
+  },
+  {
+    "Skills": "Photographer Assistant"
+  },
+  {
+    "Skills": "Retail Sales Associate"
+  },
+  {
+    "Skills": "Software Support Specialist"
+  },
+  {
+    "Skills": "Zoologist"
+  },
+  {
+    "Skills": "Registered Dietitian"
+  },
+  {
+    "Skills": "Pharmaceutical Sales Representative"
+  },
+  {
+    "Skills": "Environmental Engineer"
+  },
+  {
+    "Skills": "Art Therapist"
+  },
+  {
+    "Skills": "Materials Scientist"
+  },
+  {
+    "Skills": "Corporate Trainer"
+  },
+  {
+    "Skills": "Cardiologist"
+  },
+  {
+    "Skills": "Digital Marketing Specialist"
+  },
+  {
+    "Skills": "Chemical Engineer"
+  },
+  {
+    "Skills": "Nursing Assistant"
+  },
+  {
+    "Skills": "High School Teacher"
+  },
+  {
+    "Skills": "UX Designer"
+  },
+  {
+    "Skills": "IT Manager"
+  },
+  {
+    "Skills": "Digital Illustrator"
+  },
+  {
+    "Skills": "Public Accountant"
+  },
+  {
+    "Skills": "Technical Support Engineer"
+  },
+  {
+    "Skills": "Neurologist"
+  },
+  {
+    "Skills": "Market Research Analyst"
+  },
+  {
+    "Skills": "Solar Energy System Installer"
+  },
+  {
+    "Skills": "Radiologic Technologist"
+  },
+  {
+    "Skills": "IT Project Manager"
+  },
+  {
+    "Skills": "Social Worker Assistant"
+  },
+  {
+    "Skills": "Content Strategist"
+  },
+  {
+    "Skills": "Speechwriter"
+  },
+  {
+    "Skills": "HVAC Technician"
+  },
+  {
+    "Skills": "Forensic Scientist"
+  },
+  {
+    "Skills": "Investment Banker"
+  },
+  {
+    "Skills": "Architectural Designer"
+  },
+  {
+    "Skills": "Paramedic"
+  },
+  {
+    "Skills": "Online Community Manager"
+  },
+  {
+    "Skills": "Sports Coach"
+  },
+  {
+    "Skills": "Chemist"
+  },
+  {
+    "Skills": "Industrial Engineer"
+  },
+  {
+    "Skills": "Economist"
+  },
+  {
+    "Skills": "Financial Analyst"
+  },
+  {
+    "Skills": "Aerospace Technician"
+  },
+  {
+    "Skills": "Chiropractor"
+  },
+  {
+    "Skills": "Brand Manager"
+  },
+  {
+    "Skills": "Occupational Health Nurse"
+  },
+  {
+    "Skills": "Technical Illustrator"
+  },
+  {
+    "Skills": "Public Relations Specialist"
+  },
+  {
+    "Skills": "Environmental Technician"
+  },
+  {
+    "Skills": "Film Director"
+  },
+  {
+    "Skills": "Nurse Practitioner"
+  },
+  {
+    "Skills": "Marketing Director"
+  },
+  {
+    "Skills": "Industrial Designer"
+  },
+  {
+    "Skills": "Art Curator"
+  },
+  {
+    "Skills": "Pediatric Nurse"
+  },
+  {
+    "Skills": "Business Analyst"
+  },
+  {
+    "Skills": "Data Entry Clerk"
+  },
+  {
+    "Skills": "Dental Assistant"
+  },
+  {
+    "Skills": "Anesthesiologist"
+  },
+  {
+    "Skills": "Investment Advisor"
+  },
+  {
+    "Skills": "Fitness Instructor"
+  },
+  {
+    "Skills": "Commercial Pilot"
+  },
+  {
+    "Skills": "Magazine Editor"
+  },
+  {
+    "Skills": "Civil Engineering Technician"
+  },
+  {
+    "Skills": "Genetic Counselor"
+  },
+  {
+    "Skills": "Compensation Analyst"
+  },
+  {
+    "Skills": "Statistician"
+  },
+  {
+    "Skills": "Manufacturing Engineer"
+  },
+  {
+    "Skills": "Hospital Administrator"
+  },
+  {
+    "Skills": "Video Editor"
+  },
+  {
+    "Skills": "Financial Planner"
+  },
+  {
+    "Skills": "Fashion Stylist"
+  },
+  {
+    "Skills": "Medical Laboratory Technician"
+  },
+  {
+    "Skills": "Interior Decorator"
+  },
+  {
+    "Skills": "Child Psychologist"
+  },
+  {
+    "Skills": "Market Researcher"
+  },
+  {
+    "Skills": "Solar Energy Consultant"
+  },
+  {
+    "Skills": "MRI Technologist"
+  },
+  {
+    "Skills": "Entrepreneur"
+  },
+  {
+    "Skills": "Brand Strategist"
+  },
+  {
+    "Skills": "Clinical Research Coordinator"
+  },
+  {
+    "Skills": "Software Development Manager"
+  },
+  {
+    "Skills": "Neurosurgeon"
+  },
+  {
+    "Skills": "Human Resources Manager"
+  },
+  {
+    "Skills": "Editorial Assistant"
+  },
+  {
+    "Skills": "Wildlife Biologist"
+  },
+  {
+    "Skills": "Environmental Planner"
+  },
+  {
+    "Skills": "Political Scientist"
+  },
+  {
+    "Skills": "Manufacturing Technician"
+  },
+  {
+    "Skills": "Medical Coder"
+  },
+  {
+    "Skills": "Investment Manager"
+  },
+  {
+    "Skills": "Yoga Instructor"
+  },
+  {
+    "Skills": "Air Traffic Controller"
+  },
+  {
+    "Skills": "Pharmaceutical Scientist"
+  },
+  {
+    "Skills": "Film Producer"
+  },
+  {
+    "Skills": "Nurse Anesthetist"
+  },
+  {
+    "Skills": "Chief Financial Officer"
+  },
+  {
+    "Skills": "Mobile App Developer"
+  },
+  {
+    "Skills": "Clinical Laboratory Technologist"
+  },
+  {
+    "Skills": "Sound Engineer"
+  },
+  {
+    "Skills": "Event Producer"
+  },
+  {
+    "Skills": "Corporate Attorney"
+  },
+  {
+    "Skills": "Radiology Technician"
+  },
+  {
+    "Skills": "Financial Consultant"
+  },
+  {
+    "Skills": "Technical Writer"
+  },
+  {
+    "Skills": "Speech Pathologist"
+  },
+  {
+    "Skills": "Social Media Manager"
+  },
+  {
+    "Skills": "Public Health Educator"
+  },
+  {
+    "Skills": "Video Game Tester"
+  },
+  {
+    "Skills": "Insurance Agent"
+  },
+  {
+    "Skills": "Wedding Photographer"
+  },
+  {
+    "Skills": "Animal Behaviorist"
+  },
+  {
+    "Skills": "Cryptographer"
+  },
+  {
+    "Skills": "Personal Chef"
+  },
+  {
+    "Skills": "Marine Biologist"
+  },
+  {
+    "Skills": "Industrial Designer"
+  },
+  {
+    "Skills": "Horticulturist"
+  },
+  {
+    "Skills": "Clinical Nurse Specialist"
+  },
+  {
+    "Skills": "Brand Ambassador"
+  },
+  {
+    "Skills": "Laboratory Technician"
+  },
+  {
+    "Skills": "Creative Director"
+  },
+  {
+    "Skills": "User Experience Researcher"
+  },
+  {
+    "Skills": "Medical Illustrator"
+  },
+  {
+    "Skills": "Tax Consultant"
+  },
+  {
+    "Skills": "Pharmaceutical Sales Representative"
+  },
+  {
+    "Skills": "Cinematographer"
+  },
+  {
+    "Skills": "Sustainability Analyst"
+  },
+  {
+    "Skills": "Robotics Engineer"
+  },
+  {
+    "Skills": "Event Planner"
+  },
+  {
+    "Skills": "Investment Banker"
+  },
+  {
+    "Skills": "Sports Psychologist"
+  },
+  {
+    "Skills": "Equity Trader"
+  },
+  {
+    "Skills": "Nurse Midwife"
+  },
+  {
+    "Skills": "Data Scientist"
+  },
+  {
+    "Skills": "Community Outreach Coordinator"
+  },
+  {
+    "Skills": "Computer Systems Analyst"
+  },
+  {
+    "Skills": "Clinical Social Worker"
+  },
+  {
+    "Skills": "Voice Actor"
+  },
+  {
+    "Skills": "Environmental Consultant"
+  },
+  {
+    "Skills": "Biomedical Engineer"
+  },
+  {
+    "Skills": "Architectural Engineer"
+  },
+  {
+    "Skills": "Marketing Analyst"
+  },
+  {
+    "Skills": "Family Therapist"
+  },
+  {
+    "Skills": "Geneticist"
+  },
+  {
+    "Skills": "Financial Analyst"
+  },
+  {
+    "Skills": "Technical Support Specialist"
+  },
+  {
+    "Skills": "Emergency Medical Technician (EMT)"
+  },
+  {
+    "Skills": "Industrial Psychologist"
+  },
+  {
+    "Skills": "Animal Trainer"
+  },
+  {
+    "Skills": "Art Director"
+  },
+  {
+    "Skills": "Ergonomist"
+  },
+  {
+    "Skills": "Pharmacy Technician"
+  },
+  {
+    "Skills": "Film Critic"
+  },
+  {
+    "Skills": "Horticultural Therapist"
+  },
+  {
+    "Skills": "Organizational Development Consultant"
+  },
+  {
+    "Skills": "Biochemist"
+  },
+  {
+    "Skills": "Advertising Copywriter"
+  },
+  {
+    "Skills": "Market Analyst"
+  },
+  {
+    "Skills": "Petroleum Engineer"
+  },
+  {
+    "Skills": "User Interface Designer"
+  },
+  {
+    "Skills": "Nurse Educator"
+  },
+  {
+    "Skills": "Healthcare Administrator"
+  },
+  {
+    "Skills": "Publicist"
+  },
+  {
+    "Skills": "Ethical Hacker"
+  },
+  {
+    "Skills": "Zoologist"
+  },
+  {
+    "Skills": "Occupational Health Specialist"
+  },
+  {
+    "Skills": "Database Administrator"
+  },
+  {
+    "Skills": "Clinical Dietitian"
+  },
+  {
+    "Skills": "Equity Analyst"
+  },
+  {
+    "Skills": "Environmental Scientist"
+  },
+  {
+    "Skills": "Web Developer"
+  },
+  {
+    "Skills": "Brand Designer"
+  },
+  {
+    "Skills": "Chiropractic Assistant"
+  },
+  {
+    "Skills": "Financial Manager"
+  },
+  {
+    "Skills": "Sports Agent"
+  },
+  {
+    "Skills": "Aerospace Engineer"
+  },
+  {
+    "Skills": "Fashion Merchandiser"
+  },
+  {
+    "Skills": "User Experience Designer"
+  },
+  {
+    "Skills": "Orthopedic Surgeon"
+  },
+  {
+    "Skills": "Medical Technologist"
+  },
+  {
+    "Skills": "Investment Analyst"
+  },
+  {
+    "Skills": "Quality Control Inspector"
+  },
+  {
+    "Skills": "Wildlife Photographer"
+  },
+  {
+    "Skills": "Environmental Engineer"
+  },
+  {
+    "Skills": "Visual Effects Artist"
+  },
+  {
+    "Skills": "Nutritionist"
+  },
+  {
+    "Skills": "Public Health Specialist"
+  },
+  {
+    "Skills": "Architectural Drafter"
+  },
+  {
+    "Skills": "Data Analyst"
+  },
+  {
+    "Skills": "Forensic Psychologist"
+  },
+  {
+    "Skills": "Art Therapist"
+  },
+  {
+    "Skills": "Occupational Therapist"
+  },
+  {
+    "Skills": "Biomedical Scientist"
+  },
+  {
+    "Skills": "Software Quality Assurance Engineer"
+  },
+  {
+    "Skills": "Registered Dietitian"
+  },
+  {
+    "Skills": "Supply Chain Manager"
+  },
+  {
+    "Skills": "School Psychologist"
+  },
+  {
+    "Skills": "Veterinary Technologist"
+  },
+  {
+    "Skills": "UX Designer"
+  },
+  {
+    "Skills": "Financial Advisor"
+  },
+  {
+    "Skills": "Airline Pilot"
+  },
+  {
+    "Skills": "Costume Designer"
+  },
+  {
+    "Skills": "Medical Records Technician"
+  },
+  {
+    "Skills": "Anesthesiologist"
+  },
+  {
+    "Skills": "Investment Banker"
+  },
+  {
+    "Skills": "Physical Therapist Assistant"
+  },
+  {
+    "Skills": "Social Media Coordinator"
+  },
+  {
+    "Skills": "Automotive Engineer"
+  },
+  {
+    "Skills": "Public Relations Specialist"
+  },
+  {
+    "Skills": "Architectural Designer"
+  },
+  {
+    "Skills": "Paramedic"
+  },
+  {
+    "Skills": "Marketing Director"
+  },
+  {
+    "Skills": "Chemist"
+  },
+  {
+    "Skills": "Industrial Engineer"
+  },
+  {
+    "Skills": "Economist"
+  },
+  {
+    "Skills": "Clinical Research Coordinator"
+  },
+  {
+    "Skills": "Computer Programmer"
+  },
+  {
+    "Skills": "Art Curator"
+  },
+  {
+    "Skills": "Nurse Practitioner"
+  },
+  {
+    "Skills": "Human Resources Manager"
+  },
+  {
+    "Skills": "Editorial Assistant"
+  },
+  {
+    "Skills": "Marine Biologist"
+  },
+  {
+    "Skills": "Environmental Planner"
+  },
+  {
+    "Skills": "Political Scientist"
+  },
+  {
+    "Skills": "Insurance Underwriter"
+  },
+  {
+    "Skills": "Fashion Designer"
+  },
+  {
+    "Skills": "Pharmacist"
+  },
+  {
+    "Skills": "Emergency Medical Technician (EMT)"
+  },
+  {
+    "Skills": "Sustainability Analyst"
+  },
+  {
+    "Skills": "Electrical Engineer"
+  },
+  {
+    "Skills": "Film Producer"
+  },
+  {
+    "Skills": "User Experience Researcher"
+  },
+  {
+    "Skills": "Clinical Nurse Specialist"
+  },
+  {
+    "Skills": "Brand Ambassador"
+  },
+  {
+    "Skills": "Laboratory Technician"
+  },
+  {
+    "Skills": "Creative Director"
+  },
+  {
+    "Skills": "Data Scientist"
+  },
+  {
+    "Skills": "Community Outreach Coordinator"
+  },
+  {
+    "Skills": "Computer Systems Analyst"
+  },
+  {
+    "Skills": "Clinical Social Worker"
+  },
+  {
+    "Skills": "Voice Actor"
+  },
+  {
+    "Skills": "Environmental Consultant"
+  },
+  {
+    "Skills": "Biomedical Engineer"
+  },
+  {
+    "Skills": "Architectural Engineer"
+  },
+  {
+    "Skills": "Marketing Analyst"
+  },
+  {
+    "Skills": "Family Therapist"
+  },
+  {
+    "Skills": "Geneticist"
+  },
+  {
+    "Skills": "Financial Analyst"
+  },
+  {
+    "Skills": "Technical Support Specialist"
+  },
+  {
+    "Skills": "Veterinary Technician"
+  },
+  {
+    "Skills": "User Interface Designer"
+  },
+  {
+    "Skills": "Nurse Educator"
+  },
+  {
+    "Skills": "Healthcare Administrator"
+  },
+  {
+    "Skills": "Publicist"
+  },
+  {
+    "Skills": "Ethical Hacker"
+  },
+  {
+    "Skills": "Zoologist"
+  },
+  {
+    "Skills": "Occupational Health Specialist"
+  },
+  {
+    "Skills": "Database Administrator"
+  },
+  {
+    "Skills": "Clinical Dietitian"
+  },
+  {
+    "Skills": "Equity Analyst"
+  },
+  {
+    "Skills": "Environmental Scientist"
+  },
+  {
+    "Skills": "Web Developer"
+  },
+  {
+    "Skills": "Brand Designer"
+  },
+  {
+    "Skills": "Financial Manager"
+  },
+  {
+    "Skills": "Sports Agent"
+  },
+  {
+    "Skills": "Aerospace Engineer"
+  },
+  {
+    "Skills": "Fashion Merchandiser"
+  },
+  {
+    "Skills": "User Experience Designer"
+  },
+  {
+    "Skills": "Orthopedic Surgeon"
+  },
+  {
+    "Skills": "Medical Technologist"
+  },
+  {
+    "Skills": "Investment Analyst"
+  },
+  {
+    "Skills": "Quality Control Inspector"
+  },
+  {
+    "Skills": "Wildlife Photographer"
+  },
+  {
+    "Skills": "Environmental Engineer"
+  },
+  {
+    "Skills": "Visual Effects Artist"
+  },
+  {
+    "Skills": "Nutritionist"
+  },
+  {
+    "Skills": "Public Health Specialist"
+  },
+  {
+    "Skills": "Architectural Drafter"
+  },
+  {
+    "Skills": "Data Analyst"
+  },
+  {
+    "Skills": "Forensic Psychologist"
+  },
+  {
+    "Skills": "Art Therapist"
+  },
+  {
+    "Skills": "Occupational Therapist"
+  },
+  {
+    "Skills": "Biomedical Scientist"
+  },
+  {
+    "Skills": "Software Quality Assurance Engineer"
+  },
+  {
+    "Skills": "Registered Dietitian"
+  },
+  {
+    "Skills": "Supply Chain Manager"
+  },
+  {
+    "Skills": "School Psychologist"
+  },
+  {
+    "Skills": "Veterinary Technologist"
+  },
+  {
+    "Skills": "UX Designer"
+  },
+  {
+    "Skills": "Financial Advisor"
+  },
+  {
+    "Skills": "Airline Pilot"
+  },
+  {
+    "Skills": "Costume Designer"
+  },
+  {
+    "Skills": "Medical Records Technician"
+  },
+  {
+    "Skills": "Anesthesiologist"
+  },
+  {
+    "Skills": "Investment Banker"
+  },
+  {
+    "Skills": "Physical Therapist Assistant"
+  },
+  {
+    "Skills": "Social Media Coordinator"
+  },
+  {
+    "Skills": "Automotive Engineer"
+  },
+  {
+    "Skills": "Public Relations Specialist"
+  },
+  {
+    "Skills": "Architectural Designer"
+  },
+  {
+    "Skills": "Paramedic"
+  },
+  {
+    "Skills": "Marketing Director"
+  },
+  {
+    "Skills": "Chemist"
+  },
+  {
+    "Skills": "Industrial Engineer"
+  },
+  {
+    "Skills": "Economist"
+  },
+  {
+    "Skills": "Clinical Research Coordinator"
+  },
+  {
+    "Skills": "Computer Programmer"
+  },
+  {
+    "Skills": "Art Curator"
+  },
+  {
+    "Skills": "Nurse Practitioner"
+  },
+  {
+    "Skills": "Human Resources Manager"
+  },
+  {
+    "Skills": "Editorial Assistant"
+  },
+  {
+    "Skills": "Marine Biologist"
+  },
+  {
+    "Skills": "Environmental Planner"
+  },
+  {
+    "Skills": "Political Scientist"
+  },
+  {
+    "Skills": "Insurance Underwriter"
+  },
+  {
+    "Skills": "Fashion Designer"
+  },
+  {
+    "Skills": "Pharmacist"
+  },
+  {
+    "Skills": "Emergency Medical Technician (EMT)"
+  },
+  {
+    "Skills": "Sustainability Analyst"
+  },
+  {
+    "Skills": "Electrical Engineer"
+  },
+  {
+    "Skills": "Film Producer"
+  },
+  {
+    "Skills": "User Experience Researcher"
+  },
+  {
+    "Skills": "Clinical Nurse Specialist"
+  },
+  {
+    "Skills": "Brand Ambassador"
+  },
+  {
+    "Skills": "Laboratory Technician"
+  },
+  {
+    "Skills": "Creative Director"
+  },
+  {
+    "Skills": "Data Scientist"
+  },
+  {
+    "Skills": "Community Outreach Coordinator"
+  },
+  {
+    "Skills": "Computer Systems Analyst"
+  },
+  {
+    "Skills": "Clinical Social Worker"
+  },
+  {
+    "Skills": "Voice Actor"
+  },
+  {
+    "Skills": "Environmental Consultant"
+  },
+  {
+    "Skills": "Biomedical Engineer"
+  },
+  {
+    "Skills": "Architectural Engineer"
+  },
+  {
+    "Skills": "Marketing Analyst"
+  },
+  {
+    "Skills": "Family Therapist"
+  },
+  {
+    "Skills": "Geneticist"
+  },
+  {
+    "Skills": "Financial Analyst"
+  },
+  {
+    "Skills": "Technical Support Specialist"
+  },
+  {
+    "Skills": "Veterinary Technician"
+  },
+  {
+    "Skills": "User Interface Designer"
+  },
+  {
+    "Skills": "Nurse Educator"
+  },
+  {
+    "Skills": "Healthcare Administrator"
+  },
+  {
+    "Skills": "Publicist"
+  },
+  {
+    "Skills": "Ethical Hacker"
+  },
+  {
+    "Skills": "Zoologist"
+  },
+  {
+    "Skills": "Occupational Health Specialist"
+  },
+  {
+    "Skills": "Database Administrator"
+  },
+  {
+    "Skills": "Clinical Dietitian"
+  },
+  {
+    "Skills": "Equity Analyst"
+  },
+  {
+    "Skills": "Environmental Scientist"
+  },
+  {
+    "Skills": "Web Developer"
+  },
+  {
+    "Skills": "Brand Designer"
+  },
+  {
+    "Skills": "Financial Manager"
+  },
+  {
+    "Skills": "Sports Agent"
+  },
+  {
+    "Skills": "Aerospace Engineer"
+  },
+  {
+    "Skills": "Fashion Merchandiser"
+  },
+  {
+    "Skills": "User Experience Designer"
+  },
+  {
+    "Skills": "Orthopedic Surgeon"
+  },
+  {
+    "Skills": "Medical Technologist"
+  },
+  {
+    "Skills": "Investment Analyst"
+  },
+  {
+    "Skills": "Quality Control Inspector"
+  },
+  {
+    "Skills": "Wildlife Photographer"
+  },
+  {
+    "Skills": "Environmental Engineer"
+  },
+  {
+    "Skills": "Visual Effects Artist"
+  },
+  {
+    "Skills": "Nutritionist"
+  },
+  {
+    "Skills": "Public Health Specialist"
+  },
+  {
+    "Skills": "Architectural Drafter"
+  },
+  {
+    "Skills": "Data Analyst"
+  },
+  {
+    "Skills": "Forensic Psychologist"
+  },
+  {
+    "Skills": "Art Therapist"
+  },
+  {
+    "Skills": "Occupational Therapist"
+  },
+  {
+    "Skills": "Biomedical Scientist"
+  },
+  {
+    "Skills": "Software Quality Assurance Engineer"
+  },
+  {
+    "Skills": "Registered Dietitian"
+  },
+  {
+    "Skills": "Supply Chain Manager"
+  },
+  {
+    "Skills": "School Psychologist"
+  },
+  {
+    "Skills": "Veterinary Technologist"
+  },
+  {
+    "Skills": "UX Designer"
+  },
+  {
+    "Skills": "Financial Advisor"
+  },
+  {
+    "Skills": "Airline Pilot"
+  },
+  {
+    "Skills": "Costume Designer"
+  }
+]

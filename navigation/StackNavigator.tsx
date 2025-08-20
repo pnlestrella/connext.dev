@@ -10,7 +10,11 @@ import { AccountType } from "screens/AccountType";
 import OnboardingScreen1 from "screens/onboarding/OnBoardingScreen1";
 import OnboardingScreen2 from "screens/onboarding/OnBoardingScreen2";
 
-import { AddressScreen } from "screens/AddressScreen";
+//profile edits
+import { AddressScreen } from "screens/profileupdates/AddressScreen";
+import { IndustryScreen } from "screens/profileupdates/IndustryScreen";
+import { SkillsScreen } from "screens/profileupdates/SkillsScreen";
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 
@@ -18,11 +22,7 @@ export default function StackNavigator() {
     const { user, userMDB, userType, firstLaunch } = useAuth()
 
     const location = userMDB?.location
-
-    console.log(!location,'--------------')
-    if (!location) {
-        console.log(location,'meow')
-    }
+    const industries = userMDB?.industries
 
     return (
         <Stack.Navigator
@@ -39,9 +39,19 @@ export default function StackNavigator() {
         >
             {user ? (
                 <>
+                {/* If Profile is incomplete */}
                 {!location && 
                     <Stack.Screen name="address" component={AddressScreen} />
                 }
+                {
+                  !industries && 
+                  <Stack.Screen name='industries'  component={IndustryScreen}/>
+                }
+                { (userType === 'jobseeker' && !userMDB?.skills) &&
+                <Stack.Screen name='skills' component={SkillsScreen}/>
+                }
+
+                {/* Main page */}
                     <Stack.Screen name="home" component={Home} />
                 </>
             ) : firstLaunch ? (

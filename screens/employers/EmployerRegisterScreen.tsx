@@ -53,7 +53,6 @@ export const EmployerRegisterScreen = () => {
 
     // FILE states
     const [documents, setDocuments] = useState<PickedFile[]>([]);
-    const [filepaths, setFilepaths] = useState<string[]>([]);
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
     const MAX_FILES = 3;
 
@@ -178,7 +177,6 @@ export const EmployerRegisterScreen = () => {
                         pathParts.shift();
                         pathParts.shift();
                         const filePath = "/" + pathParts.join("/");
-                        setFilepaths((prev) => [...prev, filePath]);
                         return { fileId: data.fileId, url: data.url, filePath };
                     } else {
                         throw new Error(data.error?.message || "Upload failed");
@@ -188,11 +186,13 @@ export const EmployerRegisterScreen = () => {
 
             console.log("Uploaded files:", uploadedUrls);
             alert("All files uploaded!");
+            return uploadedUrls
         } catch (err) {
             console.error("Upload error:", err);
             Alert.alert("Upload failed. Please try again.");
         }
     };
+
 
     async function handleSubmit() {
         // trim inputs
@@ -244,7 +244,6 @@ export const EmployerRegisterScreen = () => {
 
         //show OTP modal
         setShowOTP(true)
-     
     }
 
 
@@ -253,17 +252,28 @@ export const EmployerRegisterScreen = () => {
            //Registration of the EMPLOYER
         try {
             //uploading the company documents to ImageKIT
-            await uploadAllDocuments();
-            //firebase AUTH registration
+            const uploadedURLS = await uploadAllDocuments();
+            // firebase AUTH registration
             const firebaseRegister = await userRegister(email, password)
             const firebaseUserUID =  firebaseRegister.user.uid
             //MongoDB Employer Registration
+
+            const urls = []
+
+            for(let i = 0 ; i < uploadedURLS.length; i++){
+                urls.push(uploadedURLS[i].filePath)
+            }
+
+            console.log(urls,'urls')
+
             const user = {
                 employerUID: firebaseUserUID,
                 email,
                 companyName,
-                verificationDocs: filepaths
+                verificationDocs: urls
             };
+
+            console.log(user, '-testtt')
 
             const mongoDBRegister =  await fetch(
                 `${Constants?.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/registerEmployers`,

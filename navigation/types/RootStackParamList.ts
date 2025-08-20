@@ -9,6 +9,8 @@ export type RootStackParamList = {
     login: undefined;
     accountType:undefined;
     register: undefined;
+        //edit profile screens
     address:undefined;
-
+    industries:undefined
+    skills:undefined
 }

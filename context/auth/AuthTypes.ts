@@ -7,6 +7,7 @@ export type AuthTypes ={
     loading: boolean
     firstLaunch: boolean
     setUserType: (value: string) => void
+    setUserMDB: (value: string) => void
     setLoading: (value: boolean) => void
     setFirstLaunch: () => void
     signOutUser:() => void
