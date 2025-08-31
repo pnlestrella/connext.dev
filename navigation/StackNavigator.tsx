@@ -1,5 +1,4 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Home } from "screens/Home";
 import { RegisterScreen } from "screens/RegisterScreen";
 import { LoginScreen } from "screens/LoginScreen";
 import { RootStackParamList } from "./types/RootStackParamList";
@@ -15,17 +14,12 @@ import { AddressScreen } from "screens/profileupdates/AddressScreen";
 import { IndustryScreen } from "screens/profileupdates/IndustryScreen";
 import { SkillsScreen } from "screens/profileupdates/SkillsScreen";
 
-//Splash
-import { SplashScreen } from "screens/SplashScreen";
+//Navigations
+import  JobseekerTabs  from "./tabs/JobseekerTabs";
+import EmployerTabs from "./tabs/EmployerTabs";
 
+//Navigation stack
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
-interface UserMDB {
-  skills?: string[]; // or whatever type
-  location?: string;
-  industries?: string[];
-}
-
 
 export default function StackNavigator() {
     const { user, userMDB, userType, firstLaunch } = useAuth()
@@ -33,17 +27,14 @@ export default function StackNavigator() {
     const location = userMDB?.location
     const industries = userMDB?.industries
 
-
-
-
     return (
         <Stack.Navigator
-            screenOptions={{ headerShown: false, animation:'fade' }}
+            screenOptions={{ headerShown: false, animation: 'fade' }}
             initialRouteName={
                 user
                     ? !location // no location set → go to AddressScreen
                         ? "address"
-                        : "address" // location exists → go to Home
+                        : "address" 
                     : firstLaunch
                         ? "onboarding1"
                         : "login"
@@ -51,16 +42,16 @@ export default function StackNavigator() {
         >
             {user ? (
                 <>
-                {/* If Profile is incomplete */}
-                {!location &&  <Stack.Screen name="address" component={AddressScreen} />}
-                {!industries && <Stack.Screen name='industries'  component={IndustryScreen}/>}
-                
-                { (userType === 'jobseeker' && !userMDB?.skills) &&
-                <Stack.Screen name='skills' component={SkillsScreen}/>
-                }
+                    {/* If Profile is incomplete */}
+                    {!location && <Stack.Screen name="address" component={AddressScreen} />}
+                    {!industries && <Stack.Screen name='industries' component={IndustryScreen} />}
 
-                {/* Main page */}
-                    <Stack.Screen name="home" component={Home} />
+                    {(userType === 'jobseeker' && !userMDB?.skills) &&
+                        <Stack.Screen name='skills' component={SkillsScreen} />
+                    }
+
+                    {/* Main page */}
+                    <Stack.Screen name="home" component={userType === 'jobseeker'? JobseekerTabs: EmployerTabs} />
                 </>
             ) : firstLaunch ? (
                 <>
@@ -69,8 +60,8 @@ export default function StackNavigator() {
                 </>
             ) : (
                 <>
-                    <Stack.Screen name="login" component={LoginScreen}  />
-                    <Stack.Screen name="accountType" component={AccountType}  />
+                    <Stack.Screen name="login" component={LoginScreen} />
+                    <Stack.Screen name="accountType" component={AccountType} />
                     <Stack.Screen name="register" component={RegisterScreen} />
                 </>
             )}

@@ -3,7 +3,7 @@ import 'dotenv/config';
 export default {
   expo: {
     name: "connext",
-    slug: "connext",
+    slug: "my-expo-app",
     version: "1.0.0",
     web: {
       favicon: "./assets/favicon.png",
