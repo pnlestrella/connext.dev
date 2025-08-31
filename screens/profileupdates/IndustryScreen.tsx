@@ -35,7 +35,6 @@ export const IndustryScreen = () => {
     setSelected((prev) => {
       const exist = prev.some(item => item.name === industry.name)
       if (exist) {
-
         return prev.filter(item => item.name !== industry.name)
       } else if (prev.length >= 3) {
         alert("You can only pick 3 industries")

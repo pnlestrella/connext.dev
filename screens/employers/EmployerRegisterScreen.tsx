@@ -24,6 +24,7 @@ import { useAuth } from 'context/auth/AuthHook';
 
 //firebase imports
 import { userRegister } from 'firebase/firebaseAuth';
+import { Loading } from 'components/Loading';
 
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -241,13 +242,13 @@ export const EmployerRegisterScreen = () => {
             alert("Passwords do not match.");
             return;
         }
-
         //show OTP modal
         setShowOTP(true)
     }
 
 
    async function onVerify() {
+        setLoading(true)
         alert("verified")
            //Registration of the EMPLOYER
         try {
@@ -287,14 +288,22 @@ export const EmployerRegisterScreen = () => {
 
             console.log(mongoDBRegister, '----------------------')
             alert("successfully created the account")
+            setLoading(false)
         } catch (err) {
             alert(err);
+            setLoading(false)
             return
         }
     }
 
     return (
         <View className="flex-1 bg-white py-10">
+             {loading &&
+                    <View className='absolute inset-0 z-50' style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
+                      <Loading/>
+                    </View>
+                  }
+
             <View className="items-center justify-center pt-6 mt-10 px-10">
                 {/* Header */}
                 <View className="flex-row items-center w-full max-w-md">

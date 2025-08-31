@@ -1,19 +1,15 @@
 {
   "Industries": [
-    { "id": 1, "name": "Customer Service & Call Centers" },
-    { "id": 2, "name": "Sales & Retail" },
-    { "id": 3, "name": "Hospitality & Food Service" },
-    { "id": 4, "name": "Administrative & Office Support" },
-    { "id": 5, "name": "Manufacturing & Warehouse" },
-    { "id": 6, "name": "Transportation & Delivery" },
-    { "id": 7, "name": "Freelance & Gig Economy" },
-    { "id": 8, "name": "Construction & Trades" },
-    { "id": 9, "name": "Marketing & Digital Media" },
-    { "id": 10, "name": "Information Technology(IT)" },
-    { "id": 11, "name": "Healthcare & Medical" },
-    { "id": 12, "name": "Education & Training" },
-    { "id": 13, "name": "Logistics & Supply Chain" },
-    { "id": 14, "name": "Security & Law Enforcement" },
-    { "id": 15, "name": "Nonprofit & Social Services" }
+    { "id": 1, "name": "Retail / Customer Service" },
+    { "id": 2, "name": "Logistics / Delivery" },
+    { "id": 3, "name": "Manufacturing / Production / Operations" },
+    { "id": 4, "name": "Construction / Skilled Trades" },
+    { "id": 5, "name": "Cleaning / Facility Services" },
+    { "id": 6, "name": "Administrative / Office Support" },
+    { "id": 7, "name": "Virtual Assistance / BPO / Online Support" },
+    { "id": 8, "name": "Technical Support / IT Support" },
+    { "id": 9, "name": "Information Technology (Internships / Fresh Grad)" },
+    { "id": 10, "name": "Hospitality / Food Service" }
+
   ]
 }

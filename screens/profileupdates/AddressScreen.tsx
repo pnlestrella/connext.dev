@@ -92,6 +92,7 @@ export const AddressScreen = () => {
         country: selectedCountry,
         province: selectedProvince,
         city: selectedCity,
+        postalCode: postal
       }
     }
     console.log(payload)
@@ -103,7 +104,7 @@ export const AddressScreen = () => {
     }
 
     setUserMDB(res)
-    alert(res.message)
+    alert("Successfully added address")
   };
 
   const renderInput = (

@@ -10,6 +10,7 @@ import { RootStackParamList } from 'navigation/types/RootStackParamList';
 import { useAuth } from 'context/auth/AuthHook';
 import { userRegister } from 'firebase/firebaseAuth';
 import { OTPModal } from 'components/OTP.modal';
+import { Loading } from 'components/Loading';
 
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -57,6 +58,7 @@ export const JSRegisterScreen = () => {
   }
 
   async function onVerify() {
+    setLoading(true)
     // Register in Firebase
     const registerFirebaseUser = await userRegister(email, password);
 
@@ -82,13 +84,20 @@ export const JSRegisterScreen = () => {
       );
       console.log(await response.json());
       console.log('Account created successfully');
+      setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.log(err);
     }
   }
 
   return (
     <SafeAreaView className="flex-1 bg-white pt-3">
+      {loading &&
+        <View className='absolute inset-0 z-50' style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
+          <Loading />
+        </View>
+      }
       <View className="items-center justify-center  px-10">
         {/* Header with logo and title */}
         <View className="flex-row items-center ">

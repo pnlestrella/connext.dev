@@ -15,63 +15,55 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     //To check if the app is ran for the firsttime
     const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
 
-    console.log(userMDB,'--heeeey')
+    console.log(userMDB, '--heeeey')
 
     //check if user is logged in -- PERSISTENCY
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             console.log(firebaseUser?.email)
             setUser(firebaseUser)
 
-            const getJobseeker = async () => {
-                try {
-                    const res = await fetch(
-                        `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/getJobseeker?email=${encodeURIComponent(firebaseUser?.email)}`
+            if (!firebaseUser) {
+                return;
+            }
+
+            let fetchedUserMDB = null;
+
+            // Try jobseeker first
+            try {
+                const resJob = await fetch(
+                    `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/getJobseeker?email=${encodeURIComponent(firebaseUser.email)}`
+                );
+
+                if (resJob.ok) {
+                    const resJSON = await resJob.json();
+                    fetchedUserMDB = resJSON.message;
+                } else {
+                    // fallback to employer
+                    const resEmp = await fetch(
+                        `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/getEmployer?email=${encodeURIComponent(firebaseUser.email)}`
                     );
 
-                    if (!res.ok) {
-                        throw new Error(`Account does not exist in Jobseeker DB`);
+                    if (resEmp.ok) {
+                        const resJSON = await resEmp.json();
+                        fetchedUserMDB = resJSON.message[0];
                     }
-
-                    const resJSON = await res.json()
-                    setUserMDB(resJSON.message)
-                    setUserType(resJSON.message.role)
-                    return resJSON
-                } catch (err: any) {
-                    console.log(err.message)
-                    return null
-                }
-            }
-            getJobseeker()
-            if (user) {
-                return
-            }
-            //if its not in the jobseeker - call employer
-
-            const getEmployer = async () => {
-                try {
-                    const res = await fetch(
-                        `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/getEmployer?email=${encodeURIComponent(firebaseUser?.email)}`
-                    );
-
-                    if (!res.ok) {
-                        throw new Error(`Account does not exist`);
-                    }
-                    const resJSON = await res.json()
-                    setUserMDB(resJSON.message[0])
-                    setUserType(resJSON.message[0].role)
-                    return resJSON
-                } catch (err: any) {
-                    console.log(err.message)
-                    return null
                 }
 
+                if (fetchedUserMDB) {
+                    setUserMDB(fetchedUserMDB);
+                    setUserType(fetchedUserMDB.role);
+                }
+
+            } catch (err: any) {
+                console.log(err.message);
             }
 
-            getEmployer()
         })
+
         return unsubscribe
     }, [user])
+
 
 
     //check if the APP was launched for the first time
@@ -100,7 +92,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-    const value = useMemo(() => ({ user, userMDB, userType, loading, firstLaunch, setUserType, setLoading, setFirstLaunch, signOutUser, setUserMDB}), [user, userType, loading, firstLaunch, userMDB])
+    const value = useMemo(() => ({ user, userMDB, userType, loading, firstLaunch, setUserType, setLoading, setFirstLaunch, signOutUser, setUserMDB }), [user, userType, loading, firstLaunch, userMDB])
+
+
     return (
         <AuthContext value={value}>
             {children}

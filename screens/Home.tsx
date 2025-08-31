@@ -17,7 +17,7 @@ export const Home = () => {
   return (
     <SafeAreaView>
       <Text>{user?.email}</Text>
-        <Text>This is Home {userMDB?.companyName}</Text>
+        <Text>This is Home</Text>
         {/* <Text>Welcome {user?.email}</Text> */}
         <Button title="logout" onPress={async() => {
           try{

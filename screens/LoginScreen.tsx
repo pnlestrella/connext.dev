@@ -5,9 +5,13 @@ import { RootStackParamList } from 'navigation/types/RootStackParamList';
 import { useState } from 'react';
 import Constants from 'expo-constants'
 import { userLogin } from 'firebase/firebaseAuth';
+import { Loading } from 'components/Loading';
+import { useAuth } from 'context/auth/AuthHook';
+
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'login'>
 
 export function LoginScreen() {
+  const { setLoading, loading } = useAuth()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [keepSignedIn, setKeepSignedIn] = useState(false);
@@ -15,6 +19,7 @@ export function LoginScreen() {
   const navigation = useNavigation<NavigationProp>();
 
   const handleLogin = async (role: 'jobseeker' | 'employer') => {
+    setLoading(true)
     console.log("hey")
     console.log(role)
 
@@ -42,6 +47,7 @@ export function LoginScreen() {
         }
 
         await userLogin(email, password)
+         setLoading(false)
 
       } else {
         const res = await fetch(
@@ -54,16 +60,25 @@ export function LoginScreen() {
         }
 
         await userLogin(email, password)
+       setLoading(false)
+
       }
 
     } catch (err: any) {
       alert(err.code || 'Login failed');
+      setLoading(false)
       console.log(err, '--=====================================================-');
     }
   };
 
   return (
     <View className="flex-1 items-center justify-center px-8 bg-white">
+      {loading &&
+        <View className='absolute inset-0 z-50' style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
+          <Loading />
+        </View>
+      }
+
       {/* Logo Section */}
       <View className="items-center mb-8">
         <Image source={require('../assets/images/app_logo.png')} className="w-[330px] h-[95px]" resizeMode="contain" />

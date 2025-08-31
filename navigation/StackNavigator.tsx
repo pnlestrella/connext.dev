@@ -15,7 +15,16 @@ import { AddressScreen } from "screens/profileupdates/AddressScreen";
 import { IndustryScreen } from "screens/profileupdates/IndustryScreen";
 import { SkillsScreen } from "screens/profileupdates/SkillsScreen";
 
+//Splash
+import { SplashScreen } from "screens/SplashScreen";
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+interface UserMDB {
+  skills?: string[]; // or whatever type
+  location?: string;
+  industries?: string[];
+}
 
 
 export default function StackNavigator() {
@@ -24,9 +33,12 @@ export default function StackNavigator() {
     const location = userMDB?.location
     const industries = userMDB?.industries
 
+
+
+
     return (
         <Stack.Navigator
-            screenOptions={{ headerShown: false }}
+            screenOptions={{ headerShown: false, animation:'fade' }}
             initialRouteName={
                 user
                     ? !location // no location set → go to AddressScreen
@@ -40,13 +52,9 @@ export default function StackNavigator() {
             {user ? (
                 <>
                 {/* If Profile is incomplete */}
-                {!location && 
-                    <Stack.Screen name="address" component={AddressScreen} />
-                }
-                {
-                  !industries && 
-                  <Stack.Screen name='industries'  component={IndustryScreen}/>
-                }
+                {!location &&  <Stack.Screen name="address" component={AddressScreen} />}
+                {!industries && <Stack.Screen name='industries'  component={IndustryScreen}/>}
+                
                 { (userType === 'jobseeker' && !userMDB?.skills) &&
                 <Stack.Screen name='skills' component={SkillsScreen}/>
                 }
@@ -61,8 +69,8 @@ export default function StackNavigator() {
                 </>
             ) : (
                 <>
-                    <Stack.Screen name="login" component={LoginScreen} />
-                    <Stack.Screen name="accountType" component={AccountType} />
+                    <Stack.Screen name="login" component={LoginScreen}  />
+                    <Stack.Screen name="accountType" component={AccountType}  />
                     <Stack.Screen name="register" component={RegisterScreen} />
                 </>
             )}
