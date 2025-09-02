@@ -4,13 +4,22 @@ import StackNavigator from 'navigation/StackNavigator';
 import './global.css';
 import { AuthProvider } from 'context/auth/AuthProvider';
 
+import FontProvider from 'context/fonts/FontProvider';
+
+
 export default function App() {
+
+
+
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <StackNavigator/>
-      </NavigationContainer>
-    </AuthProvider>
+    <FontProvider>
+      <AuthProvider>
+        <NavigationContainer>
+          <StackNavigator />
+        </NavigationContainer>
+      </AuthProvider>
+    </FontProvider>
+
 
   );
 }

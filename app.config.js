@@ -6,7 +6,7 @@ export default {
     slug: "my-expo-app",
     version: "1.0.0",
     web: {
-      favicon: "./assets/favicon.png",
+      favicon: "./assets/favicon_v2.png",
       bundler: "metro"
     },
     experiments: {
@@ -14,10 +14,10 @@ export default {
     },
     plugins: [],
     orientation: "portrait",
-    icon: "./assets/icon.png",
+    icon: "./assets/icon_v2.png",
     userInterfaceStyle: "light",
     splash: {
-      image: "./assets/splash.png",
+      image: "./assets/splash_v2.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff"
     },
@@ -29,7 +29,7 @@ export default {
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: "./assets/adaptive-icon.png",
+        foregroundImage: "./assets/adaptive-icon_v2.png",
         backgroundColor: "#ffffff"
       },
       package: "com.pnes.Connext"
@@ -46,7 +46,9 @@ export default {
       FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
       FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
       //backend
-      BACKEND_BASE_URL: process.env.BACKEND_BASE_URL
+      BACKEND_BASE_URL: process.env.BACKEND_BASE_URL,
+      //reco
+      RECO_BASE_URL: process.env.RECO_BASE_URL
 
     }
   }

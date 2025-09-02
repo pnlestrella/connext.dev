@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const SplashScreen = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView className='flex justify-center items-center h-full'>
          <Image source={require('../assets/images/app_logo.png')} className="w-[330px] h-[95px]" resizeMode="contain" />
     </SafeAreaView>
   );

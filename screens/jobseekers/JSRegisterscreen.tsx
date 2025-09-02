@@ -92,7 +92,7 @@ export const JSRegisterScreen = () => {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white pt-3">
+    <SafeAreaView className="flex-1 bg-white pt-3 ">
       {loading &&
         <View className='absolute inset-0 z-50' style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
           <Loading />

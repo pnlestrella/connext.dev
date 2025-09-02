@@ -12,18 +12,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [userMDB, setUserMDB] = useState<AuthTypes['userMDB'] | null>(null)
     const [userType, setUserType] = useState<AuthTypes['userType'] | null>(null)
     const [loading, setLoading] = useState<AuthTypes['loading'] | null>(null)
+    const [initializing, setInitializing] = useState(true)
     //To check if the app is ran for the firsttime
     const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
-
-    console.log(userMDB, '--heeeey')
 
     //check if user is logged in -- PERSISTENCY
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             console.log(firebaseUser?.email)
             setUser(firebaseUser)
+            const userProfile = await AsyncStorage.getItem('userProfile')
+            setUserMDB(JSON.parse(userProfile))
 
             if (!firebaseUser) {
+                setInitializing(false)
                 return;
             }
 
@@ -53,13 +55,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 if (fetchedUserMDB) {
                     setUserMDB(fetchedUserMDB);
                     setUserType(fetchedUserMDB.role);
+
+                    //update the async storage
+                    await AsyncStorage.setItem('userProfile', JSON.stringify(fetchedUserMDB))
                 }
 
+                setInitializing(false)
             } catch (err: any) {
                 console.log(err.message);
             }
 
         })
+
+
 
         return unsubscribe
     }, [user])
@@ -73,8 +81,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
             if (launchFlag === null) {
                 await AsyncStorage.setItem("hasLaunchedBefore", "true");
+                setInitializing(false)
                 setFirstLaunch(true);
             } else {
+                setInitializing(false)
                 setFirstLaunch(false);
             }
 
@@ -92,7 +102,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-    const value = useMemo(() => ({ user, userMDB, userType, loading, firstLaunch, setUserType, setLoading, setFirstLaunch, signOutUser, setUserMDB }), [user, userType, loading, firstLaunch, userMDB])
+    const value = useMemo(() => ({ user, userMDB, userType, loading, firstLaunch,initializing, setUserType, setLoading, setFirstLaunch, signOutUser, setUserMDB }), [user, userType, loading, firstLaunch, userMDB])
 
 
     return (

@@ -31,7 +31,8 @@ export default function JobseekerTabs(){
                 }
             },
             tabBarActiveTintColor: '#6C63FF',
-            tabBarInactiveTintColor: 'gray'
+            tabBarInactiveTintColor: 'gray',
+            headerShown:false
             
         })}>
             <Tab.Screen name="Browse"  component={BrowseScreen}/>

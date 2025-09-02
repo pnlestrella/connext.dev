@@ -13,4 +13,7 @@ export type RootStackParamList = {
     address:undefined;
     industries:undefined
     skills:undefined
+
+    //splash
+    splash:undefined
 }

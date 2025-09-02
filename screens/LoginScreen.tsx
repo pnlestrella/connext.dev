@@ -7,11 +7,13 @@ import Constants from 'expo-constants'
 import { userLogin } from 'firebase/firebaseAuth';
 import { Loading } from 'components/Loading';
 import { useAuth } from 'context/auth/AuthHook';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'login'>
 
 export function LoginScreen() {
-  const { setLoading, loading } = useAuth()
+  const {  loading,setLoading, setUserMDB } = useAuth()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [keepSignedIn, setKeepSignedIn] = useState(false);
@@ -42,12 +44,19 @@ export function LoginScreen() {
         );
 
         if (!res.ok) {
-          console.log("Hey")
+          console.log("Account Does not exist")
           throw new Error("Account Does not exist")
         }
+        const userProfile = await res.json()
+
+        setUserMDB(userProfile.message)
+        
+        //set Async storage for UX purpose
+        await AsyncStorage.setItem('userProfile',JSON.stringify(userProfile.message))
 
         await userLogin(email, password)
-         setLoading(false)
+        setLoading(false)
+
 
       } else {
         const res = await fetch(
@@ -55,9 +64,15 @@ export function LoginScreen() {
         );
 
         if (!res.ok) {
-          console.log("Hey")
+          console.log("Account Does not Exist")
           throw new Error("Account Does not exist")
         }
+
+        const userProfile = await res.json()
+        setUserMDB(userProfile.message)
+
+        //set Async storage for UX purpose
+        await AsyncStorage.setItem('userProfile',JSON.stringify(userProfile.message))
 
         await userLogin(email, password)
        setLoading(false)
@@ -65,9 +80,15 @@ export function LoginScreen() {
       }
 
     } catch (err: any) {
-      alert(err.code || 'Login failed');
       setLoading(false)
+      alert(err.code || 'Login failed');
       console.log(err, '--=====================================================-');
+      console.log(err.message)
+      if(err.message === 'Network request failed'){
+        alert("Turn on the SERVER!")
+        await AsyncStorage.clear()
+        setUserMDB(null)
+      }
     }
   };
 
@@ -99,9 +120,10 @@ export function LoginScreen() {
           </View>
 
           <TextInput
-            className="border border-gray-300 rounded-lg p-3 mb-5"
+            className="border border-gray-300 rounded-lg p-3 mb-5 text-black"
             placeholder="johndoe@gmail.com"
             value={email}
+            placeholderTextColor="#9CA3AF"
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
@@ -110,7 +132,7 @@ export function LoginScreen() {
 
         {/* Password Input */}
         <View>
-          <View className="flex-row items-center mb-2">
+          <View className="flex-row items-center mb-2 text-black">
             <Text style={styles.fieldHeader} className="ml-2 mt-2">Password</Text>
           </View>
 
@@ -118,6 +140,7 @@ export function LoginScreen() {
             className="border border-gray-300 rounded-lg p-3"
             placeholder="Enter your password"
             value={password}
+            placeholderTextColor="#9CA3AF"
             onChangeText={setPassword}
             secureTextEntry
           />

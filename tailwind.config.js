@@ -9,6 +9,20 @@ module.exports = {
         brand: {
           purpleMain: '#6C63FF'
         }
+      },
+      fontFamily: {
+        lexend: [
+          "Lexend-Regular",
+          "Lexend-Medium",
+          "Lexend-SemiBold",
+          "Lexend-Bold",
+        ],
+        poppins: [
+          "Poppins-Regular",
+          "Poppins-Medium",
+          "Poppins-SemiBold",
+          "Poppins-Bold",
+        ],
       }
     },
   },

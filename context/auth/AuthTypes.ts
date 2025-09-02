@@ -13,6 +13,9 @@ interface UserMDB {
   location?: Location;
   skills?: string[];
   profileSummary?: string;
+  skippedJobs?: string[];
+  experience?: string[];
+  certifications?: string[];
   status: boolean;
   __v: number;
 }
@@ -23,6 +26,7 @@ export type AuthTypes ={
     userType: string;
     loading: boolean
     firstLaunch: boolean,
+    initializing: boolean,
     setUserType: (value: string) => void
     setUserMDB: (value: string) => void
     setLoading: (value: boolean) => void
