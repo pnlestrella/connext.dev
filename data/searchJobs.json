@@ -1,0 +1,50 @@
+[
+  { "title": "Restaurant Staff", "industries": ["Hospitality / Food Service"] },
+  { "title": "Service Crew", "industries": ["Hospitality / Food Service", "Retail / Customer Service"] },
+  { "title": "Waiter / Waitress", "industries": ["Hospitality / Food Service"] },
+  { "title": "Kitchen Helper", "industries": ["Hospitality / Food Service"] },
+  { "title": "Barista", "industries": ["Hospitality / Food Service"] },
+
+  { "title": "Sales Staff", "industries": ["Retail / Customer Service"] },
+  { "title": "Cashier", "industries": ["Retail / Customer Service", "Hospitality / Food Service"] },
+  { "title": "Store Clerk", "industries": ["Retail / Customer Service", "Administrative / Office Support"] },
+  { "title": "Merchandiser", "industries": ["Retail / Customer Service", "Logistics / Delivery"] },
+  { "title": "Promodiser", "industries": ["Retail / Customer Service"] },
+
+  { "title": "Warehouse Staff", "industries": ["Logistics / Delivery"] },
+  { "title": "Delivery Driver", "industries": ["Logistics / Delivery"] },
+  { "title": "Company Driver", "industries": ["Logistics / Delivery", "Construction / Skilled Trades"] },
+  { "title": "Courier / Rider", "industries": ["Logistics / Delivery"] },
+  { "title": "Messenger", "industries": ["Logistics / Delivery", "Administrative / Office Support"] },
+
+  { "title": "Virtual Assistant", "industries": ["Virtual Assistance / BPO / Online Support", "Administrative / Office Support"] },
+  { "title": "Customer Service Representative (CSR)", "industries": ["Virtual Assistance / BPO / Online Support", "Retail / Customer Service"] },
+  { "title": "Data Entry Clerk", "industries": ["Virtual Assistance / BPO / Online Support", "Administrative / Office Support"] },
+  { "title": "Online Support Staff", "industries": ["Virtual Assistance / BPO / Online Support"] },
+  { "title": "Virtual Staff", "industries": ["Virtual Assistance / BPO / Online Support"] },
+
+  { "title": "Technical Support Specialist", "industries": ["Technical Support / IT Support", "Virtual Assistance / BPO / Online Support"] },
+  { "title": "Helpdesk Support", "industries": ["Technical Support / IT Support", "Virtual Assistance / BPO / Online Support"] },
+  { "title": "IT Support Staff", "industries": ["Technical Support / IT Support"] },
+  { "title": "Desktop Support Technician", "industries": ["Technical Support / IT Support"] },
+  { "title": "Call Center Technical Support", "industries": ["Technical Support / IT Support", "Virtual Assistance / BPO / Online Support"] },
+
+  { "title": "Janitor", "industries": ["Cleaning / Facility Services"] },
+  { "title": "Housekeeper", "industries": ["Cleaning / Facility Services", "Hospitality / Food Service"] },
+  { "title": "Building Maintenance Staff", "industries": ["Cleaning / Facility Services", "Construction / Skilled Trades"] },
+  { "title": "Utility Worker", "industries": ["Cleaning / Facility Services", "Construction / Skilled Trades"] },
+  { "title": "Sanitation Staff", "industries": ["Cleaning / Facility Services", "Hospitality / Food Service"] },
+
+  { "title": "Construction Worker", "industries": ["Construction / Skilled Trades"] },
+  { "title": "Carpenter", "industries": ["Construction / Skilled Trades"] },
+  { "title": "Mason", "industries": ["Construction / Skilled Trades"] },
+  { "title": "Electrician", "industries": ["Construction / Skilled Trades"] },
+  { "title": "Plumber", "industries": ["Construction / Skilled Trades"] },
+  { "title": "Welder", "industries": ["Construction / Skilled Trades"] },
+
+  { "title": "IT Intern", "industries": ["Information Technology (Internships / Fresh Grad)"] },
+  { "title": "Web Developer", "industries": ["Information Technology (Internships / Fresh Grad)"] },
+  { "title": "Junior Software Engineer", "industries": ["Information Technology (Internships / Fresh Grad)"] },
+  { "title": "IT Fresh Graduate", "industries": ["Information Technology (Internships / Fresh Grad)"] },
+  { "title": "Computer Science Intern", "industries": ["Information Technology (Internships / Fresh Grad)"] }
+]

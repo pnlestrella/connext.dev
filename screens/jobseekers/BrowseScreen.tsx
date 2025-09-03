@@ -1,18 +1,64 @@
-import { Pressable, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import CardSwipe from 'components/Swiping/CardSwipe';
-import { Header } from 'components/Header';
-import { useState } from 'react';
 import {
-  Search, SlidersHorizontal
-} from 'lucide-react-native';
-import { Filtering } from 'components/Filtering/Filtering';
+  Pressable,
+  Text,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import CardSwipe from "components/Swiping/CardSwipe";
+import { Header } from "components/Header";
+import { useState } from "react";
+import { Search, SlidersHorizontal } from "lucide-react-native";
+
+//Filtering & Searching
+import { Filtering } from "components/Filtering&Searching/Filtering";
+import { SearchSheet } from "components/Filtering&Searching/SearchSheet";
+import { useAuth } from "context/auth/AuthHook";
+
+type Job = {
+  jobUID: string;
+  companyName?: string;
+  score: number;
+  feedback: {
+    match_summary: string;
+    skill_note: string;
+    extra_note: string;
+  };
+  boostWeight: number;
+  _id: string;
+  jobPoster?: string;
+  jobTitle: string;
+  jobIndustry: string;
+  jobDescription: string;
+  jobSkills: string[];
+  location: {
+    city: string;
+    state: string;
+    postalCode: string;
+  };
+  employment: string[];
+  workTypes: string[];
+  salaryRange: {
+    min: number;
+    max: number;
+    currency: string;
+    frequency: string;
+  };
+  jobNormalized: string;
+  profilePic: string;
+  isExternal: boolean;
+  status: boolean;
+};
+
+type BrowseScreenTypes = {
+  userSearch: { title: string; industries: string[] };
+};
 
 
 
 
 export const BrowseScreen = () => {
-  const [jobPostings, setJobPostings] = useState([
+  const { userMDB } = useAuth();
+  const [jobPostings, setJobPostings] = useState<Job[]>([
     {
       jobUID: "job54",
       companyName: "Simons Company",
@@ -178,8 +224,10 @@ Cebu City (Required)
       isExternal: true,
       status: true,
     },
-  ])
+  ]);
 
+  // Filter
+  const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
 
 
   //For Card Swiping & Bottom Sheets effect of it
@@ -187,50 +235,109 @@ Cebu City (Required)
   const [isExpanded, setIsExpanded] = useState(false);
 
   //for Filtering & Search
-  const [showFilter, setShowFilter] = useState(false)
+  const [showFilter, setShowFilter] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+
+  const [userSearch, setUserSearch] = useState("");
+  const [tempSearch, setTempSearch] = useState<BrowseScreenTypes['userSearch']>();
+
+
+
+  //For query
+  const userProfile = {
+    seekerUID: userMDB?.seekerUID,
+    skills: userMDB?.skills,
+    profileSummary: userMDB?.profileSummary,
+    industries: userMDB?.industries,
+    skippedJobs: userMDB?.skippedJobs,
+    experience: userMDB?.experience,
+    certifications: userMDB?.certifications,
+  };
+
+  console.log(tempSearch);
 
   function handleBG() {
-    setShowModal(false)
-    setShowFilter(false)
-    if (setIsExpanded) {
-      setIsExpanded(false)
+    setShowModal(false);
+    setShowFilter(false);
+    setShowSearch(false);
+    if (showSearch) {
+      setShowFilter(true);
     }
   }
 
-
-  console.log(showModal)
-
   return (
-    <SafeAreaView className='bg-white' style={{ flex: 1 }}>
+    <SafeAreaView className="bg-white" style={{ flex: 1 }}>
       <Header />
 
-      <View className='flex-row justify-between px-6'>
-        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 24, color: '#37424F' }}>Find Jobs</Text>
+      <View className="flex-row justify-between px-6">
+        <Text
+          style={{
+            fontFamily: "Poppins-Bold",
+            fontSize: 24,
+            color: "#37424F",
+          }}
+        >
+          Find Jobs
+        </Text>
 
+        {/* For Filtering & Searchng */}
         <Pressable
           onPress={() => setShowFilter(true)}
-        className='w-[62%] rounded-xl justify-center p-2' style={{ backgroundColor: "#EFEFEF" }}>
-          <View className='flex-row items-center justify-between'>
-            <View className='flex-row items-center'>
-              <Search></Search>
-              <Text className='font-lexend color-slate-600 text-base'>Search Here</Text>
+          className="w-[62%] rounded-xl justify-center p-2"
+          style={{ backgroundColor: "#EFEFEF" }}
+        >
+          <View className="flex-row items-center justify-between">
+            <View className="flex-row items-center">
+              <Search />
+              <Text className="font-lexend color-slate-600 text-base">
+                {(userSearch || "Search Here").length > 16
+                  ? (userSearch || "Search Here").slice(0, 16) + "..."
+                  : userSearch || "Search Here"}
+              </Text>
             </View>
-            <SlidersHorizontal width={18}></SlidersHorizontal>
+            <SlidersHorizontal width={18} />
           </View>
         </Pressable>
-
       </View>
-      <CardSwipe showModal={showModal} isExpanded={isExpanded} setIsExpanded={setIsExpanded} setShowModal={setShowModal} jobPostings={jobPostings} />
 
-      <Filtering showFilter={showFilter}></Filtering>
+      <CardSwipe
+        showModal={showModal}
+        isExpanded={isExpanded}
+        setIsExpanded={setIsExpanded}
+        setShowModal={setShowModal}
+        jobPostings={jobPostings}
+      />
+
+      {/* Search And Filtering Components  */}
+      <Filtering
+        tempSearch={tempSearch}
+        showFilter={showFilter}
+        selected={selected}
+        userSearch={userSearch}
+        setSelected={setSelected}
+        setShowSearch={setShowSearch}
+        setUserSearch={setUserSearch}
+        setShowFilter={setShowFilter}
+        //userSearch
+        userProfile={userProfile}
+        //for JOB LISTINGS
+        setJobPostings={setJobPostings}
+      />
+      <SearchSheet
+        setShowSearch={setShowSearch}
+        setTempSearch={setTempSearch}
+        tempSearch={tempSearch}
+        showSearch={showSearch}
+      />
 
       {/* for the black screen */}
-      {(showModal || showFilter) && (
-        <Pressable onPress={handleBG} className="absolute inset-0 bg-black z-[100]" style={{ backgroundColor: "rgba(0,0,0,0.5)" }} />
+      {(showModal || showFilter || showSearch) && (
+        <Pressable
+          onPress={handleBG}
+          className="absolute inset-0 bg-black z-[100]"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        />
       )}
-
-
     </SafeAreaView>
-
   );
 };

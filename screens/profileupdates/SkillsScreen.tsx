@@ -87,21 +87,6 @@ export const SkillsScreen = () => {
 
       <View className='my-2'>
         <TextInput value={search} onChangeText={setSearch} placeholder='Search skills ...' className='border border-gray-300 bg-gray-200 rounded-lg p-3 mb-3' />
-        <View className="flex flex-row flex-wrap">
-          {/* {selected.map((item) => (
-            <Pressable
-              key={item.id.toString()}
-              className="bg-brand-purpleMain px-0.5 py-0.5 m-1 rounded-full justify-center"
-              onPress={() => handleSelect(item)}
-            >
-              <View className="flex flex-row bg-brand-purpleMain px-0.5 py-0.5 m-1 rounded-full items-center">
-                <Text className="text-white mr-2">{item.name}</Text>
-                <Text className="text-white font-bold">×</Text>
-              </View>
-
-            </Pressable>
-          ))} */}
-        </View>
 
         <Text>Please select atleast 1 Skill, Max of 10: </Text>
 
