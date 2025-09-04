@@ -313,6 +313,12 @@ Cebu City (Required)
             const toRight = dx > 0;
             const toX = toRight ? SCREEN_WIDTH * 1.2 : -SCREEN_WIDTH * 1.2;
 
+            if(toRight){
+              console.log("to rIght")
+            }else{
+              console.log("To left")
+            }
+
             Animated.timing(cardPan, {
               toValue: { x: toX, y: 0 },
               duration: 200,

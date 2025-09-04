@@ -4,6 +4,7 @@ export async function recoSys(profileQuery: object, setJobPostings : (value: [ob
   const url = `${Constants.expoConfig?.extra?.RECO_BASE_URL}/api/getReco`;
 
   try {
+    // const profileQuery.skippedJobs =  
 
 
     const res = await fetch(url, {
@@ -17,6 +18,6 @@ export async function recoSys(profileQuery: object, setJobPostings : (value: [ob
     console.log(resJSON, '------------- AAAAAAAAAAAAAAAAAAAAAAA');
     setJobPostings(resJSON)
   } catch (err) {
-    console.log(err);
+    throw err
   }
 }

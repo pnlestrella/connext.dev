@@ -19,6 +19,7 @@ import {
 } from "lucide-react-native";
 import BottomSheet from "./BottomSheet";
 
+
 // For images
 const Indeed =
   "https://ik.imagekit.io/mnv8wgsbk/Public%20Images/indeed_logo.png?updatedAt=1756757217985";
@@ -29,48 +30,48 @@ const sheetHeight = 400;
 
 // Sample job postings
 
-  type Job = {
-    boostWeight: number;
-    companyName: string;
-    employment: string[];
-    feedback: {
-        match_summary: string;
-        skill_note: string;
-        extra_note: string,
-    };
-    isExternal: boolean;
-    jobDescription: string;
-    jobIndustry: string;
-    jobNormalized: string;
-    jobSkills: string[];
-    jobTitle: string;
-    jobUID: string;
-    location: {
-        city: string;
-        postalCode: string;
-        state: string;
-    };
-    profilePic: string;
-    salaryRange: {
-        currency: string;
-        frequency: string;
-        max: number;
-        min: number;
-    };
-    score: number;
-    status: boolean;
-    workTypes: string[];
+type Job = {
+  boostWeight: number;
+  companyName: string;
+  employment: string[];
+  feedback: {
+    match_summary: string;
+    skill_note: string;
+    extra_note: string,
+  };
+  isExternal: boolean;
+  jobDescription: string;
+  jobIndustry: string;
+  jobNormalized: string;
+  jobSkills: string[];
+  jobTitle: string;
+  jobUID: string;
+  location: {
+    city: string;
+    postalCode: string;
+    state: string;
+  };
+  profilePic: string;
+  salaryRange: {
+    currency: string;
+    frequency: string;
+    max: number;
+    min: number;
+  };
+  score: number;
+  status: boolean;
+  workTypes: string[];
 };
 
 type CStypes = {
   showModal: boolean,
-  setShowModal: (value:boolean) => void
+  setShowModal: (value: boolean) => void
   isExpanded: boolean,
   setIsExpanded: (value: boolean) => void
   jobPostings: Job
 }
 
-export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsExpanded, jobPostings }: CStypes) {
+export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsExpanded, jobPostings, setJobPostings, setShortlistedJobs, setSkipped }: CStypes) {
   // BottomSheet state
 
   const viewMore = () => {
@@ -83,6 +84,21 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
   const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
 
   /** ------------ Swipe Cards ------------ */
+
+  // Track when a swipe finishes
+  const [swipeDone, setSwipeDone] = useState(false);
+
+  // Reset cardPan only AFTER the list updates
+  React.useEffect(() => {
+    if (swipeDone) {
+      cardPan.setValue({ x: 0, y: 0 });
+      setSwipeDone(false);
+    }
+  }, [jobPostings, swipeDone]);
+
+
+
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const cardPan = useRef(new Animated.ValueXY()).current;
 
@@ -123,10 +139,23 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
             Animated.timing(cardPan, {
               toValue: { x: toX, y: 0 },
               duration: 200,
+              easing: Easing.out(Easing.ease),
               useNativeDriver: false,
             }).start(() => {
-              cardPan.setValue({ x: 0, y: 0 });
-              setCurrentIndex((prev) => (prev + 1) % jobPostings.length);
+              // Remove the swiped card
+              setJobPostings((prev: any) => {
+                if (prev.length > 0) {
+                  if (toRight) {
+                    setShortlistedJobs((p: any) => [...p, prev[0]]);
+                  } else {
+                    setSkipped((p: any) => [...p, prev[0].jobUID]);
+                  }
+                }
+                return prev.slice(1);
+              });
+
+              // Tell the effect hook to reset AFTER re-render
+              setSwipeDone(true);
             });
           } else {
             Animated.spring(cardPan, {
@@ -135,7 +164,8 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
               useNativeDriver: false,
             }).start();
           }
-        },
+        }
+
       }),
     [cardPan]
   );
@@ -187,7 +217,7 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
             <View className="py-4 px-2">
               <View className="flex-row items-center mb-2">
                 <BriefcaseBusiness size={20} color={"white"} />
-                <Text className="text-white text-xl font-bold ml-2">{currentJob.jobTitle}</Text>
+                <Text className="text-white text-xl ml-2 " style={{ fontFamily: "Lexend-SemiBold" }} >{currentJob.jobTitle}</Text>
               </View>
               <View className="flex-row items-center mb-2">
                 <PhilippinePeso size={20} color={"white"} />

@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 
 import { Checkbox } from "react-native-paper";
-import Constants from 'expo-constants'
 import { recoSys } from 'api/recosys';
-
+import { Loading } from 'components/Loading';
+import { useAuth } from 'context/auth/AuthHook';
 
 const filterOptions = [
     { id: "1", label: "Full-time" },
@@ -34,7 +34,7 @@ type filteringTypes = {
 const { height } = Dimensions.get("window");
 
 export const Filtering = ({ showFilter, selected, userSearch, tempSearch, setUserSearch, setShowSearch, setSelected, userProfile, setJobPostings, setShowFilter }: filteringTypes) => {
-
+    const { setLoading, loading } = useAuth()
     const [jobTypesTemp, setJobTypesTemp] = useState<{ [key: string]: boolean }>({});
 
     const toggle = (id: string) => {
@@ -42,6 +42,7 @@ export const Filtering = ({ showFilter, selected, userSearch, tempSearch, setUse
     };
 
     async function HandleSave() {
+        setLoading(true)
         if (!tempSearch) {
             alert("Please search a Job First")
             return
@@ -58,13 +59,22 @@ export const Filtering = ({ showFilter, selected, userSearch, tempSearch, setUse
         const search = { "query": tempSearch.title, "queryIndustry": tempSearch.industries }
         profileQuery.userSearch = search
 
+        try {
+            const res = await recoSys(profileQuery, setJobPostings)
 
-        // connect to Recosys
-        console.log(await recoSys(profileQuery, setJobPostings))
+
+        } catch (err) {
+            if (err.message === 'Network request failed') {
+                console.log(err)
+                alert("Recosystem server is off")
+                return
+            }
+        }
 
         //after success
         setUserSearch(tempSearch.title)
         setShowFilter(false)
+        setLoading(false)
     }
 
 
@@ -137,7 +147,28 @@ export const Filtering = ({ showFilter, selected, userSearch, tempSearch, setUse
 
                 <Button title={'Save'} onPress={HandleSave}></Button>
 
-            </Animated.View>
+                {/* loading */}
+                {loading &&
+                    <View style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                    }}
+                    >
+                        <Loading />
+                    </View>
+                }
+
+
+
+            </Animated.View >
         </>
 
     );

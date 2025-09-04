@@ -57,7 +57,7 @@ type BrowseScreenTypes = {
 
 
 export const BrowseScreen = () => {
-  const { userMDB } = useAuth();
+  const { userMDB, setShortlistedJobs } = useAuth();
   const [jobPostings, setJobPostings] = useState<Job[]>([
     {
       jobUID: "job54",
@@ -226,6 +226,8 @@ Cebu City (Required)
     },
   ]);
 
+  console.log('------------jobpostings ', jobPostings.length)
+
   // Filter
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
 
@@ -241,6 +243,14 @@ Cebu City (Required)
   const [userSearch, setUserSearch] = useState("");
   const [tempSearch, setTempSearch] = useState<BrowseScreenTypes['userSearch']>();
 
+  console.log(jobPostings.length)
+
+  //for SWIPING LOGIC with backend
+  const [skipped, setSkipped] = useState([])
+
+  console.log(skipped,'-skiped')
+
+  
 
 
   //For query
@@ -253,6 +263,7 @@ Cebu City (Required)
     experience: userMDB?.experience,
     certifications: userMDB?.certifications,
   };
+  console.log(userProfile,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
   console.log(tempSearch);
 
@@ -300,13 +311,21 @@ Cebu City (Required)
         </Pressable>
       </View>
 
-      <CardSwipe
-        showModal={showModal}
-        isExpanded={isExpanded}
-        setIsExpanded={setIsExpanded}
-        setShowModal={setShowModal}
-        jobPostings={jobPostings}
-      />
+      {jobPostings.length === 0 ?
+        <Text className="text-center">Hello</Text>
+        :
+        <CardSwipe
+          showModal={showModal}
+          isExpanded={isExpanded}
+          setIsExpanded={setIsExpanded}
+          setShowModal={setShowModal}
+          jobPostings={jobPostings}
+          setJobPostings={setJobPostings}
+          setShortlistedJobs={setShortlistedJobs}
+          setSkipped={setSkipped}
+        />
+
+      }
 
       {/* Search And Filtering Components  */}
       <Filtering
