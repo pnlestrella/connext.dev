@@ -13,7 +13,7 @@ type NavigationType = NativeStackNavigationProp<RootStackParamList>;
 export const ProfileScreenJS = () => {
   const { user, userMDB, signOutUser } = useAuth();
   const navigation = useNavigation<NavigationType>();
-  console.log(userMDB?.fullName);
+
 
   return (
     <SafeAreaView className="flex-1 bg-white">

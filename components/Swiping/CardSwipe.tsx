@@ -18,6 +18,7 @@ import {
   Maximize2,
 } from "lucide-react-native";
 import BottomSheet from "./BottomSheet";
+import { useJobs } from "context/job/JobHook";
 
 
 // For images
@@ -70,9 +71,9 @@ type CStypes = {
   setIsExpanded: (value: boolean) => void
   jobPostings: Job
 }
-
-export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsExpanded, jobPostings, setJobPostings, setShortlistedJobs, setSkipped }: CStypes) {
+export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsExpanded }: CStypes) {
   // BottomSheet state
+  const {setShortlistedJobs, setSkippedJobs, jobPostings,setJobPostings} = useJobs()
 
   const viewMore = () => {
     setShowModal(true);
@@ -148,7 +149,7 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
                   if (toRight) {
                     setShortlistedJobs((p: any) => [...p, prev[0]]);
                   } else {
-                    setSkipped((p: any) => [...p, prev[0].jobUID]);
+                    setSkippedJobs((p: any) => [...p, prev[0].jobUID]);
                   }
                 }
                 return prev.slice(1);
@@ -171,6 +172,16 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
   );
 
   const currentJob = jobPostings[currentIndex];
+
+
+  if (!currentJob || jobPostings.length === 0) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center">
+        <Text>No jobs available</Text>
+      </SafeAreaView>
+    );
+  }
+
 
   return (
     <SafeAreaView className="flex-1 items-center justify-center">

@@ -341,10 +341,20 @@ Cebu City (Required)
 
   const currentJob = jobPostings[currentIndex];
 
+  console.log(jobPostings.length,'-------length')
+
+  if (!currentJob || jobPostings.length === 0) {
+  return (
+    <SafeAreaView className="flex-1 items-center justify-center">
+      <Text>No jobs available</Text>
+    </SafeAreaView>
+  );
+}
+
+
   return (
     
     <SafeAreaView className="flex-1 items-center justify-center">
-      <Text>Hello</Text>
 
       {/* Swipe Card */}
       <Animated.View {...panResponder.panHandlers} style={cardStyle}>

@@ -11,11 +11,12 @@ interface UserMDB {
   fullName: string;
   industries?: string[];
   location?: Location;
-  skills?: string[];
+  skills?: string[] | undefined;
   profileSummary?: string;
+  shortlistedJobs?: string[];
   skippedJobs?: string[];
-  experience?: string[];
-  certifications?: string[];
+  experience?: string[] | undefined;
+  certifications?: string[] | undefined;
   status: boolean;
   __v: number;
 }

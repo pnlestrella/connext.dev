@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 //screens
-import {BrowseScreen} from '../../screens/jobseekers/BrowseScreen'
+import { BrowseScreen } from '../../screens/jobseekers/BrowseScreen'
 import { JobProspectScreen } from 'screens/jobseekers/JobProspectScreen';
 import { MessageScreenJS } from 'screens/jobseekers/MessageScreenJS';
 import { ProfileScreenJS } from 'screens/jobseekers/ProfileScreenJS';
@@ -15,30 +15,30 @@ import ProfileIcon from '../../assets/icons/profile_icon.svg'
 
 const Tab = createBottomTabNavigator();
 
-export default function JobseekerTabs(){
-    return(
-        <Tab.Navigator screenOptions={({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
+export default function JobseekerTabs() {
+    return (
+        <Tab.Navigator screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
 
-                if(route.name === 'Browse'){
-                     return<BrowseIcon width={size} height={size} style={{color:color}}/>
-                }else if(route.name === 'Job Prospect'){
-                    return <JobProspectIcon width={size-5} height={size-5} style={{color:color}}/>
-                }else if(route.name === 'Message'){
-                    return <MessageIcon width={size-5} height={size-5} style={{color:color}}/>
-                }else{
-                    return <ProfileIcon width={size-5} height={size-5} style={{color:color}}/>                    
+                if (route.name === 'Browse') {
+                    return <BrowseIcon width={size} height={size} style={{ color: color }} />
+                } else if (route.name === 'Job Prospect') {
+                    return <JobProspectIcon width={size - 5} height={size - 5} style={{ color: color }} />
+                } else if (route.name === 'Message') {
+                    return <MessageIcon width={size - 5} height={size - 5} style={{ color: color }} />
+                } else {
+                    return <ProfileIcon width={size - 5} height={size - 5} style={{ color: color }} />
                 }
             },
             tabBarActiveTintColor: '#6C63FF',
             tabBarInactiveTintColor: 'gray',
-            headerShown:false
-            
+            headerShown: false
+
         })}>
-            <Tab.Screen name="Browse"  component={BrowseScreen}/>
-            <Tab.Screen name="Job Prospect"  component={JobProspectScreen}/>
-            <Tab.Screen name="Message"  component={MessageScreenJS}/>
-            <Tab.Screen name="Profile"  component={ProfileScreenJS}/>
+            <Tab.Screen name="Browse" component={BrowseScreen} />
+            <Tab.Screen name="Job Prospect" component={JobProspectScreen} />
+            <Tab.Screen name="Message" component={MessageScreenJS} />
+            <Tab.Screen name="Profile" component={ProfileScreenJS} />
         </Tab.Navigator>
     )
 }

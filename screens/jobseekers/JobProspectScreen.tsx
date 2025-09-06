@@ -1,5 +1,4 @@
 import { Header } from 'components/Header';
-import { useAuth } from 'context/auth/AuthHook';
 import { BriefcaseBusiness, PhilippinePeso, MapPin } from 'lucide-react-native';
 import { Text, View, TouchableOpacity, Image, FlatList, Pressable, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 //for time & date
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
+import { useJobs } from 'context/job/JobHook';
 
 
 dayjs.extend(relativeTime);
@@ -23,9 +23,8 @@ const ZipRecruiter =
   "https://ik.imagekit.io/mnv8wgsbk/Public%20Images/ZipRecruiter-logo-full-color-black.webp?updatedAt=1756757383134";
 
 export const JobProspectScreen = () => {
-  const { shortlistedJobs } = useAuth();
-  console.log(shortlistedJobs, '-a--')
-  console.log(shortlistedJobs, '-a--')
+  const { shortlistedJobs } = useJobs();
+
 
 
   return (
@@ -45,7 +44,7 @@ export const JobProspectScreen = () => {
       </View>
 
       <FlatList
-        data={shortlistedJobs}
+        data={[...shortlistedJobs].reverse()}
         keyExtractor={(_, i) => i.toString()} // or job.id if available
         contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 40 }}
         renderItem={({ item: job }) => (

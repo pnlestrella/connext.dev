@@ -26,9 +26,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function StackNavigator() {
     const { user, userMDB, userType, firstLaunch, initializing } = useAuth()
-    console.log(initializing)
     const location = userMDB?.location
     const industries = userMDB?.industries
+
 
     if(initializing){
         return <SplashScreen/>

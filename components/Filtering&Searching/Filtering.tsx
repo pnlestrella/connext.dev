@@ -13,6 +13,7 @@ import { Checkbox } from "react-native-paper";
 import { recoSys } from 'api/recosys';
 import { Loading } from 'components/Loading';
 import { useAuth } from 'context/auth/AuthHook';
+import { useJobs } from 'context/job/JobHook';
 
 const filterOptions = [
     { id: "1", label: "Full-time" },
@@ -33,9 +34,9 @@ type filteringTypes = {
 
 const { height } = Dimensions.get("window");
 
-export const Filtering = ({ showFilter, selected, userSearch, tempSearch, setUserSearch, setShowSearch, setSelected, userProfile, setJobPostings, setShowFilter }: filteringTypes) => {
+export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, setShowFilter }: filteringTypes) => {
     const { setLoading, loading } = useAuth()
-    const [jobTypesTemp, setJobTypesTemp] = useState<{ [key: string]: boolean }>({});
+    const { jobTypesTemp, setJobTypesTemp, profileCopyer, userProfile, setJobPostings, tempSearch } = useJobs()
 
     const toggle = (id: string) => {
         setJobTypesTemp((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -47,29 +48,43 @@ export const Filtering = ({ showFilter, selected, userSearch, tempSearch, setUse
             alert("Please search a Job First")
             return
         }
-        let profileQuery = userProfile
+        if (!userProfile) return;
+        let profileCopy = JSON.parse(JSON.stringify(userProfile));
 
-        const arr = filterOptions
-            .filter(option => jobTypesTemp[option.id]) // keep only checked
-            .map(option => option.label)               // extract labels
 
-        //Job types
-        profileQuery.jobTypes = arr
-        //User Query
-        const search = { "query": tempSearch.title, "queryIndustry": tempSearch.industries }
-        profileQuery.userSearch = search
+
+        profileCopy = profileCopyer(profileCopy)
+        profileCopy.currentJobPostings = []
+
+
+        console.log(profileCopy, 'PROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+
 
         try {
-            const res = await recoSys(profileQuery, setJobPostings)
+            const res = await recoSys(profileCopy);
 
-
-        } catch (err) {
-            if (err.message === 'Network request failed') {
-                console.log(err)
-                alert("Recosystem server is off")
-                return
+            if (Array.isArray(res)) {
+                console.log(res, 'not err');
+                setJobPostings(res);
+            } else if (res?.message === 'No Jobs was fetched' || res?.message?.code === 'NO_JOBS') {
+                // support both string & object styles
+                console.log('nen');
+                console.log(res, 'err');
+                setJobPostings([]);
+            } else {
+                console.warn("Unexpected response format:", res);
+                setJobPostings([]);
             }
+
+        } catch (err: any) {
+            if (err.message === 'Network request failed') {
+                console.log(err);
+                alert("Recosystem server is off");
+                return;
+            }
+            console.log(err, 'nen');
         }
+
 
         //after success
         setUserSearch(tempSearch.title)
