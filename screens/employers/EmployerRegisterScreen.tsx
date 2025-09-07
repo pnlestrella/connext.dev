@@ -274,7 +274,6 @@ export const EmployerRegisterScreen = () => {
                 verificationDocs: urls
             };
 
-            console.log(user, '-testtt')
 
             const mongoDBRegister =  await fetch(
                 `${Constants?.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/registerEmployers`,

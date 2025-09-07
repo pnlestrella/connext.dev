@@ -74,12 +74,6 @@ export const BrowseScreen = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
-
-
-
-
-  
-
   function handleBG() {
     setShowModal(false);
     setShowFilter(false);

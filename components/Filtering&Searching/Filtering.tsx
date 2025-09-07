@@ -57,14 +57,11 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
         profileCopy.currentJobPostings = []
 
 
-        console.log(profileCopy, 'PROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
-
 
         try {
             const res = await recoSys(profileCopy);
 
             if (Array.isArray(res)) {
-                console.log(res, 'not err');
                 setJobPostings(res);
             } else if (res?.message === 'No Jobs was fetched' || res?.message?.code === 'NO_JOBS') {
                 // support both string & object styles

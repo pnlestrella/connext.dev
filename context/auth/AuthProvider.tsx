@@ -6,7 +6,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
-import { AppState } from "react-native";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AuthTypes["user"] | null>(null);
@@ -15,6 +14,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<AuthTypes["loading"] | null>(null);
   const [initializing, setInitializing] = useState(true);
   const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
+//for signout
+  const [resetSignal, setResetSignal] = useState(false);
 
   // 🔧 Helper: normalize shortlistedJobs
   const normalizeUser = (rawUser: any) => {
@@ -35,6 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }).filter(Boolean) || [],
     };
   };
+
 
 
   // Persist user session
@@ -119,22 +121,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   async function signOutUser() {
-    await userSignOut();
+    await AsyncStorage.multiRemove(["userProfile", "unsyncedActions"]);
     setUserMDB(null);
+    setResetSignal(true)
+    await userSignOut();
+
   }
-
-  // Detect app state changes
-  useEffect(() => {
-    const subscription = AppState.addEventListener("change", (nextState) => {
-      if (nextState === "background") {
-        console.log("App is going to background (or being closed).");
-      } else if (nextState === "active") {
-        console.log("App is active again.");
-      }
-    });
-
-    return () => subscription.remove();
-  }, []);
 
   const value = useMemo(
     () => ({
@@ -144,13 +136,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       loading,
       firstLaunch,
       initializing,
+      resetSignal,
       setUserType,
       setLoading,
       setFirstLaunch,
       signOutUser,
       setUserMDB,
+      setResetSignal
     }),
-    [user, userMDB, userType, loading, firstLaunch, initializing]
+    [user, userMDB, userType, loading, firstLaunch, initializing,resetSignal]
   );
 
   return <AuthContext value={value}>{children}</AuthContext>;

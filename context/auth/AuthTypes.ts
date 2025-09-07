@@ -28,12 +28,15 @@ export type AuthTypes ={
     loading: boolean
     firstLaunch: boolean,
     initializing: boolean,
-    shortlistedJobs: object
+    shortlistedJobs: object;
+    resetSignal:boolean;
     setUserType: (value: string) => void
     setUserMDB: (value: string) => void
     setLoading: (value: boolean) => void
     setFirstLaunch: () => void
     signOutUser:() => void;
     setShortlistedJobs: (value: [object]) => void
+    setResetSignal: (value: boolean) => void
+
 
 }
