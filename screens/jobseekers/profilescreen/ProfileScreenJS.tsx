@@ -8,6 +8,7 @@ import { useAuth } from 'context/auth/AuthHook';
 import { Header } from 'components/Header';
 import { LucideImageUp, Settings, SendHorizonal, Star, LogOut } from 'lucide-react-native';
 import { useJobs } from 'context/jobs/JobHook';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type NavigationType = NativeStackNavigationProp<RootStackParamList>;
 export const ProfileScreenJS = () => {
@@ -44,7 +45,7 @@ export const ProfileScreenJS = () => {
               alignItems: 'center',
             }}
             android_ripple={{ color: 'rgba(0,0,0,0.1)' }}
-            onPress={() => {navigation.navigate('editProfile')}}
+            onPress={() => { navigation.navigate('editProfile') }}
           >
             <Text
               style={{
@@ -294,9 +295,11 @@ export const ProfileScreenJS = () => {
               className="flex-row items-center justify-between"
               onPress={async () => {
                 try {
-                  const signout = signOutUser();
-                  console.log(signout);
                   await syncDB()
+                  await AsyncStorage.multiRemove(["userProfile", "unsyncedActions"]);
+                  const test = await AsyncStorage.getItem("unsyncedActions")
+                  console.log(test, 'testy')
+                  const signout = signOutUser();
                   console.log("Successfully Updated Profile in DB")
 
                   alert('Signed out successfully');

@@ -63,7 +63,7 @@ export const IndustryScreen = () => {
     }
 
     const res = await updateProfile(userPath,user?.uid,payload);
-    console.log(res)
+    console.log(res,'INDUSTRYYY')
 
     setUserMDB(res)
     alert("Successfully edited industries")

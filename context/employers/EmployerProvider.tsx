@@ -4,7 +4,7 @@ import { EmployerContext } from "./EmployerContext";
 export const EmployerProvider = ({ children }: { children: ReactNode }) => {
     const [jobOpenings, setJobOpenings] = useState({})
 
-
+    console.log("Employerr is provider")
     const value = useMemo(() => ({
         jobOpenings
     }), [jobOpenings])

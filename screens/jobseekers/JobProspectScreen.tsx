@@ -25,8 +25,6 @@ const ZipRecruiter =
 export const JobProspectScreen = () => {
   const { shortlistedJobs } = useJobs();
 
-
-
   return (
     <SafeAreaView className='bg-white mb-5 h-full'>
       <Header />
@@ -108,7 +106,7 @@ export const JobProspectScreen = () => {
 
                     </View>
 
-                    <Text className="text-white text-2xl font-bold">{job.profilePic}</Text>
+                    <Text className="text-white text-2xl font-bold">{job?.profilePic}</Text>
                   </>
                 )}
               </View>

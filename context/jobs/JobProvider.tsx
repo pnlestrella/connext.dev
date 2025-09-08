@@ -25,7 +25,7 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
     const [skippedJobs, setSkippedJobs] = useState<string[]>([]);
     const shortlistedRef = useRef<Job[]>([]);
     const skippedRef = useRef<string[]>([]);
-    const syncedRef = useRef(false);
+
 
 
     useEffect(() => { shortlistedRef.current = shortlistedJobs }, [shortlistedJobs]);
@@ -88,6 +88,8 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
         skippedJobs: [],
     });
 
+    
+
     // 1. Initialize from userMDB OR AsyncStorage
     const hydrated = useRef(false);
     useEffect(() => {
@@ -104,79 +106,115 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
                 const cached = await AsyncStorage.getItem("unsyncedActions");
 
                 if (cached) {
-                    // Hydrate from local unsyncedActions
                     const parsed = JSON.parse(cached);
                     const localShortlisted = parsed.shortlistedJobs || [];
                     const localSkipped = parsed.skippedJobs || [];
 
-                    console.log("✅ Hydrating from AsyncStorage fallback");
+                    // 🚨 Skip hydration if both arrays are empty
+                    if (localShortlisted.length === 0 && localSkipped.length === 0) {
+                        console.log("⚠️ Empty cache found, falling back to userMDB");
+                        await AsyncStorage.removeItem("unsyncedActions");
+                    } else {
+                        console.log("✅ Hydrating from AsyncStorage fallback");
 
-                    setShortlistedJobs(localShortlisted);
-                    setSkippedJobs(localSkipped);
-                    lastSyncSnapshot.current = {
-                        shortlistedJobs: localShortlisted.map(j => j.jobUID || j),
-                        skippedJobs: localSkipped.map(j => (typeof j === "string" ? j : j.jobUID)),
-                    };
+                        setShortlistedJobs(localShortlisted);
+                        setSkippedJobs(localSkipped);
+                        lastSyncSnapshot.current = {
+                            shortlistedJobs: localShortlisted.map(j => j.jobUID || j),
+                            skippedJobs: localSkipped.map(j =>
+                                typeof j === "string" ? j : j.jobUID
+                            ),
+                        };
 
-                    setUserProfile({
-                        seekerUID: userMDB.seekerUID,
-                        skills: userMDB.skills,
-                        profileSummary: userMDB.profileSummary,
-                        industries: userMDB.industries,
-                        skippedJobs: localSkipped.map(j => (typeof j === "string" ? j : j.jobUID)),
-                        shortlistedJobs: localShortlisted.map(j => j.jobUID || j),
-                        experience: userMDB.experience,
-                        currentJobPostings: [],
-                        certifications: userMDB.certifications,
-                    });
+                        setUserProfile({
+                            seekerUID: userMDB.seekerUID,
+                            skills: userMDB.skills,
+                            profileSummary: userMDB.profileSummary,
+                            industries: userMDB.industries,
+                            skippedJobs: localSkipped.map(j =>
+                                typeof j === "string" ? j : j.jobUID
+                            ),
+                            shortlistedJobs: localShortlisted.map(j => j.jobUID || j),
+                            experience: userMDB.experience,
+                            currentJobPostings: [],
+                            certifications: userMDB.certifications,
+                        });
 
-                    // Sync to DB
-                    const shortlistedToDB = localShortlisted.map(job => ({
-                        ...job,
-                        feedback: job.feedback || { match_summary: "", skill_note: "", extra_note: "" },
-                    }));
+                        // ✅ Sync to DB
+                        const shortlistedToDB = localShortlisted.map(job => ({
+                            jobUID: job.jobUID,
+                            score: job.score,
+                            boostWeight: job.boostWeight,
+                            jobTitle: job.jobTitle,
+                            jobPoster: job.jobPoster,
+                            location: {
+                                city: job.location?.city || "",
+                                state: job.location?.state || "",
+                            },
+                            salaryRange: {
+                                min: job.salaryRange?.min || 0,
+                                max: job.salaryRange?.max || 0,
+                                currency: job.salaryRange?.currency || "PHP",
+                                frequency: job.salaryRange?.frequency || "monthly",
+                            },
+                            employment: job.employment || [],
+                            workTypes: job.workTypes || [],
+                            profilePic: job.profilePic || "",
+                            isExternal: job.isExternal ?? false,
+                            feedback: {
+                                match_summary: job.feedback?.match_summary || "",
+                                skill_note: job.feedback?.skill_note || "",
+                                extra_note: job.feedback?.extra_note || "",
+                            },
+                        }));
 
-                    await updateProfile(userMDB.role + 's', userMDB.seekerUID, {
-                        updates: {
-                            shortlistedJobs: shortlistedToDB,
-                            skippedJobs: localSkipped.map(j => (typeof j === "string" ? j : j.jobUID)),
-                        },
-                    });
+                        await updateProfile(userMDB.role + "s", userMDB.seekerUID, {
+                            updates: {
+                                shortlistedJobs: shortlistedToDB,
+                                skippedJobs: localSkipped.map(j =>
+                                    typeof j === "string" ? j : j.jobUID
+                                ),
+                            },
+                        });
 
-                    // Remove cache after successful sync
-                    await AsyncStorage.removeItem("unsyncedActions");
-                } else {
-                    // Hydrate from userMDB
-                    const initialShortlisted = (userMDB.shortlistedJobs || []).map(j => (typeof j === "string" ? JSON.parse(j) : j)).filter(Boolean);
-                    const initialSkipped = (userMDB.skippedJobs || []).map(j => (typeof j === "string" ? j : j.jobUID));
-
-                    console.log("✅ Hydrating from userMDB");
-
-                    setShortlistedJobs(initialShortlisted);
-                    setSkippedJobs(initialSkipped);
-                    lastSyncSnapshot.current = {
-                        shortlistedJobs: initialShortlisted.map(j => j.jobUID),
-                        skippedJobs: initialSkipped,
-                    };
-
-                    setUserProfile({
-                        seekerUID: userMDB.seekerUID,
-                        skills: userMDB.skills,
-                        profileSummary: userMDB.profileSummary,
-                        industries: userMDB.industries,
-                        skippedJobs: initialSkipped,
-                        shortlistedJobs: initialShortlisted.map(j => j.jobUID),
-                        experience: userMDB.experience,
-                        currentJobPostings: [],
-                        certifications: userMDB.certifications,
-                    });
+                        await AsyncStorage.removeItem("unsyncedActions");
+                        return; // ✅ Stop here, don’t fall through to userMDB
+                    }
                 }
 
-                console.log(userMDB, 'was', skippedJobs)
+                // 🚀 Hydrate from userMDB (fallback)
+                const initialShortlisted = (userMDB.shortlistedJobs || [])
+                    .map(j => (typeof j === "string" ? JSON.parse(j) : j))
+                    .filter(Boolean);
+                const initialSkipped = (userMDB.skippedJobs || []).map(j =>
+                    typeof j === "string" ? j : j.jobUID
+                );
+
+                console.log("✅ Hydrating from userMDB");
+
+                setShortlistedJobs(initialShortlisted);
+                setSkippedJobs(initialSkipped);
+                lastSyncSnapshot.current = {
+                    shortlistedJobs: initialShortlisted.map(j => j.jobUID),
+                    skippedJobs: initialSkipped,
+                };
+
+                setUserProfile({
+                    seekerUID: userMDB.seekerUID,
+                    skills: userMDB.skills,
+                    profileSummary: userMDB.profileSummary,
+                    industries: userMDB.industries,
+                    skippedJobs: initialSkipped,
+                    shortlistedJobs: initialShortlisted.map(j => j.jobUID),
+                    experience: userMDB.experience,
+                    currentJobPostings: [],
+                    certifications: userMDB.certifications,
+                });
             } catch (err) {
                 console.log("❌ Error hydrating jobs:", err);
             }
         })();
+
     }, [userMDB]);
 
 
@@ -243,6 +281,7 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
                     extra_note: "",
                 },
             }));
+
 
             // Skipped jobs: just store their IDs
             const skippedToDB = skippedJobs.map(job => job.jobUID || job);

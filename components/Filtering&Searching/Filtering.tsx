@@ -14,7 +14,7 @@ import { recoSys } from 'api/jobseekers/recosys';
 import { Loading } from 'components/Loading';
 import { useAuth } from 'context/auth/AuthHook';
 import { useJobs } from 'context/jobs/JobHook';
-
+import { getJobSeeker } from 'api/profile';
 const filterOptions = [
     { id: "1", label: "Full-time" },
     { id: "2", label: "Part-time" },
@@ -35,7 +35,7 @@ type filteringTypes = {
 const { height } = Dimensions.get("window");
 
 export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, setShowFilter }: filteringTypes) => {
-    const { setLoading, loading } = useAuth()
+    const { setLoading, loading, userMDB } = useAuth()
     const { jobTypesTemp, setJobTypesTemp, profileCopyer, userProfile, setJobPostings, tempSearch } = useJobs()
 
     const toggle = (id: string) => {
@@ -43,19 +43,53 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
     };
 
     async function HandleSave() {
-        setLoading(true)
+
+
+
+
+        setLoading(true);
         if (!tempSearch) {
-            alert("Please search a Job First")
-            return
+            alert("Please search a Job First");
+            return;
         }
         if (!userProfile) return;
+
+        console.log(userProfile, 'USERRRRRRRRRRPROOOOFOOOo')
+
         let profileCopy = JSON.parse(JSON.stringify(userProfile));
+        profileCopy = profileCopyer(profileCopy);
+        profileCopy.currentJobPostings = [];
 
+        // ✅ Added filter/fallback for industries & skills
+        const noIndustries =
+            !profileCopy.industries ||
+            profileCopy.industries.length === 0 ||
+            (profileCopy.industries[0] || "").toLowerCase() === "none";
 
+        const noSkills =
+            !profileCopy.skills ||
+            profileCopy.skills.length === 0 ||
+            (profileCopy.skills[0] || "").toLowerCase() === "none";
 
-        profileCopy = profileCopyer(profileCopy)
-        profileCopy.currentJobPostings = []
+        if (noIndustries && profileCopy.userSearch?.queryIndustry && noSkills) {
+            // fallback industries from search
+            profileCopy.industries = profileCopy.userSearch.queryIndustry;
 
+            // fetch latest profile from DB
+            const res = await getJobSeeker(userMDB?.email);
+
+            console.log("LOCAL PROFILE >>>", userProfile);
+            console.log("DB PROFILE >>>", res);
+
+            // merge only the missing parts
+            profileCopy = {
+                ...profileCopy,
+                experience: res.experience || [],
+                certifications: res.certifications || [],
+                profileSummary: res.profileSummary || profileCopy.profileSummary || "",
+                skills: res.skills || [],
+            };
+        }
 
 
         try {
@@ -63,31 +97,30 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
 
             if (Array.isArray(res)) {
                 setJobPostings(res);
-            } else if (res?.message === 'No Jobs was fetched' || res?.message?.code === 'NO_JOBS') {
+            } else if (res?.message === "No Jobs was fetched" || res?.message?.code === "NO_JOBS") {
                 // support both string & object styles
-                console.log('nen');
-                console.log(res, 'err');
+                console.log("nen");
+                console.log(res, "err");
                 setJobPostings([]);
             } else {
                 console.warn("Unexpected response format:", res);
                 setJobPostings([]);
             }
-
         } catch (err: any) {
-            if (err.message === 'Network request failed') {
+            if (err.message === "Network request failed") {
                 console.log(err);
                 alert("Recosystem server is off");
                 return;
             }
-            console.log(err, 'nen');
+            console.log(err, "nen");
         }
 
-
-        //after success
-        setUserSearch(tempSearch.title)
-        setShowFilter(false)
-        setLoading(false)
+        // after success
+        setUserSearch(tempSearch.title);
+        setShowFilter(false);
+        setLoading(false);
     }
+
 
 
 

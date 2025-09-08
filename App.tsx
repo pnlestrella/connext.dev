@@ -17,11 +17,11 @@ export default function App() {
   return (
     <FontProvider>
       <AuthProvider>
-        <AuthGate>
-          <NavigationContainer>
-            <StackNavigator />
-          </NavigationContainer>
-        </AuthGate>
+          <JobProvider>
+            <NavigationContainer>
+              <StackNavigator />
+            </NavigationContainer>
+          </JobProvider>
       </AuthProvider>
     </FontProvider>
   );

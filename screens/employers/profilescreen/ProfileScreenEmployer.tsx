@@ -35,7 +35,7 @@ export const ProfileScreenEmployer = () => {
               color: '#37421F',
             }}
           >
-            {userMDB.companyName}
+            {userMDB?.companyName}
           </Text>
         </View>
 

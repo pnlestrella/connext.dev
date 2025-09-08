@@ -35,3 +35,22 @@ export async function updateProfile(
   }
 }
 
+
+export const getJobSeeker = async (email: string) => {
+  try {
+    const res = await fetch(
+      `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/getJobseeker?email=${encodeURIComponent(email)}`
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || "Failed to fetch jobseeker");
+    }
+
+    const { message } = await res.json();
+    return message; // This will be the Jobseeker document
+  } catch (err: any) {
+    console.error("Error fetching jobseeker:", err.message);
+    throw err;
+  }
+};
