@@ -14,27 +14,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<AuthTypes["loading"] | null>(null);
   const [initializing, setInitializing] = useState(true);
   const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
-//for signout
+  //for signout
   const [resetSignal, setResetSignal] = useState(false);
 
   // 🔧 Helper: normalize shortlistedJobs
   const normalizeUser = (rawUser: any) => {
     if (!rawUser) return null;
-    return {
-      ...rawUser,
-      shortlistedJobs:
-        rawUser.shortlistedJobs?.map((job: any) => {
-          if (typeof job === "string") {
-            try {
-              return JSON.parse(job);
-            } catch (err) {
-              console.warn("Failed to parse shortlisted job:", job, err);
-              return null;
+    if (rawUser.role === "jobseeker") {
+      return {
+        ...rawUser,
+        shortlistedJobs:
+          rawUser.shortlistedJobs?.map((job: any) => {
+            if (typeof job === "string") {
+              try {
+                return JSON.parse(job);
+              } catch {
+                return null;
+              }
             }
-          }
-          return job; // already object
-        }).filter(Boolean) || [],
-    };
+            return job;
+          }).filter(Boolean) || [],
+      };
+    }
+    return rawUser; // employer untouched
   };
 
 
@@ -57,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
-        let fetchedUserMDB = null;
+        let fetchedUserMDB: any = null;
 
         // Try jobseeker first
         const resJob = await fetch(
@@ -68,7 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         if (resJob.ok) {
           const { message } = await resJob.json();
-          fetchedUserMDB = message;
+          fetchedUserMDB = { ...message, role: "jobseeker" }; // 👈 stamp role
         } else {
           // fallback to employer
           const resEmp = await fetch(
@@ -79,16 +81,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
           if (resEmp.ok) {
             const { message } = await resEmp.json();
-            fetchedUserMDB = message[0];
+            // some APIs return an array, so pick first
+            fetchedUserMDB = { ...message[0], role: "employer" }; // 👈 stamp role
           }
         }
 
         if (fetchedUserMDB) {
           const normalized = normalizeUser(fetchedUserMDB);
           setUserMDB(normalized);
-          setUserType(normalized.role);
+          setUserType(normalized.role); // TS narrows to 'jobseeker' | 'employer'
 
-          // update async storage
+          // persist
           await AsyncStorage.setItem("userProfile", JSON.stringify(normalized));
         }
 
@@ -96,6 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } catch (err: any) {
         console.log("Auth fetch error:", err.message);
       }
+
     });
 
     return unsubscribe;
@@ -121,12 +125,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   async function signOutUser() {
-    await AsyncStorage.multiRemove(["userProfile", "unsyncedActions"]);
-    setUserMDB(null);
-    setResetSignal(true)
-    await userSignOut();
-
+    try {
+      await AsyncStorage.multiRemove(["userProfile", "unsyncedActions"]);
+      setUserMDB(null);
+      setResetSignal(true);
+      await userSignOut();
+    } catch (err) {
+      console.error("Error signing out:", err);
+    }
   }
+
 
   const value = useMemo(
     () => ({
@@ -144,7 +152,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUserMDB,
       setResetSignal
     }),
-    [user, userMDB, userType, loading, firstLaunch, initializing,resetSignal]
+    [user, userMDB, userType, loading, firstLaunch, initializing, resetSignal]
   );
 
   return <AuthContext value={value}>{children}</AuthContext>;

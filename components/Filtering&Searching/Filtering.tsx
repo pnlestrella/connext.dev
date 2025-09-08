@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 
 import { Checkbox } from "react-native-paper";
-import { recoSys } from 'api/recosys';
+import { recoSys } from 'api/jobseekers/recosys';
 import { Loading } from 'components/Loading';
 import { useAuth } from 'context/auth/AuthHook';
-import { useJobs } from 'context/job/JobHook';
+import { useJobs } from 'context/jobs/JobHook';
 
 const filterOptions = [
     { id: "1", label: "Full-time" },

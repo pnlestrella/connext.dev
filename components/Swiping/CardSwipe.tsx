@@ -18,7 +18,7 @@ import {
   Maximize2,
 } from "lucide-react-native";
 import BottomSheet from "./BottomSheet";
-import { useJobs } from "context/job/JobHook";
+import { useJobs } from "context/jobs/JobHook";
 
 
 // For images

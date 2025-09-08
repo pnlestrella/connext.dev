@@ -3,31 +3,26 @@ import StackNavigator from 'navigation/StackNavigator';
 
 //wrappers
 import { AuthProvider } from 'context/auth/AuthProvider';
-import { JobProvider } from 'context/job/JobProvider';
+import { JobProvider } from 'context/jobs/JobProvider';
 import FontProvider from 'context/fonts/FontProvider';
-
+import { AuthGate } from 'navigation/AuthGate';
 
 
 import './global.css';
 
-
-
 export default function App() {
+
 
 
   return (
     <FontProvider>
-      {/* for Authentication of the users */}
       <AuthProvider>
-        {/* for Job matters // swiping, etc. */}
-        <JobProvider>
+        <AuthGate>
           <NavigationContainer>
             <StackNavigator />
           </NavigationContainer>
-        </JobProvider>
+        </AuthGate>
       </AuthProvider>
     </FontProvider>
-
-
   );
 }

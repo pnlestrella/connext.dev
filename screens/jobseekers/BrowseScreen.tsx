@@ -13,9 +13,9 @@ import { Search, SlidersHorizontal } from "lucide-react-native";
 import { Filtering } from "components/Filtering&Searching/Filtering";
 import { SearchSheet } from "components/Filtering&Searching/SearchSheet";
 import { useAuth } from "context/auth/AuthHook";
-import { recoSys } from "api/recosys";
+import { recoSys } from "api/jobseekers/recosys";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useJobs } from "context/job/JobHook";
+import { useJobs } from "context/jobs/JobHook";
 
 
 type Job = {

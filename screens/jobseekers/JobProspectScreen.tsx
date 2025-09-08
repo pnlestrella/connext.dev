@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 //for time & date
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
-import { useJobs } from 'context/job/JobHook';
+import { useJobs } from 'context/jobs/JobHook';
 
 
 dayjs.extend(relativeTime);

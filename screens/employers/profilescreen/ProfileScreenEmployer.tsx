@@ -1,4 +1,4 @@
-import { Button, Text, View, Pressable, ScrollView } from 'react-native';
+import { Button, Text, View, Pressable, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from 'navigation/types/RootStackParamList';
@@ -7,15 +7,12 @@ import { useAuth } from 'context/auth/AuthHook';
 //Header
 import { Header } from 'components/Header';
 import { LucideImageUp, Settings, SendHorizonal, Star, LogOut } from 'lucide-react-native';
-import { useJobs } from 'context/jobs/JobHook';
 
 type NavigationType = NativeStackNavigationProp<RootStackParamList>;
-export const ProfileScreenJS = () => {
-  const { user, userMDB, signOutUser } = useAuth();
-  const { syncDB } = useJobs()
+export const ProfileScreenEmployer = () => {
+  const {  userMDB, signOutUser } = useAuth();
 
   const navigation = useNavigation<NavigationType>();
-
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -23,6 +20,25 @@ export const ProfileScreenJS = () => {
 
       {/* scroll if content gets long */}
       <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <View className="flex-1 justify-center items-center">
+          <View className="border rounded-full w-32 h-32 overflow-hidden">
+            <Image
+              source={{ uri: userMDB?.profilePic }}
+              style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
+            />
+          </View>
+          <Text
+            style={{
+              fontFamily: 'Poppins-Bold',
+              fontSize: 21,
+              color: '#37421F',
+            }}
+          >
+            {userMDB.companyName}
+          </Text>
+        </View>
+
         {/* Profile Title */}
         <View className='flex-row justify-between items-center'>
           <Text
@@ -44,7 +60,7 @@ export const ProfileScreenJS = () => {
               alignItems: 'center',
             }}
             android_ripple={{ color: 'rgba(0,0,0,0.1)' }}
-            onPress={() => {navigation.navigate('editProfile')}}
+            onPress={() => { navigation.navigate('editProfile') }}
           >
             <Text
               style={{
@@ -62,7 +78,7 @@ export const ProfileScreenJS = () => {
 
         {/* Profile Info */}
         <View className="space-y-2">
-          {/* Name */}
+          {/* Profile (Company Name) */}
           <View className="flex-row items-center">
             <Text
               style={{
@@ -82,8 +98,7 @@ export const ProfileScreenJS = () => {
                 textAlign: 'right',
               }}
             >
-              {userMDB?.fullName.firstName} {userMDB?.fullName.middleInitial}.{' '}
-              {userMDB?.fullName.lastName}
+              {userMDB?.companyName}   {/* <-- use companyName for employers */}
             </Text>
           </View>
 
@@ -107,7 +122,7 @@ export const ProfileScreenJS = () => {
                 textAlign: 'right',
               }}
             >
-              {userMDB?.industries}
+              {userMDB?.industries?.join(', ')}   {/* multiple industries */}
             </Text>
           </View>
 
@@ -131,11 +146,11 @@ export const ProfileScreenJS = () => {
                 textAlign: 'right',
               }}
             >
-              {userMDB?.email}
+              {userMDB?.location?.address}
             </Text>
           </View>
 
-          {/* Skills */}
+          {/* Email */}
           <View className="flex-row items-center">
             <Text
               style={{
@@ -144,7 +159,7 @@ export const ProfileScreenJS = () => {
                 width: 100,
               }}
             >
-              Skills
+              Email
             </Text>
             <Text
               style={{
@@ -155,61 +170,8 @@ export const ProfileScreenJS = () => {
                 textAlign: 'right',
               }}
             >
-              {userMDB?.skills?.map((skill, i) => <Text key={i}>{skill}, </Text>)}
+              {userMDB?.email}
             </Text>
-          </View>
-
-
-        </View>
-
-
-
-
-        {/* Resume Section */}
-        <View style={{ marginTop: 32 }}>
-          <Text
-            style={{
-              fontFamily: 'Lexend-SemiBold',
-              fontSize: 18,
-              color: '#37424F',
-              marginBottom: 12,
-            }}
-          >
-            Résumé
-          </Text>
-
-          <View className="flex-row space-x-3">
-            <Pressable
-              className="flex-1 border flex-row p-2 rounded-lg border-gray-400 items-center justify-center"
-              onPress={() => alert('Feature on progress')}
-            >
-              <LucideImageUp color={'#949494'} style={{ marginRight: 6 }} />
-              <Text
-                style={{
-                  fontFamily: 'Inter-Regular',
-                  fontSize: 12,
-                  color: '#949494',
-                }}
-              >
-                Upload Resume
-              </Text>
-            </Pressable>
-
-            <Pressable
-              className="flex-1  flex-row p-2 rounded-lg items-center justify-center"
-              onPress={() => alert('Feature on progress')}
-              style={{ backgroundColor: '#1572DB' }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'Lexend-Bold',
-                  fontSize: 14,
-                  color: 'white',
-                }}
-              >
-                Create Resume
-              </Text>
-            </Pressable>
           </View>
         </View>
 
@@ -296,7 +258,6 @@ export const ProfileScreenJS = () => {
                 try {
                   const signout = signOutUser();
                   console.log(signout);
-                  await syncDB()
                   console.log("Successfully Updated Profile in DB")
 
                   alert('Signed out successfully');
