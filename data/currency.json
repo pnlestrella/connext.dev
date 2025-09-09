@@ -1,0 +1,6 @@
+[
+  { "id": 1, "currency": "PHP" },
+  { "id": 2, "currency": "USD" },
+  { "id": 3, "currency": "EUR" },
+  { "id": 4, "currency": "JPY" }
+]

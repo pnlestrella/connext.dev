@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export const EmployerContext = createContext
+export const EmployerContext = createContext(null);

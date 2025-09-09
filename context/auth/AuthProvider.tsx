@@ -16,6 +16,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
   //for signout
   const [resetSignal, setResetSignal] = useState(false);
+  //user not logged in
+  const [accountType, setAccountType]= useState(null)
 
   // 🔧 Helper: normalize shortlistedJobs
   const normalizeUser = (rawUser: any) => {
@@ -145,6 +147,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       firstLaunch,
       initializing,
       resetSignal,
+      accountType,
+      setAccountType,
       setUserType,
       setLoading,
       setFirstLaunch,
@@ -152,8 +156,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUserMDB,
       setResetSignal
     }),
-    [user, userMDB, userType, loading, firstLaunch, initializing, resetSignal]
+    [user, userMDB, userType, loading, firstLaunch, initializing, resetSignal, accountType]
   );
 
-  return <AuthContext value={value}>{children}</AuthContext>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+
 };

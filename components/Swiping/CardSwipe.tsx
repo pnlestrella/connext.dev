@@ -203,7 +203,8 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
                         ? Indeed
                         : currentJob.profilePic === "ziprecruiter"
                           ? ZipRecruiter
-                          : currentJob.profilePic,
+                          : currentJob.profilePic
+                            
                   }}
                   style={{ width: "100%", height: "100%", resizeMode: "cover" }}
                 />

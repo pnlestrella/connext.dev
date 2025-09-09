@@ -1,17 +1,24 @@
 import { ReactNode } from "react";
 import { useAuth } from "context/auth/AuthHook";
 import { JobProvider } from "context/jobs/JobProvider";
-
+import { EmployerProvider } from "context/employers/EmployerProvider";
 type Props = { children: ReactNode };
 
 export function AuthGate({ children }: Props) {
-  const { userMDB } = useAuth();
+  const { userType,userMDB } = useAuth();
 
-  console.log(userMDB.role,'usersasss')
+  console.log(userMDB,'usersasss')
 
-  if (userMDB?.role === "employer") {
-    console.log("meownigga")
+  if (userType === "jobseeker") {
+    console.log("Using Job Provider")
+    return <JobProvider>{children}</JobProvider>;
   }
 
-  return <>{children}</>;
+  if(userType === 'employer'){
+    console.log("Using Employer Provider")
+    return <EmployerProvider>{children}</EmployerProvider>
+  }
+
+  return <>{children}</>
+
 }

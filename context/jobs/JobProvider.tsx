@@ -26,12 +26,8 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
     const shortlistedRef = useRef<Job[]>([]);
     const skippedRef = useRef<string[]>([]);
 
-
-
     useEffect(() => { shortlistedRef.current = shortlistedJobs }, [shortlistedJobs]);
     useEffect(() => { skippedRef.current = skippedJobs }, [skippedJobs]);
-
-
 
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [tempSearch, setTempSearch] = useState<BrowseScreenTypes['userSearch']>();
@@ -40,16 +36,13 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
     //for profile updates
     const userPath = userMDB?.role + 's'
 
-
-
-
     //for filtering
     const [jobTypesTemp, setJobTypesTemp] = useState<{ [key: string]: boolean }>({});
 
 
     //load the cache jobs search
     // useEffect(() => {
-
+    
     // }, [])
 
     //forlogout

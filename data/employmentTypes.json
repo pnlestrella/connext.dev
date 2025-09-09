@@ -1,0 +1,9 @@
+[
+  { "id": 1, "type": "Full-time" },
+  { "id": 2, "type": "Part-time" },
+  { "id": 3, "type": "Contract" },
+  { "id": 4, "type": "Freelance" },
+  { "id": 5, "type": "Internship" },
+  { "id": 6, "type": "OJT (On the job training)" },
+  { "id": 7, "type": "Volunteer" }
+]

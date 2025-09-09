@@ -12,16 +12,14 @@ import './global.css';
 
 export default function App() {
 
-
-
   return (
     <FontProvider>
       <AuthProvider>
-          <JobProvider>
+          <AuthGate>
             <NavigationContainer>
               <StackNavigator />
             </NavigationContainer>
-          </JobProvider>
+          </AuthGate>
       </AuthProvider>
     </FontProvider>
   );

@@ -16,7 +16,7 @@ export const AccountType = () => {
   const [settledType, setSettledType] = useState<'jobseeker' | 'employer'>('jobseeker');
 
   const navigation = useNavigation<NavigationProp>();
-  const { setUserType } = useAuth();
+  const { setAccountType} = useAuth()
 
   // 👇 Animated value instead of Reanimated
   const position = useRef(new Animated.Value(0)).current;
@@ -33,9 +33,15 @@ export const AccountType = () => {
   };
 
   const handleProceed = () => {
-    setUserType(selected);
+    const chosenType = selected;
+
+    // 2️⃣ Update the context
+    setAccountType(chosenType);
+
+    // 3️⃣ Navigate to register screen
     navigation.navigate('register');
   };
+
 
   // Slider animation style
   const translateX = position.interpolate({
@@ -43,7 +49,7 @@ export const AccountType = () => {
     outputRange: [0, width * 0.5 - 16],
   });
 
-  const isActive = (type: 'jobseeker' | 'employer') => settledType === type;
+  const isActive = (type: 'jobseeker' | 'employer') => selected === type;
 
   return (
     <SafeAreaView className="flex-1 items-center justify-center px-4 bg-white">

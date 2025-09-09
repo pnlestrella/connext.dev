@@ -76,7 +76,7 @@ export const IndustryModal = ({
         }}
       >
         <View className="w-[90%] bg-white rounded-lg p-5 max-h-[80%]">
-          <Text className="text-lg font-bold mb-3">Select Industries</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 16, color: "#6C63FF" }}>Select Industries</Text>
 
           <TextInput
             value={search}
@@ -108,14 +108,17 @@ export const IndustryModal = ({
             <Pressable
               onPress={onClose}
               className="bg-gray-200 px-4 py-2 rounded-lg mr-2"
+              style={{ backgroundColor: "#f06767", padding: 14, borderRadius: 8, alignItems: "center" }}
             >
-              <Text>Cancel</Text>
+              <Text className="text-white">Cancel</Text>
             </Pressable>
             <Pressable
               onPress={() => {
                 onSave(selected);
                 onClose();
               }}
+              style={{ backgroundColor: "#6C63FF", padding: 14, borderRadius: 8, alignItems: "center" }}
+
               className="bg-blue-600 px-4 py-2 rounded-lg"
             >
               <Text className="text-white">Add Selected</Text>

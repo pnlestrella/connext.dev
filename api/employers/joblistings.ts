@@ -1,21 +1,49 @@
 import Constants from 'expo-constants';
 
-export async function getJobs(shortlistedJobs: [string]) {
-  const params = new URLSearchParams([shortlistedJobs])
+export async function getJobs(jobUID: string[]) {
+  const params = new URLSearchParams();
 
-  const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/joblistings/getJobs`;
-    console.log("CALLED aa", url)
+  console.log("Get Jobs Executed with: ",jobUID )
 
-    return "hey sir"
+  // Append each jobUID
+  jobUID.forEach((uid) => {
+    params.append('jobUID', uid);
+  });
 
+  const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/joblistings/getJobs?${params.toString()}`;
 
-//   try {
-//     const res = await fetch(`${url}?${params}`)
+  try {
+    const res = await fetch(url);
+    const resJSON = await res.json();
 
-//     const resJSON = await res.json()
+    console.log(resJSON, '------------- AAAAAAAAAAAAAAAAAAAAAAA');
+    return resJSON;
+  } catch (err) {
+    console.log('❌ Error fetching jobs:', err);
+    return null;
+  }
+}
 
-//     console.log(resJSON, '------------- AAAAAAAAAAAAAAAAAAAAAAA');
-//   } catch (err) {
-//     console.log(err);
-//   }
+export async function postJob(jobData: any) {
+  const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/joblistings/postJobs`;
+
+  try {
+    console.log("📤 Posting job:", jobData);
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(jobData),
+    });
+
+    const resJSON = await res.json();
+    console.log("📌 Post Job Response:", resJSON);
+
+    return resJSON;
+  } catch (err) {
+    console.log("❌ Error posting job:", err);
+    return { success: false, error: err };
+  }
 }

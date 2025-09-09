@@ -1,0 +1,6 @@
+[
+  { "id": 1, "type": "Onsite" },
+  { "id": 2, "type": "Hybrid" },
+  { "id": 3, "type": "Remote" },
+  { "id": 4, "type": "Flexible" }
+]

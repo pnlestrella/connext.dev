@@ -1,59 +1,34 @@
-import { User } from 'firebase/auth';
-
-interface BaseUserMDB {
-  _id: string;
-  role: 'jobseeker' | 'employer';
-  accountIncomplete: boolean;
-  createdAt: string;
-  updatedAt: string;
-  email: string;
-  status: boolean;
-  __v: number;
-}
-
-// 🎯 Jobseeker-specific fields
-interface JobseekerMDB extends BaseUserMDB {
-  role: 'jobseeker';
-  seekerUID: string;
-  fullName: string;
-  industries?: string[];
-  location?: Location;
-  skills?: string[];
-  profileSummary?: string;
-  shortlistedJobs?: string[];
-  skippedJobs?: string[];
-  experience?: string[];
-  certifications?: string[];
-}
-
-// 🎯 Employer-specific fields
-interface EmployerMDB extends BaseUserMDB {
-  role: 'employer';
-  employerUID: string;
-  companyName: string;
-  industries: string[];
-  location?: Location;
-  profilePic?: string;
-}
-
-// Union type — can be either
-export type UserMDB = JobseekerMDB | EmployerMDB;
-
-export type AuthTypes = {
-  user: User | null;
-  userMDB: UserMDB | null; // can be jobseeker or employer
-  userType: 'jobseeker' | 'employer' | '';
-  loading: boolean;
-  firstLaunch: boolean;
-  initializing: boolean;
-  shortlistedJobs: object;
-  resetSignal: boolean;
-
-  setUserType: (value: string) => void;
-  setUserMDB: (value: UserMDB) => void; // ⚡ fix: was string
-  setLoading: (value: boolean) => void;
-  setFirstLaunch: () => void;
-  signOutUser: () => void;
-  setShortlistedJobs: (value: object[]) => void;
-  setResetSignal: (value: boolean) => void;
+// Jobseeker-specific
+type JobseekerUser = {
+  user: any; // Firebase user
+  userMDB: any;
+  userType: "jobseeker";
+  shortlistedJobs: any[];
 };
+
+// Employer-specific
+type EmployerUser = {
+  user: any;
+  userMDB: any;
+  userType: "employer";
+  // no shortlistedJobs here
+};
+
+// Common across both
+type CommonAuth = {
+  loading: boolean | null;
+  firstLaunch: boolean | null;
+  initializing: boolean;
+  resetSignal: boolean;
+  accountType: string;
+  setUserType: (t: AuthTypes["userType"] | null) => void;
+  setUserMDB: (mdb: any) => void;
+  setLoading: (l: boolean | null) => void;
+  setFirstLaunch: (f: boolean | null) => void;
+  signOutUser: () => Promise<void>;
+  setResetSignal: (val: boolean) => void;
+  setAccountType: (val: string) => void;
+
+};
+
+export type AuthTypes = (JobseekerUser | EmployerUser) & CommonAuth;

@@ -1,0 +1,6 @@
+[
+  { "id": 1, "frequency": "hour" },
+  { "id": 2, "frequency": "day" },
+  { "id": 3, "frequency": "month" },
+  { "id": 4, "frequency": "year" }
+]
