@@ -121,8 +121,7 @@ export const EditProfileScreen = () => {
 
     return (
         <SafeAreaView className="flex-1 bg-white">
-            <Header />
-            <View className="flex-row ml-5 items-center">
+            <View className="flex-row items-center px-5 py-4 border-b border-gray-200 items-center">
                 <TouchableOpacity onPress={handleCancel} className="mr-3">
                     <ArrowLeft size={24} color="black" />
                 </TouchableOpacity>

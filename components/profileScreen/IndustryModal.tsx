@@ -47,10 +47,10 @@ export const IndustryModal = ({
     const exists = selected.some((i) => i.id === industry.id);
 
     if (exists) {
-      if (selected.length === 1) {
-        alert("You must keep at least 1 industry selected");
-        return;
-      }
+      // if (selected.length === 1) {
+      //   alert("You must keep at least 1 industry selected");
+      //   return;
+      // }
       setSelected((prev) => prev.filter((i) => i.id !== industry.id));
     } else if (selected.length >= maxSelection) {
       alert(`You can select up to ${maxSelection} industries`);

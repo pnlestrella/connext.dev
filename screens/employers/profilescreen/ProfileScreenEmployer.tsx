@@ -5,8 +5,7 @@ import { RootStackParamList } from 'navigation/types/RootStackParamList';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAuth } from 'context/auth/AuthHook';
 //Header
-import { Header } from 'components/Header';
-import { LucideImageUp, Settings, SendHorizonal, Star, LogOut } from 'lucide-react-native';
+import { Settings, SendHorizonal, Star, LogOut } from 'lucide-react-native';
 
 type NavigationType = NativeStackNavigationProp<RootStackParamList>;
 export const ProfileScreenEmployer = () => {
@@ -24,7 +23,6 @@ export const ProfileScreenEmployer = () => {
       >
                 <View style={{ flex: 1, padding: 20, }}>
 
-          <Header />
 
           <View className="flex-1 justify-center items-center">
             <View className="border rounded-full w-32 h-32 overflow-hidden">

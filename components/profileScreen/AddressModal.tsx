@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -30,39 +30,65 @@ export const AddressModal: React.FC<AddressModalProps> = ({
   onSave,
   initialAddress,
 }) => {
-  const [countryQuery, setCountryQuery] = useState(initialAddress?.country || "");
-  const [provinceQuery, setProvinceQuery] = useState(initialAddress?.province || "");
-  const [cityQuery, setCityQuery] = useState(initialAddress?.city || "");
-  const [postal, setPostal] = useState(initialAddress?.postalCode || "");
+  const [countryQuery, setCountryQuery] = useState("");
+  const [provinceQuery, setProvinceQuery] = useState("");
+  const [cityQuery, setCityQuery] = useState("");
+  const [postal, setPostal] = useState("");
 
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(initialAddress?.country || null);
-  const [selectedProvince, setSelectedProvince] = useState<string | null>(initialAddress?.province || null);
-  const [selectedCity, setSelectedCity] = useState<string | null>(initialAddress?.city || null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
-  const countryList = [...new Set(locations.map((l: any) => l.country))].map(code => ({
-    code,
-    name: COUNTRY_LABELS[code] || code,
-  }));
-  const filteredCountries = countryList.filter(c =>
+  // Initialize from initialAddress only once per modal open
+  useEffect(() => {
+    if (visible) {
+      setCountryQuery(initialAddress?.country || "");
+      setProvinceQuery(initialAddress?.province || "");
+      setCityQuery(initialAddress?.city || "");
+      setPostal(initialAddress?.postalCode || "");
+      setSelectedCountry(initialAddress?.country || null);
+      setSelectedProvince(initialAddress?.province || null);
+      setSelectedCity(initialAddress?.city || null);
+    }
+  }, [visible, initialAddress]);
+
+  const countryList = [...new Set(locations.map((l: any) => l.country))].map(
+    (code) => ({
+      code,
+      name: COUNTRY_LABELS[code] || code,
+    })
+  );
+  const filteredCountries = countryList.filter((c) =>
     c.name.toLowerCase().includes(countryQuery.toLowerCase())
   );
 
   const provinces = selectedCountry
-    ? [...new Set(locations.filter((l: any) => l.country === selectedCountry).map(l => l.province))]
+    ? [
+        ...new Set(
+          locations
+            .filter((l: any) => l.country === selectedCountry)
+            .map((l) => l.province)
+        ),
+      ]
     : [];
-  const filteredProvinces = provinces.filter(p =>
+  const filteredProvinces = provinces.filter((p) =>
     p.toLowerCase().includes(provinceQuery.toLowerCase())
   );
 
   const cities =
     selectedCountry && selectedProvince
-      ? [...new Set(
-        locations
-          .filter(l => l.country === selectedCountry && l.province === selectedProvince)
-          .map(l => l.city)
-      )]
+      ? [
+          ...new Set(
+            locations
+              .filter(
+                (l) =>
+                  l.country === selectedCountry && l.province === selectedProvince
+              )
+              .map((l) => l.city)
+          ),
+        ]
       : [];
-  const filteredCities = cities.filter(c =>
+  const filteredCities = cities.filter((c) =>
     c.toLowerCase().includes(cityQuery.toLowerCase())
   );
 
@@ -151,24 +177,19 @@ export const AddressModal: React.FC<AddressModalProps> = ({
             setSelectedCountry,
             filteredCountries,
             (item) => {
-              setSelectedCountry(item.code);
-              setCountryQuery(item.name);
-              setSelectedProvince(null);
-              setProvinceQuery("");
-              setSelectedCity(null);
-              setCityQuery("");
-              setPostal("");
+              if (selectedCountry !== item.code) {
+                setSelectedCountry(item.code);
+                setCountryQuery(item.name);
+                setSelectedProvince(null);
+                setProvinceQuery("");
+                setSelectedCity(null);
+                setCityQuery("");
+                setPostal("");
+              }
             },
             "Type country...",
             (item) => item.code,
-            (item) => item.name,
-            () => { // Clear dependent inputs when Country cleared
-              setSelectedProvince(null);
-              setProvinceQuery("");
-              setSelectedCity(null);
-              setCityQuery("");
-              setPostal("");
-            }
+            (item) => item.name
           )}
 
           {selectedCountry &&
@@ -180,20 +201,17 @@ export const AddressModal: React.FC<AddressModalProps> = ({
               setSelectedProvince,
               filteredProvinces,
               (item) => {
-                setSelectedProvince(item);
-                setProvinceQuery(item);
-                setSelectedCity(null);
-                setCityQuery("");
-                setPostal("");
+                if (selectedProvince !== item) {
+                  setSelectedProvince(item);
+                  setProvinceQuery(item);
+                  setSelectedCity(null);
+                  setCityQuery("");
+                  setPostal("");
+                }
               },
               "Type province...",
               (item) => item,
-              (item) => item,
-              () => { // Clear dependent inputs when Province cleared
-                setSelectedCity(null);
-                setCityQuery("");
-                setPostal("");
-              }
+              (item) => item
             )}
 
           {selectedProvince &&
@@ -205,26 +223,25 @@ export const AddressModal: React.FC<AddressModalProps> = ({
               setSelectedCity,
               filteredCities,
               (item) => {
-                setSelectedCity(item);
-                setCityQuery(item);
-                setPostal("");
+                if (selectedCity !== item) {
+                  setSelectedCity(item);
+                  setCityQuery(item);
+                  setPostal("");
+                }
               },
               "Type city...",
               (item) => item,
-              (item) => item,
-              () => { // Clear dependent inputs when City cleared
-                setPostal("");
-              }
+              (item) => item
             )}
 
-          {selectedCity &&
+          {selectedCity && (
             <View style={{ marginTop: 16 }}>
               <Text style={styles.label}>Postal Code</Text>
               <View style={styles.inputWrapper}>
                 <TextInput
                   style={styles.input}
                   value={postal}
-                  onChangeText={(t) => setPostal(t.replace(/[^0-9]/g, ""))} // only allow numbers
+                  onChangeText={(t) => setPostal(t.replace(/[^0-9]/g, ""))}
                   placeholder="Enter postal code..."
                   keyboardType="numeric"
                   maxLength={8}
@@ -239,14 +256,19 @@ export const AddressModal: React.FC<AddressModalProps> = ({
                 )}
               </View>
             </View>
-          }
-
+          )}
 
           <View style={{ flexDirection: "row", marginTop: 20 }}>
-            <Pressable style={[styles.button, { flex: 1, marginRight: 10 }]} onPress={onClose}>
+            <Pressable
+              style={[styles.button, { flex: 1, marginRight: 10 }]}
+              onPress={onClose}
+            >
               <Text style={styles.buttonText}>Cancel</Text>
             </Pressable>
-            <Pressable style={[styles.button, { flex: 1 }]} onPress={handleSave}>
+            <Pressable
+              style={[styles.button, { flex: 1 }]}
+              onPress={handleSave}
+            >
               <Text style={styles.buttonText}>Save</Text>
             </Pressable>
           </View>
@@ -257,12 +279,23 @@ export const AddressModal: React.FC<AddressModalProps> = ({
 };
 
 const styles = StyleSheet.create({
-  modalContainer: { flex: 1, backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "center", padding: 16 },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    padding: 16,
+  },
   modalContent: { backgroundColor: "#fff", borderRadius: 12, padding: 20 },
   title: { fontSize: 20, fontWeight: "bold", marginBottom: 16, color: "#6C63FF" },
   label: { marginTop: 16, marginBottom: 6, fontWeight: "bold", color: "#1A1A1A" },
   inputWrapper: { position: "relative" },
-  input: { borderWidth: 1, borderColor: "#ccc", borderRadius: 8, padding: 12, paddingRight: 32 },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 12,
+    paddingRight: 32,
+  },
   clearBtn: { position: "absolute", right: 10, top: "50%", transform: [{ translateY: -10 }] },
   suggestion: { padding: 10, backgroundColor: "#f9f9f9", borderBottomWidth: 1, borderColor: "#eee" },
   button: { backgroundColor: "#6C63FF", padding: 14, borderRadius: 8, alignItems: "center" },

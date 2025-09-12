@@ -7,8 +7,6 @@ type Props = { children: ReactNode };
 export function AuthGate({ children }: Props) {
   const { userType,userMDB } = useAuth();
 
-  console.log(userMDB,'usersasss')
-
   if (userType === "jobseeker") {
     console.log("Using Job Provider")
     return <JobProvider>{children}</JobProvider>;

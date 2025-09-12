@@ -11,7 +11,7 @@ import { useJobs } from 'context/jobs/JobHook';
 
 dayjs.extend(relativeTime);
 
-export function formatTimeAgo(dateString:any) {
+export function formatTimeAgo(dateString: any) {
   return dayjs(dateString).fromNow();
 }
 
@@ -79,6 +79,8 @@ export const JobProspectScreen = () => {
                         activeOpacity={0.8}
                         className="px-4 py-2 rounded-full justify-center items-center"
                         style={{ backgroundColor: "white" }}
+                        onPress={() => console.log(job)}
+
                       >
                         <Text className="text-blue-500 font-bold text-sm">
                           {Math.round((job.score + job.boostWeight) * 100)}% match for you!
@@ -90,14 +92,14 @@ export const JobProspectScreen = () => {
                   </>
                 ) : (
                   <>
-                  {/* External job postings */}
+                    {/* External job postings */}
                     <View className='flex-row items-end justify-between '>
                       <Text className="text-white text-xs font-bold mr-4">External Job From:</Text>
                       <TouchableOpacity
                         activeOpacity={0.8}
                         className="px-4 py-2 rounded-full justify-center items-center"
                         style={{ backgroundColor: "white" }}
-                        onPress={()=> console.log(job)}
+                        onPress={() => console.log(job)}
                       >
                         <Text className="text-blue-500 font-bold text-sm">
                           {Math.round((job.score + job.boostWeight) * 100)}% match for you!
@@ -134,10 +136,10 @@ export const JobProspectScreen = () => {
 
               {/* Buttons */}
               <View className="flex-row items-center justify-between mt-3">
-                <Text className='text-white text-xs' style={{fontSize:12, fontFamily:'Lexend-Bold'}} >Posted {formatTimeAgo(job.createdAt)}</Text>
-                <Pressable 
+                <Text className='text-white text-xs' style={{ fontSize: 12, fontFamily: 'Lexend-Bold' }} >Posted {formatTimeAgo(job.createdAt)}</Text>
+                <Pressable
                   onPress={() => alert("Apply feature is in progress")}
-                className='bg-red-50 px-16 py-2 rounded-xl' style={{backgroundColor:'#154588'}}><Text className='text-white' style={{fontFamily:'Lexend-Bold', fontSize:12}}>Apply</Text></Pressable>
+                  className='bg-red-50 px-16 py-2 rounded-xl' style={{ backgroundColor: '#154588' }}><Text className='text-white' style={{ fontFamily: 'Lexend-Bold', fontSize: 12 }}>Apply</Text></Pressable>
               </View>
             </View>
           </Pressable>

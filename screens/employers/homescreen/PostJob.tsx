@@ -29,7 +29,6 @@ import { useAuth } from "context/auth/AuthHook";
 import { postJob } from "api/employers/joblistings";
 import { useEmployers } from "context/employers/EmployerHook";
 
-// ✅ Reusable Checkbox Component (bigger, mobile-friendly)
 const CheckboxItem = ({
     label,
     isSelected,
@@ -57,6 +56,9 @@ const CheckboxItem = ({
     </TouchableOpacity>
 );
 
+
+
+
 // ✅ Section Divider
 const SectionDivider = () => (
     <View style={{ height: 1, backgroundColor: "#E5E7EB", marginVertical: 20 }} />
@@ -64,8 +66,8 @@ const SectionDivider = () => (
 
 export const PostJob = () => {
     const { userMDB } = useAuth()
-    const {setRefresh} = useEmployers()
-    
+    const { setRefresh, refresh } = useEmployers()
+
 
     console.log(userMDB, 'usermd')
     const navigation = useNavigation();
@@ -112,6 +114,22 @@ export const PostJob = () => {
         }
     };
 
+    // discard alert
+    const confirmDiscard = () => {
+        Alert.alert(
+            "Discard changes?",
+            "If you leave now, any unsaved job details will be lost.",
+            [
+                { text: "Stay", style: "cancel" },
+                {
+                    text: "Discard",
+                    style: "destructive",
+                    onPress: () => navigation.goBack(),
+                },
+            ]
+        );
+    };
+
     const handleSubmitJob = async () => {
         // ✅ Validation for required fields
         if (!jobTitle.trim()) {
@@ -129,12 +147,7 @@ export const PostJob = () => {
             return;
         }
 
-        if (
-            !location ||
-            !location.city ||
-            !location.province || // 🔥 changed from "state" → "province"
-            !location.postalCode
-        ) {
+        if (!location || !location.city || !location.province || !location.postalCode) {
             alert("Please provide a valid Location (City, Province, Postal Code)");
             return;
         }
@@ -154,9 +167,8 @@ export const PostJob = () => {
             return;
         }
 
-        // ✅ Job object (salary stays optional)
         const jobData = {
-            jobUID: userMDB.employerUID, // or generate a UID here
+            employerUID: userMDB.employerUID,
             companyName,
             jobTitle,
             jobIndustry: industries[0] || "",
@@ -174,22 +186,24 @@ export const PostJob = () => {
             profilePic,
         };
 
-        console.log("📌 Job Data to Save:", jobData);
-
-        //pushing to mongodb
-        const res = await postJob(jobData);
-
-        if (res.success) {
-            alert("✅ Job posted successfully!");
-            //to refresh 
-            setRefresh(true)
-            navigation.goBack();
-        } else {
-            alert("❌ Failed to post job: " + (res.error || "Unknown error"));
+        try {
+            const res = await postJob(jobData); // ✅ wait for DB operation
+            if (res.success) {
+                alert("✅ Job posted successfully!");
+                setRefresh(!refresh); // refresh state after success
+                // wait a tiny bit to ensure UI updates before navigating
+                setTimeout(() => {
+                    navigation.goBack();
+                }, 100);
+            } else {
+                alert("❌ Failed to post job: " + (res.error || "Unknown error"));
+            }
+        } catch (err) {
+            console.error("⚠️ Error posting job:", err);
+            alert("❌ An error occurred while posting the job.");
         }
-
-
     };
+
 
 
 
@@ -197,7 +211,7 @@ export const PostJob = () => {
         <SafeAreaView className="flex-1 bg-white">
             {/* Header + Page Title */}
             <View className="flex-row items-center justify-between px-5 py-4 border-b border-gray-200">
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => confirmDiscard()}>
                     <ArrowLeft size={28} color="#37424F" />
                 </TouchableOpacity>
                 <Text
@@ -488,23 +502,45 @@ export const PostJob = () => {
 
                 <SectionDivider />
 
-                {/* Submit */}
-                <TouchableOpacity
-                    onPress={handleSubmitJob}
-                    className="bg-blue-600 rounded-xl px-6 py-4 mb-12"
-                >
-                    <Text
-                        style={{
-                            fontFamily: "Lexend-Regular",
-                            fontSize: 16,
-                            fontWeight: "600",
-                            color: "white",
-                            textAlign: "center",
-                        }}
+                {/* Submit + Cancel */}
+                <View className="flex-row justify-between px-5 mb-12">
+                    {/* Cancel */}
+                    <TouchableOpacity
+                        onPress={confirmDiscard}
+                        className="flex-1 bg-gray-200 rounded-xl px-6 py-4 mr-3"
                     >
-                        Post Job
-                    </Text>
-                </TouchableOpacity>
+                        <Text
+                            style={{
+                                fontFamily: "Lexend-Regular",
+                                fontSize: 16,
+                                fontWeight: "600",
+                                color: "#37424F",
+                                textAlign: "center",
+                            }}
+                        >
+                            Cancel
+                        </Text>
+                    </TouchableOpacity>
+
+                    {/* Post Job */}
+                    <TouchableOpacity
+                        onPress={handleSubmitJob}
+                        className="flex-1 bg-blue-600 rounded-xl px-6 py-4 ml-3"
+                    >
+                        <Text
+                            style={{
+                                fontFamily: "Lexend-Regular",
+                                fontSize: 16,
+                                fontWeight: "600",
+                                color: "white",
+                                textAlign: "center",
+                            }}
+                        >
+                            Post Job
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
             </ScrollView>
 
             {/* Modals */}
@@ -513,7 +549,7 @@ export const PostJob = () => {
                 onClose={() => setIndustryModalVisible(false)}
                 onSave={(selected) => setIndustries(selected.map((i) => i.name))}
                 initialSelected={initialIndustriesForModal}
-                maxSelection={3}
+                maxSelection={1}
             />
             <AddressModal
                 visible={addressModalVisible}

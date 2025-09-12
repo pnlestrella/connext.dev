@@ -67,10 +67,13 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
     //jobpostings
     const [jobPostings, setJobPostings] = useState<Job[]>([]);
 
-    console.log("Jobposting length: ", jobPostings.length);
+    console.log(jobPostings, "Jobposting length: ", jobPostings.length);
+    console.log(jobPostings, "Jobposting length: ", jobPostings.length);
+    console.log(jobPostings, "Jobposting length: ", jobPostings.length);
+    console.log(jobPostings, "Jobposting length: ", jobPostings.length);
 
     for (let i in jobPostings) {
-        console.log(jobPostings[i].jobUID, jobPostings[i].jobTitle, 'jobuid')
+        console.log(jobPostings[i].jobUID, jobPostings[i].jobTitle, 'jobUID')
     }
 
 

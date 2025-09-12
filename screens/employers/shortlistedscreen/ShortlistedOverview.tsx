@@ -8,22 +8,18 @@ import { useState } from 'react';
 import { Text, Pressable, View, ScrollView } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export const HomeScreenEmployer = () => {
+export const ShortlistedOverview = () => {
   const { setUserMDB, userMDB } = useAuth();
   const { jobOpenings, applicationCounts } = useEmployers();
-  const insets = useSafeAreaInsets();
 
   const navigation = useNavigation()
 
-  const handleApplicationScreen = (jobUID:string) => {
-    navigation.push("jobApplications",{jobUID: jobUID})
+  function handleApplicantScreen(jobUID: string) {
+    navigation.push("shortlistedApplicants", { jobUID: jobUID })
+
   }
 
 
-  const handlePost = () => {
-    console.log("Post an opening pressed");
-    navigation.navigate('postJob')
-  };
 
   // ✅ Job Card UI
   const renderJob = (item: any) => (
@@ -40,7 +36,10 @@ export const HomeScreenEmployer = () => {
       }}
     >
       {/* Job Info */}
-      <View style={{ padding: 16, backgroundColor: '#6C63FF' }}>
+      <Pressable style={{ padding: 16, backgroundColor: '#6C63FF' }}
+        onPress={() => handleApplicantScreen(item.jobUID)}
+
+      >
         {/* Title + applicants */}
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
           <Text
@@ -66,7 +65,6 @@ export const HomeScreenEmployer = () => {
               backgroundColor: "white",
               padding: 5,
             }}
-            onPress={()=>handleApplicationScreen(item.jobUID)}
           >
             <User size={16} color="#1572DB" />
             <Text
@@ -95,47 +93,9 @@ export const HomeScreenEmployer = () => {
             Posted on {item.createdAt ? new Date(item.createdAt).toDateString() : "—"}
           </Text>
         </View>
-      </View>
+      </Pressable>
 
-      {/* Actions Section */}
-      <View
-        style={{
-          borderTopWidth: 1,
-          borderTopColor: "#E5E7EB",
-          paddingVertical: 12,
-          paddingHorizontal: 16,
-          backgroundColor: "white",
-        }}
-      >
-        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          <Pressable
-            style={{ flexDirection: "row", alignItems: "center" }}
-            onPress={() => navigation.navigate("showDetails", { job: item, edit: true })}
-          >
-            <Edit size={14} color="#1572DB" />
-            <Text style={{ color: "#1572DB", marginLeft: 4, fontSize: 13, fontFamily: "Poppins-Bold" }}>
-              Edit
-            </Text>
-          </Pressable>
 
-          <Pressable
-            style={{ flexDirection: "row", alignItems: "center" }}
-            onPress={() => navigation.navigate("showDetails", { job: item, edit: false })}
-          >
-            <Maximize2 size={14} color="#1572DB" />
-            <Text style={{ color: "#1572DB", marginLeft: 4, fontSize: 13, fontFamily: "Poppins-Bold" }}>
-              Show details
-            </Text>
-          </Pressable>
-
-          <Pressable style={{ flexDirection: "row", alignItems: "center" }}>
-            <XCircle size={14} color="#DC2626" />
-            <Text style={{ color: "#DC2626", marginLeft: 4, fontSize: 13, fontFamily: "Poppins-Bold" }}>
-              Close Posting
-            </Text>
-          </Pressable>
-        </View>
-      </View>
     </View>
   );
 
@@ -153,10 +113,10 @@ export const HomeScreenEmployer = () => {
         <View className="flex-row justify-between px-1 m-4 ">
           <View>
             <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
-              Your
+              Shortlisted
             </Text>
             <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
-              Openings
+              Overview
             </Text>
           </View>
 
@@ -179,38 +139,7 @@ export const HomeScreenEmployer = () => {
         {jobOpenings?.map(renderJob)}
       </ScrollView>
 
-      {/* Floating button */}
-      <Pressable
-        onPress={handlePost}
-        style={{
-          backgroundColor: "#007AFF",
-          flexDirection: "row",
-          alignItems: "center",
-          paddingVertical: 10,
-          paddingHorizontal: 16,
-          borderRadius: 30,
-          position: "absolute",
-          bottom: insets.bottom + 20,
-          right: 20,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.2,
-          shadowRadius: 4,
-          elevation: 5,
-        }}
-      >
-        <Text
-          style={{
-            color: "white",
-            fontFamily: "Poppins-SemiBold",
-            fontSize: 14,
-            marginRight: 6,
-          }}
-        >
-          Post an opening
-        </Text>
-        <Pencil size={16} color="white" />
-      </Pressable>
+
     </SafeAreaView>
   );
 };

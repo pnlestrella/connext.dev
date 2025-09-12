@@ -1,16 +1,18 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { UserCheck } from 'lucide-react-native';
+
 
 //screens
 import HomeStackScreen from './employer/HomeStackScreen';
-import { ApplicantsScreen } from 'screens/employers/ApplicantsScreen';
 import { MessageScreenEmployer } from 'screens/employers/MessageScreenEmployer';
+import ShortlistedStackScreen from './employer/ShortlistedStackScreen';
 import ProfileStackScreen from './employer/ProfileStackScreen';
+
 //icons
 import HomeIcon from '../../assets/icons/home_icon.svg'
 import JobProspectIcon from '../../assets/icons/job_prospect_icon.svg'
 import MessageIcon from '../../assets/icons/message_icon.svg'
 import ProfileIcon from '../../assets/icons/profile_icon.svg'
-
 
 
 const Tab = createBottomTabNavigator();
@@ -36,7 +38,7 @@ export default function EmployerTabs() {
 
         })}>
             <Tab.Screen name="Home" component={HomeStackScreen} />
-            <Tab.Screen name="Applicants" component={ApplicantsScreen} />
+            <Tab.Screen name="Shortlisted" component={ShortlistedStackScreen} />
             <Tab.Screen name="Message" component={MessageScreenEmployer} />
             <Tab.Screen name="Profile" component={ProfileStackScreen} />
         </Tab.Navigator>

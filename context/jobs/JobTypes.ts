@@ -1,6 +1,8 @@
 // JobTypes.ts
 export type Job = {
+  _id: any,
   jobUID: string;
+  employerUID: string;
   jobTitle: string;
   companyName?: string;
   profilePic?: string;

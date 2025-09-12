@@ -1,13 +1,11 @@
 import Constants from 'expo-constants';
 
-export async function getJobs(jobUID: string[]) {
+export async function getJobs(employerUID: string[]) {
   const params = new URLSearchParams();
 
-  console.log("Get Jobs Executed with: ",jobUID )
-
-  // Append each jobUID
-  jobUID.forEach((uid) => {
-    params.append('jobUID', uid);
+  // Append each employerUID
+  employerUID.forEach((uid) => {
+    params.append('employerUID', uid);
   });
 
   const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/joblistings/getJobs?${params.toString()}`;
@@ -16,7 +14,6 @@ export async function getJobs(jobUID: string[]) {
     const res = await fetch(url);
     const resJSON = await res.json();
 
-    console.log(resJSON, '------------- AAAAAAAAAAAAAAAAAAAAAAA');
     return resJSON;
   } catch (err) {
     console.log('❌ Error fetching jobs:', err);
@@ -28,22 +25,47 @@ export async function postJob(jobData: any) {
   const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/joblistings/postJobs`;
 
   try {
-    console.log("📤 Posting job:", jobData);
+    console.log('📤 Posting job:', jobData);
 
     const res = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(jobData),
     });
 
     const resJSON = await res.json();
-    console.log("📌 Post Job Response:", resJSON);
+    console.log('📌 Post Job Response:', resJSON);
 
     return resJSON;
   } catch (err) {
-    console.log("❌ Error posting job:", err);
+    console.log('❌ Error posting job:', err);
+    return { success: false, error: err };
+  }
+}
+
+export async function updateJobs(jobUID: string, updates: any) {
+  const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/joblistings/updateJobs/${jobUID}`;
+
+  console.log(url,'URLLLLLLLLL')
+  try {
+    console.log('✏️ Updating job:', jobUID, updates);
+
+    const res = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updates),
+    });
+
+    const resJSON = await res.json();
+    console.log('📌 Update Job Response:', resJSON);
+
+    return resJSON;
+  } catch (err) {
+    console.log('❌ Error updating job:', err);
     return { success: false, error: err };
   }
 }

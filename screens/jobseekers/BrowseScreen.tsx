@@ -6,15 +6,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import CardSwipe from "components/Swiping/CardSwipe";
 import { Header } from "components/Header";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react-native";
 
 //Filtering & Searching
 import { Filtering } from "components/Filtering&Searching/Filtering";
 import { SearchSheet } from "components/Filtering&Searching/SearchSheet";
-import { useAuth } from "context/auth/AuthHook";
-import { recoSys } from "api/jobseekers/recosys";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { useJobs } from "context/jobs/JobHook";
 
 

@@ -15,9 +15,6 @@ export async function updateProfile(
   try {
     const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/${userPath}/updateProfile/${uid}`;
     
-    console.log("PATCH Request URL:", url);
-    console.log("Payload:", payload);
-
     const res = await fetch(url, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
