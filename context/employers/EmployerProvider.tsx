@@ -29,11 +29,27 @@ export const EmployerProvider = ({ children }: { children: ReactNode }) => {
     shortlistedApplicants: any[];
   } | null>(null);
 
+  // track if reset is intentional
+  const isResettingRef = useRef(false);
+
   // Cleanup on reset
   useEffect(() => {
     if (resetSignal) {
+      console.log("🔄 Reset signal triggered, clearing employer state");
+      isResettingRef.current = true;
+
       setJobOpenings([]);
       setApplicationCounts([]);
+      setSkippedApplicants([]);
+      setShortlistedApplicants([]);
+      setRefresh(false);
+      setSyncTrigger(0);
+
+      // clear AsyncStorage
+      AsyncStorage.removeItem("unsyncedData")
+        .then(() => console.log("🗑️ Cleared unsynced data from storage"))
+        .catch((err) => console.log("❌ Failed to clear async storage:", err));
+
       setResetSignal(false);
     }
   }, [resetSignal]);
@@ -58,12 +74,24 @@ export const EmployerProvider = ({ children }: { children: ReactNode }) => {
           rejectedApplicants: skippedApplicants,
         };
 
+        // 🚫 Prevent accidental DB wipe unless reset is happening
+        if (
+          updated.shortlistedApplicants.length === 0 &&
+          updated.rejectedApplicants.length === 0 &&
+          !isResettingRef.current
+        ) {
+          console.log("🚫 Prevented accidental DB wipe");
+          return;
+        }
+
         const res = await updateProfile("employers", userMDB.employerUID, {
           updates: updated,
         });
 
+        
         console.log("✅ Synced to DB:", res);
         lastSavedRef.current = updated;
+        isResettingRef.current = false; // clear reset flag after sync
       } catch (err) {
         console.log("❌ Failed to sync DB:", err);
       }
@@ -81,8 +109,14 @@ export const EmployerProvider = ({ children }: { children: ReactNode }) => {
 
           if (
             lastSavedRef.current &&
-            arraysEqual(lastSavedRef.current.skippedApplicants, newData.skippedApplicants) &&
-            arraysEqual(lastSavedRef.current.shortlistedApplicants, newData.shortlistedApplicants)
+            arraysEqual(
+              lastSavedRef.current.skippedApplicants,
+              newData.skippedApplicants
+            ) &&
+            arraysEqual(
+              lastSavedRef.current.shortlistedApplicants,
+              newData.shortlistedApplicants
+            )
           ) {
             console.log("✅ No changes since last save");
             return;
@@ -109,7 +143,9 @@ export const EmployerProvider = ({ children }: { children: ReactNode }) => {
         if (!userMDB?.employerUID) return;
 
         const resJSON = await getJobs([userMDB.employerUID]);
-        const applicationCountsRes = await getApplicantCounts(userMDB.employerUID);
+        const applicationCountsRes = await getApplicantCounts(
+          userMDB.employerUID
+        );
 
         lastSavedRef.current = {
           shortlistedApplicants: userMDB.shortlistedApplicants ?? [],
@@ -130,16 +166,36 @@ export const EmployerProvider = ({ children }: { children: ReactNode }) => {
       try {
         const res = await AsyncStorage.getItem("unsyncedData");
         if (res) {
-          const resJSON = JSON.parse(res);
+          let resJSON;
+          try {
+            resJSON = JSON.parse(res);
+          } catch (err) {
+            console.log("❌ Corrupt AsyncStorage entry, clearing...");
+            await AsyncStorage.removeItem("unsyncedData");
+            return;
+          }
+
           console.log("📂 Found unsynced data:", resJSON);
 
-          setShortlistedApplicants(resJSON.shortlistedApplicants || []);
-          setSkippedApplicants(resJSON.skippedApplicants || []);
+          setShortlistedApplicants(
+            resJSON.shortlistedApplicants ??
+              userMDB.shortlistedApplicants ??
+              []
+          );
+          setSkippedApplicants(
+            resJSON.skippedApplicants ?? userMDB.rejectedApplicants ?? []
+          );
 
-          // trigger a DB sync only if data differs
+          // trigger sync only if different
           if (
-            !arraysEqual(resJSON.shortlistedApplicants, userMDB.shortlistedApplicants ?? []) ||
-            !arraysEqual(resJSON.skippedApplicants, userMDB.rejectedApplicants ?? [])
+            !arraysEqual(
+              resJSON.shortlistedApplicants,
+              userMDB.shortlistedApplicants ?? []
+            ) ||
+            !arraysEqual(
+              resJSON.skippedApplicants,
+              userMDB.rejectedApplicants ?? []
+            )
           ) {
             setSyncTrigger((prev) => prev + 1);
           }
@@ -170,8 +226,18 @@ export const EmployerProvider = ({ children }: { children: ReactNode }) => {
       setShortlistedApplicants,
       setSyncTrigger,
     }),
-    [jobOpenings, shortlistedApplicants, skippedApplicants, applicationCounts, refresh]
+    [
+      jobOpenings,
+      shortlistedApplicants,
+      skippedApplicants,
+      applicationCounts,
+      refresh,
+    ]
   );
 
-  return <EmployerContext.Provider value={value}>{children}</EmployerContext.Provider>;
+  return (
+    <EmployerContext.Provider value={value}>
+      {children}
+    </EmployerContext.Provider>
+  );
 };

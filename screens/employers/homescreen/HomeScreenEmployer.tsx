@@ -15,8 +15,9 @@ export const HomeScreenEmployer = () => {
 
   const navigation = useNavigation()
 
-  const handleApplicationScreen = (jobUID:string) => {
-    navigation.push("jobApplications",{jobUID: jobUID})
+
+  const handleApplicationScreen = (jobUID:string, jobTitle: string) => {
+    navigation.push("jobApplications",{jobUID: jobUID, jobTitle:jobTitle})
   }
 
 
@@ -66,7 +67,7 @@ export const HomeScreenEmployer = () => {
               backgroundColor: "white",
               padding: 5,
             }}
-            onPress={()=>handleApplicationScreen(item.jobUID)}
+            onPress={()=>handleApplicationScreen(item.jobUID, item.jobTitle)}
           >
             <User size={16} color="#1572DB" />
             <Text

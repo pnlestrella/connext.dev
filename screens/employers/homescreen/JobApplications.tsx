@@ -13,7 +13,7 @@ export const JobApplications = () => {
   const { skippedApplicants, shortlistedApplicants, setSyncTrigger } = useEmployers()
 
   const route = useRoute();
-  const { jobUID } = route.params;
+  const { jobUID, jobTitle} = route.params;
   const [applications, setApplications] = useState([]);
   const navigation = useNavigation()
 
@@ -57,7 +57,7 @@ export const JobApplications = () => {
           Swiping Applicants
         </Text>
       </View>      
-      <Text className="text-xl font-bold p-4">Applicants for Job: {jobUID}</Text>
+      <Text className="text-xl font-bold p-4">Applicants for Job: {jobTitle}</Text>
 
       {applications?.length > 0 ? (
         <ApplicantSwipe applicants={applications} />
