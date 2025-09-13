@@ -84,7 +84,7 @@ export const ShortlistedOverview = () => {
                 fontFamily: "Poppins-Medium",
               }}
             >
-              {applicationCounts?.find(e => e._id === item.jobUID)?.count || 0} applicants
+              {applicationCounts?.find(e => e._id === item.jobUID)?.shortlisted || 0} applicants
             </Text>
           </View>
         </View>

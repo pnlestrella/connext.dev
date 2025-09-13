@@ -2,14 +2,14 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { ArrowLeft, MapPin, Briefcase, Clock } from 'lucide-react-native';
 import { Text, View, FlatList, Pressable, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { getShortlistedApplicants } from 'api/applications'; // ✅ adjust path
 import { useAuth } from 'context/auth/AuthHook';
+import { useEmployers } from 'context/employers/EmployerHook';
 
 export const ShortlistedApplicants = () => {
+  const {refresh, setRefresh} = useEmployers()
   const route = useRoute();
-  const { userMDB } = useAuth();
-  const shortlistedApplicants = userMDB.shortlistedApplicants;
   const { jobUID, jobTitle } = route.params;
 
   const navigation = useNavigation();
@@ -19,13 +19,16 @@ export const ShortlistedApplicants = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
+  // FETCH only the status of an applicant that has shortlisted on it
+  const status = "shortlisted"
+
   // ✅ Fetch data
   const fetchApplicants = useCallback(async () => {
     if (loading || !hasMore) return;
     setLoading(true);
 
     try {
-      const res = await getShortlistedApplicants(jobUID, shortlistedApplicants, page, 20);
+      const res = await getShortlistedApplicants(jobUID, status, page, 20);
 
       if (res?.success) {
         setData((prev) => [...prev, ...res.payload]);
@@ -39,18 +42,23 @@ export const ShortlistedApplicants = () => {
     } finally {
       setLoading(false);
     }
-  }, [jobUID, shortlistedApplicants, page, loading, hasMore]);
+  }, [jobUID, page, loading, hasMore]);
 
   // ✅ Initial load
   useEffect(() => {
     fetchApplicants();
   }, []);
 
+  const handleBack = () => {
+    navigation.goBack()
+    setRefresh(!refresh)
+  }
+
   return (
     <SafeAreaView className="h-full bg-gray-50">
       {/* Header */}
       <View className="flex-row items-center px-5 py-4 border-b border-gray-200 bg-white">
-        <Pressable onPress={() => navigation.goBack()} className="mr-3">
+        <Pressable onPress={handleBack} className="mr-3">
           <ArrowLeft size={24} color="black" />
         </Pressable>
         <Text

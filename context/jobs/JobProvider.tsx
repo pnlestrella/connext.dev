@@ -39,12 +39,6 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
     //for filtering
     const [jobTypesTemp, setJobTypesTemp] = useState<{ [key: string]: boolean }>({});
 
-
-    //load the cache jobs search
-    // useEffect(() => {
-    
-    // }, [])
-
     //forlogout
     useEffect(() => {
         if (resetSignal) {
@@ -66,11 +60,6 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
 
     //jobpostings
     const [jobPostings, setJobPostings] = useState<Job[]>([]);
-
-    console.log(jobPostings, "Jobposting length: ", jobPostings.length);
-    console.log(jobPostings, "Jobposting length: ", jobPostings.length);
-    console.log(jobPostings, "Jobposting length: ", jobPostings.length);
-    console.log(jobPostings, "Jobposting length: ", jobPostings.length);
 
     for (let i in jobPostings) {
         console.log(jobPostings[i].jobUID, jobPostings[i].jobTitle, 'jobUID')

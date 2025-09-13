@@ -9,17 +9,15 @@ import { Text, Pressable, View, ScrollView } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const HomeScreenEmployer = () => {
-  const { setUserMDB, userMDB } = useAuth();
   const { jobOpenings, applicationCounts } = useEmployers();
+  console.log(applicationCounts,'MAAAAAAAAAAAAAAAAAAA')
   const insets = useSafeAreaInsets();
 
   const navigation = useNavigation()
 
-
   const handleApplicationScreen = (jobUID:string, jobTitle: string) => {
     navigation.push("jobApplications",{jobUID: jobUID, jobTitle:jobTitle})
   }
-
 
   const handlePost = () => {
     console.log("Post an opening pressed");
@@ -78,7 +76,7 @@ export const HomeScreenEmployer = () => {
                 fontFamily: "Poppins-Medium",
               }}
             >
-              {applicationCounts?.find(e => e._id === item.jobUID)?.count || 0} applicants
+              {applicationCounts?.find(e => e._id === item.jobUID)?.pending || 0} applicants
             </Text>
           </Pressable>
         </View>

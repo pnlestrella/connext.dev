@@ -9,42 +9,40 @@ import { Text, View, FlatList, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const JobApplications = () => {
-  //employers global wrapper
-  const { skippedApplicants, shortlistedApplicants, setSyncTrigger } = useEmployers()
-
+  const {refresh, setRefresh} = useEmployers()
+  //for da route
   const route = useRoute();
-  const { jobUID, jobTitle} = route.params;
+  const { jobUID, jobTitle } = route.params;
+
+  //storing applications
   const [applications, setApplications] = useState([]);
+  console.log(applications?.length)
+  //navigations
   const navigation = useNavigation()
 
+  //in mount get the first batch
 
-  console.log(applications?.length)
-  useEffect(() => {
-    if (applications?.length === 5) {
-      (async () => {
-        const res = await getApplicants(jobUID, skippedApplicants, shortlistedApplicants); // fetch from applications API
-        setApplications(res);
-        console.log("Replenishing job applicants array")
-      })();
-    }
-
-    if ((applications?.length % 15) === 5) {
-      setSyncTrigger(prev => prev + 1)
-    }
-  }, [applications?.length])
-
+  //getting the applications that has status of pending
+  const status = "pending"
 
   useEffect(() => {
     (async () => {
-      const res = await getApplicants(jobUID, skippedApplicants, shortlistedApplicants); // fetch from applications API
+      const res = await getApplicants(jobUID, status); // fetch from applications API
       setApplications(res);
     })();
   }, [jobUID]);
 
+  const handleBack = () => {
+    navigation.goBack()
+    setRefresh(!refresh)
+
+  }
+
+
   return (
     <SafeAreaView className="h-full">
       <View className="flex-row items-center px-5 py-4 border-b border-gray-200 items-center">
-        <Pressable onPress={() => navigation.goBack() } className="mr-3">
+        <Pressable onPress={handleBack} className="mr-3">
           <ArrowLeft size={24} color="black" />
         </Pressable>
         <Text
@@ -56,7 +54,7 @@ export const JobApplications = () => {
         >
           Swiping Applicants
         </Text>
-      </View>      
+      </View>
       <Text className="text-xl font-bold p-4">Applicants for Job: {jobTitle}</Text>
 
       {applications?.length > 0 ? (

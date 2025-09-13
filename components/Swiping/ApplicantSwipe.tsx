@@ -10,8 +10,10 @@ import {
     Easing,
 } from "react-native";
 import { Card } from "react-native-paper";
-import { MapPin, GraduationCap, FileText } from "lucide-react-native";
-import { useEmployers } from "context/employers/EmployerHook";
+import { MapPin, GraduationCap } from "lucide-react-native";
+import { updateApplications } from "api/applications";
+
+
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
@@ -43,7 +45,6 @@ type Props = {
 };
 
 export default function ApplicantSwipe({ applicants }: Props) {
-    const { setShortlistedApplicants, setSkippedApplicants } = useEmployers();
 
     const [swipeDone, setSwipeDone] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -99,9 +100,15 @@ export default function ApplicantSwipe({ applicants }: Props) {
                         }).start(() => {
                             if (applicants.length > 0) {
                                 if (toRight) {
-                                    setShortlistedApplicants((p: any) => [...p, applicants[0]._id]);
+                                    const res = updateApplications(applicants[0]._id, 'shortlisted')
+                                        .then((res) => console.log(res))
+                                        .catch(err => console.log(err))
+
+                                    console.log(applicants[0]._id, 'shortlisted')
                                 } else {
-                                    setSkippedApplicants((p: any) => [...p, applicants[0]._id]);
+                                    const res = updateApplications(applicants[0]._id, 'viewed')
+                                        .then((res) => console.log(res))
+                                        .catch(err => console.log(err))
                                 }
                             }
                             applicants.shift(); // remove current
@@ -130,8 +137,6 @@ export default function ApplicantSwipe({ applicants }: Props) {
     }
 
     const { profile } = currentApplicant;
-
-    console.log(currentApplicant, 'wawawa', currentApplicant?.highestLevelAttained, (currentApplicant?.highestLevelAttained === undefined))
 
     return (
         <SafeAreaView className="flex-1 items-center justify-center">
