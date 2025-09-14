@@ -20,7 +20,7 @@ import { Industries } from "../../../data/industries.json"
 import { updateProfile } from "api/profile";
 
 export const EditProfileScreen = () => {
-    const { userMDB, setUserMDB } = useAuth();
+    const { userMDB, refreshAuth } = useAuth();
     const navigation = useNavigation();
 
 
@@ -72,26 +72,15 @@ export const EditProfileScreen = () => {
             return;
         }
 
-        const updated = { firstName, middleInitial, lastName, industries, location, skills };
+        const updated = {
+            fullName: { firstName, middleInitial, lastName }, industries, location, skills
+        };
 
         try {
             const res = await updateProfile(userMDB.role + 's', userMDB.seekerUID, {
                 updates: updated
             });
-
-            setUserMDB((prev: typeof userMDB) => ({
-                ...prev,
-                fullName: {
-                    ...prev.fullName,
-                    firstName: updated.firstName,
-                    middleInitial: updated.middleInitial,
-                    lastName: updated.lastName,
-                },
-                industries: updated.industries,
-                location: updated.location,
-                skills: updated.skills,
-            }));
-
+            refreshAuth()
             console.log(res)
             navigation.goBack();
 

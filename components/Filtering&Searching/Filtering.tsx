@@ -42,60 +42,38 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
         setJobTypesTemp((prev) => ({ ...prev, [id]: !prev[id] }));
     };
 
+
     async function HandleSave() {
-
-
-
-
         setLoading(true);
+
         if (!tempSearch) {
             alert("Please search a Job First");
             return;
         }
         if (!userProfile) return;
 
-        console.log(userProfile, 'USERRRRRRRRRRPROOOOFOOOo')
+        // Clone the profile object
+        const profileCopy = { ...userProfile };
 
-        let profileCopy = JSON.parse(JSON.stringify(userProfile));
-        profileCopy = profileCopyer(profileCopy);
-        profileCopy.currentJobPostings = [];
+        // Add search info
+        profileCopy.userSearch = {
+            query: tempSearch.title,
+            queryIndustry: tempSearch.industries,
+        };
 
-        // ✅ Added filter/fallback for industries & skills
-        const noIndustries =
-            !profileCopy.industries ||
-            profileCopy.industries.length === 0 ||
-            (profileCopy.industries[0] || "").toLowerCase() === "none";
+        // Add job types separately
+        profileCopy.jobTypes = Object.keys(jobTypesTemp)
+            .filter((id) => jobTypesTemp[id]) // only checked
+            .map((id) => filterOptions.find((opt) => opt.id === id)?.label) // convert to labels
+            .filter(Boolean); // remove undefined
 
-        const noSkills =
-            !profileCopy.skills ||
-            profileCopy.skills.length === 0 ||
-            (profileCopy.skills[0] || "").toLowerCase() === "none";
-
-        if (noIndustries && profileCopy.userSearch?.queryIndustry && noSkills) {
-            // fallback industries from search
-            profileCopy.industries = profileCopy.userSearch.queryIndustry;
-
-            // fetch latest profile from DB
-            const res = await getJobSeeker(userMDB?.email);
-
-            console.log("LOCAL PROFILE >>>", userProfile);
-            console.log("DB PROFILE >>>", res);
-
-            // merge only the missing parts
-            profileCopy = {
-                ...profileCopy,
-                experience: res.experience || [],
-                certifications: res.certifications || [],
-                profileSummary: res.profileSummary || profileCopy.profileSummary || "",
-                skills: res.skills || [],
-            };
-        }
-
+        console.log(profileCopy, "aassssssssssssssssssss");
 
         try {
+            // If recoSys expects an object
             const res = await recoSys(profileCopy);
 
-            if (Array.isArray(res)) {
+             if (Array.isArray(res)) {
                 setJobPostings(res);
             } else if (res?.message === "No Jobs was fetched" || res?.message?.code === "NO_JOBS") {
                 // support both string & object styles
@@ -106,6 +84,11 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
                 console.warn("Unexpected response format:", res);
                 setJobPostings([]);
             }
+
+            // If recoSys expects a JSON string
+            // const res = await recoSys(JSON.stringify(profileCopy));
+
+            // console.log(res, "ressy");
         } catch (err: any) {
             if (err.message === "Network request failed") {
                 console.log(err);
@@ -115,11 +98,13 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
             console.log(err, "nen");
         }
 
-        // after success
+          // after success
         setUserSearch(tempSearch.title);
         setShowFilter(false);
         setLoading(false);
     }
+
+ 
 
 
 

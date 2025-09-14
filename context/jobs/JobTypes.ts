@@ -29,16 +29,23 @@ export type UserProfile = {
   profileSummary: string;
   industries: string[];
   skippedJobs: string[];
-  shortlistedJobs: string[];
   experience: any;
   currentJobPostings: string[];
   certifications: string[];
 };
 
 export type JobContextType = {
-  shortlistedJobs: Job[];
-  setShortlistedJobs: React.Dispatch<React.SetStateAction<Job[]>>;
   skippedJobs: string[];
   setSkippedJobs: React.Dispatch<React.SetStateAction<string[]>>;
   userProfile: UserProfile | null;
+  setUserProfile: React.Dispatch<React.SetStateAction<UserProfile | null>>;
+  jobPostings: Job[];
+  setJobPostings: React.Dispatch<React.SetStateAction<Job[]>>;
+  tempSearch: any;
+  setTempSearch: React.Dispatch<React.SetStateAction<any>>;
+  jobTypesTemp: { [key: string]: boolean };
+  setJobTypesTemp: React.Dispatch<React.SetStateAction<{ [key: string]: boolean }>>;
+  userSearch: string;
+  setUserSearch: React.Dispatch<React.SetStateAction<string>>;
+  handleSwipe: (job: Job, action: "shortlist" | "skip") => Promise<void>;
 };

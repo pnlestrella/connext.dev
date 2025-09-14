@@ -1,22 +1,28 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { getApplicantCounts } from 'api/applications';
 import { Header } from 'components/Header';
 import { useAuth } from 'context/auth/AuthHook';
 import { useEmployers } from 'context/employers/EmployerHook';
 import { Search, SlidersHorizontal, Pencil, User, Edit, Maximize2, XCircle, CalendarDays } from 'lucide-react-native';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Text, Pressable, View, ScrollView } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const HomeScreenEmployer = () => {
-  const { jobOpenings, applicationCounts } = useEmployers();
-  console.log(applicationCounts,'MAAAAAAAAAAAAAAAAAAA')
+  const { jobOpenings, applicationCounts,refresh, setRefresh } = useEmployers();
   const insets = useSafeAreaInsets();
 
   const navigation = useNavigation()
 
-  const handleApplicationScreen = (jobUID:string, jobTitle: string) => {
-    navigation.push("jobApplications",{jobUID: jobUID, jobTitle:jobTitle})
+
+  //for updates
+  useFocusEffect(useCallback(() => {
+    setRefresh(!refresh)
+  }, []))
+
+
+  const handleApplicationScreen = (jobUID: string, jobTitle: string) => {
+    navigation.push("jobApplications", { jobUID: jobUID, jobTitle: jobTitle })
   }
 
   const handlePost = () => {
@@ -65,7 +71,7 @@ export const HomeScreenEmployer = () => {
               backgroundColor: "white",
               padding: 5,
             }}
-            onPress={()=>handleApplicationScreen(item.jobUID, item.jobTitle)}
+            onPress={() => handleApplicationScreen(item.jobUID, item.jobTitle)}
           >
             <User size={16} color="#1572DB" />
             <Text

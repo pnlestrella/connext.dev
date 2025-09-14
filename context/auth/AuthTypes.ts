@@ -3,7 +3,6 @@ type JobseekerUser = {
   user: any; // Firebase user
   userMDB: any;
   userType: "jobseeker";
-  shortlistedJobs: any[];
 };
 
 // Employer-specific

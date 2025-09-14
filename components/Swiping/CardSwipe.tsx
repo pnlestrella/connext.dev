@@ -73,7 +73,7 @@ type CStypes = {
 }
 export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsExpanded }: CStypes) {
   // BottomSheet state
-  const {setShortlistedJobs, setSkippedJobs, jobPostings,setJobPostings} = useJobs()
+  const {handleSwipe, jobPostings, setJobPostings} = useJobs()
 
   const viewMore = () => {
     setShowModal(true);
@@ -146,11 +146,8 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
               // Remove the swiped card
               setJobPostings((prev: any) => {
                 if (prev.length > 0) {
-                  if (toRight) {
-                    setShortlistedJobs((p: any) => [...p, prev[0]]);
-                  } else {
-                    setSkippedJobs((p: any) => [...p, prev[0].jobUID]);
-                  }
+                  // Use the new handleSwipe method
+                  handleSwipe(prev[0], toRight ? "shortlist" : "skip");
                 }
                 return prev.slice(1);
               });
@@ -168,7 +165,7 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
         }
 
       }),
-    [cardPan]
+    [cardPan,handleSwipe,jobPostings]
   );
 
   const currentJob = jobPostings[currentIndex];

@@ -36,7 +36,6 @@ type Applicant = {
             postalCode?: string;
         };
         skills: string[];
-        shortlistedJobs?: { jobTitle: string }[];
     };
 };
 

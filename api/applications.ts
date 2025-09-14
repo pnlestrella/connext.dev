@@ -1,9 +1,9 @@
 import Constants from 'expo-constants';
 
-export const getApplicantCounts = async (employerUID: string,status: string ) => {
+export const getApplicantCounts = async (employerUID: string, status: string) => {
   try {
     const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/applications/getApplicantCounts?employerUID=${employerUID}&status=${status}`;
-    console.log(url, 'Get applicants')
+    console.log(url, 'Get applicants');
     const res = await fetch(url);
     const resJSON = await res.json();
 
@@ -20,7 +20,7 @@ export const getApplicants = async (jobUID: string, status: string) => {
     const res = await fetch(url);
     const resJSON = await res.json();
 
-    console.log(url,'MMMMMMMMMMM')
+    console.log(url, 'MMMMMMMMMMM');
 
     console.log(resJSON, 'getting applicants');
 
@@ -53,27 +53,53 @@ export const getShortlistedApplicants = async (
   }
 };
 
+//patch request
+
 //update THE application status
-export const updateApplications = async (applicationID:string, status:string) => {
+export const updateApplications = async (applicationID: string, status: string) => {
   try {
     const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/applications/updateApplications`;
 
     const res = await fetch(url, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type" : "application/json"
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({applicationID, status})
+      body: JSON.stringify({ applicationID, status }),
     });
 
-
     const resJSON = await res.json();
-    console.log(resJSON,'miao')
+    console.log(resJSON, 'miao');
 
     return resJSON;
     // includes { success, page, limit, hasMore, payload }
   } catch (err) {
     console.log(err, `❌ Unable to update the APPLICATION: ${applicationID}`);
+    return { success: false, message: err };
+  }
+};
+
+//post request
+
+export const createApplication = async (application: any) => {
+  try {
+    const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/applications/createApplication`;
+
+    console.log(url)
+    console.log(application)
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify( application ),
+    });
+
+    const resJSON = await res.json();
+    return resJSON;
+  } catch (err) {
+    console.log(err, `❌ Unable to send application`);
     return { success: false, message: err };
   }
 };

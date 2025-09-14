@@ -13,7 +13,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type NavigationType = NativeStackNavigationProp<RootStackParamList>;
 export const ProfileScreenJS = () => {
   const { user, userMDB, signOutUser } = useAuth();
-  const { syncDB } = useJobs()
 
   const navigation = useNavigation<NavigationType>();
 
@@ -295,12 +294,10 @@ export const ProfileScreenJS = () => {
               className="flex-row items-center justify-between"
               onPress={async () => {
                 try {
-                  await syncDB()
+                  // No need to sync since we save immediately on swipe
                   await AsyncStorage.multiRemove(["userProfile", "unsyncedActions"]);
-                  const test = await AsyncStorage.getItem("unsyncedActions")
-                  console.log(test, 'testy')
                   const signout = signOutUser();
-                  console.log("Successfully Updated Profile in DB")
+                  console.log("Successfully signed out")
 
                   alert('Signed out successfully');
                   navigation.navigate('login');

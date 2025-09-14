@@ -11,8 +11,6 @@ export const EmployerProvider = ({ children }: { children: ReactNode }) => {
   const [applicationCounts, setApplicationCounts] = useState<any[]>([]);
   const [refresh, setRefresh] = useState(false);
 
-  console.log('TESTTTT', applicationCounts)
-
   // Fetch jobs + counts
   useEffect(() => {
     (async () => {

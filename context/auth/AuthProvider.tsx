@@ -14,34 +14,55 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<AuthTypes["loading"] | null>(null);
   const [initializing, setInitializing] = useState(true);
   const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
-  //for signout
-  const [resetSignal, setResetSignal] = useState(false);
-  //user not logged in
-  const [accountType, setAccountType]= useState(null)
+  const [resetSignal, setResetSignal] = useState(false); // for signout
+  const [accountType, setAccountType] = useState(null); // user not logged in
 
-  // 🔧 Helper: normalize shortlistedJobs
-  const normalizeUser = (rawUser: any) => {
-    if (!rawUser) return null;
-    if (rawUser.role === "jobseeker") {
-      return {
-        ...rawUser,
-        shortlistedJobs:
-          rawUser.shortlistedJobs?.map((job: any) => {
-            if (typeof job === "string") {
-              try {
-                return JSON.parse(job);
-              } catch {
-                return null;
-              }
-            }
-            return job;
-          }).filter(Boolean) || [],
-      };
+  // 🔄 Refresh from MongoDB
+  const refreshAuth = async () => {
+    try {
+      if (!userMDB?.email) return; // nothing to refresh
+
+      let fetchedUserMDB: any = null;
+
+      if (userMDB.role === "jobseeker") {
+        const resJob = await fetch(
+          `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/getJobseeker?email=${encodeURIComponent(
+            userMDB.email
+          )}`
+        );
+
+        if (resJob.ok) {
+          const { message } = await resJob.json();
+          fetchedUserMDB = { ...message, role: "jobseeker" };
+        }
+      } else if (userMDB.role === "employer") {
+        const resEmp = await fetch(
+          `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/getEmployer?email=${encodeURIComponent(
+            userMDB.email
+          )}`
+        );
+
+        if (resEmp.ok) {
+          const { message } = await resEmp.json();
+          fetchedUserMDB = { ...message[0], role: "employer" };
+        }
+      }
+
+      if (fetchedUserMDB) {
+        setUserMDB(fetchedUserMDB);
+        await AsyncStorage.setItem("userProfile", JSON.stringify(fetchedUserMDB));
+      }
+    } catch (err: any) {
+      console.error("refreshAuth error:", err.message);
     }
-    return rawUser; // employer untouched
   };
 
 
+  // 🔧 No more shortlist/skip normalization
+  const normalizeUser = (rawUser: any) => {
+    if (!rawUser) return null;
+    return rawUser;
+  };
 
   // Persist user session
   useEffect(() => {
@@ -72,7 +93,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         if (resJob.ok) {
           const { message } = await resJob.json();
-          fetchedUserMDB = { ...message, role: "jobseeker" }; // 👈 stamp role
+          fetchedUserMDB = { ...message, role: "jobseeker" };
         } else {
           // fallback to employer
           const resEmp = await fetch(
@@ -83,17 +104,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
           if (resEmp.ok) {
             const { message } = await resEmp.json();
-            // some APIs return an array, so pick first
-            fetchedUserMDB = { ...message[0], role: "employer" }; // 👈 stamp role
+            fetchedUserMDB = { ...message[0], role: "employer" };
           }
         }
 
         if (fetchedUserMDB) {
           const normalized = normalizeUser(fetchedUserMDB);
           setUserMDB(normalized);
-          setUserType(normalized.role); // TS narrows to 'jobseeker' | 'employer'
+          setUserType(normalized.role);
 
-          // persist
           await AsyncStorage.setItem("userProfile", JSON.stringify(normalized));
         }
 
@@ -101,7 +120,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } catch (err: any) {
         console.log("Auth fetch error:", err.message);
       }
-
     });
 
     return unsubscribe;
@@ -137,7 +155,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-
   const value = useMemo(
     () => ({
       user,
@@ -154,9 +171,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setFirstLaunch,
       signOutUser,
       setUserMDB,
-      setResetSignal
+      setResetSignal,
+      refreshAuth
     }),
-    [user, userMDB, userType, loading, firstLaunch, initializing, resetSignal, accountType]
+    [
+      user,
+      userMDB,
+      userType,
+      loading,
+      firstLaunch,
+      initializing,
+      resetSignal,
+      accountType,
+    ]
   );
 
   return (
@@ -164,5 +191,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AuthContext.Provider>
   );
-
 };

@@ -57,7 +57,7 @@ type BrowseScreenTypes = {
 
 
 export const BrowseScreen = () => {
-  const {  setShortlistedJobs, jobPostings, setJobPostings, tempSearch, setTempSearch,userSearch,setUserSearch } = useJobs()
+  const { jobPostings, setJobPostings, tempSearch, setTempSearch, userSearch, setUserSearch } = useJobs()
 
 
   // Filter
@@ -80,6 +80,8 @@ export const BrowseScreen = () => {
       setShowFilter(true);
     }
   }
+
+  console.log(jobPostings.length,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
   return (
     <SafeAreaView className="bg-white" style={{ flex: 1 }}>
@@ -124,7 +126,6 @@ export const BrowseScreen = () => {
         setShowModal={setShowModal}
         jobPostings={jobPostings}
         setJobPostings={setJobPostings}
-        setShortlistedJobs={setShortlistedJobs}
       />
 
       {/* Search And Filtering Components  */}
