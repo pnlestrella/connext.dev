@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [resetSignal, setResetSignal] = useState(false); // for signout
   const [accountType, setAccountType] = useState(null); // user not logged in
 
+
   // 🔄 Refresh from MongoDB
   const refreshAuth = async () => {
     try {

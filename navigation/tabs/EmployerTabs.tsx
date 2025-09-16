@@ -4,9 +4,10 @@ import { UserCheck } from 'lucide-react-native';
 
 //screens
 import HomeStackScreen from './employer/HomeStackScreen';
-import { MessageScreenEmployer } from 'screens/employers/MessageScreenEmployer';
 import ShortlistedStackScreen from './employer/ShortlistedStackScreen';
 import ProfileStackScreen from './employer/ProfileStackScreen';
+import MessageStackScreen from './employer/MessageStackScreen';
+
 
 //icons
 import HomeIcon from '../../assets/icons/home_icon.svg'
@@ -34,12 +35,12 @@ export default function EmployerTabs() {
             },
             tabBarActiveTintColor: '#6C63FF',
             tabBarInactiveTintColor: 'gray',
-            headerShown:false
+            headerShown: false
 
         })}>
             <Tab.Screen name="Home" component={HomeStackScreen} />
             <Tab.Screen name="Shortlisted" component={ShortlistedStackScreen} />
-            <Tab.Screen name="Message" component={MessageScreenEmployer} />
+            <Tab.Screen name="Message" component={MessageStackScreen} />
             <Tab.Screen name="Profile" component={ProfileStackScreen} />
         </Tab.Navigator>
     )

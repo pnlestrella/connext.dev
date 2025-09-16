@@ -4,6 +4,7 @@ import { useAuth } from "context/auth/AuthHook";
 import { getJobs } from "api/employers/joblistings";
 import { getApplicantCounts } from "api/applications";
 
+
 export const EmployerProvider = ({ children }: { children: ReactNode }) => {
   const { userMDB } = useAuth();
 

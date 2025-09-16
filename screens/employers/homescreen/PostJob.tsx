@@ -65,14 +65,10 @@ const SectionDivider = () => (
 );
 
 export const PostJob = () => {
-    const { userMDB } = useAuth()
+    const { userMDB,user } = useAuth()
     const { setRefresh, refresh } = useEmployers()
 
-
-    console.log(userMDB, 'usermd')
     const navigation = useNavigation();
-
-
     const richText = useRef<RichEditor>(null);
 
 

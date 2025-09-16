@@ -2,11 +2,11 @@ import { useContext } from "react";
 import { JobContext } from "./JobContext";
 
 
-export const useJobs= () =>{
+export const useJobs = () => {
     const context = useContext(JobContext)
 
-    
-    if(!context){
+
+    if (!context) {
         throw new Error("useJobs must be used appropriately");
     }
 

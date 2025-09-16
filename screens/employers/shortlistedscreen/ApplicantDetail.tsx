@@ -15,8 +15,12 @@ import {
     ScrollView,
     Alert,
 } from "react-native";
+import { useAuth } from "context/auth/AuthHook";
+import { createConversation } from "api/chats/conversation";
+
 
 export const ApplicantDetail = () => {
+    const { userMDB } = useAuth()
     const navigation = useNavigation();
     const route = useRoute();
     const { applicant } = route.params as any;
@@ -32,6 +36,11 @@ export const ApplicantDetail = () => {
         }
     };
 
+    const handleContact = async () => {
+        createConversation( userMDB.employerUID,profile.seekerUID)
+        alert("sent a message")
+    }
+
 
     return (
         <SafeAreaView className="flex-1 bg-gray-50">
@@ -40,7 +49,7 @@ export const ApplicantDetail = () => {
                 <Pressable onPress={() => navigation.goBack()} className="mr-3">
                     <ArrowLeft size={24} color="black" />
                 </Pressable>
-                <Text className="font-bold text-lg text-gray-900">
+                <Text style={{ fontFamily: "Poppins-Bold", fontSize: 20, color: "#37424F" }}>
                     Applicant Detail
                 </Text>
             </View>
@@ -148,7 +157,9 @@ export const ApplicantDetail = () => {
                 <Pressable className="flex-1 bg-red-500 py-3 rounded-xl mr-2 items-center">
                     <Text className="text-white font-bold">Remove</Text>
                 </Pressable>
-                <Pressable className="flex-1 bg-indigo-600 py-3 rounded-xl ml-2 items-center">
+                <Pressable className="flex-1 bg-indigo-600 py-3 rounded-xl ml-2 items-center"
+                    onPress={handleContact}
+                >
                     <Text className="text-white font-bold">Contact</Text>
                 </Pressable>
             </View>

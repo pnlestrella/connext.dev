@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BrowseScreen } from '../../screens/jobseekers/BrowseScreen'
 import { MessageScreenJS } from 'screens/jobseekers/MessageScreenJS';
 import ProfileStackScreen from './jobseeker/ProfileStackScreen';
+import MessageStackScreenJS from './jobseeker/MessageStackScreenJS';
 
 //icons
 import BrowseIcon from '../../assets/icons/browse_icon.svg'
@@ -31,12 +32,13 @@ export default function JobseekerTabs() {
             },
             tabBarActiveTintColor: '#6C63FF',
             tabBarInactiveTintColor: 'gray',
-            headerShown: false
+            headerShown: false,
+            tabBarHideOnKeyboard:true
 
         })}>
             <Tab.Screen name="Browse" component={BrowseScreen} />
             <Tab.Screen name="Job Prospect" component={JobProspectStackScreen} />
-            <Tab.Screen name="Message" component={MessageScreenJS} />
+            <Tab.Screen name="Message" component={MessageStackScreenJS} />
             <Tab.Screen name="Profile" component={ProfileStackScreen} />
         </Tab.Navigator>
     )

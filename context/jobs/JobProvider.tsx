@@ -3,7 +3,6 @@ import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { JobContext } from "./JobContext";
 import { Job, JobContextType, UserProfile } from "./JobTypes";
 import { useAuth } from "context/auth/AuthHook";
-import { updateProfile } from "api/profile";
 import { recoSys } from "api/jobseekers/recosys";
 import { createJobInteraction, getJobInteraction } from "api/jobseekers/jobinteraction";
 

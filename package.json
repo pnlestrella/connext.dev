@@ -30,6 +30,7 @@
     "react-native-blob-util": "^0.22.2",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "~2.24.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-pager-view": "6.7.1",
     "react-native-paper": "^5.14.5",
     "react-native-pdf": "^6.7.7",
@@ -41,6 +42,7 @@
     "react-native-vector-icons": "^10.3.0",
     "react-native-web": "^0.20.0",
     "react-native-webview": "^13.16.0",
+    "socket.io-client": "^4.8.1",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
