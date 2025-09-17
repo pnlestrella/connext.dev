@@ -11,9 +11,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 export const HomeScreenEmployer = () => {
   const { jobOpenings, applicationCounts,refresh, setRefresh } = useEmployers();
   const insets = useSafeAreaInsets();
-
   const navigation = useNavigation()
-
 
   //for updates
   useFocusEffect(useCallback(() => {
@@ -146,7 +144,7 @@ export const HomeScreenEmployer = () => {
 
 
   return (
-    <SafeAreaView className="bg-white" style={{ flex: 1 }}>
+    <SafeAreaView className="bg-white" >
       <ScrollView
         contentContainerStyle={{ paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}
@@ -155,7 +153,7 @@ export const HomeScreenEmployer = () => {
         <Header />
 
         {/* Top bar */}
-        <View className="flex-row justify-between px-1 m-4 ">
+        <View className="flex-row justify-between px-1 mx-4 ">
           <View>
             <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
               Your

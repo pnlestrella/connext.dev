@@ -3,7 +3,6 @@ import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import * as IntentLauncher from "expo-intent-launcher";
 import {
-    Button,
     Linking,
     Platform,
     Pressable,
@@ -162,6 +161,8 @@ export const EmployerRegisterScreen = () => {
                     formData.append("expire", authParams.expire.toString());
                     formData.append("token", authParams.token);
                     formData.append("publicKey", public_key);
+                    formData.append("folder", "/resumes");         
+
 
                     const res = await fetch(
                         "https://upload.imagekit.io/api/v1/files/upload",

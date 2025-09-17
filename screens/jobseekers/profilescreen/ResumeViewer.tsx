@@ -15,7 +15,7 @@ export const ResumeViewer = ({ route }: any) => {
           <ArrowLeft size={24} color="black" />
         </Pressable>
         <Text className="font-bold text-lg text-gray-900">
-          Applicant Resume
+          Your Resume
         </Text>
       </View>
       <WebView

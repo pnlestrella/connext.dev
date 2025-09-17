@@ -11,6 +11,13 @@ export const EmployerProvider = ({ children }: { children: ReactNode }) => {
   const [jobOpenings, setJobOpenings] = useState<any[]>([]);
   const [applicationCounts, setApplicationCounts] = useState<any[]>([]);
   const [refresh, setRefresh] = useState(false);
+  const [resumeCache, setResumeCache] = useState<Record<string, { url: string; expiresAt: number }>>({});
+  const [reset,setReset] = useState(false)
+
+  useEffect(() => {
+    setResumeCache({})
+  },[reset])
+
 
   // Fetch jobs + counts
   useEffect(() => {
@@ -34,10 +41,12 @@ export const EmployerProvider = ({ children }: { children: ReactNode }) => {
       jobOpenings,
       applicationCounts,
       refresh,
+      resumeCache,
       setJobOpenings,
       setRefresh,
+      setResumeCache
     }),
-    [jobOpenings, applicationCounts, refresh]
+    [jobOpenings, applicationCounts, refresh,resumeCache]
   );
 
   return (

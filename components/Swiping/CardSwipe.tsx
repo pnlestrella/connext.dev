@@ -73,7 +73,7 @@ type CStypes = {
 }
 export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsExpanded }: CStypes) {
   // BottomSheet state
-  const {handleSwipe, jobPostings, setJobPostings} = useJobs()
+  const { handleSwipe, jobPostings, setJobPostings } = useJobs()
 
   const viewMore = () => {
     setShowModal(true);
@@ -165,7 +165,7 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
         }
 
       }),
-    [cardPan,handleSwipe,jobPostings]
+    [cardPan, handleSwipe, jobPostings]
   );
 
   const currentJob = jobPostings[currentIndex];
@@ -174,7 +174,11 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
   if (!currentJob || jobPostings.length === 0) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center">
-        <Text>No jobs available</Text>
+        <View className="flex-1 justify-center items-center mt-10">
+          <Text style={{ fontFamily: 'Lexend-Regular', color: '#9CA3AF' }}>
+            No jobs Available
+          </Text>
+        </View>
       </SafeAreaView>
     );
   }
@@ -201,7 +205,7 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
                         : currentJob.profilePic === "ziprecruiter"
                           ? ZipRecruiter
                           : currentJob.profilePic
-                            
+
                   }}
                   style={{ width: "100%", height: "100%", resizeMode: "cover" }}
                 />

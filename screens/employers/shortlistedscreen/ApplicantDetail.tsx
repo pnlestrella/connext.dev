@@ -17,29 +17,98 @@ import {
 } from "react-native";
 import { useAuth } from "context/auth/AuthHook";
 import { createConversation } from "api/chats/conversation";
+import { getFileUrl } from "api/employers/imagekit";
+import { useEmployers } from "context/employers/EmployerHook";
+import { updateApplications } from "api/applications";
 
 
 export const ApplicantDetail = () => {
-    const { userMDB } = useAuth()
+    const { resumeCache, setResumeCache } = useEmployers()
+
+    const { userMDB } = useAuth();
     const navigation = useNavigation();
     const route = useRoute();
     const { applicant } = route.params as any;
     const { profile, appliedAt } = applicant;
 
-    const handleOpenResume = () => {
-        if (profile?.resume) {
-            navigation.navigate("resumeViewer" as never, {
-                resumeUrl: profile.resume, // pass raw link here
-            } as never);
-        } else {
+    console.log("TESTYYY", applicant.applicationID)
+
+    const handleOpenResume = async () => {
+        if (!profile?.resume) {
             Alert.alert("No Resume", "This applicant did not upload a resume.");
+            return;
+        }
+
+        const filePath = profile.resume;
+        const cached = resumeCache[filePath];
+        const now = Date.now();
+
+        // ✅ Use cached if valid
+        if (cached && cached.expiresAt > now) {
+            navigation.navigate("resumeViewer" as never, {
+                resumeUrl: cached.url,
+            } as never);
+            return;
+        }
+
+        try {
+            // Fetch new signed URL
+            const res = await getFileUrl([filePath]);
+
+            if (res?.files?.length > 0) {
+                const signedUrl = res.files[0].signedUrl;
+
+                // Save in state
+                setResumeCache((prev) => ({
+                    ...prev,
+                    [filePath]: {
+                        url: signedUrl,
+                        expiresAt: now + 3600 * 1000, // 1 hour
+                    },
+                }));
+
+                navigation.navigate("resumeViewer" as never, {
+                    resumeUrl: signedUrl,
+                } as never);
+            } else {
+                Alert.alert("Error", "Failed to load resume link.");
+            }
+        } catch (err) {
+            console.log("❌ Error fetching resume:", err);
+            Alert.alert("Error", "Something went wrong while loading the resume.");
         }
     };
 
     const handleContact = async () => {
-        createConversation( userMDB.employerUID,profile.seekerUID)
-        alert("sent a message")
-    }
+        try {
+            // 1️⃣ Update applicant status
+            const res = await updateApplications(applicant.applicationID, "contacted");
+            if (!res?.success) {
+                console.log('Failed to update status', res);
+                return;
+            }
+            console.log('Status updated:', res);
+
+            // 2️⃣ Create conversation
+            const conversation = await createConversation(userMDB.employerUID, profile.seekerUID);
+            if (!conversation) {
+                console.log('Failed to create conversation');
+                return;
+            }
+            console.log('Conversation created:', conversation);
+
+            // 3️⃣ Navigate to Messages stack, passing the new conversation
+            navigation.navigate('Message', {
+                screen: 'conversation',
+                params: {
+                    newConversation: conversation,
+                },
+            });
+        } catch (err) {
+            console.log('❌ Error handling contact:', err);
+        }
+    };
+
 
 
     return (
@@ -157,7 +226,8 @@ export const ApplicantDetail = () => {
                 <Pressable className="flex-1 bg-red-500 py-3 rounded-xl mr-2 items-center">
                     <Text className="text-white font-bold">Remove</Text>
                 </Pressable>
-                <Pressable className="flex-1 bg-indigo-600 py-3 rounded-xl ml-2 items-center"
+                <Pressable
+                    className="flex-1 bg-indigo-600 py-3 rounded-xl ml-2 items-center"
                     onPress={handleContact}
                 >
                     <Text className="text-white font-bold">Contact</Text>

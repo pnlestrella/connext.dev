@@ -34,9 +34,10 @@ export const JobProspectScreen = () => {
     }, [])
   );
 
+
   const displayedJobs = activeTab === 'shortlisted'
-    ? shortlistedJobs.filter(job => !job.application)
-    : shortlistedJobs.filter(job => job.application);
+    ? shortlistedJobs?.filter(job => !job.application)
+    : shortlistedJobs?.filter(job => job.application);
 
   const handleAppliedClick = (item: any) => {
     setSelectedJob(item);
@@ -57,7 +58,7 @@ export const JobProspectScreen = () => {
         }
         createApplication(application)
           .then((res) => {
-                  fetchShortlistedJobs();
+            fetchShortlistedJobs();
             console.log(res)
             alert("Successfully sent an application")
           })
@@ -79,7 +80,6 @@ export const JobProspectScreen = () => {
   return (
     <SafeAreaView className='bg-white mb-5 h-full'>
       <Header />
-
       {/* Title */}
       <View className="flex-row justify-between px-6 ">
         <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
@@ -109,100 +109,113 @@ export const JobProspectScreen = () => {
       </View>
 
       {/* Job List */}
-      <FlatList
-        data={displayedJobs}
-        keyExtractor={(item) => item.jobInteractionID}
-        contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 40 }}
-        renderItem={({ item }) => {
-          const job = item.jobDetails;
-          const hasApplied = !!item.application;
 
-          const cardStyle = hasApplied
-            ? { backgroundColor: "#F3F4F6", borderColor: "#9CA3AF", borderWidth: 1 }
-            : { backgroundColor: "#6C63FF" };
+      {console.log(displayedJobs?.length,'wawa')}
 
-          const textColor = hasApplied ? "black" : "white";
+      {(displayedJobs?.length === 0 || displayedJobs?.length === undefined) ? (
+        <View className="flex-1 justify-center items-center mt-10">
+          <Text style={{ fontFamily: 'Lexend-Regular', color: '#9CA3AF' }}>
+            No jobs to display
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={displayedJobs}
+          keyExtractor={(item) => item.jobInteractionID}
+          contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 40 }}
+          renderItem={({ item }) => {
+            const job = item.jobDetails;
+            const hasApplied = !!item.application;
 
-          return (
-            <Pressable
-              className="rounded-2xl p-4 mb-4 w-full"
-              style={cardStyle}
-              onPress={() => hasApplied ? handleAppliedClick(item) : navigation.navigate("jobProspectDetails", { item })}
-            >
-              {/* Logo + Company */}
-              <View className="flex-row items-center space-x-3 mb-3">
-                <View
-                  className="rounded-full border-2 border-white overflow-hidden mr-2"
-                  style={{ width: 60, height: 60, justifyContent: "center", alignItems: "center" }}
-                >
-                  <Image
-                    source={{
-                      uri:
-                        job.profilePic === "indeed"
-                          ? Indeed
-                          : job.profilePic === "ziprecruiter"
-                            ? ZipRecruiter
-                            : job.profilePic,
-                    }}
-                    style={{ width: "100%", height: "100%", resizeMode: "cover" }}
-                  />
-                </View>
+            const cardStyle = hasApplied
+              ? { backgroundColor: "#F3F4F6", borderColor: "#9CA3AF", borderWidth: 1 }
+              : { backgroundColor: "#6C63FF" };
 
-                <View>
-                  <Text style={{ color: textColor, fontFamily: "Poppins-Bold", fontSize: 18 }}>
-                    {job.companyName ?? "Company"}
-                  </Text>
-                  <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold" }}>
-                    {job.jobTitle}
-                  </Text>
-                </View>
-              </View>
+            const textColor = hasApplied ? "black" : "white";
 
-              {/* Job Info */}
-              <View className="py-2">
-                <View className="flex-row items-center mb-1">
-                  <BriefcaseBusiness size={20} color={textColor} />
-                  <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold", marginLeft: 8 }}>
-                    {job.jobTitle}
-                  </Text>
-                </View>
-
-                <View className="flex-row items-center mb-1">
-                  <PhilippinePeso size={20} color={textColor} />
-                  <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold", marginLeft: 8 }}>
-                    {job.salaryRange.currency} {job.salaryRange.min || ''} - {job.salaryRange.max || ''}/{job.salaryRange.frequency || ''}
-                  </Text>
-                </View>
-
-                <View className="flex-row items-center mb-1">
-                  <MapPin size={20} color={textColor} />
-                  <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold", marginLeft: 8 }}>
-                    {job.location.city}, {job.location.province}, {job.location.postalCode}
-                  </Text>
-                </View>
-
-                {/* Apply / Applied Button */}
-                <View className="flex-row items-center justify-between mt-3">
-                  <Text style={{ color: textColor, fontSize: 12, fontFamily: "Lexend-Bold" }}>
-                    Posted {formatTimeAgo(job.createdAt)}
-                  </Text>
-                  <Pressable
-                    className="px-16 py-2 rounded-xl"
-                    style={{
-                      backgroundColor: hasApplied ? "#9CA3AF" : "#154588",
-                    }}
-                    onPress={() => hasApplied ? handleAppliedClick(item) : handleApply(item)}
+            return (
+              <Pressable
+                className="rounded-2xl p-4 mb-4 w-full"
+                style={cardStyle}
+                onPress={() => hasApplied ? handleAppliedClick(item) : navigation.navigate("jobProspectDetails", { item })}
+              >
+                {/* Logo + Company */}
+                <View className="flex-row items-center space-x-3 mb-3">
+                  <View
+                    className="rounded-full border-2 border-white overflow-hidden mr-2"
+                    style={{ width: 60, height: 60, justifyContent: "center", alignItems: "center" }}
                   >
-                    <Text style={{ color: "white", fontFamily: "Lexend-Bold", fontSize: 12 }}>
-                      {hasApplied ? "Applied" : "Apply"}
+                    <Image
+                      source={{
+                        uri:
+                          job.profilePic === "indeed"
+                            ? Indeed
+                            : job.profilePic === "ziprecruiter"
+                              ? ZipRecruiter
+                              : job.profilePic,
+                      }}
+                      style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+                    />
+                  </View>
+
+                  <View>
+                    <Text style={{ color: textColor, fontFamily: "Poppins-Bold", fontSize: 18 }}>
+                      {job.companyName ?? "Company"}
                     </Text>
-                  </Pressable>
+                    <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold" }}>
+                      {job.jobTitle}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </Pressable>
-          );
-        }}
-      />
+
+                {/* Job Info */}
+                <View className="py-2">
+                  <View className="flex-row items-center mb-1">
+                    <BriefcaseBusiness size={20} color={textColor} />
+                    <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold", marginLeft: 8 }}>
+                      {job.jobTitle}
+                    </Text>
+                  </View>
+
+                  <View className="flex-row items-center mb-1">
+                    <PhilippinePeso size={20} color={textColor} />
+                    <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold", marginLeft: 8 }}>
+                      {job.salaryRange.currency} {job.salaryRange.min || ''} - {job.salaryRange.max || ''}/{job.salaryRange.frequency || ''}
+                    </Text>
+                  </View>
+
+                  <View className="flex-row items-center mb-1">
+                    <MapPin size={20} color={textColor} />
+                    <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold", marginLeft: 8 }}>
+                      {job.location.city}, {job.location.province}, {job.location.postalCode}
+                    </Text>
+                  </View>
+
+                  {/* Apply / Applied Button */}
+                  <View className="flex-row items-center justify-between mt-3">
+                    <Text style={{ color: textColor, fontSize: 12, fontFamily: "Lexend-Bold" }}>
+                      Posted {formatTimeAgo(job.createdAt)}
+                    </Text>
+                    <Pressable
+                      className="px-16 py-2 rounded-xl"
+                      style={{
+                        backgroundColor: hasApplied ? "#9CA3AF" : "#154588",
+                      }}
+                      onPress={() => hasApplied ? handleAppliedClick(item) : handleApply(item)}
+                    >
+                      <Text style={{ color: "white", fontFamily: "Lexend-Bold", fontSize: 12 }}>
+                        {hasApplied ? "Applied" : "Apply"}
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </Pressable>
+            );
+          }}
+        />
+      )}
+
+
 
       {/* Modal for Applied Jobs */}
       {selectedJob && (

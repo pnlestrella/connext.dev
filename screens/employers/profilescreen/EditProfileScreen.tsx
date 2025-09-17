@@ -18,10 +18,9 @@ import { IndustryModal } from "components/profileScreen/IndustryModal";
 import { AddressModal } from "components/profileScreen/AddressModal";
 import { Industries } from "../../../data/industries.json";
 import { updateProfile } from "api/profile";
-import Constants from "expo-constants";
 
 //api
-import { getJobs } from "api/employers/imagekit";
+import { getUploadKeys } from "api/employers/imagekit";
 type Industry = { id: number; name: string }; // ✅ define type
 
 export const EditProfileScreenEmployer = () => {
@@ -81,7 +80,7 @@ export const EditProfileScreenEmployer = () => {
 
             // ✅ only upload if new image picked
             if (tempPic) {
-                const data = await getJobs(tempPic);
+                const data = await getUploadKeys(tempPic, "/images");
                 if (data.url) {
                     uploadedUrl = data.url;
                     setTempPic(null);

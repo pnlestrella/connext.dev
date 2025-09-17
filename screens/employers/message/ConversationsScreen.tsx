@@ -5,11 +5,42 @@ import { useCallback, useEffect, useState } from 'react';
 import { getUserConversations } from 'api/chats/conversation';
 import { useAuth } from 'context/auth/AuthHook';
 import { User } from 'lucide-react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 
 export const ConversationsScreen = () => {
   const [conversations, setConversations] = useState([]);
   const { user } = useAuth();
+
+
+  const route = useRoute();
+  const { newConversation } = route.params || {};
+
+  console.log(newConversation, 'miao')
+
+  useEffect(() => {
+    if (!route.params?.newConversation) return;
+    if (conversations.length === 0) return; // wait until conversations are loaded
+
+    const convUID = route.params.newConversation.payload.conversationUID
+
+    console.log(convUID,' woa')
+
+    // Find the full conversation by UID
+    const fullConversation = conversations.find(
+      (c) => c.conversationUID === convUID
+    );
+
+    console.log(fullConversation,'maiaiaiaiaiai')
+
+    if (fullConversation) {
+      navigation.navigate('chats', { item: fullConversation });
+    }
+  }, [route.params?.newConversation]);
+
+
+
+
+
 
   const navigation = useNavigation()
 
@@ -30,22 +61,22 @@ export const ConversationsScreen = () => {
     let displayName = "";
     let profilePic = null;
 
-      // Employer should see seeker
-      const seeker = item?.seekerName || {};
-      displayName = `${seeker.firstName || ""} ${seeker.middleInitial ? seeker.middleInitial + ". " : ""
-        }${seeker.lastName || ""}`.trim();
+    // Employer should see seeker
+    const seeker = item?.seekerName || {};
+    displayName = `${seeker.firstName || ""} ${seeker.middleInitial ? seeker.middleInitial + ". " : ""
+      }${seeker.lastName || ""}`.trim();
 
-      profilePic = (
-        <User
-          size={40}
-          style={{ padding: 20, marginHorizontal: 5 }}
-          color="#37424F"
-        />
-      );
+    profilePic = (
+      <User
+        size={40}
+        style={{ padding: 20, marginHorizontal: 5 }}
+        color="#37424F"
+      />
+    );
 
     return (
       <Pressable className="flex-row items-center px-4 py-3 border-b border-gray-200"
-      onPress={() => navigation.navigate("chats", {item})}
+        onPress={() => navigation.navigate("chats", { item })}
       >
         {profilePic}
         <View className="flex-1">

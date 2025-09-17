@@ -37,7 +37,8 @@ export const ChatScreen = () => {
   const navigation = useNavigation();
   const { item } = route.params;
 
-  const displayName = `${item.seekerName.firstName} ${item.seekerName.lastName}`;
+
+  const displayName = `${item?.seekerName?.firstName} ${item?.seekerName?.lastName}`;
   const [message, setMessage] = useState('');
   const [history, setHistory] = useState([]);
 
