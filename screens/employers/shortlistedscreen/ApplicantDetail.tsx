@@ -20,6 +20,8 @@ import { createConversation } from "api/chats/conversation";
 import { getFileUrl } from "api/employers/imagekit";
 import { useEmployers } from "context/employers/EmployerHook";
 import { updateApplications } from "api/applications";
+import { CommonActions } from "@react-navigation/native";
+
 
 
 export const ApplicantDetail = () => {

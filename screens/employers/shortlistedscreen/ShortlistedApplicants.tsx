@@ -27,15 +27,13 @@ export const ShortlistedApplicants = () => {
     viewed: { bgCard: "#FECACA", textCard: "#B91C1C", icon: <Star size={12} color="#B91C1C" />, label: "Skipped", topColor: "#B91C1C" },
     contacted: { bgCard: "#FEF3C7", textCard: "#B45309", icon: <Star size={12} color="#B45309" />, label: "Contacted", topColor: "#B45309" },
   };
-
-  const fetchApplicants = useCallback(async (pageToFetch = page) => {
+  const fetchApplicants = useCallback(async () => {
     if (loading || !hasMore) return;
     setLoading(true);
-
     try {
-      const res = await getShortlistedApplicants(jobUID, [activeStatus], pageToFetch, 20);
+      const res = await getShortlistedApplicants(jobUID, [activeStatus], page, 20);
       if (res?.success) {
-        setData(prev => pageToFetch === 1 ? res.payload : [...prev, ...res.payload]);
+        setData(prev => [...prev, ...res.payload]);
         setHasMore(res.hasMore);
         setPage(prev => prev + 1);
       } else {
@@ -46,17 +44,39 @@ export const ShortlistedApplicants = () => {
     } finally {
       setLoading(false);
     }
-  }, [jobUID, loading, hasMore, activeStatus]);
+  }, [jobUID, page, activeStatus, hasMore, loading]);
+
 
 
 
 
   useEffect(() => {
+    let isMounted = true; // avoid race if user switches quickly
+    setLoading(true);
     setData([]);
     setPage(1);
     setHasMore(true);
-    fetchApplicants(1); 
-  }, [activeStatus]);
+
+    (async () => {
+      try {
+        const res = await getShortlistedApplicants(jobUID, [activeStatus], 1, 20);
+        if (isMounted && res?.success) {
+          setData(res.payload);
+          setHasMore(res.hasMore);
+          setPage(2); // next page
+        } else {
+          setHasMore(false);
+        }
+      } catch (err) {
+        console.log(err, '❌ Error fetching applicants');
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    })();
+
+    return () => { isMounted = false };
+  }, [activeStatus, jobUID]);
+
 
   useEffect(() => {
     fetchApplicants();
@@ -232,7 +252,7 @@ export const ShortlistedApplicants = () => {
       {/* List */}
       <FlatList
         data={data}
-        keyExtractor={(item, index) => `${item.applicationID}_${index}`}
+        keyExtractor={(item, index) => `${item._id || item.applicationID || index}`}
         renderItem={renderApplicant}
         onEndReached={() => {
           if (!loading && hasMore) fetchApplicants();

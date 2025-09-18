@@ -245,7 +245,7 @@ export const JobProspectScreen = () => {
                   </Text>
                   <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, color: '#111827', marginBottom: 4 }}>
                     <Text style={{ fontFamily: 'Lexend-Bold' }}>Application Status: </Text>
-                    <Text style={{ color: selectedJob.application.status === 'pending' ? "orange" : selectedJob.application.status === "viewed" ? "green" : "blue" }}>{selectedJob.application.status}
+                    <Text style={{ color: selectedJob.application.status === 'pending' ? "orange" : selectedJob.application.status === "viewed" ? "green" : "#B45309" }}>{selectedJob.application.status}
                     </Text>
                   </Text>
                 </View>

@@ -19,26 +19,20 @@ export const ConversationsScreen = () => {
 
   useEffect(() => {
     if (!route.params?.newConversation) return;
-    if (conversations.length === 0) return; // wait until conversations are loaded
+    if (conversations.length === 0) return;
 
-    const convUID = route.params.newConversation.payload.conversationUID
+    const convUID = route.params.newConversation.payload.conversationUID;
 
-    console.log(convUID,' woa')
-
-    // Find the full conversation by UID
     const fullConversation = conversations.find(
       (c) => c.conversationUID === convUID
     );
 
-    console.log(fullConversation,'maiaiaiaiaiai')
-
     if (fullConversation) {
-      navigation.navigate('chats', { item: fullConversation });
+      navigation.navigate("chats", { item: fullConversation });
+
+      navigation.setParams({ newConversation: undefined });
     }
-  }, [route.params?.newConversation]);
-
-
-
+  }, [route.params?.newConversation, conversations]);
 
 
 
