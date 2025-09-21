@@ -144,7 +144,7 @@ export const HomeScreenEmployer = () => {
 
 
   return (
-    <SafeAreaView className="bg-white" >
+    <SafeAreaView className="flex-1 bg-white" >
       <ScrollView
         contentContainerStyle={{ paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}

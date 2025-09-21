@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'login'>
 
 export function LoginScreen() {
-  const {  loading,setLoading, setUserMDB } = useAuth()
+  const { loading, setLoading, setUserMDB } = useAuth()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [keepSignedIn, setKeepSignedIn] = useState(false);
@@ -33,7 +33,6 @@ export function LoginScreen() {
       alert("Password is required")
       return
     }
-    // await userLogin(email,password)
 
     try {
       if (role === 'jobseeker') {
@@ -50,9 +49,9 @@ export function LoginScreen() {
         const userProfile = await res.json()
 
         setUserMDB(userProfile.message)
-        
+
         //set Async storage for UX purpose
-        await AsyncStorage.setItem('userProfile',JSON.stringify(userProfile.message))
+        await AsyncStorage.setItem('userProfile', JSON.stringify(userProfile.message))
 
         await userLogin(email, password)
         setLoading(false)
@@ -72,10 +71,10 @@ export function LoginScreen() {
         setUserMDB(userProfile.message)
 
         //set Async storage for UX purpose
-        await AsyncStorage.setItem('userProfile',JSON.stringify(userProfile.message))
+        await AsyncStorage.setItem('userProfile', JSON.stringify(userProfile.message))
 
         await userLogin(email, password)
-       setLoading(false)
+        setLoading(false)
 
       }
 
@@ -84,7 +83,7 @@ export function LoginScreen() {
       alert(err.code || 'Login failed');
       console.log(err, '--=====================================================-');
       console.log(err.message)
-      if(err.message === 'Network request failed'){
+      if (err.message === 'Network request failed') {
         alert("Turn on the SERVER!")
         await AsyncStorage.clear()
         setUserMDB(null)
@@ -120,14 +119,16 @@ export function LoginScreen() {
           </View>
 
           <TextInput
-            className="border border-gray-300 rounded-lg p-3 mb-5 text-black"
+            className="border border-gray-300 rounded-lg p-3 mb-5"
             placeholder="johndoe@gmail.com"
             value={email}
             placeholderTextColor="#9CA3AF"
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
+            style={{ color: '#000' }} 
           />
+
         </View>
 
         {/* Password Input */}
@@ -143,7 +144,9 @@ export function LoginScreen() {
             placeholderTextColor="#9CA3AF"
             onChangeText={setPassword}
             secureTextEntry
+            style={{ color: '#000' }}
           />
+
         </View>
 
         {/* Checkbox & Forgot Password */}

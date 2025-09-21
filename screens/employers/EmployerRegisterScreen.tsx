@@ -161,8 +161,7 @@ export const EmployerRegisterScreen = () => {
                     formData.append("expire", authParams.expire.toString());
                     formData.append("token", authParams.token);
                     formData.append("publicKey", public_key);
-                    formData.append("folder", "/resumes");         
-
+                    formData.append("folder", "/verifications");
 
                     const res = await fetch(
                         "https://upload.imagekit.io/api/v1/files/upload",
@@ -248,35 +247,39 @@ export const EmployerRegisterScreen = () => {
     }
 
 
-   async function onVerify() {
+    async function onVerify() {
         setLoading(true)
         alert("verified")
-           //Registration of the EMPLOYER
+        //Registration of the EMPLOYER
         try {
             //uploading the company documents to ImageKIT
             const uploadedURLS = await uploadAllDocuments();
             // firebase AUTH registration
             const firebaseRegister = await userRegister(email, password)
-            const firebaseUserUID =  firebaseRegister.user.uid
+            const firebaseUserUID = firebaseRegister.user.uid
             //MongoDB Employer Registration
 
             const urls = []
 
-            for(let i = 0 ; i < uploadedURLS.length; i++){
+            for (let i = 0; i < uploadedURLS.length; i++) {
                 urls.push(uploadedURLS[i].filePath)
             }
 
-            console.log(urls,'urls')
+            console.log(urls, 'urls')
 
             const user = {
                 employerUID: firebaseUserUID,
                 email,
                 companyName,
-                verificationDocs: urls
             };
 
+            const verification = {
+                employerUID: firebaseUserUID,
+                verificationDocs: urls
+            }
 
-            const mongoDBRegister =  await fetch(
+
+            const mongoDBRegister = await fetch(
                 `${Constants?.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/registerEmployers`,
                 {
                     method: 'POST',
@@ -284,6 +287,16 @@ export const EmployerRegisterScreen = () => {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(user)
+                })
+
+            const verificationRegister = await fetch(
+                `${Constants?.expoConfig?.extra?.BACKEND_BASE_URL}/api/admins/submitVerification`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(verification)
                 })
 
             console.log(mongoDBRegister, '----------------------')
@@ -298,11 +311,11 @@ export const EmployerRegisterScreen = () => {
 
     return (
         <View className="flex-1 bg-white py-10">
-             {loading &&
-                    <View className='absolute inset-0 z-50' style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
-                      <Loading/>
-                    </View>
-                  }
+            {loading &&
+                <View className='absolute inset-0 z-50' style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
+                    <Loading />
+                </View>
+            }
 
             <View className="items-center justify-center pt-6 mt-10 px-10">
                 {/* Header */}
@@ -328,6 +341,8 @@ export const EmployerRegisterScreen = () => {
                         <TextInput
                             style={style.textInput}
                             placeholder="companyname@gmail.com"
+                            placeholderTextColor="#9CA3AF"
+
                             keyboardType="email-address"
                             autoCapitalize="none"
                             value={email}
@@ -341,6 +356,7 @@ export const EmployerRegisterScreen = () => {
                         <TextInput
                             style={style.textInput}
                             placeholder="Ateneo de Naga University"
+                            placeholderTextColor="#9CA3AF"
                             value={companyName}
                             onChangeText={setCompanyName}
                         />
@@ -417,6 +433,7 @@ export const EmployerRegisterScreen = () => {
                         <TextInput
                             style={style.textInput}
                             placeholder="Create a password"
+                            placeholderTextColor="#9CA3AF"
                             secureTextEntry
                             value={password}
                             onChangeText={setPassword}
@@ -429,13 +446,14 @@ export const EmployerRegisterScreen = () => {
                         <TextInput
                             style={style.textInput}
                             placeholder="Confirm your password"
+                            placeholderTextColor="#9CA3AF"
                             secureTextEntry
                             value={confirmPassword}
                             onChangeText={setConfirmPassword}
                         />
                     </View>
 
-            
+
                     <View style={{ height: 10 }} />
                     <TouchableOpacity
                         onPress={handleSubmit}
@@ -492,5 +510,6 @@ const style = StyleSheet.create({
         borderColor: "#ccc",
         borderRadius: 6,
         padding: 10,
+        color: "#000",
     },
 });

@@ -124,6 +124,7 @@ export const JSRegisterScreen = () => {
               style={style.textInput}
               className="border border-gray-300 rounded-md p-3"
               placeholder="johndoe@gmail.com"
+              placeholderTextColor="#9CA3AF"
               keyboardType="email-address"
               autoCapitalize="none"
               value={email}
@@ -139,6 +140,7 @@ export const JSRegisterScreen = () => {
             <TextInput
               style={style.textInput}
               className="border border-gray-300 rounded-md p-3"
+              placeholderTextColor="#9CA3AF"
               placeholder="John"
               value={firstName}
               onChangeText={setFirstName}
@@ -153,6 +155,7 @@ export const JSRegisterScreen = () => {
             <TextInput
               style={style.textInput}
               className="border border-gray-300 rounded-md p-3"
+              placeholderTextColor="#9CA3AF"
               placeholder="i.e M."
               maxLength={2}
               value={middleInitial}
@@ -168,6 +171,7 @@ export const JSRegisterScreen = () => {
             <TextInput
               style={style.textInput}
               className="border border-gray-300 rounded-md p-3"
+              placeholderTextColor="#9CA3AF"
               placeholder="Doe"
               value={lastName}
               onChangeText={setLastName}
@@ -184,6 +188,7 @@ export const JSRegisterScreen = () => {
             <TextInput
               style={style.textInput}
               className="border border-gray-300 rounded-md p-3"
+              placeholderTextColor="#9CA3AF"
               placeholder="Create a password"
               secureTextEntry
               value={password}
@@ -201,6 +206,7 @@ export const JSRegisterScreen = () => {
             <TextInput
               style={style.textInput}
               className="border border-gray-300 rounded-md p-3"
+              placeholderTextColor="#9CA3AF"
               placeholder="Confirm your password"
               secureTextEntry
               value={confirmPassword}
@@ -262,5 +268,6 @@ const style = StyleSheet.create({
   },
   textInput: {
     fontFamily: 'Poppins-Regular',
+    color: '#000',
   },
 });
