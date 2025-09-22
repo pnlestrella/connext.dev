@@ -33,10 +33,12 @@ export default function JobseekerTabs() {
             tabBarActiveTintColor: '#6C63FF',
             tabBarInactiveTintColor: 'gray',
             headerShown: false,
-            tabBarHideOnKeyboard:true
-
+            tabBarHideOnKeyboard:true,
+            tabBarLabelStyle: {
+                fontFamily: 'Lexend-Regular'
+            }
         })}>
-            <Tab.Screen name="Browse" component={BrowseScreen} />
+            <Tab.Screen name="Browse" component={BrowseScreen}/>
             <Tab.Screen name="Job Prospect" component={JobProspectStackScreen} />
             <Tab.Screen name="Message" component={MessageStackScreenJS} />
             <Tab.Screen name="Profile" component={ProfileStackScreen} />

@@ -175,8 +175,8 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
     return (
       <SafeAreaView className="flex-1 items-center justify-center">
         <View className="flex-1 justify-center items-center mt-10">
-          <Text style={{ fontFamily: 'Lexend-Regular', color: '#9CA3AF' }}>
-            No jobs Available
+          <Text style={{ fontFamily: 'Lexend-Regular', color: '#9CA3AF', textAlign: 'center'}}>
+            No jobs available.{'\n'}Try searching using the search bar!
           </Text>
         </View>
       </SafeAreaView>

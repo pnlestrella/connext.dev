@@ -83,7 +83,7 @@ export const ProfileScreenJS = () => {
     <SafeAreaView className="flex-1 bg-white">
       <Header />
 
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
+      <ScrollView contentContainerStyle={{ padding: 10 }}>
         {/* Profile Title */}
         <View className="flex-row justify-between items-center">
           <Text
@@ -122,9 +122,10 @@ export const ProfileScreenJS = () => {
         </View>
 
         {/* Profile Info */}
-        <View className="space-y-2">
+        <View>
+
           {/* Name */}
-          <View className="flex-row items-center">
+          <View className="flex-row items-center py-2">
             <Text
               style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
             >
@@ -145,7 +146,7 @@ export const ProfileScreenJS = () => {
           </View>
 
           {/* Industry */}
-          <View className="flex-row items-center">
+          <View className="flex-row items-center py-2">
             <Text
               style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
             >
@@ -165,7 +166,7 @@ export const ProfileScreenJS = () => {
           </View>
 
           {/* Location */}
-          <View className="flex-row items-center">
+          <View className="flex-row items-center py-2">
             <Text
               style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
             >
@@ -185,7 +186,7 @@ export const ProfileScreenJS = () => {
           </View>
 
           {/* Skills */}
-          <View className="flex-row items-center">
+          <View className="flex-row items-center py-2">
             <Text
               style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
             >
@@ -208,7 +209,7 @@ export const ProfileScreenJS = () => {
         </View>
 
         {/* Résumé Section */}
-        <View style={{ marginTop: 32 }}>
+        <View className='py-2'>
           <Text
             style={{
               fontFamily: 'Lexend-SemiBold',
@@ -220,7 +221,7 @@ export const ProfileScreenJS = () => {
             Résumé
           </Text>
 
-          <View className="space-y-3">
+          <View className="flex-row gap-2">
             {!userMDB?.resume && (
               <>
                 <Pressable
@@ -321,20 +322,20 @@ export const ProfileScreenJS = () => {
         </View>
 
         {/* Miscellaneous Section */}
-        <View style={{ marginTop: 32 }}>
+        <View className='py-2'>
           <Text
             style={{
               fontFamily: 'Lexend-SemiBold',
               fontSize: 18,
-              color: '#37424F',
+              color: '#242573',
               marginBottom: 12,
             }}
           >
             Miscellaneous
           </Text>
 
-          <View className="space-y-2 justify-between">
-            <View className="flex-row items-center justify-between">
+          <View className="justify-between">
+            <View className="flex-row items-center justify-between py-2">
               <Text
                 style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
               >
@@ -344,36 +345,36 @@ export const ProfileScreenJS = () => {
             </View>
           </View>
 
-          <View className="space-y-2 justify-between">
-            <View className="flex-row items-center justify-between">
+          <View className="justify-between">
+            <View className="flex-row items-center justify-between py-2">
               <Text
                 style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 200 }}
               >
                 Send us feedback
               </Text>
-              <SendHorizonal width={20} color={'#37424F'} />
+              <SendHorizonal width={20} color={'blue'} />
             </View>
           </View>
 
-          <View className="space-y-2 justify-between">
-            <View className="flex-row items-center justify-between">
+          <View className="justify-between">
+            <View className="flex-row items-center justify-between py-2">
               <Text
                 style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 200 }}
               >
-                Give us Rating
+                Give us a rating
               </Text>
-              <Star width={20} color={'#37424F'} />
+              <Star width={20} color={'yellow'} />
             </View>
           </View>
         </View>
 
         {/* Exit Section */}
-        <View style={{ marginTop: 32 }}>
+        <View>
           <Text
             style={{
               fontFamily: 'Lexend-SemiBold',
               fontSize: 18,
-              color: '#37424F',
+              color: '#221E5C',
               marginBottom: 12,
             }}
           >
@@ -398,7 +399,7 @@ export const ProfileScreenJS = () => {
               }}
             >
               <Text
-                style={{ fontFamily: 'Lexend-Bold', fontSize: 14, width: 100 }}
+                style={{ fontFamily: 'Lexend-Bold', fontSize: 14, color: '#B80E0E'}}
               >
                 Logout
               </Text>

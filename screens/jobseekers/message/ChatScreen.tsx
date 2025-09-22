@@ -235,7 +235,7 @@ export const ChatScreen = () => {
 
                 <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Star width={18} color="#FACC15" />
-                  <Text style={{ fontSize: 12, color: '#FACC15', marginLeft: 4 }}>Fav</Text>
+                  <Text style={{ fontSize: 12, color: '#FACC15', marginLeft: 4 }}>Favorite</Text>
                 </TouchableOpacity>
               </View>
             </View>

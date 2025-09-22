@@ -35,7 +35,11 @@ export default function EmployerTabs() {
             },
             tabBarActiveTintColor: '#6C63FF',
             tabBarInactiveTintColor: 'gray',
-            headerShown: false
+            headerShown: false,
+            tabBarHideOnKeyboard:true,
+            tabBarLabelStyle: {
+                fontFamily: 'Lexend-Regular'
+            }
 
         })}>
             <Tab.Screen name="Home" component={HomeStackScreen} />
