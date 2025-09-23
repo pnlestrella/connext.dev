@@ -246,7 +246,7 @@ export const ChatScreen = () => {
 
                   <TouchableOpacity className="flex-row items-center">
                     <Star width={18} color="#FACC15" />
-                    <Text className="text-xs text-yellow-500 ml-1">Fav</Text>
+                    <Text className="text-xs text-yellow-500 ml-1">Favorites</Text>
                   </TouchableOpacity>
                 </View>
               </View>
