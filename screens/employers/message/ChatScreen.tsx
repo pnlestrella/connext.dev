@@ -23,7 +23,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getMessages } from 'api/chats/message';
 import { useAuth } from 'context/auth/AuthHook';
 import { useSockets } from 'context/sockets/SocketHook';
@@ -57,11 +57,16 @@ export const ChatScreen = () => {
   const displayName = `${item?.seekerName?.firstName} ${item?.seekerName?.lastName}`;
   const [message, setMessage] = useState('');
   const [history, setHistory] = useState<Message[]>([]);
+  const flatListRef = useRef<FlatList>(null);
 
   // load messages (oldest first)
   useEffect(() => {
     getMessages(item.conversationUID)
-      .then((res) => setHistory(res.reverse()))
+      .then((res) => {
+        // Sort messages by createdAt to ensure chronological order (oldest first)
+        const sortedMessages = res.sort((a: Message, b: Message) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        setHistory(sortedMessages);
+      })
       .catch((err) => console.log(err));
   }, [item.conversationUID]);
 
@@ -76,7 +81,12 @@ export const ChatScreen = () => {
         // ✅ prevent duplicates
         const exists = prev.some((m) => m._id === newMsg._id);
         if (exists) return prev;
-        return [newMsg, ...prev]; // prepend (because FlatList is inverted)
+        const newHistory = [...prev, newMsg];
+        // Auto-scroll to bottom when new message arrives
+        setTimeout(() => {
+          flatListRef.current?.scrollToEnd({ animated: true });
+        }, 100);
+        return newHistory;
       });
     });
 
@@ -196,8 +206,10 @@ export const ChatScreen = () => {
             }}
             contentContainerStyle={{ padding: 16 }}
             showsVerticalScrollIndicator={false}
-            inverted // ✅ newest at bottom
             keyboardShouldPersistTaps="handled"
+            ref={flatListRef}
+            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+            onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
           />
 
           {/* Bottom input bar */}
