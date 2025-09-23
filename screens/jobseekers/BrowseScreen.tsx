@@ -87,13 +87,12 @@ export const BrowseScreen = () => {
     <SafeAreaView className="bg-white" style={{ flex: 1 }}>
       <Header />
 
-      <View className="flex-row justify-between px-2">
+      <View className="flex-row justify-between px-2 items-center">
         <Text
           style={{
             fontFamily: "Poppins-Bold",
-            fontSize: 24,
             color: "#37424F",
-          }}
+          }} className="text-2xl"
         >
           Find Jobs
         </Text>

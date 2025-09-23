@@ -87,9 +87,8 @@ export const ProfileScreenJS = () => {
           <Text
             style={{
               fontFamily: 'Poppins-Bold',
-              fontSize: 24,
               color: '#37424F',
-            }}
+            }} className='text-2xl'
           >
             Your Profile
           </Text>

@@ -81,8 +81,8 @@ export const JobProspectScreen = () => {
     <SafeAreaView className='bg-white flex-1'>
       <Header />
       {/* Title */}
-      <View className="flex-row justify-between px-2 ">
-        <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
+      <View className="flex-row justify-between px-2">
+        <Text style={{ fontFamily: "Poppins-Bold", color: "#37424F" }} className='text-2xl'>
           Job Prospects
         </Text>
       </View>

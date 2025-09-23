@@ -6,6 +6,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAuth } from 'context/auth/AuthHook';
 //Header
 import { Settings, SendHorizonal, Star, LogOut } from 'lucide-react-native';
+import { Header } from 'components/Header';
 
 type NavigationType = NativeStackNavigationProp<RootStackParamList>;
 export const ProfileScreenEmployer = () => {
@@ -21,27 +22,19 @@ export const ProfileScreenEmployer = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={{ flex: 1}} className='px-2'>
-          <View className="flex-row items-center justify-between mb-6">
-            <View className="flex-row items-center flex-1">
-              <View className="border rounded-full w-20 h-20 overflow-hidden mr-4">
-                <Image
-                  source={{ uri: userMDB?.profilePic }}
-                  style={{ width: "100%", height: "100%" }}
-                  resizeMode="cover"
-                />
-              </View>
-              <View className="flex-1">
-                <Text
-                  style={{
-                    fontFamily: 'Poppins-Bold',
-                    fontSize: 18,
-                    color: '#37421F',
-                  }}
-                >
-                  {userMDB?.companyName}
-                </Text>
-              </View>
-            </View>
+
+          <Header/>
+
+          {/* Profile Title */}
+          <View className="flex-row items-center justify-between">
+            <Text
+              style={{
+                fontFamily: 'Poppins-Bold',
+                color: '#37424F',
+              }} className='text-2xl'
+            >
+              Your Profile
+            </Text>
 
             <Pressable
               style={{
@@ -64,19 +57,6 @@ export const ProfileScreenEmployer = () => {
                 Edit Profile
               </Text>
             </Pressable>
-          </View>
-
-          {/* Profile Title */}
-          <View>
-            <Text
-              style={{
-                fontFamily: 'Poppins-Bold',
-                fontSize: 18,
-                color: '#37424F',
-              }}
-            >
-              Profile Information
-            </Text>
           </View>
 
           {/* Profile Info */}

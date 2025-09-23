@@ -66,7 +66,7 @@ export const ConversationsScreen = () => {
 
       {/* Title */}
       <View className="flex-row items-center justify-between px-2 pb-2">
-        <Text style={{ fontFamily: 'Poppins-Bold' }} className="text-[24px] text-[#37424F]">
+        <Text style={{ fontFamily: 'Poppins-Bold' }} className="text-2xl text-[#37424F]">
           Your Messages
         </Text>
         <Text

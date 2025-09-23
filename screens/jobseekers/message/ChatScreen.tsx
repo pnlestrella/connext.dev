@@ -93,8 +93,9 @@ export const ChatScreen = () => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={{ flex: 1 }}>
+            
             {/* Top bar */}
-            <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#E5E7EB' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: '#E5E7EB' }}>
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <ArrowLeft width={24} height={24} color="#37424F" />
               </TouchableOpacity>
@@ -180,7 +181,6 @@ export const ChatScreen = () => {
               inverted
               style={{ flex: 1 }}
             />
-
 
             {/* Input bar */}
             <View style={{ borderTopWidth: 1, borderTopColor: '#E5E7EB', backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8 }}>
