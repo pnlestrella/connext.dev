@@ -47,7 +47,6 @@ export const ProfileScreenJS = () => {
 
       const file = result.assets[0];
 
-
       setPickedResume(file);
       console.log('Picked file:', file);
     } catch (err) {
@@ -55,7 +54,6 @@ export const ProfileScreenJS = () => {
       alert('Could not pick a file');
     }
   };
-
 
   const handleSaveResume = async () => {
     if (!pickedResume) {
@@ -83,7 +81,7 @@ export const ProfileScreenJS = () => {
     <SafeAreaView className="flex-1 bg-white">
       <Header />
 
-      <ScrollView contentContainerStyle={{ padding: 10 }}>
+      <ScrollView className='px-2'>
         {/* Profile Title */}
         <View className="flex-row justify-between items-center">
           <Text
@@ -145,6 +143,25 @@ export const ProfileScreenJS = () => {
             </Text>
           </View>
 
+          <View className="flex-row items-center py-2">
+            <Text
+              style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
+            >
+              Email
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Lexend-Regular',
+                fontSize: 14,
+                color: '#747474',
+                flex: 1,
+                textAlign: 'right',
+              }}
+            >
+              {userMDB?.email}
+            </Text>
+          </View>
+
           {/* Industry */}
           <View className="flex-row items-center py-2">
             <Text
@@ -181,7 +198,7 @@ export const ProfileScreenJS = () => {
                 textAlign: 'right',
               }}
             >
-              {userMDB?.email}
+              {userMDB?.location?.address}
             </Text>
           </View>
 
@@ -246,7 +263,7 @@ export const ProfileScreenJS = () => {
                   className="flex-row items-center p-4 rounded-2xl bg-[#1572DB] shadow-sm"
                   onPress={() => alert('Create flow coming soon')}
                 >
-                  <View className="w-10 h-10 rounded-full bg-white/20 items-center justify-center mr-3">
+                  <View className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center mr-3">
                     <LucideImageUp color="white" />
                   </View>
                   <Text
@@ -352,7 +369,7 @@ export const ProfileScreenJS = () => {
               >
                 Send us feedback
               </Text>
-              <SendHorizonal width={20} color={'blue'} />
+              <SendHorizonal width={20} color={'#1572DB'} />
             </View>
           </View>
 
@@ -363,7 +380,7 @@ export const ProfileScreenJS = () => {
               >
                 Give us a rating
               </Text>
-              <Star width={20} color={'yellow'} />
+              <Star width={20} color={'#FFC312'} />
             </View>
           </View>
         </View>
@@ -399,11 +416,11 @@ export const ProfileScreenJS = () => {
               }}
             >
               <Text
-                style={{ fontFamily: 'Lexend-Bold', fontSize: 14, color: '#B80E0E'}}
+                style={{ fontFamily: 'Lexend-Bold', fontSize: 14}}
               >
                 Logout
               </Text>
-              <LogOut width={20} color={'#37424F'} />
+              <LogOut width={20} color={'#B80E0E'} />
             </Pressable>
           </View>
         </View>

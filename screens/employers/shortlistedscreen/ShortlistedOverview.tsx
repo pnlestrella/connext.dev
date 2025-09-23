@@ -110,13 +110,10 @@ export const ShortlistedOverview = () => {
         <Header />
 
         {/* Top bar */}
-        <View className="flex-row justify-between px-1 m-4 ">
+        <View className="flex-row justify-between px-2 items-center">
           <View>
-            <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
-              Shortlisted
-            </Text>
-            <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
-              Overview
+            <Text style={{ fontFamily: "Poppins-Bold", color: "#37424F" }} className='text-2xl'>
+              Shortlisted Overview
             </Text>
           </View>
 

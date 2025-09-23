@@ -20,7 +20,7 @@ export const ProfileScreenEmployer = () => {
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={{ flex: 1, padding: 10 }}>
+        <View style={{ flex: 1}} className='px-2'>
           <View className="flex-row items-center justify-between mb-6">
             <View className="flex-row items-center flex-1">
               <View className="border rounded-full w-20 h-20 overflow-hidden mr-4">
@@ -67,13 +67,12 @@ export const ProfileScreenEmployer = () => {
           </View>
 
           {/* Profile Title */}
-          <View className='mb-4'>
+          <View>
             <Text
               style={{
                 fontFamily: 'Poppins-Bold',
                 fontSize: 18,
                 color: '#37424F',
-                marginBottom: 12,
               }}
             >
               Profile Information

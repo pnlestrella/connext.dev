@@ -153,13 +153,10 @@ export const HomeScreenEmployer = () => {
         <Header />
 
         {/* Top bar */}
-        <View className="flex-row justify-between px-1 mx-4 ">
+        <View className="flex-row justify-between px-2 items-center">
           <View>
-            <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
-              Your
-            </Text>
-            <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
-              Openings
+            <Text style={{ fontFamily: "Poppins-Bold", color: "#37424F" }} className='text-2xl'>
+              Your Openings
             </Text>
           </View>
 
