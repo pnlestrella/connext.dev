@@ -36,7 +36,7 @@ export const HomeScreenEmployer = () => {
         borderWidth: 1,
         borderColor: "#E5E7EB",
         borderRadius: 12,
-        marginHorizontal: 16,
+        marginHorizontal: 8,
         marginVertical: 8,
         backgroundColor: "white",
         overflow: "hidden", // keeps corners rounded
