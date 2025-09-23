@@ -164,9 +164,8 @@ export const ProfileScreenEmployer = () => {
               style={{
                 fontFamily: 'Lexend-SemiBold',
                 fontSize: 18,
-                color: '#37424F',
                 marginBottom: 12,
-              }}
+              }} className='text-[#221E5C]'
             >
               Miscellaneous
             </Text>
@@ -183,7 +182,7 @@ export const ProfileScreenEmployer = () => {
                 >
                   Settings
                 </Text>
-                <Settings width={20} color={"#37424F"}></Settings>
+                <Settings width={20} color={"#747474"}></Settings>
               </View>
             </View>
             {/* Feedback */}
@@ -198,7 +197,7 @@ export const ProfileScreenEmployer = () => {
                 >
                   Send us feedback
                 </Text>
-                <SendHorizonal width={20} color={"#37424F"}></SendHorizonal>
+                <SendHorizonal width={20} color={"#1572DB"}></SendHorizonal>
               </View>
             </View>
             {/* Rating */}
@@ -211,9 +210,9 @@ export const ProfileScreenEmployer = () => {
                     width: 200,
                   }}
                 >
-                  Give us Rating
+                  Give us a rating
                 </Text>
-                <Star width={20} color={"#37424F"}></Star>
+                <Star width={20} color={"#FFC312"}></Star>
               </View>
             </View>
           </View>
@@ -224,9 +223,8 @@ export const ProfileScreenEmployer = () => {
               style={{
                 fontFamily: 'Lexend-SemiBold',
                 fontSize: 18,
-                color: '#37424F',
                 marginBottom: 12,
-              }}
+              }} className='text-[#221E5C]'
             >
               Exit
             </Text>

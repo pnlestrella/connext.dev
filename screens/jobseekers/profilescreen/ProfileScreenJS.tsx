@@ -343,9 +343,8 @@ export const ProfileScreenJS = () => {
             style={{
               fontFamily: 'Lexend-SemiBold',
               fontSize: 18,
-              color: '#242573',
               marginBottom: 12,
-            }}
+            }} className='color-[#221E5C]'
           >
             Miscellaneous
           </Text>
@@ -357,7 +356,7 @@ export const ProfileScreenJS = () => {
               >
                 Settings
               </Text>
-              <Settings width={20} color={'#37424F'} />
+              <Settings width={20} color={'#747474'} />
             </View>
           </View>
 

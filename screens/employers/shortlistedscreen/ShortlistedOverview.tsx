@@ -17,72 +17,36 @@ export const ShortlistedOverview = () => {
     navigation.push("shortlistedApplicants", { jobUID, jobTitle });
   }
 
-  // ✅ Job Card UI
+  // ✅ Job Card UI with NativeWind
   const renderJob = (item: any) => (
     <View
       key={item.jobUID}
+      className="rounded-xl mx-2 my-2 bg-indigo-500 shadow-lg shadow-black/10"
       style={{
-        borderRadius: 14,
-        marginHorizontal: 16,
-        marginVertical: 10,
-        backgroundColor: "#6C63FF", // outer frame
-        shadowColor: "#000",
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
         shadowOffset: { width: 0, height: 3 },
         elevation: 4, // Android shadow
       }}
     >
       <Pressable
-        style={{
-          padding: 16,
-          backgroundColor: "#F9FAFB", // light gray, not pure white
-          borderRadius: 12,
-          margin: 2, // spacing so purple shows around edges
-        }}
+        className="p-4 bg-gray-50 rounded-xl m-0.5"
         onPress={() => handleApplicantScreen(item.jobUID, item.jobTitle)}
       >
         {/* Title + applicants */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        <View className="flex-row justify-between items-center">
           <Text
-            style={{
-              fontFamily: "Poppins-Bold",
-              fontSize: 16,
-              color: "#111827", // darker text for contrast
-              flex: 1,
-              flexShrink: 1,
-              marginRight: 8,
-            }}
+            className="text-lg text-gray-900 flex-1 mr-2"
+            style={{ fontFamily: "Poppins-Bold" }}
             numberOfLines={2}
             ellipsizeMode="tail"
           >
             {item.jobTitle}
           </Text>
 
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: "#6C63FF", // purple badge
-              paddingVertical: 4,
-              paddingHorizontal: 8,
-              borderRadius: 8,
-            }}
-          >
+          <View className="flex-row items-center bg-indigo-500 py-2 px-2 rounded-lg">
             <User size={16} color="white" />
             <Text
-              style={{
-                marginLeft: 4,
-                color: "white",
-                fontSize: 13,
-                fontFamily: "Poppins-Medium",
-              }}
+              className="ml-1 text-white text-xs font-medium"
+              style={{ fontFamily: "Poppins-Medium" }}
             >
               {applicationCounts?.find(e => e._id === item.jobUID)?.shortlisted || 0} shortlisted
             </Text>
@@ -90,9 +54,9 @@ export const ShortlistedOverview = () => {
         </View>
 
         {/* Posted date */}
-        <View className="flex-row" style={{ marginTop: 8, alignItems: "center" }}>
-          <CalendarDays width={18} color="#37424F" />
-          <Text className="ml-1 text-slate-700 text-sm">
+        <View className="flex-row mt-2 items-center">
+          <CalendarDays width={18} color="#1572DB" />
+          <Text style={{fontFamily: 'Lexend-Regular'}} className="ml-1 text-slate-700 text-sm">
             Posted on {item.createdAt ? new Date(item.createdAt).toDateString() : "—"}
           </Text>
         </View>
@@ -103,7 +67,6 @@ export const ShortlistedOverview = () => {
   return (
     <SafeAreaView className="bg-white" style={{ flex: 1 }}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
