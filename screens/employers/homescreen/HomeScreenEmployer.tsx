@@ -87,13 +87,13 @@ export const HomeScreenEmployer = () => {
 
 
         {/* Employment */}
-        <Text style={{ fontSize: 14, color: "white", marginTop: 4 }}>
+        <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 14, color: "white", marginTop: 4 }}>
           {item.employment?.join(", ")}
         </Text>
 
         {/* Posted date */}
-        <View className='flex-row' style={{ fontSize: 12, color: "white", marginTop: 8, alignItems: 'center' }}>
-          <CalendarDays width={20} color={"white"} style={{ right: 2 }}></CalendarDays>
+        <View className='flex-row gap-2' style={{ fontSize: 12, color: "white", marginTop: 8, alignItems: 'center' }}>
+          <CalendarDays width={20} color={"white"}></CalendarDays>
           <Text className='text-white'>
             Posted on {item.createdAt ? new Date(item.createdAt).toDateString() : "—"}
           </Text>
@@ -188,7 +188,7 @@ export const HomeScreenEmployer = () => {
           alignItems: "center",
           paddingVertical: 10,
           paddingHorizontal: 16,
-          borderRadius: 30,
+          borderRadius: 10,
           position: "absolute",
           bottom: insets.bottom + 20,
           right: 20,

@@ -104,7 +104,7 @@ export const BrowseScreen = () => {
           style={{ backgroundColor: "#EFEFEF" }}
         >
           <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center">
+            <View className="flex-row gap-2 items-center">
               <Search />
               <Text className="font-lexend color-slate-600 text-base">
                 {(userSearch || "Search Here").length > 16

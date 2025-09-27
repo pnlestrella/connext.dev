@@ -58,7 +58,6 @@ const CheckboxItem = ({
 
 
 
-
 // ✅ Section Divider
 const SectionDivider = () => (
     <View style={{ height: 1, backgroundColor: "#E5E7EB", marginVertical: 20 }} />
