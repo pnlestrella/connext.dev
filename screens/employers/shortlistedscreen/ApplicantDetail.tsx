@@ -22,8 +22,6 @@ import { useEmployers } from "context/employers/EmployerHook";
 import { updateApplications } from "api/applications";
 import { CommonActions } from "@react-navigation/native";
 
-
-
 export const ApplicantDetail = () => {
     const { resumeCache, setResumeCache } = useEmployers()
 

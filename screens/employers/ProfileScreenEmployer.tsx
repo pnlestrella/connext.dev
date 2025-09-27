@@ -14,7 +14,6 @@ export const ProfileScreenEmployer = () => {
     const {user,userMDB, signOutUser} = useAuth()
     const navigation = useNavigation<NavigationType>()
 
-    
   return (
     <SafeAreaView>
       <Text>{user?.email}</Text>

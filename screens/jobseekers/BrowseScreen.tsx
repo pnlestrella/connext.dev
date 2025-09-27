@@ -87,13 +87,12 @@ export const BrowseScreen = () => {
     <SafeAreaView className="bg-white" style={{ flex: 1 }}>
       <Header />
 
-      <View className="flex-row justify-between px-6">
+      <View className="flex-row justify-between px-2 items-center">
         <Text
           style={{
             fontFamily: "Poppins-Bold",
-            fontSize: 24,
             color: "#37424F",
-          }}
+          }} className="text-2xl"
         >
           Find Jobs
         </Text>
@@ -105,7 +104,7 @@ export const BrowseScreen = () => {
           style={{ backgroundColor: "#EFEFEF" }}
         >
           <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center">
+            <View className="flex-row gap-2 items-center">
               <Search />
               <Text className="font-lexend color-slate-600 text-base">
                 {(userSearch || "Search Here").length > 16
@@ -117,7 +116,6 @@ export const BrowseScreen = () => {
           </View>
         </Pressable>
       </View>
-
 
       <CardSwipe
         showModal={showModal}

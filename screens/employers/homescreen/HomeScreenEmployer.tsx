@@ -3,7 +3,7 @@ import { getApplicantCounts } from 'api/applications';
 import { Header } from 'components/Header';
 import { useAuth } from 'context/auth/AuthHook';
 import { useEmployers } from 'context/employers/EmployerHook';
-import { Search, SlidersHorizontal, Pencil, User, Edit, Maximize2, XCircle, CalendarDays } from 'lucide-react-native';
+import { Search, SlidersHorizontal, Pencil, User, Edit, Maximize2, XCircle, CalendarDays, DollarSign, BriefcaseBusiness } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
 import { Text, Pressable, View, ScrollView } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -36,7 +36,7 @@ export const HomeScreenEmployer = () => {
         borderWidth: 1,
         borderColor: "#E5E7EB",
         borderRadius: 12,
-        marginHorizontal: 16,
+        marginHorizontal: 8,
         marginVertical: 8,
         backgroundColor: "white",
         overflow: "hidden", // keeps corners rounded
@@ -53,12 +53,12 @@ export const HomeScreenEmployer = () => {
               color: "white",
               flex: 1,
               flexShrink: 1,
-              marginRight: 8,
             }}
             numberOfLines={2}
             ellipsizeMode="tail"
           >
             {item.jobTitle}
+            
           </Text>
 
           <Pressable
@@ -80,21 +80,34 @@ export const HomeScreenEmployer = () => {
                 fontFamily: "Poppins-Medium",
               }}
             >
-              {applicationCounts?.find(e => e._id === item.jobUID)?.pending || 0} applicants
+              {applicationCounts?.find(e => e._id === item.jobUID)?.pending || 0} Applicants
             </Text>
           </Pressable>
         </View>
 
-
         {/* Employment */}
-        <Text style={{ fontSize: 14, color: "white", marginTop: 4 }}>
+        <View className='flex-row items-center gap-2 '>
+          <BriefcaseBusiness size={16} color={'white'} />
+          <Text style={{ fontFamily: 'Poppins-Regular', color: "white"}} className='text-sm'>
           {item.employment?.join(", ")}
         </Text>
+        </View>
+        
+        {/* Job Description */}
+        <Text style={{fontFamily: 'Lexend-Regular'}} className='mb-2 color-white'>
+          {item.jobDescription}
+        </Text>
+
+        {/* Salary */}
+        <View className='flex-row items-center'>
+          <DollarSign size={14} color={'white'}/>
+          <Text className='color-white'> {item.salaryMin} {'-'} {item.salaryMax} </Text>
+        </View>
 
         {/* Posted date */}
-        <View className='flex-row' style={{ fontSize: 12, color: "white", marginTop: 8, alignItems: 'center' }}>
-          <CalendarDays width={20} color={"white"} style={{ right: 2 }}></CalendarDays>
-          <Text className='text-white'>
+        <View className='flex-row gap-2 mt-2' style={{ color: "white", alignItems: 'center' }}>
+          <CalendarDays size={20} color={"white"}></CalendarDays>
+          <Text className='text-white text-sm'>
             Posted on {item.createdAt ? new Date(item.createdAt).toDateString() : "—"}
           </Text>
         </View>
@@ -153,13 +166,10 @@ export const HomeScreenEmployer = () => {
         <Header />
 
         {/* Top bar */}
-        <View className="flex-row justify-between px-1 mx-4 ">
+        <View className="flex-row justify-between px-2 items-center">
           <View>
-            <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
-              Your
-            </Text>
-            <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
-              Openings
+            <Text style={{ fontFamily: "Poppins-Bold", color: "#37424F" }} className='text-2xl'>
+              Your Openings
             </Text>
           </View>
 
@@ -191,7 +201,7 @@ export const HomeScreenEmployer = () => {
           alignItems: "center",
           paddingVertical: 10,
           paddingHorizontal: 16,
-          borderRadius: 30,
+          borderRadius: 10,
           position: "absolute",
           bottom: insets.bottom + 20,
           right: 20,

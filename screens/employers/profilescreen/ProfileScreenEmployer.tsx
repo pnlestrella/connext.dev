@@ -6,6 +6,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAuth } from 'context/auth/AuthHook';
 //Header
 import { Settings, SendHorizonal, Star, LogOut } from 'lucide-react-native';
+import { Header } from 'components/Header';
 
 type NavigationType = NativeStackNavigationProp<RootStackParamList>;
 export const ProfileScreenEmployer = () => {
@@ -15,42 +16,22 @@ export const ProfileScreenEmployer = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-
       {/* scroll if content gets long */}
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-                <View style={{ flex: 1, padding: 20, }}>
+        <View style={{ flex: 1}} className='px-2'>
 
-
-          <View className="flex-1 justify-center items-center">
-            <View className="border rounded-full w-32 h-32 overflow-hidden">
-              <Image
-                source={{ uri: userMDB?.profilePic }}
-                style={{ width: "100%", height: "100%" }}
-                resizeMode="cover"
-              />
-            </View>
-            <Text
-              style={{
-                fontFamily: 'Poppins-Bold',
-                fontSize: 21,
-                color: '#37421F',
-              }}
-            >
-              {userMDB?.companyName}
-            </Text>
-          </View>
+          <Header/>
 
           {/* Profile Title */}
-          <View className='flex-row justify-between items-center'>
+          <View className="flex-row items-center justify-between">
             <Text
               style={{
                 fontFamily: 'Poppins-Bold',
-                fontSize: 24,
                 color: '#37424F',
-              }}
+              }} className='text-2xl'
             >
               Your Profile
             </Text>
@@ -59,7 +40,7 @@ export const ProfileScreenEmployer = () => {
               style={{
                 paddingVertical: 6,
                 paddingHorizontal: 12,
-                borderRadius: 16,          // rounded pill
+                borderRadius: 16,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
@@ -69,8 +50,8 @@ export const ProfileScreenEmployer = () => {
               <Text
                 style={{
                   fontFamily: 'Poppins-SemiBold',
-                  fontSize: 12,            // closer to heading scale
-                  color: '#007AFF',        // tappable hint
+                  fontSize: 12,
+                  color: '#007AFF',
                 }}
               >
                 Edit Profile
@@ -78,12 +59,10 @@ export const ProfileScreenEmployer = () => {
             </Pressable>
           </View>
 
-
-
           {/* Profile Info */}
-          <View className="space-y-2">
+          <View>
             {/* Profile (Company Name) */}
-            <View className="flex-row items-center">
+            <View className="flex-row items-center py-2">
               <Text
                 style={{
                   fontFamily: 'Lexend-Regular',
@@ -107,7 +86,7 @@ export const ProfileScreenEmployer = () => {
             </View>
 
             {/* Industry */}
-            <View className="flex-row items-center">
+            <View className="flex-row items-center py-2">
               <Text
                 style={{
                   fontFamily: 'Lexend-Regular',
@@ -131,7 +110,7 @@ export const ProfileScreenEmployer = () => {
             </View>
 
             {/* Location */}
-            <View className="flex-row items-center">
+            <View className="flex-row items-center py-2">
               <Text
                 style={{
                   fontFamily: 'Lexend-Regular',
@@ -155,7 +134,7 @@ export const ProfileScreenEmployer = () => {
             </View>
 
             {/* Email */}
-            <View className="flex-row items-center">
+            <View className="flex-row items-center py-2">
               <Text
                 style={{
                   fontFamily: 'Lexend-Regular',
@@ -180,20 +159,19 @@ export const ProfileScreenEmployer = () => {
           </View>
 
           {/* Miscellaneous Section */}
-          <View style={{ marginTop: 32 }}>
+          <View className='py-2'>
             <Text
               style={{
                 fontFamily: 'Lexend-SemiBold',
                 fontSize: 18,
-                color: '#37424F',
                 marginBottom: 12,
-              }}
+              }} className='text-[#221E5C]'
             >
               Miscellaneous
             </Text>
 
             {/* Settings  */}
-            <View className="space-y-2 justify-between">
+            <View className="justify-between py-2">
               <View className="flex-row items-center justify-between">
                 <Text
                   style={{
@@ -204,12 +182,11 @@ export const ProfileScreenEmployer = () => {
                 >
                   Settings
                 </Text>
-                <Settings width={20} color={"#37424F"}></Settings>
+                <Settings width={20} color={"#747474"}></Settings>
               </View>
             </View>
             {/* Feedback */}
-            <View className="space-y-2 justify-between">
-              {/* Name */}
+            <View className="py-2 justify-between">
               <View className="flex-row items-center justify-between">
                 <Text
                   style={{
@@ -220,12 +197,11 @@ export const ProfileScreenEmployer = () => {
                 >
                   Send us feedback
                 </Text>
-                <SendHorizonal width={20} color={"#37424F"}></SendHorizonal>
+                <SendHorizonal width={20} color={"#1572DB"}></SendHorizonal>
               </View>
             </View>
             {/* Rating */}
-            <View className="space-y-2 justify-between">
-              {/* Name */}
+            <View className="py-2 justify-between">
               <View className="flex-row items-center justify-between">
                 <Text
                   style={{
@@ -234,40 +210,38 @@ export const ProfileScreenEmployer = () => {
                     width: 200,
                   }}
                 >
-                  Give us Rating
+                  Give us a rating
                 </Text>
-                <Star width={20} color={"#37424F"}></Star>
+                <Star width={20} color={"#FFC312"}></Star>
               </View>
             </View>
           </View>
 
-          {/* Miscellaneous Section */}
-          <View style={{ marginTop: 32 }}>
+          {/* Exit Section */}
+          <View className='py-2'>
             <Text
               style={{
                 fontFamily: 'Lexend-SemiBold',
                 fontSize: 18,
-                color: '#37424F',
                 marginBottom: 12,
-              }}
+              }} className='text-[#221E5C]'
             >
               Exit
             </Text>
 
-            {/* Settings  */}
-            <View className="space-y-2 justify-between">
+            {/* Logout */}
+            <View className="justify-between">
               <Pressable
-                className="flex-row items-center justify-between"
+                className="flex-row items-center justify-between py-2"
                 onPress={async () => {
                   try {
-                    const signout = signOutUser();
-                    console.log(signout);
-                    console.log("Successfully Updated Profile in DB")
-
+                    await signOutUser();
+                    console.log("Successfully signed out");
                     alert('Signed out successfully');
                     navigation.navigate('login');
                   } catch (err) {
-                    alert(err);
+                    console.error('Sign out error:', err);
+                    alert('Error signing out: ' + err);
                   }
                 }}
               >
@@ -280,12 +254,11 @@ export const ProfileScreenEmployer = () => {
                 >
                   Logout
                 </Text>
-                <LogOut width={20} color={"#37424F"}></LogOut>
+                <LogOut width={20} color={"red"}></LogOut>
               </Pressable>
             </View>
           </View>
         </View>
-
       </ScrollView>
     </SafeAreaView>
   );

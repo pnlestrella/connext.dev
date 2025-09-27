@@ -9,7 +9,7 @@ export const Button = ({ onPress, title = "Proceed" }: BtnProps) => {
   return (
     <Pressable
       onPress={onPress}
-      className="bg-[#6C63FF] px-6 py-3 rounded-lg items-center justify-center"
+      className="bg-[#6C63FF] mt-2 py-3 rounded-lg items-center justify-center"
     >
       <Text className="text-white font-bold text-center">{title}</Text>
     </Pressable>
