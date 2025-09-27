@@ -3,7 +3,7 @@ import { getApplicantCounts } from 'api/applications';
 import { Header } from 'components/Header';
 import { useAuth } from 'context/auth/AuthHook';
 import { useEmployers } from 'context/employers/EmployerHook';
-import { Search, SlidersHorizontal, Pencil, User, Edit, Maximize2, XCircle, CalendarDays } from 'lucide-react-native';
+import { Search, SlidersHorizontal, Pencil, User, Edit, Maximize2, XCircle, CalendarDays, DollarSign, BriefcaseBusiness } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
 import { Text, Pressable, View, ScrollView } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -53,12 +53,12 @@ export const HomeScreenEmployer = () => {
               color: "white",
               flex: 1,
               flexShrink: 1,
-              marginRight: 8,
             }}
             numberOfLines={2}
             ellipsizeMode="tail"
           >
             {item.jobTitle}
+            
           </Text>
 
           <Pressable
@@ -80,21 +80,34 @@ export const HomeScreenEmployer = () => {
                 fontFamily: "Poppins-Medium",
               }}
             >
-              {applicationCounts?.find(e => e._id === item.jobUID)?.pending || 0} applicants
+              {applicationCounts?.find(e => e._id === item.jobUID)?.pending || 0} Applicants
             </Text>
           </Pressable>
         </View>
 
-
         {/* Employment */}
-        <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 14, color: "white", marginTop: 4 }}>
+        <View className='flex-row items-center gap-2 '>
+          <BriefcaseBusiness size={16} color={'white'} />
+          <Text style={{ fontFamily: 'Poppins-Regular', color: "white"}} className='text-sm'>
           {item.employment?.join(", ")}
         </Text>
+        </View>
+        
+        {/* Job Description */}
+        <Text style={{fontFamily: 'Lexend-Regular'}} className='mb-2 color-white'>
+          {item.jobDescription}
+        </Text>
+
+        {/* Salary */}
+        <View className='flex-row items-center'>
+          <DollarSign size={14} color={'white'}/>
+          <Text className='color-white'> {item.salaryMin} {'-'} {item.salaryMax} </Text>
+        </View>
 
         {/* Posted date */}
-        <View className='flex-row gap-2' style={{ fontSize: 12, color: "white", marginTop: 8, alignItems: 'center' }}>
-          <CalendarDays width={20} color={"white"}></CalendarDays>
-          <Text className='text-white'>
+        <View className='flex-row gap-2 mt-2' style={{ color: "white", alignItems: 'center' }}>
+          <CalendarDays size={20} color={"white"}></CalendarDays>
+          <Text className='text-white text-sm'>
             Posted on {item.createdAt ? new Date(item.createdAt).toDateString() : "—"}
           </Text>
         </View>
