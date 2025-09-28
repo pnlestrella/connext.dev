@@ -90,7 +90,9 @@ export const ConversationsScreen = () => {
         keyExtractor={(item) => item._id}
         renderItem={renderConversation}
         ListEmptyComponent={
-          <Text className="mt-5 text-center font-normal">No conversations yet</Text>
+          <Text 
+          style={{fontFamily: 'Lexend-Regular', color: '#9CA3AF'}}
+          className="mt-5 text-center font-normal">No conversations yet.</Text>
         }
       />
     </SafeAreaView>

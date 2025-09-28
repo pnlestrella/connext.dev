@@ -3,17 +3,17 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'navigation/types/RootStackParamList';
 import { useState } from 'react';
-import Constants from 'expo-constants'
+import Constants from 'expo-constants';
 import { userLogin } from 'firebase/firebaseAuth';
 import { Loading } from 'components/Loading';
 import { useAuth } from 'context/auth/AuthHook';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Mail, Lock } from 'lucide-react-native';
 
-
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'login'>
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'login'>;
 
 export function LoginScreen() {
-  const { loading, setLoading, setUserMDB } = useAuth()
+  const { loading, setLoading, setUserMDB } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [keepSignedIn, setKeepSignedIn] = useState(false);
@@ -21,91 +21,92 @@ export function LoginScreen() {
   const navigation = useNavigation<NavigationProp>();
 
   const handleLogin = async (role: 'jobseeker' | 'employer') => {
-    setLoading(true)
-    console.log("hey")
-    console.log(role)
+    setLoading(true);
+    console.log('hey');
+    console.log(role);
 
     if (!email) {
-      alert("Email is required")
-      return
+      alert('Email is required');
+      return;
     }
     if (!password) {
-      alert("Password is required")
-      return
+      alert('Password is required');
+      return;
     }
 
     try {
       if (role === 'jobseeker') {
-
         //check if the user exist in JOBSEEKER DB
         const res = await fetch(
           `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/getJobseeker?email=${encodeURIComponent(email)}`
         );
 
         if (!res.ok) {
-          console.log("Account Does not exist")
-          throw new Error("Account Does not exist")
+          console.log('Account Does not exist');
+          throw new Error('Account Does not exist');
         }
-        const userProfile = await res.json()
+        const userProfile = await res.json();
 
-        setUserMDB(userProfile.message)
+        setUserMDB(userProfile.message);
 
         //set Async storage for UX purpose
-        await AsyncStorage.setItem('userProfile', JSON.stringify(userProfile.message))
+        await AsyncStorage.setItem('userProfile', JSON.stringify(userProfile.message));
 
-        await userLogin(email, password)
-        setLoading(false)
-
-
+        await userLogin(email, password);
+        setLoading(false);
       } else {
         const res = await fetch(
           `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/getEmployer?email=${encodeURIComponent(email)}`
         );
 
         if (!res.ok) {
-          console.log("Account Does not Exist")
-          throw new Error("Account Does not exist")
+          console.log('Account Does not Exist');
+          throw new Error('Account Does not exist');
         }
 
-        const userProfile = await res.json()
-        setUserMDB(userProfile.message)
+        const userProfile = await res.json();
+        setUserMDB(userProfile.message);
 
         //set Async storage for UX purpose
-        await AsyncStorage.setItem('userProfile', JSON.stringify(userProfile.message))
+        await AsyncStorage.setItem('userProfile', JSON.stringify(userProfile.message));
 
-        await userLogin(email, password)
-        setLoading(false)
-
+        await userLogin(email, password);
+        setLoading(false);
       }
-
     } catch (err: any) {
-      setLoading(false)
+      setLoading(false);
       alert(err.code || 'Login failed');
       console.log(err, '--=====================================================-');
-      console.log(err.message)
+      console.log(err.message);
       if (err.message === 'Network request failed') {
-        alert("Turn on the SERVER!")
-        await AsyncStorage.clear()
-        setUserMDB(null)
+        alert('Turn on the SERVER!');
+        await AsyncStorage.clear();
+        setUserMDB(null);
       }
     }
   };
 
   return (
-    <View className="flex-1 items-center justify-center px-8 bg-white">
-      {loading &&
-        <View className='absolute inset-0 z-50' style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
+    <View className="flex-1 items-center justify-center bg-white px-8">
+      {loading && (
+        <View
+          className="absolute inset-0 z-50"
+          style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
           <Loading />
         </View>
-      }
+      )}
 
       {/* Logo Section */}
-      <View className="items-center mb-8">
-        <Image source={require('../assets/images/app_logo.png')} className="w-[330px] h-[95px]" resizeMode="contain" />
+      <View className="mb-8 items-center">
+        <Image
+          source={require('../assets/images/app_logo.png')}
+          className="h-[95px] w-[330px]"
+          resizeMode="contain"
+        />
       </View>
 
       {/* Login Header */}
-      <View className="w-full max-w-md mb-8">
+      <View className="mb-8 w-full max-w-md">
         <Text style={styles.titleText}>Login</Text>
         <Text style={styles.subHeaderText}>Welcome back, connect now!</Text>
       </View>
@@ -114,31 +115,36 @@ export function LoginScreen() {
       <View className="w-full max-w-md space-y-4">
         {/* Email Input */}
         <View>
-          <View className="flex-row items-center mb-2">
-            <Text style={styles.fieldHeader} className="ml-2 mt-2">Email</Text>
+          <View className="mb-2 flex-row items-center">
+            <Mail size={16} />
+            <Text style={styles.fieldHeader} className="ml-2 mt-2">
+              Email
+            </Text>
           </View>
 
           <TextInput
-            className="border border-gray-300 rounded-lg p-3 mb-5"
+            className="mb-5 rounded-lg border border-gray-300 p-3"
             placeholder="johndoe@gmail.com"
             value={email}
             placeholderTextColor="#9CA3AF"
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
-            style={{ color: '#000' }} 
+            style={{ color: '#000' }}
           />
-
         </View>
 
         {/* Password Input */}
         <View>
-          <View className="flex-row items-center mb-2 text-black">
-            <Text style={styles.fieldHeader} className="ml-2 mt-2">Password</Text>
+          <View className="mb-2 flex-row items-center text-black">
+            <Lock size={16} />
+            <Text style={styles.fieldHeader} className="ml-2 mt-2">
+              Password
+            </Text>
           </View>
 
           <TextInput
-            className="border border-gray-300 rounded-lg p-3"
+            className="rounded-lg border border-gray-300 p-3"
             placeholder="Enter your password"
             value={password}
             placeholderTextColor="#9CA3AF"
@@ -146,59 +152,55 @@ export function LoginScreen() {
             secureTextEntry
             style={{ color: '#000' }}
           />
-
         </View>
 
         {/* Checkbox & Forgot Password */}
-        <View className="flex-row justify-between items-center mt-2 mb-4">
+        <View className="my-4 flex-row items-center justify-between">
           <Pressable
             className="flex-row items-center"
-            onPress={() => setKeepSignedIn(!keepSignedIn)}
-          >
-            <View className="w-5 h-5 border border-gray-400 rounded mr-2 items-center justify-center mt-5">
-              {keepSignedIn && <View className="w-3 h-3 bg-[#3397f5] rounded-sm" />}
+            onPress={() => setKeepSignedIn(!keepSignedIn)}>
+            <View className="mr-2 h-5 w-5 items-center justify-center rounded border border-gray-400">
+              {keepSignedIn && <View className="h-3 w-3 rounded-sm bg-[#3397f5]" />}
             </View>
-            <Text className="text-sm text-gray-700 mt-5">Keep me signed in</Text>
+            <Text className="text-sm text-gray-700">Keep me signed in</Text>
           </Pressable>
 
           <Pressable onPress={() => alert('Feature in progress')}>
-            <Text className="text-sm text-[#1572DB] font-semibold">Forgot password?</Text>
+            <Text className="text-sm font-semibold text-[#1572DB]">Forgot password?</Text>
           </Pressable>
         </View>
 
         {/* Login Buttons */}
-        <View className="space-y-4 mt-4">
+        <View className="mt-4 ">
           <Pressable
             onPress={() => handleLogin('jobseeker')}
-            className="bg-[#6C63FF] px-6 py-3 rounded-lg items-center justify-center"
-          >
-            <Text className="text-white font-bold text-center">Login as Job Seeker</Text>
+            className="items-center justify-center rounded-lg bg-[#6C63FF] px-6 py-3">
+            <Text className="text-center font-bold text-white">Login as Job Seeker</Text>
           </Pressable>
 
-          <View className="flex-row justify-center items-center my-2">
-            <View className="border-b border-gray-300 flex-1" />
-            <Text className="text-gray-500 mt-3 mb-3 mx-3 text-sm font-bold">
+          <View className="my-2 flex-row items-center justify-center">
+            <View className="flex-1 border-b border-gray-300" />
+            <Text className="mx-3 mb-3 mt-3 text-sm font-bold text-gray-500">
               Not A Job Seeker?
             </Text>
-            <View className="border-b border-gray-300 flex-1" />
+            <View className="flex-1 border-b border-gray-300" />
           </View>
 
           <Pressable
             onPress={() => handleLogin('employer')}
-            className="bg-[#1572DB] px-6 py-3 rounded-lg items-center justify-center"
-          >
-            <Text className="text-white font-bold text-center">Login as Employer</Text>
+            className="items-center justify-center rounded-lg bg-[#1572DB] px-6 py-3">
+            <Text className="text-center font-bold text-white">Login as Employer</Text>
           </Pressable>
         </View>
 
         {/* Register Link */}
-        <Text className="justify-center text-center mt-5">
+        <Text className="mt-5 justify-center text-center">
           Don&apos;t have an account?
           <Text
-            className="text-[#6C63FF] font-bold"
-            onPress={() => navigation.navigate('accountType')}
-          >
-            {' '}Register now.
+            className="font-bold text-[#6C63FF]"
+            onPress={() => navigation.navigate('accountType')}>
+            {' '}
+            Register now.
           </Text>
         </Text>
       </View>

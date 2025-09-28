@@ -129,7 +129,7 @@ export const ConversationsScreen = () => {
             style={{ fontFamily: "Lexend-Regular" }}
             className="mt-5 text-center"
           >
-            No conversations yet
+            No conversations yet.
           </Text>
         }
       />
