@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import {
     View,
     Text,
@@ -6,29 +6,50 @@ import {
     TouchableOpacity,
     ScrollView,
     Modal,
+    Pressable,
+    Keyboard,
+    ActivityIndicator,
+    Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowLeft, Edit, RefreshCcw } from "lucide-react-native";
+import { ArrowLeft, Edit } from "lucide-react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { CommonActions } from '@react-navigation/native';
-
 import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 
-// Modals
-import { IndustryModal } from "components/profileScreen/IndustryModal";
-import { AddressModal } from "components/profileScreen/AddressModal";
-import { SkillsModal } from "components/profileScreen/SkillsModal";
-
-// Data
-import { default as EmploymentTypes } from "../../../data/employmentTypes.json";
-import { default as WorkTypes } from "../../../data/workTypes.json";
+import EmploymentTypes from "../../../data/employmentTypes.json";
+import WorkTypes from "../../../data/workTypes.json";
 import { Industries } from "../../../data/industries.json";
+import Skills from "../../../data/cleaned_skills.json";
 
-import { useAuth } from "context/auth/AuthHook";
+import Fuse from "fuse.js";
 import { useEmployers } from "context/employers/EmployerHook";
 import { updateJobs } from "api/employers/joblistings";
 
-// Section divider
+const BRAND_PURPLE = "#2563EB";
+
+// fuzzy search for skills
+const fuse = new Fuse(Skills, { threshold: 0.3, includeScore: true });
+
+// highlight text matches
+const Highlighted = ({ text, query }: { text: string; query: string }) => {
+    if (!query) return <Text>{text}</Text>;
+    const regex = new RegExp(`(${query})`, "i");
+    const parts = text.split(regex);
+    return (
+        <Text>
+            {parts.map((part, i) =>
+                regex.test(part) ? (
+                    <Text key={i} style={{ fontWeight: "700", color: BRAND_PURPLE }}>
+                        {part}
+                    </Text>
+                ) : (
+                    <Text key={i}>{part}</Text>
+                )
+            )}
+        </Text>
+    );
+};
+
 const SectionDivider = () => (
     <View style={{ height: 1, backgroundColor: "#E5E7EB", marginVertical: 20 }} />
 );
@@ -36,16 +57,12 @@ const SectionDivider = () => (
 export const JobDetails = () => {
     const navigation = useNavigation();
     const route = useRoute();
-    const { job } = route.params as { job: any };
-    const { edit } = route.params as { edit: boolean };
+    const { job, edit } = route.params as { job: any; edit: boolean };
     const { setRefresh, refresh } = useEmployers();
-
-    console.log("JOBBBBBBBBBBBBB", job)
 
     const richText = useRef<RichEditor>(null);
 
     const [isEditing, setIsEditing] = useState(edit);
-    const [showCancelModal, setShowCancelModal] = useState(false);
 
     const [jobTitle, setJobTitle] = useState(job.jobTitle || "");
     const [jobDescription, setJobDescription] = useState(
@@ -57,9 +74,73 @@ export const JobDetails = () => {
     const [employment, setEmployment] = useState<string[]>(job.employment || []);
     const [workTypes, setWorkTypes] = useState<string[]>(job.workTypes || []);
 
-    const [industryModalVisible, setIndustryModalVisible] = useState(false);
-    const [addressModalVisible, setAddressModalVisible] = useState(false);
-    const [skillsModalVisible, setSkillsModalVisible] = useState(false);
+    // ===== Location search state =====
+    const [locQuery, setLocQuery] = useState("");
+    const [locResults, setLocResults] = useState<any[]>([]);
+    const [locLoading, setLocLoading] = useState(false);
+    const API_KEY = "pk.9d1a0a6102b95fdfcab79dc4a5255313"; // replace with env
+
+    async function searchPlaces(text: string) {
+        setLocQuery(text);
+        if (text.length < 2) {
+            setLocResults([]);
+            return;
+        }
+        setLocLoading(true);
+        try {
+            const res = await fetch(
+                `https://api.locationiq.com/v1/autocomplete.php?key=${API_KEY}&q=${encodeURIComponent(
+                    text
+                )}&limit=5&countrycodes=PH&format=json`
+            );
+            const data = await res.json();
+            setLocResults(data || []);
+        } catch (err) {
+            console.error("Error fetching locations:", err);
+        } finally {
+            setLocLoading(false);
+        }
+    }
+
+    // ===== Skills search state =====
+    const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!search) {
+            setDebouncedSearch("");
+            return;
+        }
+        setLoading(true);
+        const handler = setTimeout(() => {
+            setDebouncedSearch(search);
+            setLoading(false);
+        }, 250);
+        return () => clearTimeout(handler);
+    }, [search]);
+
+    const filteredSkills = useMemo(() => {
+        if (!debouncedSearch) return [];
+        let results = fuse.search(debouncedSearch).map((r) => r.item);
+        results = results.filter((s) => !jobSkills.includes(s));
+        return results.slice(0, 8);
+    }, [debouncedSearch, jobSkills]);
+
+    function addSkill(skill: string) {
+        if (jobSkills.includes(skill)) return;
+        if (jobSkills.length >= 10) {
+            alert("You can only select up to 10 skills");
+            return;
+        }
+        setJobSkills((prev) => [...prev, skill]);
+        setSearch("");
+        Keyboard.dismiss();
+    }
+
+    function removeSkill(skill: string) {
+        setJobSkills((prev) => prev.filter((s) => s !== skill));
+    }
 
     const toggleSelection = (
         item: string,
@@ -71,35 +152,16 @@ export const JobDetails = () => {
     };
 
     const handleSave = async () => {
-        // Basic validation rules
-        if (!jobTitle.trim()) {
-            alert("Job title is required");
-            return;
-        }
+        if (!jobTitle.trim()) return alert("Job title is required");
+        if (!jobDescription.trim()) return alert("Job description is required");
+        if (!industry) return alert("Please select an industry");
+        if (jobSkills.length === 0) return alert("Please add at least one skill");
+        if (employment.length === 0) return alert("Select at least one employment type");
+        if (workTypes.length === 0) return alert("Select at least one work type");
 
-        if (!jobDescription.trim()) {
-            alert("Job description is required");
-            return;
-        }
-
-        if (!industry) {
-            alert("Please select an industry");
-            return;
-        }
-
-        if (employment.length === 0) {
-            alert("Select at least one employment type");
-            return;
-        }
-
-        if (workTypes.length === 0) {
-            alert("Select at least one work type");
-            return;
-        }
-
-        if (!location || !location.city) {
-            alert("Please set a location");
-            return;
+        // 🔹 Location validation
+        if (!location || !location.display_name) {
+            return alert("Please select a location from the suggestions");
         }
 
         const updatedJob = {
@@ -109,78 +171,79 @@ export const JobDetails = () => {
             jobIndustry: industry,
             employment,
             workTypes,
-            location,
+            location: {
+                display_name: location.display_name,
+                city: location.city || null,
+                province: location.province || null,
+                country: location.country || null,
+                postalCode: location.postalCode || null,
+                lat: location.lat,
+                lon: location.lon,
+            },
         };
-
-        console.log('==========================', job.jobUID)
 
         try {
             const res = await updateJobs(job.jobUID, updatedJob);
             if (res.success) {
-                console.log("✅ Job updated:", res.payload);
                 setRefresh(!refresh);
+                alert("✅ Job updated!");
+                setIsEditing(false);
             } else {
-                console.error("❌ Failed to update job:", res.error || res);
-                alert("Failed to update job. Please try again.");
+                alert("❌ Failed to update job");
             }
         } catch (err) {
             console.error("⚠️ Error in handleSave:", err);
-            alert("Something went wrong. Please try again later.");
+            alert("Something went wrong");
         }
-
-        setIsEditing(false);
     };
 
-    const handleCancel = () => {
-        // Open confirmation modal instead of immediately cancelling
-        setShowCancelModal(true);
+    const confirmDiscard = () => {
+        Alert.alert(
+            "Discard changes?",
+            "If you leave now, unsaved changes will be lost.",
+            [
+                { text: "Stay", style: "cancel" },
+                {
+                    text: "Discard",
+                    style: "destructive",
+                    onPress: () => {
+                        // reset form values
+                        setJobTitle(job.jobTitle || "");
+                        setJobDescription(job.jobDescription || "");
+                        setJobSkills(job.jobSkills || []);
+                        setIndustry(job.jobIndustry || "");
+                        setEmployment(job.employment || []);
+                        setWorkTypes(job.workTypes || []);
+                        setLocation(job.location || {});
+                        setIsEditing(false);
+                        navigation.goBack();
+                    },
+                },
+            ]
+        );
     };
-
-    const confirmCancel = () => {
-        setJobTitle(job.jobTitle || "");
-        setJobDescription(job.jobDescription || "");
-        setJobSkills(job.jobSkills || []);
-        setIndustry(job.jobIndustry || "");
-        setEmployment(job.employment || []);
-        setWorkTypes(job.workTypes || []);
-        setLocation(job.location || {});
-        setIsEditing(false);
-        setShowCancelModal(false);
-    };
-
-    const closeCancelModal = () => setShowCancelModal(false);
 
     return (
         <SafeAreaView className="flex-1 bg-white">
             {/* Header */}
             <View className="flex-row items-center px-5 py-4 border-b border-gray-200 relative">
-                {/* Back button */}
                 <TouchableOpacity
                     onPress={() => {
                         if (isEditing) {
-                            handleCancel();
+                            // warn only when editing
+                            confirmDiscard();
                         } else {
-                            navigation.dispatch(
-                                CommonActions.reset({
-                                    index: 0,
-                                    routes: [{ name: 'mainHome' }],
-                                })
-                            );
+                            navigation.goBack(); // simple back in view mode
                         }
                     }}
                 >
                     <ArrowLeft size={28} color="#37424F" />
                 </TouchableOpacity>
 
-
-                {/* Title */}
-                <Text
-                    className="absolute left-0 right-0 text-xl font-bold text-gray-800 text-center"
-                >
+                <Text className="absolute left-0 right-0 text-xl font-bold text-gray-800 text-center">
                     Job Details
                 </Text>
 
-                {/* Only show edit icon if not editing */}
                 {!isEditing && (
                     <TouchableOpacity onPress={() => setIsEditing(true)} className="ml-auto">
                         <Edit size={24} color="#2563EB" />
@@ -190,20 +253,17 @@ export const JobDetails = () => {
 
 
             <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 150 }}>
+                {/* Job Title */}
                 <Text className="text-gray-800 text-sm mb-2">Job Title</Text>
                 {isEditing ? (
                     <TextInput
                         value={jobTitle}
                         onChangeText={setJobTitle}
-                        editable={true}
                         className="border rounded-xl px-4 py-3 mb-5 bg-gray-50 border-gray-300"
                     />
                 ) : (
-                    <Text className="text-lg text-gray-900 font-semibold mb-5">
-                        {jobTitle}
-                    </Text>
+                    <Text className="text-lg text-gray-900 font-semibold mb-5">{jobTitle}</Text>
                 )}
-
 
                 {/* Job Description */}
                 <Text className="text-gray-800 text-sm mb-2">Job Description</Text>
@@ -216,26 +276,12 @@ export const JobDetails = () => {
                                 placeholder="Write a clear job description..."
                                 initialContentHTML={jobDescription}
                                 disabled={false}
-                                editorStyle={{
-                                    backgroundColor: "#F9FAFB",
-                                    color: "#37424F",
-                                }}
                                 onChange={(text) => setJobDescription(text.slice(0, 2000))}
                             />
                         </View>
                         <RichToolbar
                             editor={richText}
                             actions={["bold", "italic", "underline", "unorderedList", "orderedList"]}
-                            iconTint="#6B7280"
-                            selectedIconTint="#2563EB"
-                            style={{
-                                width: "100%",
-                                borderColor: "#E5E7EB",
-                                borderWidth: 1,
-                                borderRadius: 12,
-                                marginBottom: 8,
-                                backgroundColor: "#F9FAFB",
-                            }}
                         />
                     </>
                 ) : (
@@ -244,57 +290,132 @@ export const JobDetails = () => {
                     </Text>
                 )}
 
-
                 {/* Industry */}
                 <SectionDivider />
                 <Text className="text-gray-800 text-sm mb-2">Job Industry</Text>
-                <View className="flex-row items-center mb-3">
-                    <Text className="text-indigo-600 font-medium mr-3">{industry || "No industry set"}</Text>
-                    {isEditing && (
-                        <TouchableOpacity
-                            onPress={() => setIndustryModalVisible(true)}
-                            className="flex-row items-center border border-gray-300 px-3 py-2 rounded-lg"
-                        >
-                            <Text className="ml-1 text-gray-700">Edit</Text>
-                        </TouchableOpacity>
-                    )}
-                </View>
+                <Text className="text-indigo-600 font-medium mb-3">{industry || "No industry set"}</Text>
 
                 {/* Location */}
                 <SectionDivider />
                 <Text className="text-gray-800 text-sm mb-2">Location</Text>
-                {isEditing && (
-                    <TouchableOpacity
-                        onPress={() => setAddressModalVisible(true)}
-                        className="border border-gray-300 rounded-xl px-4 py-3 mb-2 bg-gray-50"
-                    >
-                        <Text className="text-gray-800 text-base">Set company location</Text>
-                    </TouchableOpacity>
+                {isEditing ? (
+                    <>
+                        <TextInput
+                            value={locQuery}
+                            onChangeText={searchPlaces}
+                            placeholder="Search for a city..."
+                            className="border border-gray-300 rounded-xl px-4 py-3 mb-2"
+                        />
+                        {locLoading ? (
+                            <View className="flex-row items-center p-3">
+                                <ActivityIndicator size="small" color={BRAND_PURPLE} />
+                                <Text className="ml-2 text-gray-500">Searching...</Text>
+                            </View>
+                        ) : locResults.length > 0 ? (
+                            <View className="border border-gray-200 rounded-lg bg-white mb-3">
+                                {locResults.map((item, idx) => (
+                                    <Pressable
+                                        key={idx}
+                                        onPress={() => {
+                                            setLocation({
+                                                country: item.address?.country || null,
+                                                country_code: item.address?.country_code || null,
+                                                display_name: item.display_name,
+                                                lat: item.lat,
+                                                lon: item.lon,
+                                                province: item.address?.state || null,
+                                                city: item.address?.city || item.address?.town || null,
+                                                postalCode: item.address?.postcode || null,
+                                            });
+                                            setLocQuery(item.display_name);
+                                            setLocResults([]);
+                                        }}
+                                        className="px-3 py-2 border-b border-gray-100"
+                                    >
+                                        <Text className="text-gray-800">{item.display_name}</Text>
+                                    </Pressable>
+                                ))}
+                            </View>
+                        ) : null}
+                        {location?.display_name && (
+                            <Text className="text-gray-700 mb-3">📍 {location.display_name}</Text>
+                        )}
+                    </>
+                ) : (
+                    location?.display_name && (
+                        <Text className="text-gray-800 mb-5">📍 {location.display_name}</Text>
+                    )
                 )}
-                {location && location.city && (
-                    <Text className="text-gray-800 mb-5">
-                        📍 {location.city}, {location.province}, {location.country}
-                        {location.postalCode ? ` (${location.postalCode})` : ""}
-                    </Text>
-                )}
+
                 {/* Skills */}
                 <SectionDivider />
                 <Text className="text-gray-800 text-sm mb-2">Skills</Text>
-                {isEditing && (
-                    <TouchableOpacity
-                        onPress={() => setSkillsModalVisible(true)}
-                        className="border border-gray-300 rounded-xl px-4 py-3 mb-3 bg-gray-50"
-                    >
-                        <Text className="text-gray-800 text-base">Select skills</Text>
-                    </TouchableOpacity>
-                )}
-                <View className="flex-row flex-wrap mb-5">
-                    {jobSkills.map((skill, idx) => (
-                        <View key={idx} className="bg-green-100 px-3 py-1 rounded-lg mr-2 mb-2">
-                            <Text className="text-green-700">{skill}</Text>
+                {isEditing ? (
+                    <>
+                        <View className="flex-row flex-wrap mb-2">
+                            {jobSkills.map((skill) => (
+                                <View
+                                    key={skill}
+                                    style={{
+                                        flexDirection: "row",
+                                        backgroundColor: BRAND_PURPLE,
+                                        borderRadius: 20,
+                                        paddingHorizontal: 12,
+                                        paddingVertical: 6,
+                                        margin: 4,
+                                    }}
+                                >
+                                    <Text style={{ color: "white", marginRight: 6 }}>{skill}</Text>
+                                    <Pressable onPress={() => removeSkill(skill)}>
+                                        <Text style={{ color: "white", fontWeight: "700" }}>×</Text>
+                                    </Pressable>
+                                </View>
+                            ))}
                         </View>
-                    ))}
-                </View>
+                        <TextInput
+                            value={search}
+                            onChangeText={setSearch}
+                            placeholder="Search a skill..."
+                            className="border border-gray-300 rounded-xl px-4 py-3 mb-2"
+                        />
+                        {search.length > 0 && (
+                            <View className="bg-white border border-gray-200 rounded-lg mb-3">
+                                {loading ? (
+                                    <View className="flex-row items-center p-3">
+                                        <ActivityIndicator size="small" color={BRAND_PURPLE} />
+                                        <Text className="ml-2 text-gray-500">Searching...</Text>
+                                    </View>
+                                ) : filteredSkills.length > 0 ? (
+                                    <ScrollView style={{ maxHeight: 200 }}>
+                                        {filteredSkills.map((skill, idx) => (
+                                            <Pressable
+                                                key={skill}
+                                                onPress={() => addSkill(skill)}
+                                                className="px-3 py-2 border-b border-gray-100"
+                                            >
+                                                <Text>
+                                                    <Highlighted text={skill} query={debouncedSearch} />
+                                                </Text>
+                                            </Pressable>
+                                        ))}
+                                    </ScrollView>
+                                ) : (
+                                    <View className="p-3">
+                                        <Text className="text-gray-400 italic">No results found</Text>
+                                    </View>
+                                )}
+                            </View>
+                        )}
+                    </>
+                ) : (
+                    <View className="flex-row flex-wrap mb-5">
+                        {jobSkills.map((skill, idx) => (
+                            <View key={idx} className="bg-green-100 px-3 py-1 rounded-lg mr-2 mb-2">
+                                <Text className="text-green-700">{skill}</Text>
+                            </View>
+                        ))}
+                    </View>
+                )}
 
                 {/* Employment Type */}
                 <SectionDivider />
@@ -307,17 +428,21 @@ export const JobDetails = () => {
                                 <TouchableOpacity
                                     key={et.id}
                                     onPress={() => toggleSelection(et.type, employment, setEmployment)}
-                                    className={`px-3 py-2 rounded-lg mr-2 mb-2 ${selected ? "bg-blue-600" : "bg-gray-100"}`}
+                                    className={`px-3 py-2 rounded-lg mr-2 mb-2 ${selected ? "bg-blue-600" : "bg-gray-100"
+                                        }`}
                                 >
-                                    <Text className={`${selected ? "text-white" : "text-gray-800"} font-medium`}>
+                                    <Text className={selected ? "text-white" : "text-gray-800"}>
                                         {et.type}
                                     </Text>
                                 </TouchableOpacity>
                             );
                         })
                         : employment.map((et) => (
-                            <View key={et} className="bg-blue-100 px-3 py-2 rounded-lg mr-2 mb-2">
-                                <Text className="text-blue-700 font-medium">{et}</Text>
+                            <View
+                                key={et}
+                                className="bg-blue-100 px-3 py-2 rounded-lg mr-2 mb-2"
+                            >
+                                <Text className="text-blue-700">{et}</Text>
                             </View>
                         ))}
                 </View>
@@ -333,17 +458,21 @@ export const JobDetails = () => {
                                 <TouchableOpacity
                                     key={wt.id}
                                     onPress={() => toggleSelection(wt.type, workTypes, setWorkTypes)}
-                                    className={`px-3 py-2 rounded-lg mr-2 mb-2 ${selected ? "bg-blue-600" : "bg-gray-100"}`}
+                                    className={`px-3 py-2 rounded-lg mr-2 mb-2 ${selected ? "bg-blue-600" : "bg-gray-100"
+                                        }`}
                                 >
-                                    <Text className={`${selected ? "text-white" : "text-gray-800"} font-medium`}>
+                                    <Text className={selected ? "text-white" : "text-gray-800"}>
                                         {wt.type}
                                     </Text>
                                 </TouchableOpacity>
                             );
                         })
                         : workTypes.map((wt) => (
-                            <View key={wt} className="bg-blue-100 px-3 py-2 rounded-lg mr-2 mb-2">
-                                <Text className="text-blue-700 font-medium">{wt}</Text>
+                            <View
+                                key={wt}
+                                className="bg-blue-100 px-3 py-2 rounded-lg mr-2 mb-2"
+                            >
+                                <Text className="text-blue-700">{wt}</Text>
                             </View>
                         ))}
                 </View>
@@ -352,7 +481,7 @@ export const JobDetails = () => {
                 {isEditing && (
                     <View className="flex-row justify-between mt-5 mb-12">
                         <TouchableOpacity
-                            onPress={handleCancel}
+                            onPress={confirmDiscard}
                             className="bg-gray-300 rounded-xl px-6 py-4 flex-1 mr-2"
                         >
                             <Text className="text-center font-semibold text-gray-800">Cancel</Text>
@@ -366,44 +495,6 @@ export const JobDetails = () => {
                     </View>
                 )}
             </ScrollView>
-
-            {/* Cancel confirmation modal */}
-            <Modal visible={showCancelModal} transparent animationType="fade">
-                <View className="flex-1 justify-center items-center bg-black/30">
-                    <View className="bg-white rounded-xl p-6 w-80">
-                        <Text className="text-gray-800 text-lg mb-4">Are you sure you want to cancel?</Text>
-                        <View className="flex-row justify-end">
-                            <TouchableOpacity onPress={closeCancelModal} className="px-4 py-2 mr-2">
-                                <Text className="text-gray-700">No</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={confirmCancel} className="px-4 py-2">
-                                <Text className="text-red-600 font-semibold">Yes</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-
-            {/* Modals */}
-            <IndustryModal
-                visible={industryModalVisible}
-                onClose={() => setIndustryModalVisible(false)}
-                onSave={(selected) => setIndustry(selected[0]?.name || "")}
-                initialSelected={industry ? [Industries.find(i => i.name === industry)!] : []}
-                maxSelection={1}
-            />
-            <AddressModal
-                visible={addressModalVisible}
-                onClose={() => setAddressModalVisible(false)}
-                onSave={(addr) => setLocation(addr)}
-                initialAddress={location}
-            />
-            <SkillsModal
-                visible={skillsModalVisible}
-                onClose={() => setSkillsModalVisible(false)}
-                onSave={(selectedSkills) => setJobSkills(selectedSkills)}
-                initialSelected={jobSkills}
-            />
         </SafeAreaView>
     );
 };

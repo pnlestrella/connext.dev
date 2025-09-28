@@ -92,7 +92,7 @@ export const ApplicantDetail = () => {
             console.log('Status updated:', res);
 
             // 2️⃣ Create conversation
-            const conversation = await createConversation(userMDB.employerUID, profile.seekerUID);
+            const conversation = await createConversation(userMDB.employerUID, profile.seekerUID, applicant.applicationID);
             if (!conversation) {
                 console.log('Failed to create conversation');
                 return;

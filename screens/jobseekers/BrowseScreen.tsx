@@ -2,6 +2,7 @@ import {
   Pressable,
   Text,
   View,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CardSwipe from "components/Swiping/CardSwipe";
@@ -9,66 +10,30 @@ import { Header } from "components/Header";
 import { useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react-native";
 
-//Filtering & Searching
+// Filtering & Searching
 import { Filtering } from "components/Filtering&Searching/Filtering";
 import { SearchSheet } from "components/Filtering&Searching/SearchSheet";
 
 import { useJobs } from "context/jobs/JobHook";
 
-
-type Job = {
-  jobUID: string;
-  companyName?: string;
-  score: number;
-  feedback: {
-    match_summary: string;
-    skill_note: string;
-    extra_note: string;
-  };
-  boostWeight: number;
-  _id: string;
-  jobPoster?: string;
-  jobTitle: string;
-  jobIndustry: string;
-  jobDescription: string;
-  jobSkills: string[];
-  location: {
-    city: string;
-    state: string;
-    postalCode: string;
-  };
-  employment: string[];
-  workTypes: string[];
-  salaryRange: {
-    min: number;
-    max: number;
-    currency: string;
-    frequency: string;
-  };
-  jobNormalized: string;
-  profilePic: string;
-  isExternal: boolean;
-  status: boolean;
-};
-
-type BrowseScreenTypes = {
-  userSearch: { title: string; industries: string[] };
-};
-
-
 export const BrowseScreen = () => {
-  const { jobPostings, setJobPostings, tempSearch, setTempSearch, userSearch, setUserSearch } = useJobs()
-
+  const {
+    jobPostings,
+    setJobPostings,
+    tempSearch,
+    setTempSearch,
+    userSearch,
+    setUserSearch,
+  } = useJobs();
 
   // Filter
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
 
-
-  //For Card Swiping & Bottom Sheets effect of it
+  // For Card Swiping & Bottom Sheets effect of it
   const [showModal, setShowModal] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  //for Filtering & Search
+  // for Filtering & Search
   const [showFilter, setShowFilter] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -81,54 +46,56 @@ export const BrowseScreen = () => {
     }
   }
 
-  console.log(jobPostings.length,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-
   return (
-    <SafeAreaView className="bg-white" style={{ flex: 1 }}>
+    <SafeAreaView className="bg-white flex-1">
+      {/* Top App Header */}
       <Header />
 
-      <View className="flex-row justify-between px-6">
+      {/* Title + Search/Filter Bar */}
+      <View className="flex-row justify-between items-center px-6 mt-2 mb-4">
         <Text
           style={{
             fontFamily: "Poppins-Bold",
-            fontSize: 24,
-            color: "#37424F",
+            fontSize: 26,
+            color: "#1E293B",
           }}
         >
           Find Jobs
         </Text>
 
-        {/* For Filtering & Searchng */}
-        <Pressable
+        {/* Search + Filter trigger */}
+        <TouchableOpacity
           onPress={() => setShowFilter(true)}
-          className="w-[62%] rounded-xl justify-center p-2"
-          style={{ backgroundColor: "#EFEFEF" }}
+          activeOpacity={0.8}
+          className="w-[62%] flex-row items-center justify-between px-3 py-2 rounded-full bg-slate-100 shadow-sm"
         >
-          <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center">
-              <Search />
-              <Text className="font-lexend color-slate-600 text-base">
-                {(userSearch || "Search Here").length > 16
-                  ? (userSearch || "Search Here").slice(0, 16) + "..."
-                  : userSearch || "Search Here"}
-              </Text>
-            </View>
-            <SlidersHorizontal width={18} />
+          <View className="flex-row items-center">
+            <Search size={18} color="#475569" />
+            <Text
+              className="ml-2 font-lexend text-slate-600"
+              style={{ fontSize: 14 }}
+              numberOfLines={1}
+            >
+              {userSearch || "Search Here"}
+            </Text>
           </View>
-        </Pressable>
+          <SlidersHorizontal size={18} color="#475569" />
+        </TouchableOpacity>
       </View>
 
+      {/* Swiping Cards */}
+      <View className="flex-1 px-4 pb-2">
+        <CardSwipe
+          showModal={showModal}
+          isExpanded={isExpanded}
+          setIsExpanded={setIsExpanded}
+          setShowModal={setShowModal}
+          jobPostings={jobPostings}
+          setJobPostings={setJobPostings}
+        />
+      </View>
 
-      <CardSwipe
-        showModal={showModal}
-        isExpanded={isExpanded}
-        setIsExpanded={setIsExpanded}
-        setShowModal={setShowModal}
-        jobPostings={jobPostings}
-        setJobPostings={setJobPostings}
-      />
-
-      {/* Search And Filtering Components  */}
+      {/* Search & Filtering Components */}
       <Filtering
         showFilter={showFilter}
         selected={selected}
@@ -145,11 +112,11 @@ export const BrowseScreen = () => {
         showSearch={showSearch}
       />
 
-      {/* for the black screen */}
+      {/* Dark Backdrop when modal/search/filter open */}
       {(showModal || showFilter || showSearch) && (
         <Pressable
           onPress={handleBG}
-          className="absolute inset-0 bg-black z-[100]"
+          className="absolute inset-0 z-50"
           style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
         />
       )}

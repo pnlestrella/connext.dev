@@ -5,23 +5,55 @@ import { ArrowLeft } from 'lucide-react-native';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useState } from "react";
+import { useAuth } from 'context/auth/AuthHook';
+import { createApplication } from 'api/applications';
+import { useJobs } from 'context/jobs/JobHook';
 
 dayjs.extend(relativeTime);
 
 export const JobProspectDetails = () => {
+    const {userMDB} = useAuth()
     const route = useRoute();
     const navigation = useNavigation();
     const { item } = route.params;
+      const { shortlistedJobs, fetchShortlistedJobs } = useJobs();
+    
 
     const job = item.jobDetails;
     const [showFeedback, setShowFeedback] = useState(false);
 
     const postedAgo = job.createdAt ? dayjs(job.createdAt).fromNow() : "N/A";
 
-    const handleApply = async () => {
+    const handleApply = (item: any) => {
+        const job = item.jobDetails
+        if (!job.isExternal) {
+            //check if the user has resume already
+            console.log(userMDB.resume)
+            if (userMDB.resume) {
+                const application = {
+                    jobUID: item.jobUID,
+                    employerUID: job.employerUID,
+                    seekerUID: userMDB.seekerUID,
+                    resume: userMDB.resume
+                }
+                createApplication(application)
+                    .then((res) => {
+                        fetchShortlistedJobs();
+                        console.log(res)
+                        alert("Successfully sent an application")
+                        navigation.goBack()
+                    })
+                    .catch(err => console.log(err))
 
-        alert('hello world')
+            } else {
+                alert("Please upload resume before applying")
+            }
+        } else {
+            alert("External jobs is currently being implemented")
+        }
     }
+
+
 
     return (
         <SafeAreaView className="flex-1 bg-white">
@@ -62,7 +94,7 @@ export const JobProspectDetails = () => {
 
                 {/* Location */}
                 <Text className="text-base text-gray-700 mb-4 font-poppins leading-6">
-                    {job.location.city}, {job.location.state || job.location.province}, {job.location.postalCode}
+                    {job.location.display_name}
                 </Text>
 
                 {/* Industry */}
@@ -142,18 +174,12 @@ export const JobProspectDetails = () => {
 
                 {/* Apply Button */}
                 <Pressable
-                    onPress={() => {
-                        if (job.isExternal) {
-                            alert("Apply feature is in progress");
-                        } else {
-                            handleApply()
-                        }
-                    }}
+                    onPress={() => handleApply(item)}
                     className="bg-brand-purpleMain rounded-2xl py-4 px-8 items-center mb-12"
                 >
                     <Text className="text-white font-bold text-lg font-lexend">Apply Now</Text>
                 </Pressable>
-22
+                22
             </ScrollView>
         </SafeAreaView>
     );

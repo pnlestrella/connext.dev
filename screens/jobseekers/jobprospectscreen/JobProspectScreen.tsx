@@ -1,6 +1,6 @@
 import { Header } from 'components/Header';
 import { BriefcaseBusiness, PhilippinePeso, MapPin, FileText } from 'lucide-react-native';
-import { Text, View, TouchableOpacity, Image, FlatList, Pressable, Modal, Linking, ScrollView } from 'react-native';
+import { Text, View, Pressable, Image, FlatList, Modal, Linking, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -16,12 +16,12 @@ export function formatTimeAgo(dateString: any) {
   return dayjs(dateString).fromNow();
 }
 
-// Profile pics
+// External job logos
 const Indeed = "https://ik.imagekit.io/mnv8wgsbk/Public%20Images/indeed_logo.png?updatedAt=1756757217985";
 const ZipRecruiter = "https://ik.imagekit.io/mnv8wgsbk/Public%20Images/ZipRecruiter-logo-full-color-black.webp?updatedAt=1756757383134";
-export const JobProspectScreen = () => {
-  const { userMDB } = useAuth()
 
+export const JobProspectScreen = () => {
+  const { userMDB } = useAuth();
   const { shortlistedJobs, fetchShortlistedJobs } = useJobs();
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState<'shortlisted' | 'applied'>('shortlisted');
@@ -34,7 +34,6 @@ export const JobProspectScreen = () => {
     }, [])
   );
 
-
   const displayedJobs = activeTab === 'shortlisted'
     ? shortlistedJobs?.filter(job => !job.application)
     : shortlistedJobs?.filter(job => job.application);
@@ -42,46 +41,54 @@ export const JobProspectScreen = () => {
   const handleAppliedClick = (item: any) => {
     setSelectedJob(item);
     setModalVisible(true);
-  }
+  };
 
-  const handleApply = (item: any) => {
-    const job = item.jobDetails
+  const handleApply = async (item: any) => {
+    const job = item.jobDetails;
     if (!job.isExternal) {
-      //check if the user has resume already
-      console.log(userMDB.resume)
-      if (userMDB.resume) {
-        const application = {
-          jobUID: item.jobUID,
-          employerUID: job.employerUID,
-          seekerUID: userMDB.seekerUID,
-          resume: userMDB.resume
-        }
-        createApplication(application)
-          .then((res) => {
-            fetchShortlistedJobs();
-            console.log(res)
-            alert("Successfully sent an application")
-          })
-          .catch(err => console.log(err))
+      if (!userMDB.resume) {
+        alert("Please upload resume before applying");
+        return;
+      }
 
-      } else {
-        alert("Please upload resume before applying")
+      const application = {
+        jobUID: item.jobUID,
+        employerUID: job.company.uid,
+        seekerUID: userMDB.seekerUID,
+        resume: userMDB.resume,
+      };
+
+      try {
+        const res = await createApplication(application);
+        console.log(res, '-resssssssssyyyyyyyy')
+        fetchShortlistedJobs();
+        alert("Successfully sent an application");
+      } catch (err) {
+        console.error("Apply Error:", err);
+        alert("Failed to apply. Try again.");
       }
     } else {
-      alert("External jobs is currently being implemented")
+      alert("External jobs are currently being implemented");
     }
-  }
+  };
+
+  // counts based on activeTab
+  const totalCount = displayedJobs?.length || 0;
+  const activeCount = displayedJobs?.filter(j => j.jobDetails.isActive).length || 0;
+  const newCount = displayedJobs?.filter(j => dayjs().diff(dayjs(j.jobDetails.createdAt), "day") <= 7).length || 0;
+
 
   const closeModal = () => {
     setSelectedJob(null);
     setModalVisible(false);
-  }
+  };
 
   return (
     <SafeAreaView className='bg-white mb-5 h-full'>
       <Header />
+
       {/* Title */}
-      <View className="flex-row justify-between px-6 ">
+      <View className="flex-row justify-between px-6">
         <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
           Job Prospects
         </Text>
@@ -108,10 +115,10 @@ export const JobProspectScreen = () => {
         </Pressable>
       </View>
 
+
+
+
       {/* Job List */}
-
-      {console.log(displayedJobs?.length,'wawa')}
-
       {(displayedJobs?.length === 0 || displayedJobs?.length === undefined) ? (
         <View className="flex-1 justify-center items-center mt-10">
           <Text style={{ fontFamily: 'Lexend-Regular', color: '#9CA3AF' }}>
@@ -123,6 +130,40 @@ export const JobProspectScreen = () => {
           data={displayedJobs}
           keyExtractor={(item) => item.jobInteractionID}
           contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 40 }}
+          ListHeaderComponent={
+            <View className="flex-row justify-around mt-4 mb-4 px-4">
+              <View className="bg-gray-100 rounded-xl p-4 flex-1 mx-1 items-center">
+                <Text style={{ fontFamily: "Lexend-Bold", fontSize: 14, color: "#6B7280" }}>Total</Text>
+                <Text style={{
+                  fontFamily: "Poppins-Bold",
+                  fontSize: 18,
+                  color: activeTab === 'shortlisted' ? "#4F46E5" : "#10B981"
+                }}>
+                  {totalCount}
+                </Text>
+              </View>
+              <View className="bg-gray-100 rounded-xl p-4 flex-1 mx-1 items-center">
+                <Text style={{ fontFamily: "Lexend-Bold", fontSize: 14, color: "#6B7280" }}>Active</Text>
+                <Text style={{
+                  fontFamily: "Poppins-Bold",
+                  fontSize: 18,
+                  color: "#111827"
+                }}>
+                  {activeCount}
+                </Text>
+              </View>
+              <View className="bg-gray-100 rounded-xl p-4 flex-1 mx-1 items-center">
+                <Text style={{ fontFamily: "Lexend-Bold", fontSize: 14, color: "#6B7280" }}>New</Text>
+                <Text style={{
+                  fontFamily: "Poppins-Bold",
+                  fontSize: 18,
+                  color: "#F59E0B"
+                }}>
+                  {newCount}
+                </Text>
+              </View>
+            </View>
+          }
           renderItem={({ item }) => {
             const job = item.jobDetails;
             const hasApplied = !!item.application;
@@ -133,49 +174,94 @@ export const JobProspectScreen = () => {
 
             const textColor = hasApplied ? "black" : "white";
 
+            // Company name
+            const companyName = job.isExternal
+              ? (job.company.profilePic === "indeed"
+                ? "Indeed"
+                : job.company.profilePic === "ziprecruiter"
+                  ? "ZipRecruiter"
+                  : job.company.profilePic || "External Company")
+              : (job.company.name ?? "Company");
+
+            // Logo logic
+            let profileImage: string | null = null;
+            if (job.isExternal) {
+              if (job.company.profilePic === "indeed") profileImage = Indeed;
+              else if (job.company.profilePic === "ziprecruiter") profileImage = ZipRecruiter;
+              else profileImage = null; // fallback to initials for unknown external
+            } else {
+              profileImage = job.company.profilePic || null; // internal company
+            }
+
             return (
+
               <Pressable
                 className="rounded-2xl p-4 mb-4 w-full"
                 style={cardStyle}
-                onPress={() => hasApplied ? handleAppliedClick(item) : navigation.navigate("jobProspectDetails", { item })}
+                onPress={() =>
+                  hasApplied
+                    ? handleAppliedClick(item)
+                    : navigation.navigate("jobProspectDetails", { item })
+                }
               >
+
                 {/* Logo + Company */}
                 <View className="flex-row items-center space-x-3 mb-3">
                   <View
                     className="rounded-full border-2 border-white overflow-hidden mr-2"
-                    style={{ width: 60, height: 60, justifyContent: "center", alignItems: "center" }}
+                    style={{
+                      width: 60,
+                      height: 60,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#E5E7EB",
+                    }}
                   >
-                    <Image
-                      source={{
-                        uri:
-                          job.profilePic === "indeed"
-                            ? Indeed
-                            : job.profilePic === "ziprecruiter"
-                              ? ZipRecruiter
-                              : job.profilePic,
-                      }}
-                      style={{ width: "100%", height: "100%", resizeMode: "cover" }}
-                    />
+                    {profileImage ? (
+                      <Image
+                        source={{ uri: profileImage }}
+                        style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+                      />
+                    ) : (
+                      <Text style={{ fontFamily: "Poppins-Bold", fontSize: 18, color: "#37424F" }}>
+                        {companyName.charAt(0).toUpperCase()}
+                      </Text>
+                    )}
                   </View>
 
-                  <View>
-                    <Text style={{ color: textColor, fontFamily: "Poppins-Bold", fontSize: 18 }}>
-                      {job.companyName ?? "Company"}
+                  <View style={{ flex: 1, maxWidth: "100%" }}>
+                    <Text
+                      style={{
+                        color: textColor,
+                        fontFamily: "Poppins-Regular",
+                        fontSize: 14,
+                      }}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {companyName}
                     </Text>
-                    <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold" }}>
-                      {job.jobTitle}
+
+                    <Text
+                      style={{
+                        color: textColor,
+                        fontFamily: "Lexend-SemiBold",
+                        fontSize: 20,
+                        flexShrink: 1,
+                        flexWrap: "wrap",
+                      }}
+                      numberOfLines={2}   // limit to 2 lines
+                      ellipsizeMode="tail" // add "..." if too long
+                    >
+                      {job.jobTitle.replace(/\//g, "/\u200B")}
                     </Text>
                   </View>
+
                 </View>
 
                 {/* Job Info */}
                 <View className="py-2">
-                  <View className="flex-row items-center mb-1">
-                    <BriefcaseBusiness size={20} color={textColor} />
-                    <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold", marginLeft: 8 }}>
-                      {job.jobTitle}
-                    </Text>
-                  </View>
+
 
                   <View className="flex-row items-center mb-1">
                     <PhilippinePeso size={20} color={textColor} />
@@ -187,15 +273,42 @@ export const JobProspectScreen = () => {
                   <View className="flex-row items-center mb-1">
                     <MapPin size={20} color={textColor} />
                     <Text style={{ color: textColor, fontFamily: "Lexend-SemiBold", marginLeft: 8 }}>
-                      {job.location.city}, {job.location.province}, {job.location.postalCode}
+                      {job.location.display_name || job.location.city || "Location not specified"}
                     </Text>
                   </View>
 
+                  <View className="flex-row items-center mb-1">
+                    <BriefcaseBusiness size={20} color={textColor} />
+                    <Text
+                      style={{
+                        color: textColor,
+                        fontFamily: "Lexend-SemiBold",
+                        marginLeft: 8,
+                      }}
+                    >
+                      {job.employment.join(", ")}
+                    </Text>
+                  </View>
+
+
                   {/* Apply / Applied Button */}
                   <View className="flex-row items-center justify-between mt-3">
-                    <Text style={{ color: textColor, fontSize: 12, fontFamily: "Lexend-Bold" }}>
-                      Posted {formatTimeAgo(job.createdAt)}
+                    <Text
+                      style={{
+                        color: textColor,
+                        fontSize: 12,
+                        fontFamily: "Lexend-Bold",
+                        flexShrink: 1
+                      }}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {activeTab === 'applied'
+                        ? `Applied ${item.application?.appliedAt ? dayjs(item.application.appliedAt).fromNow() : ""}`
+                        : `Posted ${formatTimeAgo(job.createdAt)}`}
                     </Text>
+
+
                     <Pressable
                       className="px-16 py-2 rounded-xl"
                       style={{
@@ -215,8 +328,6 @@ export const JobProspectScreen = () => {
         />
       )}
 
-
-
       {/* Modal for Applied Jobs */}
       {selectedJob && (
         <Modal
@@ -234,7 +345,13 @@ export const JobProspectScreen = () => {
                     {selectedJob.jobDetails.jobTitle}
                   </Text>
                   <Text style={{ fontFamily: "Lexend-SemiBold", fontSize: 16, color: '#37424F' }}>
-                    {selectedJob.jobDetails.companyName}
+                    {selectedJob.jobDetails.isExternal
+                      ? (selectedJob.jobDetails.profilePic === "indeed"
+                        ? "Indeed"
+                        : selectedJob.jobDetails.profilePic === "ziprecruiter"
+                          ? "ZipRecruiter"
+                          : selectedJob.jobDetails.profilePic || "External Company")
+                      : (selectedJob.jobDetails.companyName ?? "Company")}
                   </Text>
                 </View>
 
@@ -245,7 +362,8 @@ export const JobProspectScreen = () => {
                   </Text>
                   <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, color: '#111827', marginBottom: 4 }}>
                     <Text style={{ fontFamily: 'Lexend-Bold' }}>Application Status: </Text>
-                    <Text style={{ color: selectedJob.application.status === 'pending' ? "orange" : selectedJob.application.status === "viewed" ? "green" : "#B45309" }}>{selectedJob.application.status}
+                    <Text style={{ color: selectedJob.application.status === 'pending' ? "orange" : selectedJob.application.status === "viewed" ? "green" : "#B45309" }}>
+                      {selectedJob.application.status}
                     </Text>
                   </Text>
                 </View>
@@ -256,7 +374,7 @@ export const JobProspectScreen = () => {
                     Job Details
                   </Text>
                   <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, marginBottom: 4 }}>
-                    <Text style={{ fontFamily: 'Lexend-Bold' }}>Location:</Text> {selectedJob.jobDetails.location.city}, {selectedJob.jobDetails.location.province}
+                    <Text style={{ fontFamily: 'Lexend-Bold' }}>Location:</Text> {selectedJob.jobDetails.location.city || selectedJob.jobDetails.location.display_name}, {selectedJob.jobDetails.location.province || ''}
                   </Text>
                   <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, marginBottom: 4 }}>
                     <Text style={{ fontFamily: 'Lexend-Bold' }}>Salary:</Text> {selectedJob.jobDetails.salaryRange.currency} {selectedJob.jobDetails.salaryRange.min || ''} - {selectedJob.jobDetails.salaryRange.max || ''}/{selectedJob.jobDetails.salaryRange.frequency || ''}
@@ -277,7 +395,7 @@ export const JobProspectScreen = () => {
                     backgroundColor: '#6C63FF',
                     padding: 12,
                     borderRadius: 10,
-                    justifyContent: 'center'
+                    justifyContent: 'center',
                   }}
                   onPress={() => Linking.openURL(selectedJob.application.resume)}
                 >
@@ -292,7 +410,7 @@ export const JobProspectScreen = () => {
                     backgroundColor: '#E5E7EB',
                     padding: 12,
                     borderRadius: 10,
-                    alignItems: 'center'
+                    alignItems: 'center',
                   }}
                   onPress={closeModal}
                 >
@@ -303,7 +421,6 @@ export const JobProspectScreen = () => {
           </View>
         </Modal>
       )}
-
     </SafeAreaView>
   );
 };

@@ -12,6 +12,8 @@ export const ConversationsScreen = () => {
   const { user } = useAuth();
 
 
+  console.log(conversations,'testyyyyyyyyyyy')
+
   const route = useRoute();
   const { newConversation } = route.params || {};
 
@@ -55,6 +57,8 @@ export const ConversationsScreen = () => {
     let displayName = "";
     let profilePic = null;
 
+    console.log(item,'tetete')
+
     // Employer should see seeker
     const seeker = item?.seekerName || {};
     displayName = `${seeker.firstName || ""} ${seeker.middleInitial ? seeker.middleInitial + ". " : ""
@@ -67,6 +71,7 @@ export const ConversationsScreen = () => {
         color="#37424F"
       />
     );
+
 
     return (
       <Pressable className="flex-row items-center px-4 py-3 border-b border-gray-200"

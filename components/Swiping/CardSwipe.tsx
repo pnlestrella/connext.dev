@@ -200,27 +200,28 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
                 <Image
                   source={{
                     uri:
-                      currentJob.profilePic === "indeed"
+                      currentJob.company.profilePic === "indeed"
                         ? Indeed
-                        : currentJob.profilePic === "ziprecruiter"
+                        : currentJob.company.profilePic === "ziprecruiter"
                           ? ZipRecruiter
-                          : currentJob.profilePic
+                          : currentJob.company.profilePic
 
                   }}
                   style={{ width: "100%", height: "100%", resizeMode: "cover" }}
                 />
               </View>
+              {console.log("TESTTTTTTTTTTTTT", currentJob)}
 
               <View className="ml-2">
                 {!currentJob.isExternal ? (
                   <>
                     <Text className="text-white text-xs font-bold">Posted By:</Text>
-                    <Text className="text-white text-2xl font-bold">{currentJob.companyName}</Text>
+                    <Text className="text-white text-2xl font-bold">{currentJob.company.name}</Text>
                   </>
                 ) : (
                   <>
                     <Text className="text-white text-xs font-bold">External Job From:</Text>
-                    <Text className="text-white text-2xl font-bold">{currentJob.profilePic}</Text>
+                    <Text className="text-white text-2xl font-bold">{currentJob.company.profilePic}</Text>
                   </>
                 )}
               </View>
@@ -242,7 +243,7 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
               <View className="flex-row items-center mb-2">
                 <MapPin size={20} color={"white"} />
                 <Text className="text-white text-lg ml-2">
-                  {currentJob.location.city}, {currentJob.location.state}, {currentJob.location.postalCode}
+                  {currentJob.location.display_name}
                 </Text>
               </View>
 

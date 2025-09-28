@@ -50,7 +50,10 @@ function JobseekerStack({ userMDB }: any) {
   const { location, industries, skills } = userMDB || {};
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{
+      headerShown: false,
+      contentStyle: { backgroundColor: 'white' },
+    }}>
       {!location && <Stack.Screen name="address" component={AddressScreen} />}
       {!industries && <Stack.Screen name="industries" component={IndustryScreen} />}
       {!skills && <Stack.Screen name="skills" component={SkillsScreen} />}
@@ -64,7 +67,10 @@ function EmployerStack({ userMDB }: any) {
   const { location, industries } = userMDB || {};
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{
+      headerShown: false,
+      contentStyle: { backgroundColor: 'white' },
+    }}>
       {!location && <Stack.Screen name="address" component={AddressScreen} />}
       {!industries && <Stack.Screen name="industries" component={IndustryScreen} />}
 
@@ -92,5 +98,5 @@ export default function StackNavigator() {
     return <EmployerStack userMDB={userMDB} />;
   }
 
-  return <SplashScreen />; // fallback
+  return <SplashScreen />;
 }

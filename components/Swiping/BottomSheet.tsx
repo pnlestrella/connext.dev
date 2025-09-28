@@ -158,7 +158,7 @@ export default function BottomSheet({
                         {/* Location */}
                         <View className="flex-row items-center">
                             <MapPin size={20} color={"#6C63FF"} />
-                            <Text className="text-brand-purpleMain my-2" style={{ fontFamily: "Lexend-SemiBold", fontSize: 16 }} > Location: <Text className="text-black">{currentJob.location.city}</Text> </Text>
+                            <Text className="text-brand-purpleMain my-2" style={{ fontFamily: "Lexend-SemiBold", fontSize: 16 }} > Location: <Text className="text-black">{currentJob.location.display_name}</Text> </Text>
                         </View>
                         <View style={{ height: 1, backgroundColor: 'lightgray', marginVertical: 10 }}></View>
 

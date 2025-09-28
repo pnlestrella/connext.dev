@@ -102,12 +102,13 @@ export const ShortlistedOverview = () => {
 
   return (
     <SafeAreaView className="bg-white" style={{ flex: 1 }}>
+      {/* Header */}
+      <Header />
       <ScrollView
         contentContainerStyle={{ paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
-        <Header />
+
 
         {/* Top bar */}
         <View className="flex-row justify-between px-1 m-4 ">

@@ -4,53 +4,53 @@ import { Header } from 'components/Header';
 import { useAuth } from 'context/auth/AuthHook';
 import { useEmployers } from 'context/employers/EmployerHook';
 import { Search, SlidersHorizontal, Pencil, User, Edit, Maximize2, XCircle, CalendarDays } from 'lucide-react-native';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { Text, Pressable, View, ScrollView } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const HomeScreenEmployer = () => {
-  const { jobOpenings, applicationCounts,refresh, setRefresh } = useEmployers();
+  const { jobOpenings, applicationCounts, refresh, setRefresh } = useEmployers();
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
-  //for updates
-  useFocusEffect(useCallback(() => {
-    setRefresh(!refresh)
-  }, []))
-
+  // for updates
+  useFocusEffect(
+    useCallback(() => {
+      setRefresh(!refresh);
+    }, [])
+  );
 
   const handleApplicationScreen = (jobUID: string, jobTitle: string) => {
-    navigation.push("jobApplications", { jobUID: jobUID, jobTitle: jobTitle })
-  }
-
-  const handlePost = () => {
-    console.log("Post an opening pressed");
-    navigation.navigate('postJob')
+    navigation.push('jobApplications', { jobUID, jobTitle });
   };
 
-  // ✅ Job Card UI
+  const handlePost = () => {
+    navigation.navigate('postJob');
+  };
+
+  // Job Card UI
   const renderJob = (item: any) => (
     <View
       key={item.jobUID}
       style={{
         borderWidth: 1,
-        borderColor: "#E5E7EB",
+        borderColor: '#E5E7EB',
         borderRadius: 12,
         marginHorizontal: 16,
         marginVertical: 8,
-        backgroundColor: "white",
-        overflow: "hidden", // keeps corners rounded
+        backgroundColor: 'white',
+        overflow: 'hidden',
       }}
     >
       {/* Job Info */}
       <View style={{ padding: 16, backgroundColor: '#6C63FF' }}>
         {/* Title + applicants */}
-        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text
             style={{
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               fontSize: 16,
-              color: "white",
+              color: 'white',
               flex: 1,
               flexShrink: 1,
               marginRight: 8,
@@ -62,12 +62,12 @@ export const HomeScreenEmployer = () => {
           </Text>
 
           <Pressable
-            className="rounded-md"
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: "white",
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: 'white',
               padding: 5,
+              borderRadius: 8,
             }}
             onPress={() => handleApplicationScreen(item.jobUID, item.jobTitle)}
           >
@@ -75,27 +75,24 @@ export const HomeScreenEmployer = () => {
             <Text
               style={{
                 marginLeft: 4,
-                color: "#1572DB",
+                color: '#1572DB',
                 fontSize: 13,
-                fontFamily: "Poppins-Medium",
+                fontFamily: 'Poppins-Medium',
               }}
             >
-              {applicationCounts?.find(e => e._id === item.jobUID)?.pending || 0} applicants
+              {applicationCounts?.find((e) => e._id === item.jobUID)?.pending || 0} applicants
             </Text>
           </Pressable>
         </View>
 
-
         {/* Employment */}
-        <Text style={{ fontSize: 14, color: "white", marginTop: 4 }}>
-          {item.employment?.join(", ")}
-        </Text>
+        <Text style={{ fontSize: 14, color: 'white', marginTop: 4 }}>{item.employment?.join(', ')}</Text>
 
         {/* Posted date */}
-        <View className='flex-row' style={{ fontSize: 12, color: "white", marginTop: 8, alignItems: 'center' }}>
-          <CalendarDays width={20} color={"white"} style={{ right: 2 }}></CalendarDays>
-          <Text className='text-white'>
-            Posted on {item.createdAt ? new Date(item.createdAt).toDateString() : "—"}
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+          <CalendarDays width={20} color="white" style={{ marginRight: 4 }} />
+          <Text style={{ color: 'white', fontSize: 12 }}>
+            Posted on {item.createdAt ? new Date(item.createdAt).toDateString() : '—'}
           </Text>
         </View>
       </View>
@@ -104,36 +101,57 @@ export const HomeScreenEmployer = () => {
       <View
         style={{
           borderTopWidth: 1,
-          borderTopColor: "#E5E7EB",
+          borderTopColor: '#E5E7EB',
           paddingVertical: 12,
           paddingHorizontal: 16,
-          backgroundColor: "white",
+          backgroundColor: 'white',
         }}
       >
-        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <Pressable
-            style={{ flexDirection: "row", alignItems: "center" }}
-            onPress={() => navigation.navigate("showDetails", { job: item, edit: true })}
+            style={{ flexDirection: 'row', alignItems: 'center' }}
+            onPress={() => navigation.navigate('showDetails', { job: item, edit: true })}
           >
             <Edit size={14} color="#1572DB" />
-            <Text style={{ color: "#1572DB", marginLeft: 4, fontSize: 13, fontFamily: "Poppins-Bold" }}>
+            <Text
+              style={{
+                color: '#1572DB',
+                marginLeft: 4,
+                fontSize: 13,
+                fontFamily: 'Poppins-Bold',
+              }}
+            >
               Edit
             </Text>
           </Pressable>
 
           <Pressable
-            style={{ flexDirection: "row", alignItems: "center" }}
-            onPress={() => navigation.navigate("showDetails", { job: item, edit: false })}
+            style={{ flexDirection: 'row', alignItems: 'center' }}
+            onPress={() => navigation.navigate('showDetails', { job: item, edit: false })}
           >
             <Maximize2 size={14} color="#1572DB" />
-            <Text style={{ color: "#1572DB", marginLeft: 4, fontSize: 13, fontFamily: "Poppins-Bold" }}>
+            <Text
+              style={{
+                color: '#1572DB',
+                marginLeft: 4,
+                fontSize: 13,
+                fontFamily: 'Poppins-Bold',
+              }}
+            >
               Show details
             </Text>
           </Pressable>
 
-          <Pressable style={{ flexDirection: "row", alignItems: "center" }}>
+          <Pressable style={{ flexDirection: 'row', alignItems: 'center' }}>
             <XCircle size={14} color="#DC2626" />
-            <Text style={{ color: "#DC2626", marginLeft: 4, fontSize: 13, fontFamily: "Poppins-Bold" }}>
+            <Text
+              style={{
+                color: '#DC2626',
+                marginLeft: 4,
+                fontSize: 13,
+                fontFamily: 'Poppins-Bold',
+              }}
+            >
               Close Posting
             </Text>
           </Pressable>
@@ -142,39 +160,40 @@ export const HomeScreenEmployer = () => {
     </View>
   );
 
-
   return (
-    <SafeAreaView className="flex-1 bg-white" >
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <Header />
+
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingTop: insets.top, paddingBottom: insets.bottom + 100 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
-        <Header />
+        {/* Header inside scroll */}
 
-        {/* Top bar */}
-        <View className="flex-row justify-between px-1 mx-4 ">
-          <View>
-            <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
-              Your
-            </Text>
-            <Text style={{ fontFamily: "Poppins-Bold", fontSize: 24, color: "#37424F" }}>
-              Openings
-            </Text>
-          </View>
+
+        {/* Top Bar */}
+        <View style={{ paddingHorizontal: 16, marginBottom: 16 }}>
+          <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 28, color: '#37424F' }}>Your Openings</Text>
 
           {/* Search Bar */}
           <Pressable
-            className="flex-1 ml-4 rounded-xl justify-center p-2 h-12"
-            style={{ backgroundColor: "#EFEFEF" }}
+            style={{
+              marginTop: 12,
+              backgroundColor: '#EFEFEF',
+              borderRadius: 12,
+              height: 48,
+              justifyContent: 'center',
+              paddingHorizontal: 14,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
           >
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center">
-                <Search />
-                <Text className="font-lexend text-slate-600 text-base ml-1">Search Here</Text>
-              </View>
-              <SlidersHorizontal width={18} />
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Search />
+              <Text style={{ marginLeft: 8, fontFamily: 'Poppins-Regular', color: '#6B7280', fontSize: 14 }}>Search Here</Text>
             </View>
+            <SlidersHorizontal width={20} />
           </Pressable>
         </View>
 
@@ -186,16 +205,16 @@ export const HomeScreenEmployer = () => {
       <Pressable
         onPress={handlePost}
         style={{
-          backgroundColor: "#007AFF",
-          flexDirection: "row",
-          alignItems: "center",
+          backgroundColor: '#007AFF',
+          flexDirection: 'row',
+          alignItems: 'center',
           paddingVertical: 10,
           paddingHorizontal: 16,
           borderRadius: 30,
-          position: "absolute",
+          position: 'absolute',
           bottom: insets.bottom + 20,
           right: 20,
-          shadowColor: "#000",
+          shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.2,
           shadowRadius: 4,
@@ -204,8 +223,8 @@ export const HomeScreenEmployer = () => {
       >
         <Text
           style={{
-            color: "white",
-            fontFamily: "Poppins-SemiBold",
+            color: 'white',
+            fontFamily: 'Poppins-SemiBold',
             fontSize: 14,
             marginRight: 6,
           }}

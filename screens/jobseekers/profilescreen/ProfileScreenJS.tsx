@@ -20,11 +20,27 @@ import { getFileUrl, getUploadKeys } from 'api/employers/imagekit';
 import { Loading } from 'components/Loading';
 import * as DocumentPicker from 'expo-document-picker';
 import { updateProfile } from 'api/profile';
+import ConfirmationModal from 'components/ConfirmationModal';
 type NavigationType = NativeStackNavigationProp<RootStackParamList>;
 
 export const ProfileScreenJS = () => {
   const { userMDB, signOutUser, setLoading, loading, refreshAuth } = useAuth();
   const navigation = useNavigation<NavigationType>();
+
+  //for logout
+  const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+  const handleLogoutConfirm = async () => {
+    try {
+      await AsyncStorage.multiRemove(['userProfile', 'unsyncedActions']);
+      await signOutUser();
+      setLogoutModalVisible(false);
+      navigation.navigate('login');
+    } catch (err) {
+      alert('Failed to log out. Try again.');
+    }
+  };
+
+
 
   // 🔹 modal state
   const [resumeModalVisible, setResumeModalVisible] = useState(false);
@@ -144,6 +160,8 @@ export const ProfileScreenJS = () => {
             </Text>
           </View>
 
+
+
           {/* Industry */}
           <View className="flex-row items-center">
             <Text
@@ -180,7 +198,7 @@ export const ProfileScreenJS = () => {
                 textAlign: 'right',
               }}
             >
-              {userMDB?.email}
+              {userMDB?.location.display_name}
             </Text>
           </View>
 
@@ -205,6 +223,68 @@ export const ProfileScreenJS = () => {
               ))}
             </Text>
           </View>
+
+          {/* Profile Summary Section */}
+          <View style={{ marginTop: 24 }}>
+            <Text
+              style={{
+                fontFamily: 'Lexend-SemiBold',
+                fontSize: 18,
+                color: '#37424F',
+                marginBottom: 12,
+              }}
+            >
+              Profile Summary
+            </Text>
+
+            {userMDB?.profileSummary ? (
+              <View
+                style={{
+                  backgroundColor: '#F9FAFB',
+                  borderRadius: 16,
+                  padding: 16,
+                  shadowColor: '#000',
+                  shadowOpacity: 0.05,
+                  shadowRadius: 4,
+                  elevation: 2,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-Regular',
+                    fontSize: 14,
+                    lineHeight: 22,
+                    color: '#37424F',
+                  }}
+                >
+                  {userMDB.profileSummary}
+                </Text>
+              </View>
+            ) : (
+              <Pressable
+                style={{
+                  backgroundColor: '#F3F4F6',
+                  borderRadius: 16,
+                  padding: 16,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                android_ripple={{ color: 'rgba(0,0,0,0.05)' }}
+                onPress={() => navigation.navigate('editProfile')}
+              >
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-Italic',
+                    fontSize: 14,
+                    color: '#6B7280',
+                  }}
+                >
+                  No profile summary yet. Tap to add one.
+                </Text>
+              </Pressable>
+            )}
+          </View>
+
         </View>
 
         {/* Résumé Section */}
@@ -383,19 +463,8 @@ export const ProfileScreenJS = () => {
           <View className="space-y-2 justify-between">
             <Pressable
               className="flex-row items-center justify-between"
-              onPress={async () => {
-                try {
-                  await AsyncStorage.multiRemove([
-                    'userProfile',
-                    'unsyncedActions',
-                  ]);
-                  signOutUser();
-                  alert('Signed out successfully');
-                  navigation.navigate('login');
-                } catch (err) {
-                  alert(err);
-                }
-              }}
+              onPress={() => setLogoutModalVisible(true)}
+
             >
               <Text
                 style={{ fontFamily: 'Lexend-Bold', fontSize: 14, width: 100 }}
@@ -459,6 +528,16 @@ export const ProfileScreenJS = () => {
           </View>
         </View>
       </Modal>
+
+      <ConfirmationModal
+        visible={logoutModalVisible}
+        type="logout"
+        title="Logout"
+        message="Are you sure you want to log out of your account?"
+        onCancel={() => setLogoutModalVisible(false)}
+        onConfirm={handleLogoutConfirm}
+      />
+
 
       {loading ? (
         <View className="z-999 absolute top-0 bottom-0 left-0 right-0 bg-white/50">
