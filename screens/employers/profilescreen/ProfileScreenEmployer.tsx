@@ -16,23 +16,18 @@ export const ProfileScreenEmployer = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      <Header />
       {/* scroll if content gets long */}
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={{ flex: 1}} className='px-2'>
-
-          <Header/>
-
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={{ flex: 1 }} className="px-2">
           {/* Profile Title */}
           <View className="flex-row items-center justify-between">
             <Text
               style={{
                 fontFamily: 'Poppins-Bold',
                 color: '#37424F',
-              }} className='text-2xl'
-            >
+              }}
+              className="text-2xl">
               Your Profile
             </Text>
 
@@ -45,15 +40,15 @@ export const ProfileScreenEmployer = () => {
                 alignItems: 'center',
               }}
               android_ripple={{ color: 'rgba(0,0,0,0.1)' }}
-              onPress={() => { navigation.navigate('editProfile') }}
-            >
+              onPress={() => {
+                navigation.navigate('editProfile');
+              }}>
               <Text
                 style={{
                   fontFamily: 'Poppins-SemiBold',
                   fontSize: 12,
                   color: '#007AFF',
-                }}
-              >
+                }}>
                 Edit Profile
               </Text>
             </Pressable>
@@ -68,8 +63,7 @@ export const ProfileScreenEmployer = () => {
                   fontFamily: 'Lexend-Regular',
                   fontSize: 14,
                   width: 100,
-                }}
-              >
+                }}>
                 Profile
               </Text>
               <Text
@@ -79,9 +73,8 @@ export const ProfileScreenEmployer = () => {
                   color: '#747474',
                   flex: 1,
                   textAlign: 'right',
-                }}
-              >
-                {userMDB?.companyName}   {/* <-- use companyName for employers */}
+                }}>
+                {userMDB?.companyName} {/* <-- use companyName for employers */}
               </Text>
             </View>
 
@@ -92,8 +85,7 @@ export const ProfileScreenEmployer = () => {
                   fontFamily: 'Lexend-Regular',
                   fontSize: 14,
                   width: 100,
-                }}
-              >
+                }}>
                 Industry
               </Text>
               <Text
@@ -103,9 +95,8 @@ export const ProfileScreenEmployer = () => {
                   color: '#747474',
                   flex: 1,
                   textAlign: 'right',
-                }}
-              >
-                {userMDB?.industries?.join(', ')}   {/* multiple industries */}
+                }}>
+                {userMDB?.industries?.join(', ')} {/* multiple industries */}
               </Text>
             </View>
 
@@ -116,8 +107,7 @@ export const ProfileScreenEmployer = () => {
                   fontFamily: 'Lexend-Regular',
                   fontSize: 14,
                   width: 100,
-                }}
-              >
+                }}>
                 Location
               </Text>
               <Text
@@ -127,8 +117,7 @@ export const ProfileScreenEmployer = () => {
                   color: '#747474',
                   flex: 1,
                   textAlign: 'right',
-                }}
-              >
+                }}>
                 {userMDB?.location?.address}
               </Text>
             </View>
@@ -140,8 +129,7 @@ export const ProfileScreenEmployer = () => {
                   fontFamily: 'Lexend-Regular',
                   fontSize: 14,
                   width: 100,
-                }}
-              >
+                }}>
                 Email
               </Text>
               <Text
@@ -151,22 +139,21 @@ export const ProfileScreenEmployer = () => {
                   color: '#747474',
                   flex: 1,
                   textAlign: 'right',
-                }}
-              >
+                }}>
                 {userMDB?.email}
               </Text>
             </View>
           </View>
 
           {/* Miscellaneous Section */}
-          <View className='py-2'>
+          <View className="py-2">
             <Text
               style={{
                 fontFamily: 'Lexend-SemiBold',
                 fontSize: 18,
                 marginBottom: 12,
-              }} className='text-[#221E5C]'
-            >
+              }}
+              className="text-[#221E5C]">
               Miscellaneous
             </Text>
 
@@ -178,54 +165,51 @@ export const ProfileScreenEmployer = () => {
                     fontFamily: 'Lexend-Regular',
                     fontSize: 14,
                     width: 100,
-                  }}
-                >
+                  }}>
                   Settings
                 </Text>
-                <Settings width={20} color={"#747474"}></Settings>
+                <Settings width={20} color={'#747474'}></Settings>
               </View>
             </View>
             {/* Feedback */}
-            <View className="py-2 justify-between">
+            <View className="justify-between py-2">
               <View className="flex-row items-center justify-between">
                 <Text
                   style={{
                     fontFamily: 'Lexend-Regular',
                     fontSize: 14,
                     width: 200,
-                  }}
-                >
+                  }}>
                   Send us feedback
                 </Text>
-                <SendHorizonal width={20} color={"#1572DB"}></SendHorizonal>
+                <SendHorizonal width={20} color={'#1572DB'}></SendHorizonal>
               </View>
             </View>
             {/* Rating */}
-            <View className="py-2 justify-between">
+            <View className="justify-between py-2">
               <View className="flex-row items-center justify-between">
                 <Text
                   style={{
                     fontFamily: 'Lexend-Regular',
                     fontSize: 14,
                     width: 200,
-                  }}
-                >
+                  }}>
                   Give us a rating
                 </Text>
-                <Star width={20} color={"#FFC312"}></Star>
+                <Star width={20} color={'#FFC312'}></Star>
               </View>
             </View>
           </View>
 
           {/* Exit Section */}
-          <View className='py-2'>
+          <View className="py-2">
             <Text
               style={{
                 fontFamily: 'Lexend-SemiBold',
                 fontSize: 18,
                 marginBottom: 12,
-              }} className='text-[#221E5C]'
-            >
+              }}
+              className="text-[#221E5C]">
               Exit
             </Text>
 
@@ -236,25 +220,23 @@ export const ProfileScreenEmployer = () => {
                 onPress={async () => {
                   try {
                     await signOutUser();
-                    console.log("Successfully signed out");
+                    console.log('Successfully signed out');
                     alert('Signed out successfully');
                     navigation.navigate('login');
                   } catch (err) {
                     console.error('Sign out error:', err);
                     alert('Error signing out: ' + err);
                   }
-                }}
-              >
+                }}>
                 <Text
                   style={{
                     fontFamily: 'Lexend-Bold',
                     fontSize: 14,
                     width: 100,
-                  }}
-                >
+                  }}>
                   Logout
                 </Text>
-                <LogOut width={20} color={"red"}></LogOut>
+                <LogOut width={20} color={'red'}></LogOut>
               </Pressable>
             </View>
           </View>

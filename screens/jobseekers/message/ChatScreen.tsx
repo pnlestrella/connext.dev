@@ -146,7 +146,7 @@ export const ChatScreen = () => {
             )}
 
             <View style={{ marginLeft: 12, flex: 1 }}>
-              <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 16, color: '#37424F' }}>
+              <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 14, color: '#37424F' }}>
                 {displayName}
               </Text>
               <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 12, color: '#6B7280' }}>

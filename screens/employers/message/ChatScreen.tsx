@@ -133,7 +133,7 @@ export const ChatScreen = () => {
               <Text
                 style={{
                   fontFamily: 'Poppins-Bold',
-                  fontSize: 16,
+                  fontSize: 14,
                   color: '#37424F',
                 }}
               >
