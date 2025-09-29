@@ -281,7 +281,7 @@ export const ProfileScreenJS = () => {
             {userMDB?.resume && (
               <>
                 <Pressable
-                  className="flex-row items-center p-4 rounded-2xl bg-white shadow-sm"
+                  className="flex-row items-center p-4 rounded-2xl bg-gray-50 shadow-sm"
                   onPress={async () => {
                     try {
                       setLoading(true);
@@ -316,7 +316,7 @@ export const ProfileScreenJS = () => {
                 </Pressable>
 
                 <Pressable
-                  className="flex-row items-center p-4 rounded-2xl bg-white shadow-sm"
+                  className="flex-row items-center p-4 rounded-2xl bg-[#1572DB] shadow-sm"
                   onPress={() => setResumeModalVisible(true)}
                 >
                   <View className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center mr-3">
@@ -326,7 +326,7 @@ export const ProfileScreenJS = () => {
                     style={{
                       fontFamily: 'Lexend-SemiBold',
                       fontSize: 14,
-                      color: '#37424F',
+                      color: 'white',
                     }}
                   >
                     Upload New Resume
