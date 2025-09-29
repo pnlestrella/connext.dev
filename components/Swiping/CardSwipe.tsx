@@ -29,8 +29,6 @@ const ZipRecruiter =
 
 const sheetHeight = 400;
 
-// Sample job postings
-
 type Job = {
   boostWeight: number;
   companyName: string;
@@ -69,7 +67,7 @@ type CStypes = {
   setShowModal: (value: boolean) => void
   isExpanded: boolean,
   setIsExpanded: (value: boolean) => void
-  jobPostings: Job
+  jobPostings: Job[]
 }
 export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsExpanded }: CStypes) {
   // BottomSheet state
@@ -112,6 +110,18 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
   const opacity = cardPan.x.interpolate({
     inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
     outputRange: [0.7, 1, 0.7],
+    extrapolate: "clamp",
+  });
+
+  const shortlistOpacity = cardPan.x.interpolate({
+    inputRange: [0, SWIPE_THRESHOLD],
+    outputRange: [0, 1],
+    extrapolate: "clamp",
+  });
+
+  const skipOpacity = cardPan.x.interpolate({
+    inputRange: [-SWIPE_THRESHOLD, 0],
+    outputRange: [1, 0],
     extrapolate: "clamp",
   });
 
@@ -272,6 +282,20 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
             </View>
           </Card.Content>
         </Card>
+
+        {/* Shortlisted Text */}
+        <Animated.View style={{ position: 'absolute', top: 50, right: 50, transform: [{ rotate: '30deg' }] }}>
+          <Animated.Text style={{ fontFamily: 'Lexend-Bold' ,opacity: shortlistOpacity, fontSize: 24, color: 'green', }}>
+            Shortlisted!
+          </Animated.Text>
+        </Animated.View>
+
+        {/* Skipped Text */}
+        <Animated.View style={{ position: 'absolute', top: 50, left: 50, transform: [{ rotate: '-30deg' }] }}>
+          <Animated.Text style={{ fontFamily: 'Lexend-Bold', opacity: skipOpacity, fontSize: 24, color: 'red', }}>
+            Skipped!
+          </Animated.Text>
+        </Animated.View>
       </Animated.View>
 
       <BottomSheet
