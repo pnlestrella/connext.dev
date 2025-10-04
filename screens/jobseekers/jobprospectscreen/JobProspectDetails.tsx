@@ -17,6 +17,8 @@ export const JobProspectDetails = () => {
     const navigation = useNavigation();
     const { item } = route.params;
       const { shortlistedJobs, fetchShortlistedJobs } = useJobs();
+
+      console.log(item,'tiei')
     
 
     const job = item.jobDetails;

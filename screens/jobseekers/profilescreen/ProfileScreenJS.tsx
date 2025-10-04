@@ -21,13 +21,25 @@ import { Loading } from 'components/Loading';
 import * as DocumentPicker from 'expo-document-picker';
 import { updateProfile } from 'api/profile';
 import ConfirmationModal from 'components/ConfirmationModal';
+import AlertModal from 'components/AlertModal';
+
 type NavigationType = NativeStackNavigationProp<RootStackParamList>;
 
 export const ProfileScreenJS = () => {
   const { userMDB, signOutUser, setLoading, loading, refreshAuth } = useAuth();
   const navigation = useNavigation<NavigationType>();
 
-  //for logout
+  // Alerts (replaces all alert(...) calls)
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState<string>('Alert');
+  const [alertMessage, setAlertMessage] = useState<string>('');
+  const showAlert = (title: string, message: string) => {
+    setAlertTitle(title);
+    setAlertMessage(message);
+    setAlertVisible(true);
+  };
+
+  // Logout modal
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
   const handleLogoutConfirm = async () => {
     try {
@@ -36,16 +48,12 @@ export const ProfileScreenJS = () => {
       setLogoutModalVisible(false);
       navigation.navigate('login');
     } catch (err) {
-      alert('Failed to log out. Try again.');
+      showAlert('Logout failed', 'Failed to log out. Try again.'); // AlertModal
     }
   };
 
-
-
-  // 🔹 modal state
+  // Resume modal
   const [resumeModalVisible, setResumeModalVisible] = useState(false);
-
-  // 🔹 picked file state
   const [pickedResume, setPickedResume] = useState<any>(null);
 
   const pickResume = async () => {
@@ -62,38 +70,44 @@ export const ProfileScreenJS = () => {
       if (result.canceled) return;
 
       const file = result.assets[0];
-
-
       setPickedResume(file);
-      console.log('Picked file:', file);
+      // Optional: show file name in alert for confirmation
+      // showAlert('File picked', file.name || 'Selected file');
     } catch (err) {
-      console.log('❌ Error picking document', err);
-      alert('Could not pick a file');
+      showAlert('Document error', 'Could not pick a file.'); // AlertModal
     }
   };
 
-
   const handleSaveResume = async () => {
     if (!pickedResume) {
-      alert('Please pick a resume first!');
+      showAlert('Missing file', 'Please pick a resume first!'); // AlertModal
       return;
     }
     try {
-      const data = await getUploadKeys(pickedResume, "/resumes");
-      const updated = { resume: data.filePath }
+      const data = await getUploadKeys(pickedResume, '/resumes');
+      const updated = { resume: data.filePath };
 
-      const res = await updateProfile("jobseekers", userMDB.seekerUID, {
-        updates: updated
+      const res = await updateProfile('jobseekers', userMDB.seekerUID, {
+        updates: updated,
       });
-      console.log(res, 'ressy')
-      refreshAuth()
+      // console.log(res, 'ressy');
+      refreshAuth();
 
-      alert("Successfully uploaded Resume")
+      showAlert('Success', 'Successfully uploaded Resume'); // AlertModal
     } catch (err) {
-      console.log(err)
+      showAlert('Upload failed', 'There was a problem uploading the resume.'); // AlertModal
     }
     setResumeModalVisible(false);
-  }
+  };
+
+  // Profile Summary expand/collapse
+  const [summaryExpanded, setSummaryExpanded] = useState(false);
+  const toggleSummary = () => setSummaryExpanded((p) => !p);
+
+  // Helpers
+  const industriesList = Array.isArray(userMDB?.industries) ? userMDB?.industries : [];
+  const skillsList = Array.isArray(userMDB?.skills) ? userMDB?.skills : [];
+  const industriesText = industriesList.join(', ');
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -142,7 +156,7 @@ export const ProfileScreenJS = () => {
           {/* Name */}
           <View className="flex-row items-center">
             <Text
-              style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
+              style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100, color: '#37424F' }}
             >
               Profile
             </Text>
@@ -154,38 +168,66 @@ export const ProfileScreenJS = () => {
                 flex: 1,
                 textAlign: 'right',
               }}
+              numberOfLines={1}
             >
-              {userMDB?.fullName.firstName} {userMDB?.fullName.middleInitial}.{' '}
-              {userMDB?.fullName.lastName}
+              {userMDB?.fullName.firstName} {userMDB?.fullName.middleInitial}.
+              {' '}{userMDB?.fullName.lastName}
             </Text>
           </View>
 
-
-
-          {/* Industry */}
-          <View className="flex-row items-center">
+          {/* Industry as chips (wrap) */}
+          <View className="flex-row items-start">
             <Text
-              style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
+              style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100, color: '#37424F' }}
             >
               Industry
             </Text>
-            <Text
-              style={{
-                fontFamily: 'Lexend-Regular',
-                fontSize: 14,
-                color: '#747474',
-                flex: 1,
-                textAlign: 'right',
-              }}
-            >
-              {userMDB?.industries}
-            </Text>
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              {industriesList.length ? (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'flex-end',
+                    marginHorizontal: -4,
+                  }}
+                >
+                  {industriesList.map((ind: string, i: number) => (
+                    <View
+                      key={`${ind}-${i}`}
+                      style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 6,
+                        backgroundColor: '#EEF2FF',
+                        borderRadius: 999,
+                        marginHorizontal: 4,
+                        marginBottom: 8,
+                      }}
+                    >
+                      <Text style={{ color: '#3730A3', fontSize: 12 }}>{ind}</Text>
+                    </View>
+                  ))}
+                </View>
+              ) : (
+                <Text
+                  style={{
+                    fontFamily: 'Lexend-Regular',
+                    fontSize: 14,
+                    color: '#747474',
+                    textAlign: 'right',
+                  }}
+                  numberOfLines={1}
+                >
+                  —
+                </Text>
+              )}
+            </View>
           </View>
 
           {/* Location */}
           <View className="flex-row items-center">
             <Text
-              style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
+              style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100, color: '#37424F' }}
             >
               Location
             </Text>
@@ -197,31 +239,58 @@ export const ProfileScreenJS = () => {
                 flex: 1,
                 textAlign: 'right',
               }}
+              numberOfLines={1}
             >
-              {userMDB?.location.display_name}
+              {userMDB?.location?.display_name || '—'}
             </Text>
           </View>
 
-          {/* Skills */}
-          <View className="flex-row items-center">
+          {/* Skills as chips (wrap) */}
+          <View className="flex-row items-start">
             <Text
-              style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
+              style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100, color: '#37424F' }}
             >
               Skills
             </Text>
-            <Text
-              style={{
-                fontFamily: 'Lexend-Regular',
-                fontSize: 14,
-                color: '#747474',
-                flex: 1,
-                textAlign: 'right',
-              }}
-            >
-              {userMDB?.skills?.map((skill, i) => (
-                <Text key={i}>{skill}, </Text>
-              ))}
-            </Text>
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              {skillsList.length ? (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'flex-end',
+                    marginHorizontal: -4,
+                  }}
+                >
+                  {skillsList.map((skill: string, i: number) => (
+                    <View
+                      key={`${skill}-${i}`}
+                      style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 6,
+                        backgroundColor: '#ECFDF5',
+                        borderRadius: 999,
+                        marginHorizontal: 4,
+                        marginBottom: 8,
+                      }}
+                    >
+                      <Text style={{ color: '#065F46', fontSize: 12 }}>{skill}</Text>
+                    </View>
+                  ))}
+                </View>
+              ) : (
+                <Text
+                  style={{
+                    fontFamily: 'Lexend-Regular',
+                    fontSize: 14,
+                    color: '#747474',
+                    textAlign: 'right',
+                  }}
+                >
+                  —
+                </Text>
+              )}
+            </View>
           </View>
 
           {/* Profile Summary Section */}
@@ -256,9 +325,27 @@ export const ProfileScreenJS = () => {
                     lineHeight: 22,
                     color: '#37424F',
                   }}
+                  numberOfLines={summaryExpanded ? undefined : 5}
                 >
                   {userMDB.profileSummary}
                 </Text>
+
+                {/* View More / View Less */}
+                <Pressable
+                  onPress={toggleSummary}
+                  style={{ marginTop: 8, alignSelf: 'flex-start' }}
+                  android_ripple={{ color: 'rgba(0,0,0,0.06)' }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins-SemiBold',
+                      fontSize: 13,
+                      color: '#1572DB',
+                    }}
+                  >
+                    {summaryExpanded ? 'View Less' : 'View More'}
+                  </Text>
+                </Pressable>
               </View>
             ) : (
               <Pressable
@@ -284,7 +371,6 @@ export const ProfileScreenJS = () => {
               </Pressable>
             )}
           </View>
-
         </View>
 
         {/* Résumé Section */}
@@ -323,7 +409,7 @@ export const ProfileScreenJS = () => {
 
                 <Pressable
                   className="flex-row items-center p-4 rounded-2xl bg-[#1572DB] shadow-sm"
-                  onPress={() => alert('Create flow coming soon')}
+                  onPress={() => showAlert('Coming soon', 'Create flow coming soon')}
                 >
                   <View className="w-10 h-10 rounded-full bg-white/20 items-center justify-center mr-3">
                     <LucideImageUp color="white" />
@@ -352,14 +438,10 @@ export const ProfileScreenJS = () => {
                       const res = await getFileUrl(filePaths);
                       const resumeUrl = res.files[0].signedUrl;
 
-                      navigation.navigate(
-                        'resumeViewer' as never,
-                        { resumeUrl } as never
-                      );
+                      navigation.navigate('resumeViewer' as never, { resumeUrl } as never);
                       setLoading(false);
                     } catch (err) {
-                      console.log('❌ Error opening resume', err);
-                      alert('Could not open resume');
+                      showAlert('Open failed', 'Could not open resume'); // AlertModal
                       setLoading(false);
                     }
                   }}
@@ -415,9 +497,7 @@ export const ProfileScreenJS = () => {
 
           <View className="space-y-2 justify-between">
             <View className="flex-row items-center justify-between">
-              <Text
-                style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100 }}
-              >
+              <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100, color: '#37424F' }}>
                 Settings
               </Text>
               <Settings width={20} color={'#37424F'} />
@@ -426,9 +506,7 @@ export const ProfileScreenJS = () => {
 
           <View className="space-y-2 justify-between">
             <View className="flex-row items-center justify-between">
-              <Text
-                style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 200 }}
-              >
+              <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 200, color: '#37424F' }}>
                 Send us feedback
               </Text>
               <SendHorizonal width={20} color={'#37424F'} />
@@ -437,9 +515,7 @@ export const ProfileScreenJS = () => {
 
           <View className="space-y-2 justify-between">
             <View className="flex-row items-center justify-between">
-              <Text
-                style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 200 }}
-              >
+              <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 200, color: '#37424F' }}>
                 Give us Rating
               </Text>
               <Star width={20} color={'#37424F'} />
@@ -464,11 +540,8 @@ export const ProfileScreenJS = () => {
             <Pressable
               className="flex-row items-center justify-between"
               onPress={() => setLogoutModalVisible(true)}
-
             >
-              <Text
-                style={{ fontFamily: 'Lexend-Bold', fontSize: 14, width: 100 }}
-              >
+              <Text style={{ fontFamily: 'Lexend-Bold', fontSize: 14, width: 100, color: '#37424F' }}>
                 Logout
               </Text>
               <LogOut width={20} color={'#37424F'} />
@@ -477,7 +550,7 @@ export const ProfileScreenJS = () => {
         </View>
       </ScrollView>
 
-      {/* 🔹 Modal for Upload Resume */}
+      {/* Upload Resume Modal */}
       <Modal
         visible={resumeModalVisible}
         transparent
@@ -497,13 +570,8 @@ export const ProfileScreenJS = () => {
               Upload Resume
             </Text>
 
-            <Pressable
-              className="p-3 rounded-xl bg-gray-100 mb-4"
-              onPress={pickResume}
-            >
-              <Text
-                style={{ textAlign: 'center', fontFamily: 'Lexend-Regular' }}
-              >
+            <Pressable className="p-3 rounded-xl bg-gray-100 mb-4" onPress={pickResume}>
+              <Text style={{ textAlign: 'center', fontFamily: 'Lexend-Regular' }}>
                 {pickedResume ? pickedResume.name : 'Upload Here'}
               </Text>
             </Pressable>
@@ -518,10 +586,7 @@ export const ProfileScreenJS = () => {
               >
                 <Text>Cancel</Text>
               </Pressable>
-              <Pressable
-                className="px-4 py-2 rounded-xl bg-[#1572DB]"
-                onPress={() => handleSaveResume()}
-              >
+              <Pressable className="px-4 py-2 rounded-xl bg-[#1572DB]" onPress={() => handleSaveResume()}>
                 <Text style={{ color: 'white' }}>Save</Text>
               </Pressable>
             </View>
@@ -529,6 +594,7 @@ export const ProfileScreenJS = () => {
         </View>
       </Modal>
 
+      {/* Confirmation modal for logout */}
       <ConfirmationModal
         visible={logoutModalVisible}
         type="logout"
@@ -538,6 +604,13 @@ export const ProfileScreenJS = () => {
         onConfirm={handleLogoutConfirm}
       />
 
+      {/* Centralized Alert modal (replaces alert(...)) */}
+      <AlertModal
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
+      />
 
       {loading ? (
         <View className="z-999 absolute top-0 bottom-0 left-0 right-0 bg-white/50">

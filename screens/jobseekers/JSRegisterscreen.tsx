@@ -54,8 +54,7 @@ export const JSRegisterScreen = () => {
       return;
     }
 
-    // setShowOTP(true);
-    onVerify()
+    setShowOTP(true);
   }
 
   async function onVerify() {

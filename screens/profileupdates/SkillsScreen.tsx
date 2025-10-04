@@ -229,7 +229,7 @@ const BRAND_PURPLE = "#6D28D9";
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-  title: { fontSize: 26, fontWeight: "700", color: "#111827", marginBottom: 8 },
+  title: { fontSize: 26, fontWeight: "700", color: "#6C63FF", marginBottom: 8 },
   subtitle: {
     fontSize: 16,
     color: "#4B5563",
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "#F9FAFB",
-    borderRadius: 30,
+    borderRadius: 15,
     paddingHorizontal: 18,
     paddingVertical: 14,
     fontSize: 17,
@@ -281,6 +281,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     backgroundColor: "#fff",
+    padding:10,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: "#E5E7EB",

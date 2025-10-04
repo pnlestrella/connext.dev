@@ -84,8 +84,8 @@ export const BrowseScreen = () => {
       </View>
 
       {/* Swiping Cards */}
-      <View className="flex-1 px-4 pb-2">
         <CardSwipe
+          
           showModal={showModal}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
@@ -93,7 +93,6 @@ export const BrowseScreen = () => {
           jobPostings={jobPostings}
           setJobPostings={setJobPostings}
         />
-      </View>
 
       {/* Search & Filtering Components */}
       <Filtering

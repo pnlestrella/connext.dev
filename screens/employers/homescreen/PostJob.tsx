@@ -1,16 +1,16 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Alert,
   Pressable,
   Keyboard,
   ActivityIndicator,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
-import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ArrowLeft, Plus, Check } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -30,15 +30,24 @@ import { useEmployers } from "context/employers/EmployerHook";
 
 import Fuse from "fuse.js";
 import Skills from "../../../data/cleaned_skills.json";
+import AlertModal from "components/AlertModal";
 
 const fuse = new Fuse(Skills, { threshold: 0.3, includeScore: true });
 const BRAND_PURPLE = "#2563EB";
 const API_KEY = "pk.9d1a0a6102b95fdfcab79dc4a5255313"; // LocationIQ
+const PH = "#9CA3AF"; // explicit placeholder gray
+const DESC_LIMIT = 2000;
 
-// ✅ Highlight matched text
+// Escape regex special characters in user input
+function escapeRegex(input: string) {
+  return input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// Safe highlight matched text
 const Highlighted = ({ text, query }: { text: string; query: string }) => {
   if (!query) return <Text>{text}</Text>;
-  const regex = new RegExp(`(${query})`, "i");
+  const safe = escapeRegex(query);
+  const regex = new RegExp(`(${safe})`, "i");
   const parts = text.split(regex);
   return (
     <Text>
@@ -55,7 +64,6 @@ const Highlighted = ({ text, query }: { text: string; query: string }) => {
   );
 };
 
-// ✅ Section Divider
 const SectionDivider = () => (
   <View style={{ height: 1, backgroundColor: "#E5E7EB", marginVertical: 20 }} />
 );
@@ -71,9 +79,8 @@ const CheckboxItem = ({
 }) => (
   <TouchableOpacity onPress={onToggle} className="flex-row items-center mb-4 mr-5">
     <View
-      className={`w-8 h-8 mr-3 border-2 rounded-lg justify-center items-center ${
-        isSelected ? "bg-blue-600 border-blue-600" : "border-gray-400"
-      }`}
+      className={`w-8 h-8 mr-3 border-2 rounded-lg justify-center items-center ${isSelected ? "bg-blue-600 border-blue-600" : "border-gray-400"
+        }`}
     >
       {isSelected && <Check size={20} color="white" />}
     </View>
@@ -87,9 +94,18 @@ export const PostJob = () => {
   const { userMDB } = useAuth();
   const { setRefresh, refresh } = useEmployers();
   const navigation = useNavigation();
-  const richText = useRef<RichEditor>(null);
 
-  // form state
+  // AlertModal state
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Alert");
+  const [alertMessage, setAlertMessage] = useState("");
+  const openAlert = (title: string, message: string) => {
+    setAlertTitle(title);
+    setAlertMessage(message);
+    setAlertVisible(true);
+  };
+
+  // form state (unchanged)
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [industries, setIndustries] = useState<string[]>([]);
@@ -104,7 +120,7 @@ export const PostJob = () => {
   const profilePic = userMDB.profilePic;
   const companyName = userMDB.companyName;
 
-  // industries modal
+  // industries modal (unchanged)
   const [industryModalVisible, setIndustryModalVisible] = useState(false);
   const initialIndustriesForModal = useMemo(() => {
     return industries
@@ -112,7 +128,7 @@ export const PostJob = () => {
       .filter((i): i is { id: number; name: string } => Boolean(i));
   }, [industries]);
 
-  // ✅ location state
+  // location (unchanged logic)
   const [location, setLocation] = useState<any>(null);
   const [locationQuery, setLocationQuery] = useState("");
   const [locationResults, setLocationResults] = useState<any[]>([]);
@@ -135,12 +151,13 @@ export const PostJob = () => {
       setLocationResults(data);
     } catch (err) {
       console.error("Error fetching locations:", err);
+      openAlert("Location error", "Unable to fetch locations right now. Please try again.");
     } finally {
       setLocLoading(false);
     }
   }
 
-  // ✅ skills search
+  // skills search (unchanged logic)
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [loading, setLoading] = useState(false);
@@ -168,7 +185,7 @@ export const PostJob = () => {
   function addSkill(skill: string) {
     if (jobSkills.includes(skill)) return;
     if (jobSkills.length >= 10) {
-      alert("You can only select up to 10 skills");
+      openAlert("Limit reached", "You can only select up to 10 skills.");
       return;
     }
     setJobSkills((prev) => [...prev, skill]);
@@ -180,30 +197,24 @@ export const PostJob = () => {
     setJobSkills((prev) => prev.filter((s) => s !== skill));
   }
 
-  const toggleSelection = (
-    item: string,
-    list: string[],
-    setList: (val: string[]) => void
-  ) => {
+  const toggleSelection = (item: string, list: string[], setList: (val: string[]) => void) => {
     if (list.includes(item)) setList(list.filter((i) => i !== item));
     else setList([...list, item]);
   };
 
   const confirmDiscard = () => {
-    Alert.alert("Discard changes?", "Unsaved job details will be lost.", [
-      { text: "Stay", style: "cancel" },
-      { text: "Discard", style: "destructive", onPress: () => navigation.goBack() },
-    ]);
+    openAlert("Discard changes?", "Unsaved job details will be lost.");
+    // If you want 2-buttons, use a separate ConfirmationModal; AlertModal is single-action OK.
   };
 
   const handleSubmitJob = async () => {
-    if (!jobTitle.trim()) return alert("Job Title is required");
-    if (!jobDescription.trim()) return alert("Job Description is required");
-    if (industries.length === 0) return alert("Select at least one Industry");
-    if (!location) return alert("Please select a valid Location");
-    if (jobSkills.length === 0) return alert("Add at least one Skill");
-    if (employment.length === 0) return alert("Select at least one Employment type");
-    if (workTypes.length === 0) return alert("Select at least one Work type");
+    if (!jobTitle.trim()) return openAlert("Missing field", "Job Title is required.");
+    if (!jobDescription.trim()) return openAlert("Missing field", "Job Description is required.");
+    if (industries.length === 0) return openAlert("Missing field", "Select at least one Industry.");
+    if (!location) return openAlert("Missing field", "Please select a valid Location.");
+    if (jobSkills.length === 0) return openAlert("Missing field", "Add at least one Skill.");
+    if (employment.length === 0) return openAlert("Missing field", "Select at least one Employment type.");
+    if (workTypes.length === 0) return openAlert("Missing field", "Select at least one Work type.");
 
     const jobData = {
       employerUID: userMDB.employerUID,
@@ -214,7 +225,7 @@ export const PostJob = () => {
       jobSkills,
       employment,
       workTypes,
-      salary: {
+      salaryRange: {
         min: salaryMin ? Number(salaryMin) : null,
         max: salaryMax ? Number(salaryMax) : null,
         currency: currency || null,
@@ -232,18 +243,23 @@ export const PostJob = () => {
       profilePic,
     };
 
+
     try {
       const res = await postJob(jobData);
+
+      console.log('AAAAAAAAAAA', jobData)
+
+
       if (res.success) {
-        alert("✅ Job posted successfully!");
+        openAlert("Success", "Job posted successfully!");
         setRefresh(!refresh);
-        setTimeout(() => navigation.goBack(), 100);
+        setTimeout(() => (navigation as any).goBack(), 100);
       } else {
-        alert("❌ Failed: " + (res.error || "Unknown error"));
+        openAlert("Failed", res.error || "Unknown error");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error posting job:", err);
-      alert("❌ An error occurred.");
+      openAlert("Error", err?.message || "An error occurred.");
     }
   };
 
@@ -251,7 +267,7 @@ export const PostJob = () => {
     <SafeAreaView className="flex-1 bg-white">
       {/* Header */}
       <View className="flex-row items-center justify-between px-5 py-4 border-b border-gray-200">
-        <TouchableOpacity onPress={confirmDiscard}>
+        <TouchableOpacity onPress={() => (navigation as any).goBack()}>
           <ArrowLeft size={28} color="#37424F" />
         </TouchableOpacity>
         <Text style={{ fontFamily: "Poppins-Bold", fontSize: 22, color: "#37424F" }}>
@@ -260,275 +276,315 @@ export const PostJob = () => {
         <View style={{ width: 28 }} />
       </View>
 
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
-        {/* Job Title */}
-        <Text className="mb-2 text-gray-700">Job Title</Text>
-        <TextInput
-          value={jobTitle}
-          onChangeText={setJobTitle}
-          className="border border-gray-300 rounded-xl px-4 py-3 mb-5"
-        />
-
-        {/* Job Description */}
-        <Text className="mb-2 text-gray-700">Job Description</Text>
-        <View className="rounded-xl border border-gray-300 overflow-hidden mb-2 w-full">
-          <RichEditor
-            ref={richText}
-            style={{ minHeight: 180, width: "100%" }}
-            placeholder="Write a clear, detailed job description..."
-            initialContentHTML={jobDescription}
-            onChange={(text) => setJobDescription(text.slice(0, 2000))}
+      {/* Keyboard-aware scroller */}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 12}
+      >
+        <ScrollView
+          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}
+          keyboardShouldPersistTaps="handled"
+          bounces={false}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Job Title */}
+          <Text className="mb-2 text-gray-700">Job Title</Text>
+          <TextInput
+            value={jobTitle}
+            onChangeText={setJobTitle}
+            className="border border-gray-300 rounded-xl px-4 py-3 mb-5"
+            placeholder="e.g. Senior Frontend Engineer"
+            placeholderTextColor={PH}
           />
-        </View>
-        <RichToolbar
-          editor={richText}
-          actions={["bold", "italic", "underline", "unorderedList", "orderedList"]}
-        />
-        <Text className="text-gray-500 text-xs text-right mb-5">
-          {jobDescription.length} / 2000 characters
-        </Text>
 
-        <SectionDivider />
-
-        {/* Industries */}
-        <Text className="mb-2 text-gray-700">Job Industries</Text>
-        <View className="flex-row flex-wrap mb-3">
-          {industries.map((industry, idx) => (
-            <View key={idx} className="bg-indigo-100 px-3 py-2 rounded-lg mr-2 mb-2">
-              <Text className="text-indigo-600 font-medium">{industry}</Text>
-            </View>
-          ))}
-          <TouchableOpacity
-            onPress={() => setIndustryModalVisible(true)}
-            className="flex-row items-center border border-gray-300 px-3 py-2 rounded-lg"
-          >
-            <Plus size={16} color="#37424F" />
-            <Text className="ml-1 text-gray-700">Add new</Text>
-          </TouchableOpacity>
-        </View>
-
-        <SectionDivider />
-
-        {/* Location */}
-        <Text className="mb-2 text-gray-700">Location</Text>
-        <TextInput
-          value={locationQuery}
-          onChangeText={searchPlaces}
-          placeholder="Type a city..."
-          className="border border-gray-300 rounded-xl px-4 py-3 mb-3 bg-gray-50"
-        />
-        {locLoading && (
-          <View className="flex-row items-center p-3">
-            <ActivityIndicator size="small" color={BRAND_PURPLE} />
-            <Text className="ml-2 text-gray-500">Searching...</Text>
-          </View>
-        )}
-        {locationResults.length > 0 && (
-          <View className="border border-gray-200 rounded-lg mb-3 bg-white">
-            {locationResults.map((item, idx) => (
-              <TouchableOpacity
-                key={idx}
-                onPress={() => {
-                  setLocation({
-                    country: item.address?.country || null,
-                    country_code: item.address?.country_code || null,
-                    name:
-                      item.address?.city ||
-                      item.address?.town ||
-                      item.address?.village ||
-                      item.address?.state ||
-                      null,
-                    display_name: item.display_name,
-                    lat: item.lat,
-                    lon: item.lon,
-                    province: item.address?.state || null,
-                    city: item.address?.city || item.address?.town || null,
-                    postalCode: item.address?.postcode || null,
-                  });
-                  setLocationQuery(item.display_name);
-                  setLocationResults([]);
-                }}
-                className="px-3 py-2 border-b border-gray-100"
-              >
-                <Text className="text-gray-800">{item.display_name}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-        {location && (
-          <Text className="mb-5 text-gray-700">📍 {location.display_name}</Text>
-        )}
-
-        <SectionDivider />
-
-        {/* Skills */}
-        <Text className="mb-2 text-gray-700">Skills</Text>
-        <View className="flex-row flex-wrap mb-2">
-          {jobSkills.map((skill) => (
-            <View
-              key={skill}
-              style={{
-                flexDirection: "row",
-                backgroundColor: BRAND_PURPLE,
-                borderRadius: 20,
-                paddingHorizontal: 12,
-                paddingVertical: 6,
-                margin: 4,
-              }}
-            >
-              <Text style={{ color: "white", marginRight: 6 }}>{skill}</Text>
-              <Pressable onPress={() => removeSkill(skill)}>
-                <Text style={{ color: "white", fontWeight: "700" }}>×</Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-        <TextInput
-          value={search}
-          onChangeText={setSearch}
-          placeholder="Search a skill..."
-          className="border border-gray-300 rounded-xl px-4 py-3 mb-2"
-        />
-        {search.length > 0 && (
+          {/* Job Description */}
+          <Text className="mb-2 text-gray-700">Job Description</Text>
           <View
             style={{
-              backgroundColor: "#fff",
+              borderRadius: 14,
               borderWidth: 1,
               borderColor: "#E5E7EB",
-              borderRadius: 12,
-              marginBottom: 16,
+              backgroundColor: "#FFFFFF",
+              overflow: "hidden",
+              marginBottom: 6,
+              shadowColor: "#000",
+              shadowOpacity: 0.03,
+              shadowRadius: 6,
+              shadowOffset: { width: 0, height: 2 },
             }}
           >
-            {loading ? (
-              <View className="flex-row items-center p-3">
-                <ActivityIndicator size="small" color={BRAND_PURPLE} />
-                <Text className="ml-2 text-gray-500">Searching...</Text>
-              </View>
-            ) : filtered.length > 0 ? (
-              <ScrollView style={{ maxHeight: 200 }}>
-                {filtered.map((skill, idx) => (
-                  <Pressable
-                    key={skill}
-                    onPress={() => addSkill(skill)}
-                    android_ripple={{ color: "#EDE9FE" }}
-                    style={{
-                      paddingVertical: 12,
-                      paddingHorizontal: 16,
-                      borderBottomWidth: idx === filtered.length - 1 ? 0 : 1,
-                      borderBottomColor: "#F3F4F6",
-                    }}
-                  >
-                    <Text>
-                      <Highlighted text={skill} query={debouncedSearch} />
-                    </Text>
-                  </Pressable>
-                ))}
-              </ScrollView>
-            ) : (
-              <View className="p-3">
-                <Text className="text-gray-400 italic">No results found</Text>
-              </View>
-            )}
-          </View>
-        )}
-
-        <SectionDivider />
-
-        {/* Employment Type */}
-        <Text className="mb-2 text-gray-700">Employment Type</Text>
-        <View className="flex-row flex-wrap mb-5">
-          {EmploymentTypes.map((et) => (
-            <CheckboxItem
-              key={et.id}
-              label={et.type}
-              isSelected={employment.includes(et.type)}
-              onToggle={() => toggleSelection(et.type, employment, setEmployment)}
-            />
-          ))}
-        </View>
-
-        <SectionDivider />
-
-        {/* Work Type */}
-        <Text className="mb-2 text-gray-700">Work Type</Text>
-        <View className="flex-row flex-wrap mb-5">
-          {WorkTypes.map((wt) => (
-            <CheckboxItem
-              key={wt.id}
-              label={wt.type}
-              isSelected={workTypes.includes(wt.type)}
-              onToggle={() => toggleSelection(wt.type, workTypes, setWorkTypes)}
-            />
-          ))}
-        </View>
-
-        <SectionDivider />
-
-        {/* Salary */}
-        <Text className="mb-2 text-gray-700">Salary (Optional)</Text>
-        <View className="flex-row mb-5">
-          <View className="flex-1 mr-3">
-            <Text className="mb-2 text-gray-700">Min</Text>
             <TextInput
-              value={salaryMin}
-              onChangeText={setSalaryMin}
-              keyboardType="numeric"
-              className="border border-gray-300 rounded-xl px-4 py-3"
-              placeholder="e.g. 15000"
+              value={jobDescription}
+              onChangeText={(val) => {
+                if (val.length <= DESC_LIMIT) setJobDescription(val);
+              }}
+              placeholder="e.g. Outline responsibilities, required skills, years of experience, work hours, and benefits."
+              placeholderTextColor={PH}
+              multiline
+              textAlignVertical="top"
+              style={{
+                minHeight: 200,
+                paddingHorizontal: 12,
+                paddingVertical: 12,
+                fontFamily: "Poppins-Regular",
+                color: "#111827",
+              }}
             />
           </View>
-          <View className="flex-1 ml-3">
-            <Text className="mb-2 text-gray-700">Max</Text>
-            <TextInput
-              value={salaryMax}
-              onChangeText={setSalaryMax}
-              keyboardType="numeric"
-              className="border border-gray-300 rounded-xl px-4 py-3"
-              placeholder="e.g. 25000"
-            />
+          <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
+            <Text style={{ color: "#6B7280", fontSize: 12 }}>
+              Tip: Use short paragraphs and bullet-like lines for readability.
+            </Text>
+            <Text style={{ color: jobDescription.length > DESC_LIMIT - 50 ? "#DC2626" : "#6B7280", fontSize: 12 }}>
+              {jobDescription.length} / {DESC_LIMIT}
+            </Text>
           </View>
-        </View>
 
-        {/* Currency & Frequency */}
-        <View className="flex-row mb-5">
-          <View className="flex-1 mr-3">
-            <AutocompleteInput
-              label="Currency"
-              value={currency}
-              setValue={setCurrency}
-              data={CurrencyOptions}
-              displayKey="currency"
-            />
-          </View>
-          <View className="flex-1 ml-3">
-            <AutocompleteInput
-              label="Frequency"
-              value={frequency}
-              setValue={setFrequency}
-              data={FrequencyOptions}
-              displayKey="frequency"
-            />
-          </View>
-        </View>
+          <SectionDivider />
 
-        <SectionDivider />
+          {/* Industries */}
+          <Text className="mb-2 text-gray-700">Job Industries</Text>
+          <View className="flex-row flex-wrap mb-3">
+            {industries.map((industry, idx) => (
+              <View key={idx} className="bg-indigo-100 px-3 py-2 rounded-lg mr-2 mb-2">
+                <Text className="text-indigo-600 font-medium">{industry}</Text>
+              </View>
+            ))}
+            <TouchableOpacity
+              onPress={() => setIndustryModalVisible(true)}
+              className="flex-row items-center border border-gray-300 px-3 py-2 rounded-lg"
+            >
+              <Plus size={16} color="#37424F" />
+              <Text className="ml-1 text-gray-700">Add new</Text>
+            </TouchableOpacity>
+          </View>
 
-        {/* Submit */}
-        <View className="flex-row justify-between px-5 mb-12">
-          <TouchableOpacity
-            onPress={confirmDiscard}
-            className="flex-1 bg-gray-200 rounded-xl px-6 py-4 mr-3"
-          >
-            <Text className="text-center font-semibold text-gray-700">Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleSubmitJob}
-            className="flex-1 bg-blue-600 rounded-xl px-6 py-4 ml-3"
-          >
-            <Text className="text-center font-semibold text-white">Post Job</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+          <SectionDivider />
+
+          {/* Location */}
+          <Text className="mb-2 text-gray-700">Location</Text>
+          <TextInput
+            value={locationQuery}
+            onChangeText={searchPlaces}
+            placeholder="e.g. Manila, Metro Manila"
+            placeholderTextColor={PH}
+            className="border border-gray-300 rounded-xl px-4 py-3 mb-3 bg-gray-50"
+          />
+          {locLoading && (
+            <View className="flex-row items-center p-3">
+              <ActivityIndicator size="small" color={BRAND_PURPLE} />
+              <Text className="ml-2 text-gray-500">Searching...</Text>
+            </View>
+          )}
+          {locationResults.length > 0 && (
+            <View className="border border-gray-200 rounded-lg mb-3 bg-white">
+              {locationResults.map((item, idx) => (
+                <TouchableOpacity
+                  key={idx}
+                  onPress={() => {
+                    setLocation({
+                      country: item.address?.country || null,
+                      country_code: item.address?.country_code || null,
+                      name:
+                        item.address?.city ||
+                        item.address?.town ||
+                        item.address?.village ||
+                        item.address?.state ||
+                        null,
+                      display_name: item.display_name,
+                      lat: item.lat,
+                      lon: item.lon,
+                      province: item.address?.state || null,
+                      city: item.address?.city || item.address?.town || null,
+                      postalCode: item.address?.postcode || null,
+                    });
+                    setLocationQuery(item.display_name);
+                    setLocationResults([]);
+                  }}
+                  className="px-3 py-2 border-b border-gray-100"
+                >
+                  <Text className="text-gray-800">{item.display_name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+          {location && <Text className="mb-5 text-gray-700">📍 {location.display_name}</Text>}
+
+          <SectionDivider />
+
+          {/* Skills */}
+          <Text className="mb-2 text-gray-700">Skills</Text>
+          <View className="flex-row flex-wrap mb-2">
+            {jobSkills.map((skill) => (
+              <View
+                key={skill}
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: BRAND_PURPLE,
+                  borderRadius: 20,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  margin: 4,
+                }}
+              >
+                <Text style={{ color: "white", marginRight: 6 }}>{skill}</Text>
+                <Pressable onPress={() => removeSkill(skill)}>
+                  <Text style={{ color: "white", fontWeight: "700" }}>×</Text>
+                </Pressable>
+              </View>
+            ))}
+          </View>
+          <TextInput
+            value={search}
+            onChangeText={setSearch}
+            placeholder="e.g. React, TypeScript"
+            placeholderTextColor={PH}
+            className="border border-gray-300 rounded-xl px-4 py-3 mb-2"
+          />
+          {search.length > 0 && (
+            <View
+              style={{
+                backgroundColor: "#fff",
+                borderWidth: 1,
+                borderColor: "#E5E7EB",
+                borderRadius: 12,
+                marginBottom: 16,
+              }}
+            >
+              {loading ? (
+                <View className="flex-row items-center p-3">
+                  <ActivityIndicator size="small" color={BRAND_PURPLE} />
+                  <Text className="ml-2 text-gray-500">Searching...</Text>
+                </View>
+              ) : filtered.length > 0 ? (
+                <ScrollView style={{ maxHeight: 200 }} keyboardShouldPersistTaps="handled">
+                  {filtered.map((skill, idx) => (
+                    <Pressable
+                      key={skill}
+                      onPress={() => addSkill(skill)}
+                      android_ripple={{ color: "#EDE9FE" }}
+                      style={{
+                        paddingVertical: 12,
+                        paddingHorizontal: 16,
+                        borderBottomWidth: idx === filtered.length - 1 ? 0 : 1,
+                        borderBottomColor: "#F3F4F6",
+                      }}
+                    >
+                      <Text>
+                        <Highlighted text={skill} query={debouncedSearch} />
+                      </Text>
+                    </Pressable>
+                  ))}
+                </ScrollView>
+              ) : (
+                <View className="p-3">
+                  <Text className="text-gray-400 italic">No results found</Text>
+                </View>
+              )}
+            </View>
+          )}
+
+          <SectionDivider />
+
+          {/* Employment Type */}
+          <Text className="mb-2 text-gray-700">Employment Type</Text>
+          <View className="flex-row flex-wrap mb-5">
+            {EmploymentTypes.map((et) => (
+              <CheckboxItem
+                key={et.id}
+                label={et.type}
+                isSelected={employment.includes(et.type)}
+                onToggle={() => toggleSelection(et.type, employment, setEmployment)}
+              />
+            ))}
+          </View>
+
+          <SectionDivider />
+
+          {/* Work Type */}
+          <Text className="mb-2 text-gray-700">Work Type</Text>
+          <View className="flex-row flex-wrap mb-5">
+            {WorkTypes.map((wt) => (
+              <CheckboxItem
+                key={wt.id}
+                label={wt.type}
+                isSelected={workTypes.includes(wt.type)}
+                onToggle={() => toggleSelection(wt.type, workTypes, setWorkTypes)}
+              />
+            ))}
+          </View>
+
+          <SectionDivider />
+
+          {/* Salary */}
+          <Text className="mb-2 text-gray-700">Salary (Optional)</Text>
+          <View className="flex-row mb-5">
+            <View className="flex-1 mr-3">
+              <Text className="mb-2 text-gray-700">Min</Text>
+              <TextInput
+                value={salaryMin}
+                onChangeText={setSalaryMin}
+                keyboardType="numeric"
+                className="border border-gray-300 rounded-xl px-4 py-3"
+                placeholder="e.g. 15000"
+                placeholderTextColor={PH}
+              />
+            </View>
+            <View className="flex-1 ml-3">
+              <Text className="mb-2 text-gray-700">Max</Text>
+              <TextInput
+                value={salaryMax}
+                onChangeText={setSalaryMax}
+                keyboardType="numeric"
+                className="border border-gray-300 rounded-xl px-4 py-3"
+                placeholder="e.g. 25000"
+                placeholderTextColor={PH}
+              />
+            </View>
+          </View>
+
+          {/* Currency & Frequency */}
+          <View className="flex-row mb-5">
+            <View className="flex-1 mr-3">
+              <AutocompleteInput
+                label="Currency"
+                value={currency}
+                setValue={setCurrency}
+                data={CurrencyOptions}
+                displayKey="currency"
+              />
+            </View>
+            <View className="flex-1 ml-3">
+              <AutocompleteInput
+                label="Frequency"
+                value={frequency}
+                setValue={setFrequency}
+                data={FrequencyOptions}
+                displayKey="frequency"
+              />
+            </View>
+          </View>
+
+          <SectionDivider />
+
+          {/* Submit */}
+          <View className="flex-row justify-between px-5 mb-12">
+            <TouchableOpacity
+              onPress={confirmDiscard}
+              className="flex-1 bg-gray-200 rounded-xl px-6 py-4 mr-3"
+            >
+              <Text className="text-center font-semibold text-gray-700">Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSubmitJob}
+              className="flex-1 bg-blue-600 rounded-xl px-6 py-4 ml-3"
+            >
+              <Text className="text-center font-semibold text-white">Post Job</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       {/* Modals */}
       <IndustryModal
@@ -537,6 +593,14 @@ export const PostJob = () => {
         onSave={(selected) => setIndustries(selected.map((i) => i.name))}
         initialSelected={initialIndustriesForModal}
         maxSelection={1}
+      />
+
+      {/* Alert Modal */}
+      <AlertModal
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
       />
     </SafeAreaView>
   );

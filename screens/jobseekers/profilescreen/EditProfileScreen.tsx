@@ -10,6 +10,8 @@ import {
   Pressable,
   Keyboard,
   ActivityIndicator,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import { ArrowLeft, Plus } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -22,14 +24,21 @@ import Skills from "../../../data/cleaned_skills.json";
 import Fuse from "fuse.js";
 
 const BRAND_PURPLE = "#2563EB";
+const SUMMARY_LIMIT = 750;
 
-// fuzzy search for skills
+// Fuzzy search for skills
 const fuse = new Fuse(Skills, { threshold: 0.3, includeScore: true });
 
-// highlight matching part
+// Escape user text before building a RegExp
+function escapeRegex(input: string) {
+  return input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// Highlight matching part
 const Highlighted = ({ text, query }: { text: string; query: string }) => {
   if (!query) return <Text>{text}</Text>;
-  const regex = new RegExp(`(${query})`, "i");
+  const safe = escapeRegex(query);
+  const regex = new RegExp(`(${safe})`, "i");
   const parts = text.split(regex);
   return (
     <Text>
@@ -65,9 +74,9 @@ export const EditProfileScreen = () => {
   const [firstName, setFirstName] = useState(original.firstName);
   const [middleInitial, setMiddleInitial] = useState(original.middleInitial);
   const [lastName, setLastName] = useState(original.lastName);
-  const [industries, setIndustries] = useState(original.industries);
+  const [industries, setIndustries] = useState(original.industries as string[]);
   const [location, setLocation] = useState<any>(original.location);
-  const [skills, setSkills] = useState(original.skills);
+  const [skills, setSkills] = useState<string[]>(original.skills);
   const [profileSummary, setProfileSummary] = useState(original.profileSummary);
 
   // modals
@@ -99,7 +108,7 @@ export const EditProfileScreen = () => {
 
   const filteredSkills = useMemo(() => {
     if (!debouncedSearch) return [];
-    let results = fuse.search(debouncedSearch).map((r) => r.item);
+    let results = fuse.search(debouncedSearch).map((r) => r.item as string);
     results = results.filter((s) => !skills.includes(s));
     return results.slice(0, 8);
   }, [debouncedSearch, skills]);
@@ -107,7 +116,7 @@ export const EditProfileScreen = () => {
   function addSkill(skill: string) {
     if (skills.includes(skill)) return;
     if (skills.length >= 10) {
-      alert("You can only select up to 10 skills");
+      Alert.alert("Limit reached", "You can only select up to 10 skills");
       return;
     }
     setSkills((prev) => [...prev, skill]);
@@ -139,7 +148,7 @@ export const EditProfileScreen = () => {
         )}&limit=5&countrycodes=PH&format=json`
       );
       const data = await res.json();
-      setLocResults(data || []);
+      setLocResults(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Error fetching locations:", err);
     } finally {
@@ -149,10 +158,10 @@ export const EditProfileScreen = () => {
 
   // ===== Save / Cancel =====
   const handleSave = async () => {
-    if (firstName.length < 2) return alert("First Name must be at least 2 chars");
-    if (lastName.length < 2) return alert("Last Name must be at least 2 chars");
-    if (skills.length === 0) return alert("Please add at least one skill");
-    if (!location?.display_name) return alert("Please set your location");
+    if (firstName.length < 2) return Alert.alert("Invalid", "First Name must be at least 2 chars");
+    if (lastName.length < 2) return Alert.alert("Invalid", "Last Name must be at least 2 chars");
+    if (skills.length === 0) return Alert.alert("Missing", "Please add at least one skill");
+    if (!location?.display_name) return Alert.alert("Missing", "Please set your location");
 
     const updated = {
       fullName: { firstName, middleInitial, lastName },
@@ -163,16 +172,12 @@ export const EditProfileScreen = () => {
     };
 
     try {
-      const res = await updateProfile(
-        userMDB.role + "s",
-        userMDB.seekerUID,
-        { updates: updated }
-      );
+      await updateProfile(userMDB.role + "s", userMDB.seekerUID, { updates: updated });
       refreshAuth();
       navigation.goBack();
       Alert.alert("Success", "Profile updated successfully!");
     } catch (err) {
-      alert("Try again later");
+      Alert.alert("Error", "Try again later");
       console.warn(err, "Error editing profile");
     }
   };
@@ -190,213 +195,257 @@ export const EditProfileScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      {/* Header */}
-      <View className="flex-row items-center px-5 py-4 border-b border-gray-200 items-center">
-        <TouchableOpacity onPress={handleCancel} className="mr-3">
-          <ArrowLeft size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={{ fontFamily: "Poppins-Bold", fontSize: 20, color: "#37424F" }}>
-          Edit Profile
-        </Text>
-      </View>
-
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        {/* Names */}
-        <View className="flex-row justify-between mb-4">
-          <View className="flex-1 mr-2">
-            <Text className="mb-1 text-gray-700">First Name</Text>
-            <TextInput
-              value={firstName}
-              onChangeText={setFirstName}
-              className="border border-gray-300 rounded-lg px-3 py-2"
-            />
-          </View>
-          <View className="flex-1 ml-2">
-            <Text className="mb-1 text-gray-700">Last Name</Text>
-            <TextInput
-              value={lastName}
-              onChangeText={setLastName}
-              className="border border-gray-300 rounded-lg px-3 py-2"
-            />
-          </View>
-        </View>
-
-        {/* Middle Initial */}
-        <Text className="mb-1 text-gray-700">Middle Initial (if applicable)</Text>
-        <TextInput
-          value={middleInitial}
-          onChangeText={(val) => setMiddleInitial(val.toUpperCase())}
-          maxLength={5}
-          className="border border-gray-300 rounded-lg px-3 py-2 mb-4 w-24"
-        />
-
-        {/* Profile Summary */}
-        <Text className="mb-1 text-gray-700">Profile Summary</Text>
-        <TextInput
-          value={profileSummary}
-          onChangeText={(val) => {
-            if (val.length <= 500) setProfileSummary(val);
-          }}
-          className="border border-gray-300 rounded-lg px-3 py-2 mb-1"
-          multiline
-          numberOfLines={4}
-          placeholder="Write a short summary..."
-          textAlignVertical="top"
-        />
-        <Text className="text-right text-gray-500 mb-4">{profileSummary.length} / 500</Text>
-
-        {/* Industries */}
-        <Text className="mb-2 text-gray-700">Industries</Text>
-        <View className="flex-row flex-wrap mb-4">
-          {industries.map((industry, index) => (
-            <View key={index} className="bg-indigo-100 px-3 py-2 rounded-lg mr-2 mb-2">
-              <Text className="text-indigo-600 font-medium">{industry}</Text>
-            </View>
-          ))}
-          <TouchableOpacity
-            onPress={() => setIndustryModalVisible(true)}
-            className="flex-row items-center border border-gray-300 px-3 py-2 rounded-lg"
-          >
-            <Plus size={16} color="#37424F" />
-            <Text className="ml-1 text-gray-700">Add new</Text>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 12}
+      >
+        {/* Header */}
+        <View className="flex-row items-center px-5 py-4 border-b border-gray-200 items-center">
+          <TouchableOpacity onPress={handleCancel} className="mr-3">
+            <ArrowLeft size={24} color="black" />
           </TouchableOpacity>
+          <Text style={{ fontFamily: "Poppins-Bold", fontSize: 20, color: "#37424F" }}>
+            Edit Profile
+          </Text>
         </View>
 
-        {/* Skills */}
-        <Text className="mb-2 text-gray-700">Skills</Text>
-        <View className="flex-row flex-wrap mb-2">
-          {skills.map((skill) => (
-            <View
-              key={skill}
-              style={{
-                flexDirection: "row",
-                backgroundColor: BRAND_PURPLE,
-                borderRadius: 20,
-                paddingHorizontal: 12,
-                paddingVertical: 6,
-                margin: 4,
-              }}
-            >
-              <Text style={{ color: "white", marginRight: 6 }}>{skill}</Text>
-              <Pressable onPress={() => removeSkill(skill)}>
-                <Text style={{ color: "white", fontWeight: "700" }}>×</Text>
-              </Pressable>
+        <ScrollView
+          contentContainerStyle={{ padding: 20, paddingBottom: 40 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Names */}
+          <View className="flex-row justify-between mb-4">
+            <View className="flex-1 mr-2">
+              <Text className="mb-1 text-gray-700">First Name</Text>
+              <TextInput
+                value={firstName}
+                onChangeText={setFirstName}
+                className="border border-gray-300 rounded-lg px-3 py-2"
+                returnKeyType="next"
+                blurOnSubmit
+              />
             </View>
-          ))}
-        </View>
-        <TextInput
-          value={search}
-          onChangeText={setSearch}
-          placeholder="Search a skill..."
-          className="border border-gray-300 rounded-lg px-3 py-2 mb-2"
-        />
-        {search.length > 0 && (
-          <View className="bg-white border border-gray-200 rounded-lg mb-3">
-            {loading ? (
-              <View className="flex-row items-center p-3">
-                <ActivityIndicator size="small" color={BRAND_PURPLE} />
-                <Text className="ml-2 text-gray-500">Searching...</Text>
-              </View>
-            ) : filteredSkills.length > 0 ? (
-              <ScrollView style={{ maxHeight: 200 }}>
-                {filteredSkills.map((skill) => (
-                  <Pressable
-                    key={skill}
-                    onPress={() => addSkill(skill)}
-                    className="px-3 py-2 border-b border-gray-100"
-                  >
-                    <Text>
-                      <Highlighted text={skill} query={debouncedSearch} />
-                    </Text>
-                  </Pressable>
-                ))}
-              </ScrollView>
-            ) : (
-              <View className="p-3">
-                <Text className="text-gray-400 italic">No results found</Text>
-              </View>
-            )}
+            <View className="flex-1 ml-2">
+              <Text className="mb-1 text-gray-700">Last Name</Text>
+              <TextInput
+                value={lastName}
+                onChangeText={setLastName}
+                className="border border-gray-300 rounded-lg px-3 py-2"
+                returnKeyType="next"
+                blurOnSubmit
+              />
+            </View>
           </View>
-        )}
 
-        {/* Location */}
-        <Text className="mb-1 text-gray-700">Location</Text>
-        <TextInput
-          value={locQuery}
-          onChangeText={searchPlaces}
-          placeholder="Search for a city..."
-          className="border border-gray-300 rounded-lg px-3 py-2 mb-2"
-        />
-        {locLoading ? (
-          <View className="flex-row items-center p-3">
-            <ActivityIndicator size="small" color={BRAND_PURPLE} />
-            <Text className="ml-2 text-gray-500">Searching...</Text>
-          </View>
-        ) : locResults.length > 0 ? (
-          <View className="border border-gray-200 rounded-lg bg-white mb-3">
-            {locResults.map((item, idx) => (
-              <Pressable
-                key={idx}
-                onPress={() => {
-                  setLocation({
-                    country: item.address?.country || null,
-                    country_code: item.address?.country_code || null,
-                    display_name: item.display_name,
-                    lat: item.lat,
-                    lon: item.lon,
-                    province: item.address?.state || null,
-                    city: item.address?.city || item.address?.town || null,
-                    postalCode: item.address?.postcode || null,
-                  });
-                  setLocQuery(item.display_name);
-                  setLocResults([]);
+          {/* Middle Initial */}
+          <Text className="mb-1 text-gray-700">Middle Initial (if applicable)</Text>
+          <TextInput
+            value={middleInitial}
+            onChangeText={(val) => setMiddleInitial(val.toUpperCase())}
+            maxLength={5}
+            className="border border-gray-300 rounded-lg px-3 py-2 mb-4 w-24"
+          />
+
+          {/* Profile Summary */}
+          <Text className="mb-1 text-gray-700">Profile Summary</Text>
+          <View
+            style={{
+              backgroundColor: "#F9FAFB",
+              borderRadius: 16,
+              padding: 12,
+              borderWidth: 1,
+              borderColor: "#E5E7EB",
+            }}
+          >
+            <TextInput
+              value={profileSummary}
+              onChangeText={(val) => {
+                if (val.length <= SUMMARY_LIMIT) setProfileSummary(val);
+              }}
+              style={{
+                minHeight: 110,
+                borderRadius: 12,
+                paddingHorizontal: 10,
+                paddingVertical: 10,
+                backgroundColor: "white",
+                borderWidth: 1,
+                borderColor: "#E5E7EB",
+                fontFamily: "Poppins-Regular",
+                color: "#37424F",
+              }}
+              multiline
+              textAlignVertical="top"
+              placeholder="Write a concise summary showcasing experience, strengths, and goals..."
+              returnKeyType="default"
+            />
+
+            {/* Counter */}
+            <View style={{ flexDirection: "row", justifyContent: "flex-end", marginTop: 8 }}>
+              <Text
+                style={{
+                  color: profileSummary.length > SUMMARY_LIMIT - 50 ? "#DC2626" : "#6B7280",
+                  fontSize: 12,
                 }}
-                className="px-3 py-2 border-b border-gray-100"
               >
-                <Text className="text-gray-800">{item.display_name}</Text>
-              </Pressable>
+                {profileSummary.length} / {SUMMARY_LIMIT}
+              </Text>
+            </View>
+          </View>
+
+          {/* Industries */}
+          <Text className="mb-2 text-gray-700 mt-4">Industries</Text>
+          <View className="flex-row flex-wrap mb-4">
+            {industries.map((industry, index) => (
+              <View key={index} className="bg-indigo-100 px-3 py-2 rounded-lg mr-2 mb-2">
+                <Text className="text-indigo-600 font-medium">{industry}</Text>
+              </View>
+            ))}
+            <TouchableOpacity
+              onPress={() => setIndustryModalVisible(true)}
+              className="flex-row items-center border border-gray-300 px-3 py-2 rounded-lg"
+            >
+              <Plus size={16} color="#37424F" />
+              <Text className="ml-1 text-gray-700">Add new</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Skills */}
+          <Text className="mb-2 text-gray-700">Skills</Text>
+          <View className="flex-row flex-wrap mb-2">
+            {skills.map((skill) => (
+              <View
+                key={skill}
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: BRAND_PURPLE,
+                  borderRadius: 20,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  margin: 4,
+                }}
+              >
+                <Text style={{ color: "white", marginRight: 6 }}>{skill}</Text>
+                <Pressable onPress={() => removeSkill(skill)}>
+                  <Text style={{ color: "white", fontWeight: "700" }}>×</Text>
+                </Pressable>
+              </View>
             ))}
           </View>
-        ) : null}
-        {location?.display_name && (
-          <Text className="text-gray-700 mb-4">📍 {location.display_name}</Text>
-        )}
+          <TextInput
+            value={search}
+            onChangeText={setSearch}
+            placeholder="Search a skill..."
+            className="border border-gray-300 rounded-lg px-3 py-2 mb-2"
+            returnKeyType="search"
+          />
+          {search.length > 0 && (
+            <View className="bg-white border border-gray-200 rounded-lg mb-3">
+              {loading ? (
+                <View className="flex-row items-center p-3">
+                  <ActivityIndicator size="small" color={BRAND_PURPLE} />
+                  <Text className="ml-2 text-gray-500">Searching...</Text>
+                </View>
+              ) : filteredSkills.length > 0 ? (
+                <ScrollView style={{ maxHeight: 200 }} keyboardShouldPersistTaps="handled">
+                  {filteredSkills.map((skill) => (
+                    <Pressable
+                      key={skill}
+                      onPress={() => addSkill(skill)}
+                      className="px-3 py-2 border-b border-gray-100"
+                    >
+                      <Text>
+                        <Highlighted text={skill} query={debouncedSearch} />
+                      </Text>
+                    </Pressable>
+                  ))}
+                </ScrollView>
+              ) : (
+                <View className="p-3">
+                  <Text className="text-gray-400 italic">No results found</Text>
+                </View>
+              )}
+            </View>
+          )}
 
-        {/* Email */}
-        <Text className="mb-1 text-gray-700">Email</Text>
-        <View className="border border-gray-300 rounded-lg px-3 py-2 mb-8 bg-gray-100">
-          <Text className="text-gray-700">{userMDB?.email}</Text>
-        </View>
+          {/* Location */}
+          <Text className="mb-1 text-gray-700">Location</Text>
+          <TextInput
+            value={locQuery}
+            onChangeText={searchPlaces}
+            placeholder="Search for a city..."
+            className="border border-gray-300 rounded-lg px-3 py-2 mb-2"
+            returnKeyType="search"
+          />
+          {locLoading ? (
+            <View className="flex-row items-center p-3">
+              <ActivityIndicator size="small" color={BRAND_PURPLE} />
+              <Text className="ml-2 text-gray-500">Searching...</Text>
+            </View>
+          ) : locResults.length > 0 ? (
+            <View className="border border-gray-200 rounded-lg bg-white mb-3">
+              {locResults.map((item, idx) => (
+                <Pressable
+                  key={idx}
+                  onPress={() => {
+                    setLocation({
+                      country: item.address?.country || null,
+                      country_code: item.address?.country_code || null,
+                      display_name: item.display_name,
+                      lat: item.lat,
+                      lon: item.lon,
+                      province: item.address?.state || null,
+                      city: item.address?.city || item.address?.town || null,
+                      postalCode: item.address?.postcode || null,
+                    });
+                    setLocQuery(item.display_name);
+                    setLocResults([]);
+                  }}
+                  className="px-3 py-2 border-b border-gray-100"
+                >
+                  <Text className="text-gray-800">{item.display_name}</Text>
+                </Pressable>
+              ))}
+            </View>
+          ) : null}
+          {location?.display_name && (
+            <Text className="text-gray-700 mb-4">📍 {location.display_name}</Text>
+          )}
 
-        {/* Buttons */}
-        <View className="flex-row justify-between mt-8 mb-12">
-          <TouchableOpacity
-            onPress={handleCancel}
-            className="bg-gray-200 rounded-xl px-6 py-3 flex-1 mr-2"
-          >
-            <Text className="text-gray-800 font-semibold text-center">Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleSave}
-            className="bg-blue-600 rounded-xl px-6 py-3 flex-1 ml-2"
-          >
-            <Text className="text-white font-semibold text-center">
-              Save Changes
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+          {/* Email */}
+          <Text className="mb-1 text-gray-700">Email</Text>
+          <View className="border border-gray-300 rounded-lg px-3 py-2 mb-8 bg-gray-100">
+            <Text className="text-gray-700">{userMDB?.email}</Text>
+          </View>
 
-      {/* Industry Modal */}
-      <IndustryModal
-        visible={industryModalVisible}
-        onClose={() => setIndustryModalVisible(false)}
-        onSave={(selectedIndustries) =>
-          setIndustries(selectedIndustries.map((i) => i.name))
-        }
-        initialSelected={initialIndustriesForModal}
-        maxSelection={3}
-      />
+          {/* Buttons */}
+          <View className="flex-row justify-between mt-8 mb-12">
+            <TouchableOpacity
+              onPress={handleCancel}
+              className="bg-gray-200 rounded-xl px-6 py-3 flex-1 mr-2"
+            >
+              <Text className="text-gray-800 font-semibold text-center">Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleSave}
+              className="bg-blue-600 rounded-xl px-6 py-3 flex-1 ml-2"
+            >
+              <Text className="text-white font-semibold text-center">Save Changes</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+
+        {/* Industry Modal */}
+        <IndustryModal
+          visible={industryModalVisible}
+          onClose={() => setIndustryModalVisible(false)}
+          onSave={(selectedIndustries) =>
+            setIndustries(selectedIndustries.map((i) => i.name))
+          }
+          initialSelected={initialIndustriesForModal}
+          maxSelection={3}
+        />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

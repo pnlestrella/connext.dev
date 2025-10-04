@@ -1,24 +1,34 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { getApplicantCounts } from 'api/applications';
 import { Header } from 'components/Header';
-import { useAuth } from 'context/auth/AuthHook';
 import { useEmployers } from 'context/employers/EmployerHook';
-import { Search, SlidersHorizontal, Pencil, User, Edit, Maximize2, XCircle, CalendarDays } from 'lucide-react-native';
-import { useCallback } from 'react';
-import { Text, Pressable, View, ScrollView } from 'react-native';
+import { Search, SlidersHorizontal, Pencil, User, Edit, Maximize2, XCircle, CalendarDays, CheckCircle } from 'lucide-react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Text, Pressable, View, ScrollView, Image } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import ConfirmationModal from 'components/ConfirmationModal';
+import { updateJobs } from 'api/employers/joblistings';
 
 export const HomeScreenEmployer = () => {
-  const { jobOpenings, applicationCounts, refresh, setRefresh } = useEmployers();
+  const { jobOpenings, applicationCounts, setRefresh } = useEmployers();
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
-  // for updates
+  // Refresh on focus (functional update avoids stale closure)
   useFocusEffect(
     useCallback(() => {
-      setRefresh(!refresh);
-    }, [])
+      setRefresh(v => !v);
+    }, [setRefresh])
   );
+
+  // Sort newest first
+  const sortedJobs = useMemo(() => {
+    if (!Array.isArray(jobOpenings)) return [];
+    return [...jobOpenings].sort((a, b) => {
+      const ta = a?.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const tb = b?.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return tb - ta;
+    });
+  }, [jobOpenings]);
 
   const handleApplicationScreen = (jobUID: string, jobTitle: string) => {
     navigation.push('jobApplications', { jobUID, jobTitle });
@@ -28,137 +38,203 @@ export const HomeScreenEmployer = () => {
     navigation.navigate('postJob');
   };
 
-  // Job Card UI
-  const renderJob = (item: any) => (
-    <View
-      key={item.jobUID}
-      style={{
-        borderWidth: 1,
-        borderColor: '#E5E7EB',
-        borderRadius: 12,
-        marginHorizontal: 16,
-        marginVertical: 8,
-        backgroundColor: 'white',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Job Info */}
-      <View style={{ padding: 16, backgroundColor: '#6C63FF' }}>
-        {/* Title + applicants */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Text
-            style={{
-              fontFamily: 'Poppins-Bold',
-              fontSize: 16,
-              color: 'white',
-              flex: 1,
-              flexShrink: 1,
-              marginRight: 8,
-            }}
-            numberOfLines={2}
-            ellipsizeMode="tail"
-          >
-            {item.jobTitle}
-          </Text>
+  // Modal state for toggling open/close
+  const [statusModalVisible, setStatusModalVisible] = useState(false);
+  const [jobToToggle, setJobToToggle] = useState<any | null>(null);
+  const [saving, setSaving] = useState(false);
 
-          <Pressable
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: 'white',
-              padding: 5,
-              borderRadius: 8,
-            }}
-            onPress={() => handleApplicationScreen(item.jobUID, item.jobTitle)}
-          >
-            <User size={16} color="#1572DB" />
-            <Text
-              style={{
-                marginLeft: 4,
-                color: '#1572DB',
-                fontSize: 13,
-                fontFamily: 'Poppins-Medium',
-              }}
-            >
-              {applicationCounts?.find((e) => e._id === item.jobUID)?.pending || 0} applicants
-            </Text>
-          </Pressable>
-        </View>
+  const openStatusModal = (job: any) => {
+    setJobToToggle(job);
+    setStatusModalVisible(true);
+  };
 
-        {/* Employment */}
-        <Text style={{ fontSize: 14, color: 'white', marginTop: 4 }}>{item.employment?.join(', ')}</Text>
+  const confirmTogglePosting = async () => {
+    if (!jobToToggle) return;
+    try {
+      setSaving(true);
+      const desiredStatus = !jobToToggle.status;
+      const res = await updateJobs(jobToToggle.jobUID, { status: desiredStatus });
+      if (!res?.success) {
+        alert('Failed to update posting.');
+        return;
+      }
+      // Optional toast/alert
+      setRefresh(v => !v);
+    } catch (e) {
+      alert('Something went wrong.');
+    } finally {
+      setSaving(false);
+      setStatusModalVisible(false);
+      setJobToToggle(null);
+    }
+  };
 
-        {/* Posted date */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
-          <CalendarDays width={20} color="white" style={{ marginRight: 4 }} />
-          <Text style={{ color: 'white', fontSize: 12 }}>
-            Posted on {item.createdAt ? new Date(item.createdAt).toDateString() : '—'}
-          </Text>
-        </View>
-      </View>
+  const cancelTogglePosting = () => {
+    setStatusModalVisible(false);
+    setJobToToggle(null);
+  };
 
-      {/* Actions Section */}
+  const renderJob = (item: any) => {
+    const isClosed = item.status === false;
+    const headerBg = isClosed ? '#9CA3AF' : '#6C63FF';
+    const cardOpacity = isClosed ? 0.6 : 1;
+    const titleColor = isClosed ? '#F3F4F6' : 'white';
+    const subTextColor = isClosed ? '#F9FAFB' : 'white';
+    const actionColor = isClosed ? '#059669' : '#DC2626'; // green for Open, red for Close
+    const ActionIcon = isClosed ? CheckCircle : XCircle;
+    const actionLabel = isClosed ? 'Open Posting' : 'Close Posting';
+
+    return (
       <View
+        key={item.jobUID}
         style={{
-          borderTopWidth: 1,
-          borderTopColor: '#E5E7EB',
-          paddingVertical: 12,
-          paddingHorizontal: 16,
+          borderWidth: 1,
+          borderColor: '#E5E7EB',
+          borderRadius: 12,
+          marginHorizontal: 16,
+          marginVertical: 8,
           backgroundColor: 'white',
+          overflow: 'hidden',
+          opacity: cardOpacity,
         }}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Pressable
-            style={{ flexDirection: 'row', alignItems: 'center' }}
-            onPress={() => navigation.navigate('showDetails', { job: item, edit: true })}
-          >
-            <Edit size={14} color="#1572DB" />
+        {/* Job Info */}
+        <View style={{ padding: 16, backgroundColor: headerBg }}>
+          {/* Title + applicants */}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text
               style={{
-                color: '#1572DB',
-                marginLeft: 4,
-                fontSize: 13,
                 fontFamily: 'Poppins-Bold',
+                fontSize: 16,
+                color: titleColor,
+                flex: 1,
+                flexShrink: 1,
+                marginRight: 8,
               }}
+              numberOfLines={2}
+              ellipsizeMode="tail"
             >
-              Edit
+              {item.jobTitle}
             </Text>
-          </Pressable>
 
-          <Pressable
-            style={{ flexDirection: 'row', alignItems: 'center' }}
-            onPress={() => navigation.navigate('showDetails', { job: item, edit: false })}
-          >
-            <Maximize2 size={14} color="#1572DB" />
-            <Text
+            <Pressable
               style={{
-                color: '#1572DB',
-                marginLeft: 4,
-                fontSize: 13,
-                fontFamily: 'Poppins-Bold',
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                padding: 5,
+                borderRadius: 8,
               }}
+              onPress={() => handleApplicationScreen(item.jobUID, item.jobTitle)}
             >
-              Show details
-            </Text>
-          </Pressable>
+              <User size={16} color="#1572DB" />
+              <Text
+                style={{
+                  marginLeft: 4,
+                  color: '#1572DB',
+                  fontSize: 13,
+                  fontFamily: 'Poppins-Medium',
+                }}
+              >
+                {applicationCounts?.find(e => e._id === item.jobUID)?.pending || 0} applicants
+              </Text>
+            </Pressable>
+          </View>
 
-          <Pressable style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <XCircle size={14} color="#DC2626" />
-            <Text
+          {/* Employment */}
+          <Text style={{ fontSize: 14, color: subTextColor, marginTop: 4 }}>
+            {Array.isArray(item.employment) ? item.employment.join(', ') : '—'}
+          </Text>
+
+          {/* Posted date + Status chip */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <CalendarDays width={20} color={subTextColor} style={{ marginRight: 4 }} />
+              <Text style={{ color: subTextColor, fontSize: 12 }}>
+                Posted on {item.createdAt ? new Date(item.createdAt).toDateString() : '—'}
+              </Text>
+            </View>
+            <View
               style={{
-                color: '#DC2626',
-                marginLeft: 4,
-                fontSize: 13,
-                fontFamily: 'Poppins-Bold',
+                backgroundColor: isClosed ? '#FEF2F2' : '#ECFDF5',
+                paddingHorizontal: 10,
+                paddingVertical: 4,
+                borderRadius: 999,
               }}
             >
-              Close Posting
-            </Text>
-          </Pressable>
+              <Text style={{ color: isClosed ? '#991B1B' : '#065F46', fontWeight: '700', fontSize: 12 }}>
+                {isClosed ? 'Closed' : 'Active'}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Actions Section */}
+        <View
+          style={{
+            borderTopWidth: 1,
+            borderTopColor: '#E5E7EB',
+            paddingVertical: 12,
+            paddingHorizontal: 16,
+            backgroundColor: 'white',
+          }}
+        >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Pressable
+              style={{ flexDirection: 'row', alignItems: 'center' }}
+              onPress={() => navigation.navigate('editDetails', { job: item, edit: true })}
+            >
+              <Edit size={14} color="#1572DB" />
+              <Text
+                style={{
+                  color: '#1572DB',
+                  marginLeft: 4,
+                  fontSize: 13,
+                  fontFamily: 'Poppins-Bold',
+                }}
+              >
+                Edit
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={{ flexDirection: 'row', alignItems: 'center' }}
+              onPress={() => navigation.navigate('showDetails', { job: item, edit: false })}
+            >
+              <Maximize2 size={14} color="#1572DB" />
+              <Text
+                style={{
+                  color: '#1572DB',
+                  marginLeft: 4,
+                  fontSize: 13,
+                  fontFamily: 'Poppins-Bold',
+                }}
+              >
+                Show details
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={{ flexDirection: 'row', alignItems: 'center' }}
+              onPress={() => openStatusModal(item)}
+            >
+              <ActionIcon size={14} color={actionColor} />
+              <Text
+                style={{
+                  color: actionColor,
+                  marginLeft: 4,
+                  fontSize: 13,
+                  fontFamily: 'Poppins-Bold',
+                }}
+              >
+                {actionLabel}
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -168,12 +244,11 @@ export const HomeScreenEmployer = () => {
         contentContainerStyle={{ paddingTop: insets.top, paddingBottom: insets.bottom + 100 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header inside scroll */}
-
-
         {/* Top Bar */}
         <View style={{ paddingHorizontal: 16, marginBottom: 16 }}>
-          <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 28, color: '#37424F' }}>Your Openings</Text>
+          <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 28, color: '#37424F' }}>
+            Your Openings
+          </Text>
 
           {/* Search Bar */}
           <Pressable
@@ -191,14 +266,23 @@ export const HomeScreenEmployer = () => {
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Search />
-              <Text style={{ marginLeft: 8, fontFamily: 'Poppins-Regular', color: '#6B7280', fontSize: 14 }}>Search Here</Text>
+              <Text
+                style={{
+                  marginLeft: 8,
+                  fontFamily: 'Poppins-Regular',
+                  color: '#6B7280',
+                  fontSize: 14,
+                }}
+              >
+                Search Here
+              </Text>
             </View>
             <SlidersHorizontal width={20} />
           </Pressable>
         </View>
 
         {/* Jobs */}
-        {jobOpenings?.map(renderJob)}
+        {sortedJobs.map(renderJob)}
       </ScrollView>
 
       {/* Floating button */}
@@ -212,7 +296,7 @@ export const HomeScreenEmployer = () => {
           paddingHorizontal: 16,
           borderRadius: 30,
           position: 'absolute',
-          bottom: insets.bottom + 20,
+          bottom: insets.bottom + 40,
           right: 20,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
@@ -233,6 +317,21 @@ export const HomeScreenEmployer = () => {
         </Text>
         <Pencil size={16} color="white" />
       </Pressable>
+
+      {/* Open/Close Posting Confirmation Modal */}
+      <ConfirmationModal
+        visible={statusModalVisible}
+        title={jobToToggle?.status ? 'Close posting?' : 'Open posting?'}
+        message={
+          jobToToggle
+            ? `${jobToToggle.status ? 'Closing' : 'Opening'} “${(jobToToggle.jobTitle || '').trim() || 'this job'}”.`
+            : 'Confirm action.'
+        }
+        confirmText={saving ? (jobToToggle?.status ? 'Closing...' : 'Opening...') : jobToToggle?.status ? 'Close' : 'Open'}
+        cancelText="Cancel"
+        onConfirm={saving ? undefined : confirmTogglePosting}
+        onCancel={saving ? undefined : cancelTogglePosting}
+      />
     </SafeAreaView>
   );
 };

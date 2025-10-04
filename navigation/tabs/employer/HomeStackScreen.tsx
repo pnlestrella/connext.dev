@@ -3,6 +3,7 @@ import { HomeScreenEmployer } from 'screens/employers/homescreen/HomeScreenEmplo
 import { JobApplications } from 'screens/employers/homescreen/JobApplications';
 import { JobDetails } from 'screens/employers/homescreen/JobDetails';
 import { PostJob } from 'screens/employers/homescreen/PostJob';
+import { EditJobDetails } from 'screens/employers/homescreen/EditJobDetails';
 const HomeStack = createNativeStackNavigator();
 
 export default function HomeStackScreen() {
@@ -11,6 +12,7 @@ export default function HomeStackScreen() {
       <HomeStack.Screen name="mainHome" component={HomeScreenEmployer} />
       <HomeStack.Screen name="postJob" component={PostJob} />
       <HomeStack.Screen name="showDetails" component={JobDetails} />
+      <HomeStack.Screen name="editDetails" component={EditJobDetails} />
       <HomeStack.Screen name="jobApplications" component={JobApplications} />
     </HomeStack.Navigator>
   );

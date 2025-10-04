@@ -20,9 +20,6 @@ import { createConversation } from "api/chats/conversation";
 import { getFileUrl } from "api/employers/imagekit";
 import { useEmployers } from "context/employers/EmployerHook";
 import { updateApplications } from "api/applications";
-import { CommonActions } from "@react-navigation/native";
-
-
 
 export const ApplicantDetail = () => {
     const { resumeCache, setResumeCache } = useEmployers()
@@ -221,20 +218,22 @@ export const ApplicantDetail = () => {
                         <Text className="ml-2 text-white font-medium">View Resume</Text>
                     </Pressable>
                 </View>
+
+                {/* Bottom Actions */}
+                <View className="absolute bottom-0 left-0 right-0 flex-row justify-between p-4 bg-white border-t border-gray-200">
+                    <Pressable className="flex-1 bg-red-500 py-3 rounded-xl mr-2 items-center">
+                        <Text className="text-white font-bold">Remove</Text>
+                    </Pressable>
+                    <Pressable
+                        className="flex-1 bg-indigo-600 py-3 rounded-xl ml-2 items-center"
+                        onPress={handleContact}
+                    >
+                        <Text className="text-white font-bold">Contact</Text>
+                    </Pressable>
+                </View>
             </ScrollView>
 
-            {/* Bottom Actions */}
-            <View className="absolute bottom-0 left-0 right-0 flex-row justify-between p-4 bg-white border-t border-gray-200">
-                <Pressable className="flex-1 bg-red-500 py-3 rounded-xl mr-2 items-center">
-                    <Text className="text-white font-bold">Remove</Text>
-                </Pressable>
-                <Pressable
-                    className="flex-1 bg-indigo-600 py-3 rounded-xl ml-2 items-center"
-                    onPress={handleContact}
-                >
-                    <Text className="text-white font-bold">Contact</Text>
-                </Pressable>
-            </View>
+
         </SafeAreaView>
     );
 };
