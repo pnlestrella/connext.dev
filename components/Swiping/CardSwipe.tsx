@@ -29,9 +29,8 @@ const INDEED =
 const ZIPRECRUITER =
   "https://ik.imagekit.io/mnv8wgsbk/Public%20Images/ZipRecruiter-logo-full-color-black.webp?updatedAt=1756757383134";
 
-const sheetHeight = 400;
-
-// Sample job postings
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
 
 type Job = {
   boostWeight: number;
@@ -52,29 +51,16 @@ type Job = {
   workTypes: string[];
 };
 
-type CStypes = {
-  showModal: boolean,
-  setShowModal: (value: boolean) => void
-  isExpanded: boolean,
-  setIsExpanded: (value: boolean) => void
-  jobPostings: Job
-}
-export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsExpanded }: CStypes) {
-  // BottomSheet state
-  const { handleSwipe, jobPostings, setJobPostings } = useJobs()
+type Props = {
+  showModal: boolean;
+  setShowModal: (v: boolean) => void;
+  isExpanded: boolean;
+  setIsExpanded: (v: boolean) => void;
+};
 
-  const viewMore = () => {
-    setShowModal(true);
-    setIsExpanded(true);
-  };
+export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsExpanded }: Props) {
+  const { handleSwipe, jobPostings } = useJobs();
 
-  // Swipe constants
-  const { width: SCREEN_WIDTH } = Dimensions.get("window");
-  const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
-
-  /** ------------ Swipe Cards ------------ */
-
-  // Track when a swipe finishes
   const [swipeDone, setSwipeDone] = useState(false);
   const [index, setIndex] = useState(0);
   const cardPan = useRef(new Animated.ValueXY()).current;
@@ -159,18 +145,6 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
     extrapolate: "clamp",
   });
 
-  const shortlistOpacity = cardPan.x.interpolate({
-    inputRange: [0, SWIPE_THRESHOLD],
-    outputRange: [0, 1],
-    extrapolate: "clamp",
-  });
-
-  const skipOpacity = cardPan.x.interpolate({
-    inputRange: [-SWIPE_THRESHOLD, 0],
-    outputRange: [1, 0],
-    extrapolate: "clamp",
-  });
-
   const cardStyle = {
     transform: [{ translateX: cardPan.x }, { translateY: cardPan.y }, { rotate }],
     opacity,
@@ -225,16 +199,58 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
     const nextJob = jobPostings[index + 1];
 
     return (
-      <SafeAreaView className="flex-1 items-center justify-center">
-        <View className="flex-1 justify-center items-center mt-10">
-          <Text style={{ fontFamily: 'Lexend-Regular', color: '#9CA3AF' }}>
-            No jobs Available
-          </Text>
-        </View>
-      </SafeAreaView>
+      <>
+        {nextJob && (
+          <Animated.View
+            key={`${nextJob.jobUID || index}-next`}
+            style={[styles.nextCard, { transform: [{ scale: nextCardScale }] }]}
+            pointerEvents="none"
+          >
+            {renderCard(nextJob, false)}
+          </Animated.View>
+        )}
+        {currentJob && (
+          <Animated.View
+            key={`${currentJob.jobUID || index}-current`}
+            {...panResponder.panHandlers}
+            style={[cardStyle, { zIndex: 15 }]}
+          >
+            {renderCard(currentJob, true)}
+          </Animated.View>
+        )}
+      </>
     );
-  }
+  };
 
+  const renderCard = (currentJob: Job, isActive: boolean) => {
+    if (!currentJob) return null;
+
+    const coName = currentJob.company?.name || "";
+    const provider = (currentJob.company?.profilePic || "").toLowerCase();
+    const brandLogo =
+      provider === "indeed"
+        ? INDEED
+        : provider === "ziprecruiter"
+        ? ZIPRECRUITER
+        : currentJob.company?.profilePic;
+
+    const payMin = currentJob.salaryRange?.min;
+    const payMax = currentJob.salaryRange?.max;
+    const payCur = currentJob.salaryRange?.currency || "";
+    const payFreq = currentJob.salaryRange?.frequency || "";
+    const payDisplay =
+      typeof payMin === "number" && typeof payMax === "number"
+        ? `${payCur} ${payMin} - ${payMax}/${payFreq}`
+        : payCur || payFreq
+        ? `${payCur} ${payFreq}`
+        : "—";
+
+    const locationDisplay =
+      currentJob.location?.display_name ||
+      [currentJob.location?.city, currentJob.location?.state].filter(Boolean).join(", ") ||
+      "—";
+
+    const matchPct = Math.round((currentJob.score + (currentJob.boostWeight || 0)) * 100);
 
     return (
       <Animated.View style={{ borderRadius: 20, overflow: "hidden" }}>

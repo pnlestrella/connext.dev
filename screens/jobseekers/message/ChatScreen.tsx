@@ -42,6 +42,8 @@ interface RouteParams {
     conversationUID: string;
     employerName?: string;
     employerProfilePic?: string;
+    applicationStatus?: string;
+    jobTitle?: string;
   };
 }
 
@@ -146,26 +148,26 @@ export const ChatScreen = () => {
                 <ArrowLeft width={24} height={24} color="#37424F" />
               </TouchableOpacity>
 
-            {profilePic ? (
-              <Image
-                source={{ uri: profilePic }}
-                style={{ width: 40, height: 40, borderRadius: 20, marginLeft: 12 }}
-              />
-            ) : (
-              <View
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
-                  marginLeft: 12,
-                  backgroundColor: '#E5E7EB',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <User width={20} height={20} color="#37424F" />
-              </View>
-            )}
+              {profilePic ? (
+                <Image
+                  source={{ uri: profilePic }}
+                  style={{ width: 40, height: 40, borderRadius: 20, marginLeft: 12 }}
+                />
+              ) : (
+                <View
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                    marginLeft: 12,
+                    backgroundColor: '#E5E7EB',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <User width={20} height={20} color="#37424F" />
+                </View>
+              )}
 
               <View style={{ marginLeft: 12, flex: 1 }}>
                 <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 16, color: '#37424F' }}>
@@ -177,7 +179,6 @@ export const ChatScreen = () => {
               </View>
             </View>
 
-            {/* Job Title Context Banner */}
             {/* Job Title Context Banner */}
             <View
               style={{
@@ -360,29 +361,9 @@ export const ChatScreen = () => {
                   </View>
                 )}
               </View>
-
-              {/* Quick actions */}
-              {/* <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginTop: 8,
-                  paddingHorizontal: 4,
-                }}
-              >
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <AlertTriangle width={18} color="#EF4444" />
-                  <Text style={{ fontSize: 12, color: '#EF4444', marginLeft: 4 }}>Report</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Star width={18} color="#FACC15" />
-                  <Text style={{ fontSize: 12, color: '#FACC15', marginLeft: 4 }}>Favorite</Text>
-                </TouchableOpacity>
-              </View> */}
             </View>
-          </TouchableWithoutFeedback>
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
