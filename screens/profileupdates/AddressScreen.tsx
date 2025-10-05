@@ -6,286 +6,174 @@ import {
   FlatList,
   Pressable,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import locations from "../../data/locations.json";
 import { useAuth } from "context/auth/AuthHook";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "navigation/types/RootStackParamList";
 import { updateProfile } from "api/profile";
-const COUNTRY_LABELS: Record<string, string> = {
-  PH: "Philippines",
-  US: "United States",
-  CA: "Canada",
-};
 
+const API_KEY = "pk.9d1a0a6102b95fdfcab79dc4a5255313"; // your key
 
 export const AddressScreen = () => {
   const { user, userType, setUserMDB } = useAuth();
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  //jobseeker+s
-  const userPath = userType + 's'
+  const userPath = userType + "s";
 
-  const [countryQuery, setCountryQuery] = useState("");
-  const [provinceQuery, setProvinceQuery] = useState("");
-  const [cityQuery, setCityQuery] = useState("");
-  const [postal, setPostal] = useState("");
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<any[]>([]);
+  const [selectedPlace, setSelectedPlace] = useState<any>(null);
 
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
-  const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  async function searchPlaces(text: string) {
+    setQuery(text);
+    setSelectedPlace(null); // reset if typing again
+    if (text.length < 2) {
+      setResults([]);
+      return;
+    }
 
-  // --- Countries
-  const countryList = [...new Set(locations.map((l: any) => l.country))].map(
-    (code) => ({
-      code,
-      name: COUNTRY_LABELS[code] || code,
-    })
-  );
-  const filteredCountries = countryList.filter((c) =>
-    c.name.toLowerCase().includes(countryQuery.toLowerCase())
-  );
-
-  // --- Provinces
-  const provinces = selectedCountry
-    ? [
-      ...new Set(
-        locations
-          .filter((l: any) => l.country === selectedCountry)
-          .map((l: any) => l.province)
-      ),
-    ]
-    : [];
-  const filteredProvinces = provinces.filter((p) =>
-    p.toLowerCase().includes(provinceQuery.toLowerCase())
-  );
-
-  // --- Cities
-  const cities =
-    selectedCountry && selectedProvince
-      ? [
-        ...new Set(
-          locations
-            .filter(
-              (l: any) =>
-                l.country === selectedCountry && l.province === selectedProvince
-            )
-            .map((l: any) => l.city)
-        ),
-      ]
-      : [];
-  const filteredCities = cities.filter((c) =>
-    c.toLowerCase().includes(cityQuery.toLowerCase())
-  );
+    try {
+      const res = await fetch(
+        `https://api.locationiq.com/v1/autocomplete.php?key=${API_KEY}&q=${encodeURIComponent(
+          text
+        )}&limit=5&countrycodes=PH&format=json`
+      );
+      const data = await res.json();
+      setResults(data);
+    } catch (err) {
+      console.error("Error fetching locations:", err);
+    }
+  }
 
   async function handleProceed() {
-    if (!selectedCountry || !selectedProvince || !selectedCity || !postal) {
-      alert("Please fill all fields");
+    if (!selectedPlace) {
+      alert("⚠️ Please select a location from the list");
       return;
     }
 
     const payload = {
       editType: "location",
       data: {
-        country: selectedCountry,
-        province: selectedProvince,
-        city: selectedCity,
-        postalCode: postal
-      }
-    }
-    console.log(payload)
+        country: selectedPlace.address.country,         // "Philippines"
+        country_code: selectedPlace.address.country_code, // "ph"
+        name: selectedPlace.address.name,               // "Naga"
+        province: selectedPlace.address.state || null,  // "Bicol Region"
+        city: selectedPlace.address.name || null,       // "Naga" (or adjust if API gives a city field)
+        postalCode: selectedPlace.address.postcode || null, // "4400"
+        display_name: selectedPlace.display_name,       // "Naga, Bicol Region, 4400, Philippines"
+        lat: selectedPlace.lat,                         // "13.6240122"
+        lon: selectedPlace.lon,                         // "123.1850318"
+      },
+    };
 
-    const res = await updateProfile(userPath, user?.uid, payload)
+
+    console.log("Saving payload:", payload);
+
+    const res = await updateProfile(userPath, user?.uid, payload);
     if (res.success === false) {
-      console.log(res.error)
-      alert(res.error)
+      alert(res.error);
+      return;
     }
-
-    setUserMDB(res)
-    alert("Successfully added address")
-  };
-
-  const renderInput = (
-    label: string,
-    query: string,
-    setQuery: (val: string) => void,
-    selected: string | null,
-    setSelected: (val: string | null) => void,
-    data: string[] | { code: string; name: string }[],
-    onSelect: (val: any) => void,
-    placeholder: string,
-    keyExtractor: (item: any) => string,
-    getLabel: (item: any) => string
-  ) => (
-    <>
-      <Text style={styles.label}>{label}</Text>
-      <View style={styles.inputWrapper}>
-        <TextInput
-          style={[styles.input, selected && { color: "#555" }]}
-          value={selected || query}
-          editable={!selected}
-          onChangeText={(t) => {
-            setSelected(null);
-            setQuery(t);
-          }}
-          placeholder={placeholder}
-        />
-        {selected && (
-          <Pressable
-            style={styles.clearBtn}
-            onPress={() => {
-              setSelected(null);
-              setQuery("");
-            }}
-          >
-            <Text style={{ fontWeight: "bold", color: "#666" }}>✕</Text>
-          </Pressable>
-        )}
-      </View>
-      {!selected && query.length > 0 && (
-        <FlatList
-          data={data}
-          keyExtractor={keyExtractor}
-          renderItem={({ item }) => (
-            <Pressable
-              style={styles.suggestion}
-              onPress={() => onSelect(item)}
-            >
-              <Text>{getLabel(item)}</Text>
-            </Pressable>
-          )}
-        />
-      )}
-    </>
-  );
+    setUserMDB(res);
+    alert("Successfully added address");
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Where are you located?</Text>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <View style={{ flex: 1 }}>
+          <Text style={styles.title}>Where are you located?</Text>
+          <Text style={styles.subtitle}>
+            Add your city so employers can find you more easily.
+          </Text>
 
-      {renderInput(
-        "Country",
-        countryQuery,
-        setCountryQuery,
-        selectedCountry,
-        setSelectedCountry,
-        filteredCountries,
-        (item) => {
-          setSelectedCountry(item.code);
-          setCountryQuery(item.name);
-          setSelectedProvince(null);
-          setProvinceQuery("");
-          setSelectedCity(null);
-          setCityQuery("");
-          setPostal("");
-        },
-        "Type country...",
-        (item) => item.code,
-        (item) => item.name
-      )}
-
-      {selectedCountry &&
-        renderInput(
-          "Province",
-          provinceQuery,
-          setProvinceQuery,
-          selectedProvince,
-          setSelectedProvince,
-          filteredProvinces,
-          (item) => {
-            setSelectedProvince(item);
-            setProvinceQuery(item);
-            setSelectedCity(null);
-            setCityQuery("");
-            setPostal("");
-          },
-          "Type province...",
-          (item) => item,
-          (item) => item
-        )}
-
-      {selectedProvince &&
-        renderInput(
-          "City",
-          cityQuery,
-          setCityQuery,
-          selectedCity,
-          setSelectedCity,
-          filteredCities,
-          (item) => {
-            setSelectedCity(item);
-            setCityQuery(item);
-            setPostal("");
-          },
-          "Type city...",
-          (item) => item,
-          (item) => item
-        )}
-
-      {/* Postal is free input */}
-      {selectedCity && (
-        <>
-          <Text style={styles.label}>Postal Code</Text>
           <TextInput
             style={styles.input}
-            value={postal}
-            onChangeText={setPostal}
-            placeholder="Enter postal code..."
-            keyboardType="numeric"
-            maxLength={4}
+            placeholder="Type a city..."
+            value={query}
+            onChangeText={searchPlaces}
           />
-        </>
-      )}
 
-      <Pressable style={styles.button} onPress={handleProceed}>
-        <Text style={styles.buttonText}>Proceed</Text>
-      </Pressable>
+          <FlatList
+            data={results}
+            keyExtractor={(item, idx) => item.place_id + idx}
+            renderItem={({ item }) => (
+              <Pressable
+                style={styles.suggestion}
+                onPress={() => {
+                  setSelectedPlace(item);
+                  setQuery(item.display_name);
+                  setResults([]);
+                }}
+              >
+                <Text style={styles.suggestionText}>{item.display_name}</Text>
+              </Pressable>
+            )}
+          />
+        </View>
+
+        <Pressable style={styles.button} onPress={handleProceed}>
+          <Text style={styles.buttonText}>Save & Continue</Text>
+        </Pressable>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
+  container: { flex: 1, backgroundColor: "#fff", padding: 20 },
   title: {
-    fontSize: 22,
+    fontSize: 25,
     fontWeight: "bold",
     color: "#6C63FF",
     marginBottom: 20,
   },
-  label: {
-    marginTop: 16,
-    marginBottom: 6,
-    fontWeight: "bold",
-    color: "#1A1A1A",
+  subtitle: {
+    fontSize: 15,
+    color: "#555",
+    marginBottom: 20,
   },
-  inputWrapper: { position: "relative" },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 12,
-    paddingRight: 32,
-  },
-  clearBtn: {
-    position: "absolute",
-    right: 10,
-    top: "50%",
-    transform: [{ translateY: -10 }],
+    borderColor: "#ddd",
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 16,
+    backgroundColor: "#fafafa",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 1,
   },
   suggestion: {
-    padding: 10,
-    backgroundColor: "#f9f9f9",
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderColor: "#eee",
   },
+  suggestionText: {
+    fontSize: 15,
+    color: "#333",
+  },
   button: {
-    marginTop: 30,
+    marginTop: 20,
     backgroundColor: "#6C63FF",
-    padding: 14,
-    borderRadius: 8,
+    paddingVertical: 16,
+    borderRadius: 12,
     alignItems: "center",
   },
-  buttonText: { color: "white", fontWeight: "bold" },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "white",
+  },
 });

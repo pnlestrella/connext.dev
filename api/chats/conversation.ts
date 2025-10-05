@@ -1,17 +1,23 @@
 import Constants from 'expo-constants';
 
-export const createConversation = async (employerUID: string, seekerUID: string) => {
+export const createConversation = async (
+  employerUID: string,
+  seekerUID: string,
+  applicationID: string
+) => {
   try {
+
     const res = await fetch(
       `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/conversation/createConversation`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           employerUID,
           seekerUID,
+          applicationID,
         }),
       }
     );
@@ -21,12 +27,13 @@ export const createConversation = async (employerUID: string, seekerUID: string)
     }
 
     const data = await res.json();
-    return data; // contains { success: true, payload: conversation }
+    return data; // { success: true, payload: conversation }
   } catch (err) {
-    console.error('Error creating conversation:', err);
+    console.error("❌ Error creating conversation:", err);
     throw err;
   }
 };
+
 
 // Get all conversations for a user
 export const getUserConversations = async (userUID: string) => {

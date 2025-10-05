@@ -49,9 +49,6 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
 
   }, [refresh])
 
-  console.log(shortlistedJobs,'ababa')
-
-
   //fetching shortlisted jobs
   async function fetchShortlistedJobs() {
     if (!userMDB?.seekerUID) return;

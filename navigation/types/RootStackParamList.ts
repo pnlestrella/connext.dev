@@ -13,6 +13,8 @@ export type RootStackParamList = {
     address:undefined;
     industries:undefined
     skills:undefined
+    profileSummary:undefined;
+    confirmation: undefined;
 
     //splash
     splash:undefined

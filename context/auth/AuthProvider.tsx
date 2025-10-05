@@ -6,6 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
+import { useSockets } from "context/sockets/SocketHook";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AuthTypes["user"] | null>(null);
@@ -17,7 +18,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [resetSignal, setResetSignal] = useState(false); // for signout
   const [accountType, setAccountType] = useState(null); // user not logged in
 
+  console.log(userMDB)
 
+  //sockest
   // 🔄 Refresh from MongoDB
   const refreshAuth = async () => {
     try {
@@ -148,6 +151,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   async function signOutUser() {
     try {
       await AsyncStorage.multiRemove(["userProfile", "unsyncedActions"]);
+
+      
       setUserMDB(null);
       setResetSignal(true);
       await userSignOut();

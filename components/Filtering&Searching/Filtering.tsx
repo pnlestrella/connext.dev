@@ -205,7 +205,7 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
 const styles = StyleSheet.create({
     sheet: {
         position: "absolute",
-        bottom: -50,
+        bottom: -5,
         left: 0,
         right: 0,
         height: 630,

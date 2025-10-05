@@ -11,6 +11,9 @@ export const ConversationsScreen = () => {
   const [conversations, setConversations] = useState([]);
   const { user } = useAuth();
 
+
+  console.log(conversations,'testyyyyyyyyyyy')
+
   const route = useRoute();
   const { newConversation } = route.params || {};
 
@@ -52,6 +55,8 @@ export const ConversationsScreen = () => {
     let displayName = "";
     let profilePic = null;
 
+    console.log(item,'tetete')
+
     // Employer should see seeker
     const seeker = item?.seekerName || {};
     displayName = `${seeker.firstName || ""} ${seeker.middleInitial ? seeker.middleInitial + ". " : ""
@@ -62,6 +67,7 @@ export const ConversationsScreen = () => {
         <User size={24} color="#37424F" />
       </View>
     );
+
 
     return (
       <Pressable

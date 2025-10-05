@@ -95,6 +95,8 @@ export default function BottomSheet({
                 <ChevronUp />
             </TouchableOpacity>
 
+            {console.log(currentJob,'wawa')}
+
             <ScrollView>
                 {isExpanded && (
                     <>
@@ -102,12 +104,12 @@ export default function BottomSheet({
                             <Text className="text-black mt-4" style={{ fontFamily: "Lexend-Bold", fontSize: 20 }} >{currentJob.jobTitle}</Text>
                             {!currentJob.isExternal ? (
                                 <>
-                                    <Text style={{ fontFamily: "Lexend-Regular", fontSize: 12 }}>Posted By: <Text >{currentJob.companyName}</Text></Text>
+                                    <Text style={{ fontFamily: "Lexend-Regular", fontSize: 12 }}>Posted By: <Text >{currentJob.company.name}</Text></Text>
 
                                 </>
                             ) : (
                                 <>
-                                    <Text style={{ fontFamily: "Lexend-Regular", fontSize: 12 }} >External Job From: <Text>{currentJob.profilePic}</Text></Text>
+                                    <Text style={{ fontFamily: "Lexend-Regular", fontSize: 12 }} >External Job From: <Text>{currentJob.company.profilePic}</Text></Text>
 
                                 </>
                             )}
@@ -154,11 +156,10 @@ export default function BottomSheet({
                         </View>
                         <View style={{ height: 1, backgroundColor: 'lightgray', marginVertical: 10 }}></View>
 
-
                         {/* Location */}
                         <View className="flex-row items-center">
                             <MapPin size={20} color={"#6C63FF"} />
-                            <Text className="text-brand-purpleMain my-2" style={{ fontFamily: "Lexend-SemiBold", fontSize: 16 }} > Location: <Text className="text-black">{currentJob.location.city}</Text> </Text>
+                            <Text className="text-brand-purpleMain my-2" style={{ fontFamily: "Lexend-SemiBold", fontSize: 16 }} > Location: <Text className="text-black">{currentJob.location.display_name}</Text> </Text>
                         </View>
                         <View style={{ height: 1, backgroundColor: 'lightgray', marginVertical: 10 }}></View>
 
@@ -218,12 +219,13 @@ export default function BottomSheet({
 const styles = StyleSheet.create({
     sheet: {
         position: "absolute",
-        bottom: -50,
+        bottom: -5,
         left: 0,
         right: 0,
         backgroundColor: "white",
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
+        width:"100%",
         padding: 16,
         shadowColor: "#000",
         shadowOpacity: 0.2,
@@ -234,6 +236,5 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        marginBottom: 8,
     },
 });

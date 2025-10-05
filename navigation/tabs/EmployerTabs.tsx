@@ -36,11 +36,7 @@ export default function EmployerTabs() {
             tabBarActiveTintColor: '#6C63FF',
             tabBarInactiveTintColor: 'gray',
             headerShown: false,
-            tabBarHideOnKeyboard:true,
-            tabBarLabelStyle: {
-                fontFamily: 'Lexend-Regular'
-            }
-
+            tabBarStyle: { paddingTop: 0, marginTop: -50},
         })}>
             <Tab.Screen name="Home" component={HomeStackScreen} />
             <Tab.Screen name="Shortlisted" component={ShortlistedStackScreen} />

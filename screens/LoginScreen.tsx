@@ -1,14 +1,15 @@
-import { StyleSheet, View, Text, Image, TextInput, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Image, TextInput, Pressable, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from 'navigation/types/RootStackParamList';
 import { useState } from 'react';
 import Constants from 'expo-constants';
 import { userLogin } from 'firebase/firebaseAuth';
-import { Loading } from 'components/Loading';
 import { useAuth } from 'context/auth/AuthHook';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Mail, Lock } from 'lucide-react-native';
+import AlertModal from 'components/AlertModal';
+import { Eye, EyeOff } from 'lucide-react-native'; // add this import
+
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'login'>;
 
@@ -18,110 +19,103 @@ export function LoginScreen() {
   const [password, setPassword] = useState('');
   const [keepSignedIn, setKeepSignedIn] = useState(false);
 
+  // Alert modal state
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertTitle, setAlertTitle] = useState('Alert');
+
+  //password
+  const [showPassword, setShowPassword] = useState(false);
+
+
   const navigation = useNavigation<NavigationProp>();
 
-  const handleLogin = async (role: 'jobseeker' | 'employer') => {
-    setLoading(true);
-    console.log('hey');
-    console.log(role);
+  const showAlert = (message: string, title: string = 'Alert') => {
+    setAlertMessage(message);
+    setAlertTitle(title);
+    setAlertVisible(true);
+  };
 
-    if (!email) {
-      alert('Email is required');
-      return;
-    }
-    if (!password) {
-      alert('Password is required');
-      return;
-    }
+  const handleLogin = async (role: 'jobseeker' | 'employer') => {
+    if (!email) return showAlert('Email is required', 'Validation Error');
+    if (!password) return showAlert('Password is required', 'Validation Error');
+
+    setLoading(true);
 
     try {
-      if (role === 'jobseeker') {
-        //check if the user exist in JOBSEEKER DB
-        const res = await fetch(
-          `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/getJobseeker?email=${encodeURIComponent(email)}`
-        );
+      const url =
+        role === 'jobseeker'
+          ? `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/getJobseeker?email=${encodeURIComponent(email)}`
+          : `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/getEmployer?email=${encodeURIComponent(email)}`;
 
-        if (!res.ok) {
-          console.log('Account Does not exist');
-          throw new Error('Account Does not exist');
-        }
-        const userProfile = await res.json();
+      const res = await fetch(url);
 
-        setUserMDB(userProfile.message);
-
-        //set Async storage for UX purpose
-        await AsyncStorage.setItem('userProfile', JSON.stringify(userProfile.message));
-
-        await userLogin(email, password);
-        setLoading(false);
-      } else {
-        const res = await fetch(
-          `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/employers/getEmployer?email=${encodeURIComponent(email)}`
-        );
-
-        if (!res.ok) {
-          console.log('Account Does not Exist');
-          throw new Error('Account Does not exist');
-        }
-
-        const userProfile = await res.json();
-        setUserMDB(userProfile.message);
-
-        //set Async storage for UX purpose
-        await AsyncStorage.setItem('userProfile', JSON.stringify(userProfile.message));
-
-        await userLogin(email, password);
-        setLoading(false);
+      if (!res.ok) {
+        throw new Error('Account does not exist');
       }
+
+      const userProfile = await res.json();
+      setUserMDB(userProfile.message);
+
+      // Store profile for persistence
+      await AsyncStorage.setItem('userProfile', JSON.stringify(userProfile.message));
+
+      // Firebase login
+      await userLogin(email, password);
+
     } catch (err: any) {
-      setLoading(false);
-      alert(err.code || 'Login failed');
-      console.log(err, '--=====================================================-');
-      console.log(err.message);
+      console.log(err);
+
       if (err.message === 'Network request failed') {
-        alert('Turn on the SERVER!');
-        await AsyncStorage.clear();
+        showAlert('Turn on the SERVER!', 'Connection Error');
+        await AsyncStorage.removeItem('userProfile');
         setUserMDB(null);
+      } else {
+        showAlert(err.code || err.message || 'Login failed', 'Login Error');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-white px-8">
+    <View className="flex-1 items-center justify-center px-8 bg-white">
+
+      {/* Alert Modal */}
+      <AlertModal
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
+      />
+
+      {/* Loading Overlay */}
       {loading && (
-        <View
-          className="absolute inset-0 z-50"
-          style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
-          <Loading />
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#6C63FF" />
         </View>
       )}
 
-      {/* Logo Section */}
-      <View className="mb-8 items-center">
+      {/* Logo */}
+      <View className="items-center mb-8">
         <Image
           source={require('../assets/images/app_logo.png')}
-          className="h-[95px] w-[330px]"
+          className="w-[330px] h-[95px]"
           resizeMode="contain"
         />
       </View>
 
-      {/* Login Header */}
-      <View className="mb-8 w-full max-w-md">
+      {/* Header */}
+      <View className="w-full max-w-md mb-8">
         <Text style={styles.titleText}>Login</Text>
         <Text style={styles.subHeaderText}>Welcome back, connect now!</Text>
       </View>
 
-      {/* Form Section */}
+      {/* Form */}
       <View className="w-full max-w-md space-y-4">
-        {/* Email Input */}
+        {/* Email */}
         <View>
-          <View className="mb-2 flex-row items-center">
-            <Mail size={16} />
-            <Text style={styles.fieldHeader} className="ml-2 mt-2">
-              Email
-            </Text>
-          </View>
-
+          <Text style={styles.fieldHeader} className="ml-2 mt-2">Email</Text>
           <TextInput
             className="mb-5 rounded-lg border border-gray-300 p-3"
             placeholder="johndoe@gmail.com"
@@ -134,39 +128,47 @@ export function LoginScreen() {
           />
         </View>
 
-        {/* Password Input */}
+        {/* Password */}
         <View>
-          <View className="mb-2 flex-row items-center text-black">
-            <Lock size={16} />
-            <Text style={styles.fieldHeader} className="ml-2 mt-2">
-              Password
-            </Text>
+          <Text style={styles.fieldHeader} className="ml-2 mt-2">Password</Text>
+          <View className="relative">
+            <TextInput
+              className="border border-gray-300 rounded-lg p-3 pr-10" // add padding-right for icon space
+              placeholder="Enter your password"
+              value={password}
+              placeholderTextColor="#9CA3AF"
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              style={{ color: '#000' }}
+            />
+            <Pressable
+              onPress={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                right: 12,
+                top: '35%',
+              }}
+            >
+              {showPassword ? (
+                <EyeOff size={20} color="#6B7280" />
+              ) : (
+                <Eye size={20} color="#6B7280" />
+              )}
+            </Pressable>
           </View>
-
-          <TextInput
-            className="rounded-lg border border-gray-300 p-3"
-            placeholder="Enter your password"
-            value={password}
-            placeholderTextColor="#9CA3AF"
-            onChangeText={setPassword}
-            secureTextEntry
-            style={{ color: '#000' }}
-          />
         </View>
 
-        {/* Checkbox & Forgot Password */}
-        <View className="my-4 flex-row items-center justify-between">
-          <Pressable
-            className="flex-row items-center"
-            onPress={() => setKeepSignedIn(!keepSignedIn)}>
-            <View className="mr-2 h-5 w-5 items-center justify-center rounded border border-gray-400">
-              {keepSignedIn && <View className="h-3 w-3 rounded-sm bg-[#3397f5]" />}
+        {/* Keep signed in + Forgot */}
+        <View className="flex-row justify-between items-center mt-2 mb-4">
+          <Pressable className="flex-row items-center" onPress={() => setKeepSignedIn(!keepSignedIn)}>
+            <View className="w-5 h-5 border border-gray-400 rounded mr-2 items-center justify-center mt-5">
+              {keepSignedIn && <View className="w-3 h-3 bg-[#3397f5] rounded-sm" />}
             </View>
             <Text className="text-sm text-gray-700">Keep me signed in</Text>
           </Pressable>
 
-          <Pressable onPress={() => alert('Feature in progress')}>
-            <Text className="text-sm font-semibold text-[#1572DB]">Forgot password?</Text>
+          <Pressable onPress={() => showAlert('Feature in progress', 'Coming Soon')}>
+            <Text className="text-sm text-[#1572DB] font-semibold">Forgot password?</Text>
           </Pressable>
         </View>
 
@@ -193,8 +195,8 @@ export function LoginScreen() {
           </Pressable>
         </View>
 
-        {/* Register Link */}
-        <Text className="mt-5 justify-center text-center">
+        {/* Register */}
+        <Text className="justify-center text-center mt-5">
           Don&apos;t have an account?
           <Text
             className="font-bold text-[#6C63FF]"
@@ -226,7 +228,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 10,
   },
-  textInput: {
-    fontFamily: 'Poppins-Regular',
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 50,
   },
 });
