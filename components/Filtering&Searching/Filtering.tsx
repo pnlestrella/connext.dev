@@ -145,10 +145,8 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
                     </View>
                 </Pressable>
 
-                <View style={{ height: 1, backgroundColor: 'lightgray', marginVertical: 10 }}></View>
-
                 <Text
-                    className="text-brand-purpleMain mt-4"
+                    className="text-brand-purpleMain mt-2"
                     style={{ fontFamily: "Lexend-SemiBold", fontSize: 16 }}
                 >
                     Job Types

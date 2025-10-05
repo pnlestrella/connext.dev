@@ -25,10 +25,27 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getMessages } from 'api/chats/message';
 import { useAuth } from 'context/auth/AuthHook';
 import { useSockets } from 'context/sockets/SocketHook';
+
+interface Message {
+  _id?: string;
+  senderUID: string;
+  text: string;
+  createdAt: string;
+}
+
+interface RouteParams {
+  item: {
+    conversationUID: string;
+    employerName?: string;
+    employerProfilePic?: string;
+    applicationStatus?: string;
+    jobTitle?: string;
+  };
+}
 
 export const ChatScreen = () => {
   const { socket } = useSockets();
@@ -54,7 +71,8 @@ export const ChatScreen = () => {
   const profilePic = item?.employerProfilePic;
 
   const [message, setMessage] = useState('');
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState<Message[]>([]);
+  const flatListRef = useRef<FlatList>(null);
 
   // Load history
   useEffect(() => {
@@ -69,11 +87,16 @@ export const ChatScreen = () => {
 
     socket.emit('joinConversation', item.conversationUID);
 
-    socket.on('newMessage', (newMsg) => {
+    socket.on('newMessage', (newMsg: Message) => {
       setHistory((prev) => {
         const exists = prev.find((m) => m._id === newMsg._id);
         if (exists) return prev;
-        return [newMsg, ...prev];
+        const newHistory = [...prev, newMsg];
+        // Auto-scroll to bottom when new message arrives
+        setTimeout(() => {
+          flatListRef.current?.scrollToEnd({ animated: true });
+        }, 100);
+        return newHistory;
       });
     });
 
@@ -156,7 +179,6 @@ export const ChatScreen = () => {
               </View>
             </View>
 
-            {/* Job Title Context Banner */}
             {/* Job Title Context Banner */}
             <View
               style={{
@@ -339,26 +361,6 @@ export const ChatScreen = () => {
                   </View>
                 )}
               </View>
-
-              {/* Quick actions */}
-              {/* <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginTop: 8,
-                  paddingHorizontal: 4,
-                }}
-              >
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <AlertTriangle width={18} color="#EF4444" />
-                  <Text style={{ fontSize: 12, color: '#EF4444', marginLeft: 4 }}>Report</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Star width={18} color="#FACC15" />
-                  <Text style={{ fontSize: 12, color: '#FACC15', marginLeft: 4 }}>Fav</Text>
-                </TouchableOpacity>
-              </View> */}
             </View>
           </View>
         </TouchableWithoutFeedback>

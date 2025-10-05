@@ -38,7 +38,7 @@ export default function JobseekerTabs() {
 
 
         })}>
-            <Tab.Screen name="Browse" component={BrowseScreen} />
+            <Tab.Screen name="Browse" component={BrowseScreen}/>
             <Tab.Screen name="Job Prospect" component={JobProspectStackScreen} />
             <Tab.Screen name="Message" component={MessageStackScreenJS} />
             <Tab.Screen name="Profile" component={ProfileStackScreen} />

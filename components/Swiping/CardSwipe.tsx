@@ -384,6 +384,20 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
             </View>
           </Card.Content>
         </Card>
+
+        {/* Shortlisted Text */}
+        <Animated.View style={{ position: 'absolute', top: 50, right: 50, transform: [{ rotate: '30deg' }] }}>
+          <Animated.Text style={{ fontFamily: 'Lexend-Bold' ,opacity: shortlistOpacity, fontSize: 24, color: 'green', }}>
+            Shortlisted!
+          </Animated.Text>
+        </Animated.View>
+
+        {/* Skipped Text */}
+        <Animated.View style={{ position: 'absolute', top: 50, left: 50, transform: [{ rotate: '-30deg' }] }}>
+          <Animated.Text style={{ fontFamily: 'Lexend-Bold', opacity: skipOpacity, fontSize: 24, color: 'red', }}>
+            Skipped!
+          </Animated.Text>
+        </Animated.View>
       </Animated.View>
     );
   };

@@ -3,44 +3,15 @@ import { View, Image, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const Header = () => {
-  const insets = useSafeAreaInsets();
+    return (
+        <View className='flex-row h-[10%] px-6 justify-between items-center' >
+            <Image className='w-4 h-7' source={require('../assets/images/justLogo.png')}></Image>
+            <TouchableOpacity
+            onPress={() => alert("Feature is on construction")}
+            >
+                <Bell width={20} color={"#6C63FF"}></Bell>
 
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 16,
-        paddingTop: insets.top + 6, // lighter padding for modern look
-        paddingBottom: 6,
-        backgroundColor: 'white',
-        // no border, subtle shadow instead
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 0.5 },
-        shadowOpacity: 0.05,
-        shadowRadius: 1,
-        elevation: 1,
-      }}
-    >
-      {/* Logo */}
-      <Image
-        style={{ width: 36, height: 24, resizeMode: 'contain' }}
-        source={require('../assets/images/justLogo.png')}
-      />
-
-      {/* Notification */}
-      <TouchableOpacity
-        onPress={() => alert('Feature is under construction')}
-        style={{
-          width: 36,
-          height: 36,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Bell width={20} height={20} color="#6C63FF" />
-      </TouchableOpacity>
-    </View>
-  );
+            </TouchableOpacity>
+        </View>
+    );
 };

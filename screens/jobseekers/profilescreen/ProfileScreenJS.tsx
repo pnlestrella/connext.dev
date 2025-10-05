@@ -113,15 +113,14 @@ export const ProfileScreenJS = () => {
     <SafeAreaView className="flex-1 bg-white">
       <Header />
 
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
+      <ScrollView className='px-2'>
         {/* Profile Title */}
         <View className="flex-row justify-between items-center">
           <Text
             style={{
               fontFamily: 'Poppins-Bold',
-              fontSize: 24,
               color: '#37424F',
-            }}
+            }} className='text-2xl'
           >
             Your Profile
           </Text>
@@ -152,9 +151,10 @@ export const ProfileScreenJS = () => {
         </View>
 
         {/* Profile Info */}
-        <View className="space-y-2">
+        <View>
+
           {/* Name */}
-          <View className="flex-row items-center">
+          <View className="flex-row items-center py-2">
             <Text
               style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100, color: '#37424F' }}
             >
@@ -180,7 +180,7 @@ export const ProfileScreenJS = () => {
             <Text
               style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100, color: '#37424F' }}
             >
-              Industry
+              Email
             </Text>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
               {industriesList.length ? (
@@ -374,7 +374,7 @@ export const ProfileScreenJS = () => {
         </View>
 
         {/* Résumé Section */}
-        <View style={{ marginTop: 32 }}>
+        <View className='py-2'>
           <Text
             style={{
               fontFamily: 'Lexend-SemiBold',
@@ -386,7 +386,7 @@ export const ProfileScreenJS = () => {
             Résumé
           </Text>
 
-          <View className="space-y-3">
+          <View className="flex-row gap-2">
             {!userMDB?.resume && (
               <>
                 <Pressable
@@ -411,7 +411,7 @@ export const ProfileScreenJS = () => {
                   className="flex-row items-center p-4 rounded-2xl bg-[#1572DB] shadow-sm"
                   onPress={() => showAlert('Coming soon', 'Create flow coming soon')}
                 >
-                  <View className="w-10 h-10 rounded-full bg-white/20 items-center justify-center mr-3">
+                  <View className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center mr-3">
                     <LucideImageUp color="white" />
                   </View>
                   <Text
@@ -430,7 +430,7 @@ export const ProfileScreenJS = () => {
             {userMDB?.resume && (
               <>
                 <Pressable
-                  className="flex-row items-center p-4 rounded-2xl bg-white shadow-sm"
+                  className="flex-row items-center p-4 rounded-2xl bg-gray-50 shadow-sm"
                   onPress={async () => {
                     try {
                       setLoading(true);
@@ -461,7 +461,7 @@ export const ProfileScreenJS = () => {
                 </Pressable>
 
                 <Pressable
-                  className="flex-row items-center p-4 rounded-2xl bg-white shadow-sm"
+                  className="flex-row items-center p-4 rounded-2xl bg-[#1572DB] shadow-sm"
                   onPress={() => setResumeModalVisible(true)}
                 >
                   <View className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center mr-3">
@@ -471,7 +471,7 @@ export const ProfileScreenJS = () => {
                     style={{
                       fontFamily: 'Lexend-SemiBold',
                       fontSize: 14,
-                      color: '#37424F',
+                      color: 'white',
                     }}
                   >
                     Upload New Resume
@@ -483,14 +483,13 @@ export const ProfileScreenJS = () => {
         </View>
 
         {/* Miscellaneous Section */}
-        <View style={{ marginTop: 32 }}>
+        <View className='py-2'>
           <Text
             style={{
               fontFamily: 'Lexend-SemiBold',
               fontSize: 18,
-              color: '#37424F',
               marginBottom: 12,
-            }}
+            }} className='color-[#221E5C]'
           >
             Miscellaneous
           </Text>
@@ -500,7 +499,7 @@ export const ProfileScreenJS = () => {
               <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100, color: '#37424F' }}>
                 Settings
               </Text>
-              <Settings width={20} color={'#37424F'} />
+              <Settings width={20} color={'#747474'} />
             </View>
           </View>
 
@@ -509,7 +508,7 @@ export const ProfileScreenJS = () => {
               <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 200, color: '#37424F' }}>
                 Send us feedback
               </Text>
-              <SendHorizonal width={20} color={'#37424F'} />
+              <SendHorizonal width={20} color={'#1572DB'} />
             </View>
           </View>
 
@@ -518,18 +517,18 @@ export const ProfileScreenJS = () => {
               <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 200, color: '#37424F' }}>
                 Give us Rating
               </Text>
-              <Star width={20} color={'#37424F'} />
+              <Star width={20} color={'#FFC312'} />
             </View>
           </View>
         </View>
 
         {/* Exit Section */}
-        <View style={{ marginTop: 32 }}>
+        <View>
           <Text
             style={{
               fontFamily: 'Lexend-SemiBold',
               fontSize: 18,
-              color: '#37424F',
+              color: '#221E5C',
               marginBottom: 12,
             }}
           >
@@ -544,7 +543,7 @@ export const ProfileScreenJS = () => {
               <Text style={{ fontFamily: 'Lexend-Bold', fontSize: 14, width: 100, color: '#37424F' }}>
                 Logout
               </Text>
-              <LogOut width={20} color={'#37424F'} />
+              <LogOut width={20} color={'#B80E0E'} />
             </Pressable>
           </View>
         </View>

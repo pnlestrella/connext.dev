@@ -1,17 +1,11 @@
 import { Header } from 'components/Header';
-import {
-  Text,
-  View,
-  FlatList,
-  Pressable,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import { Text, View, FlatList, Pressable, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCallback, useEffect, useState } from 'react';
 import { getUserConversations } from 'api/chats/conversation';
 import { useAuth } from 'context/auth/AuthHook';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { Search } from 'lucide-react-native';
 
 export const ConversationsScreen = () => {
   const [conversations, setConversations] = useState([]);
@@ -44,20 +38,19 @@ export const ConversationsScreen = () => {
 
     return (
       <Pressable
-        style={styles.row}
-        onPress={() => navigation.navigate('chats', { item })}
-      >
+        className="flex-row items-center border-b border-gray-200 px-4 py-3"
+        onPress={() => navigation.navigate('chats', { item })}>
         {profilePic ? (
-          <Image source={{ uri: profilePic }} style={styles.avatar} />
+          <Image source={{ uri: profilePic }} className="mr-3 h-12 w-12 rounded-full" />
         ) : (
-          <View style={styles.placeholderAvatar} />
+          <View className="mr-3 h-12 w-12 rounded-full bg-gray-200" />
         )}
 
-        <View style={styles.info}>
-          <Text style={styles.name} numberOfLines={1}>
+        <View className="flex-1">
+          <Text style={{fontFamily: 'Lexend-Bold'}} className="mb-0.5 text-base text-[#37424F]" numberOfLines={1}>
             {displayName}
           </Text>
-          <Text style={styles.lastMessage} numberOfLines={1}>
+          <Text style={{fontFamily: 'Lexend-Regular'}} className="text-sm text-gray-500" numberOfLines={1}>
             {item?.lastMessage ||
               `Start a conversation with ${displayName.split(' ')[0] || 'them'}`}
           </Text>
@@ -67,19 +60,28 @@ export const ConversationsScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="flex-1 bg-white">
       {/* Header */}
       <Header />
 
       {/* Title */}
-      <View style={styles.titleRow}>
-        <Text style={styles.title}>Your Messages</Text>
-        <Text style={styles.favorites}>Favorites</Text>
+      <View className="flex-row items-center justify-between px-2 pb-2">
+        <Text style={{ fontFamily: 'Poppins-Bold' }} className="text-2xl text-[#37424F]">
+          Your Messages
+        </Text>
+        <Text
+          style={{ fontFamily: 'Poppins-Bold' }}
+          className="text-base font-normal text-gray-500">
+          Favorites
+        </Text>
       </View>
 
       {/* Search bar placeholder */}
-      <View style={styles.searchBar}>
-        <Text style={styles.searchText}>Find a conversation</Text>
+      <View className="mx-4 mb-2 flex-row items-center rounded-full bg-gray-100 px-4 py-2">
+        <Search size={16} color="#9CA3AF" />
+        <Text style={{ fontFamily: 'Lexend-Regular' }} className="ml-2 font-normal text-gray-400">
+          Find a conversation
+        </Text>
       </View>
 
       {/* List */}
@@ -88,84 +90,11 @@ export const ConversationsScreen = () => {
         keyExtractor={(item) => item._id}
         renderItem={renderConversation}
         ListEmptyComponent={
-          <Text style={styles.empty}>No conversations yet</Text>
+          <Text 
+          style={{fontFamily: 'Lexend-Regular', color: '#9CA3AF'}}
+          className="mt-5 text-center font-normal">No conversations yet.</Text>
         }
       />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  titleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 4,
-    margin: 16,
-  },
-  title: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: 24,
-    color: '#37424F',
-  },
-  favorites: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 16,
-    color: '#6B7280',
-  },
-  searchBar: {
-    marginHorizontal: 16,
-    marginBottom: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 999,
-    backgroundColor: '#F3F4F6',
-  },
-  searchText: {
-    color: '#9CA3AF',
-    fontFamily: 'Poppins-Regular',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
-  },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    marginRight: 12,
-  },
-  placeholderAvatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    marginRight: 12,
-    backgroundColor: '#E5E7EB',
-  },
-  info: {
-    flex: 1,
-  },
-  name: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: 16,
-    color: '#37424F',
-    marginBottom: 2,
-  },
-  lastMessage: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 14,
-    color: '#6B7280',
-  },
-  empty: {
-    textAlign: 'center',
-    marginTop: 20,
-    fontFamily: 'Poppins-Regular',
-  },
-});

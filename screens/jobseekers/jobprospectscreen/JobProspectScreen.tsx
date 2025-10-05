@@ -84,7 +84,7 @@ export const JobProspectScreen = () => {
   };
 
   return (
-    <SafeAreaView className='bg-white mb-5 h-full'>
+    <SafeAreaView className='bg-white flex-1'>
       <Header />
 
       {/* Title */}

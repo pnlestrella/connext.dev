@@ -64,10 +64,12 @@ export const JobProspectDetails = () => {
                 <Pressable onPress={() => navigation.goBack()} className="mr-3">
                     <ArrowLeft size={26} color="#37424F" />
                 </Pressable>
-                <Text className="text-xl font-bold text-gray-800 font-lexend">Job Details</Text>
+                <Text style={{fontFamily: 'Lexend-Bold'}} className="text-xl text-gray-800">Job Details</Text>
             </View>
 
-            <ScrollView contentContainerStyle={{ padding: 20 }}>
+            <ScrollView 
+            contentContainerStyle={{ padding: 20 }}
+            showsVerticalScrollIndicator={false}>
                 {/* Title & Company */}
                 <Text className="text-3xl font-extrabold text-gray-900 mb-1 font-lexend">
                     {job.jobTitle}
@@ -154,10 +156,10 @@ export const JobProspectDetails = () => {
                     </Text>
                     {showFeedback ? (
                         <View className="space-y-2">
-                            <Text className="text-base text-gray-800 leading-6 font-poppins">
+                            <Text className="text-base mb-2 text-gray-800 leading-6 font-poppins">
                                 🔹 {item.feedback.match_summary}
                             </Text>
-                            <Text className="text-base text-gray-800 leading-6 font-poppins">
+                            <Text className="text-base mb-2 text-gray-800 leading-6 font-poppins">
                                 🛠 {item.feedback.skill_note}
                             </Text>
                             <Text className="text-base text-gray-800 leading-6 font-poppins">

@@ -25,7 +25,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getMessages } from 'api/chats/message';
 import { useAuth } from 'context/auth/AuthHook';
 import { useSockets } from 'context/sockets/SocketHook';
@@ -63,7 +63,11 @@ export const ChatScreen = () => {
   useEffect(() => {
     if (initializing || !userMDB) return;
     getMessages(item.conversationUID)
-      .then((res) => setHistory(res.reverse()))
+      .then((res) => {
+        // Sort messages by createdAt to ensure chronological order (oldest first)
+        const sortedMessages = res.sort((a: Message, b: Message) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        setHistory(sortedMessages);
+      })
       .catch((err) => console.log(err));
   }, [item.conversationUID, initializing, userMDB]);
 
@@ -73,7 +77,7 @@ export const ChatScreen = () => {
 
     socket.emit('joinConversation', item.conversationUID);
 
-    socket.on('newMessage', (newMsg) => {
+    socket.on('newMessage', (newMsg: Message) => {
       setHistory((prev) => {
         const exists = prev.some((m) => m._id === newMsg._id);
         if (exists) return prev;

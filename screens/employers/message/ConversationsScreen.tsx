@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCallback, useEffect, useState } from 'react';
 import { getUserConversations } from 'api/chats/conversation';
 import { useAuth } from 'context/auth/AuthHook';
-import { User } from 'lucide-react-native';
+import { User, Search } from 'lucide-react-native';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 
 export const ConversationsScreen = () => {
@@ -36,8 +36,6 @@ export const ConversationsScreen = () => {
     }
   }, [route.params?.newConversation, conversations]);
 
-
-
   const navigation = useNavigation()
 
   useEffect(() => {
@@ -65,36 +63,29 @@ export const ConversationsScreen = () => {
       }${seeker.lastName || ""}`.trim();
 
     profilePic = (
-      <User
-        size={40}
-        style={{ padding: 20, marginHorizontal: 5 }}
-        color="#37424F"
-      />
+      <View className="mr-3 h-12 w-12 items-center justify-center rounded-full bg-gray-200">
+        <User size={24} color="#37424F" />
+      </View>
     );
 
 
     return (
-      <Pressable className="flex-row items-center px-4 py-3 border-b border-gray-200"
+      <Pressable
+        className="flex-row items-center border-b border-gray-200 px-4 py-3"
         onPress={() => navigation.navigate("chats", { item })}
       >
         {profilePic}
         <View className="flex-1">
           <Text
-            style={{
-              fontFamily: "Poppins-Bold",
-              fontSize: 16,
-              color: "#37424F",
-            }}
+            style={{ fontFamily: "Lexend-Bold" }}
+            className="mb-0.5 text-base text-[#37424F]"
             numberOfLines={1}
           >
             {displayName || "Unknown"}
           </Text>
           <Text
-            style={{
-              fontFamily: "Poppins-Regular",
-              fontSize: 14,
-              color: "#6B7280",
-            }}
+            style={{ fontFamily: "Lexend-Regular" }}
+            className="text-sm text-gray-500"
             numberOfLines={1}
           >
             {item?.lastMessage ||
@@ -105,37 +96,31 @@ export const ConversationsScreen = () => {
     );
   };
 
-
   return (
     <SafeAreaView className="flex-1 bg-white">
       {/* Header */}
       <Header />
 
       {/* Title */}
-      <View className="flex-row justify-between px-1 m-4">
+      <View className="flex-row items-center justify-between px-2 pb-2">
         <Text
-          style={{
-            fontFamily: "Poppins-Bold",
-            fontSize: 24,
-            color: "#37424F",
-          }}
+          style={{ fontFamily: "Poppins-Bold" }}
+          className="text-2xl text-[#37424F]"
         >
           Your Messages
         </Text>
         <Text
-          style={{
-            fontFamily: "Poppins-Regular",
-            fontSize: 16,
-            color: "#6B7280",
-          }}
+          style={{ fontFamily: "Poppins-Bold" }}
+          className="text-base font-normal text-gray-500"
         >
           Favorites
         </Text>
       </View>
 
       {/* Search bar placeholder */}
-      <View className="mx-4 mb-2 px-4 py-2 rounded-full bg-gray-100">
-        <Text style={{ color: "#9CA3AF", fontFamily: "Poppins-Regular" }}>
+      <View className="mx-4 mb-2 flex-row items-center rounded-full bg-gray-100 px-4 py-2">
+        <Search size={16} color="#9CA3AF" />
+        <Text style={{ fontFamily: 'Lexend-Regular' }} className="ml-2 font-normal text-gray-400">
           Find a conversation
         </Text>
       </View>
@@ -147,13 +132,10 @@ export const ConversationsScreen = () => {
         renderItem={renderConversation}
         ListEmptyComponent={
           <Text
-            style={{
-              textAlign: "center",
-              marginTop: 20,
-              fontFamily: "Poppins-Regular",
-            }}
+            style={{ fontFamily: "Lexend-Regular" }}
+            className="mt-5 text-center"
           >
-            No conversations yet
+            No conversations yet.
           </Text>
         }
       />

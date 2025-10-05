@@ -117,7 +117,7 @@ export function LoginScreen() {
         <View>
           <Text style={styles.fieldHeader} className="ml-2 mt-2">Email</Text>
           <TextInput
-            className="border border-gray-300 rounded-lg p-3 mb-5"
+            className="mb-5 rounded-lg border border-gray-300 p-3"
             placeholder="johndoe@gmail.com"
             value={email}
             placeholderTextColor="#9CA3AF"
@@ -164,7 +164,7 @@ export function LoginScreen() {
             <View className="w-5 h-5 border border-gray-400 rounded mr-2 items-center justify-center mt-5">
               {keepSignedIn && <View className="w-3 h-3 bg-[#3397f5] rounded-sm" />}
             </View>
-            <Text className="text-sm text-gray-700 mt-5">Keep me signed in</Text>
+            <Text className="text-sm text-gray-700">Keep me signed in</Text>
           </Pressable>
 
           <Pressable onPress={() => showAlert('Feature in progress', 'Coming Soon')}>
@@ -173,27 +173,25 @@ export function LoginScreen() {
         </View>
 
         {/* Login Buttons */}
-        <View className="space-y-4 mt-4">
+        <View className="mt-4 ">
           <Pressable
             onPress={() => handleLogin('jobseeker')}
-            className="bg-[#6C63FF] px-6 py-3 rounded-lg items-center justify-center"
-          >
-            <Text className="text-white font-bold text-center">Login as Job Seeker</Text>
+            className="items-center justify-center rounded-lg bg-[#6C63FF] px-6 py-3">
+            <Text className="text-center font-bold text-white">Login as Job Seeker</Text>
           </Pressable>
 
-          <View className="flex-row justify-center items-center my-2">
-            <View className="border-b border-gray-300 flex-1" />
-            <Text className="text-gray-500 mt-3 mb-3 mx-3 text-sm font-bold">
+          <View className="my-2 flex-row items-center justify-center">
+            <View className="flex-1 border-b border-gray-300" />
+            <Text className="mx-3 mb-3 mt-3 text-sm font-bold text-gray-500">
               Not A Job Seeker?
             </Text>
-            <View className="border-b border-gray-300 flex-1" />
+            <View className="flex-1 border-b border-gray-300" />
           </View>
 
           <Pressable
             onPress={() => handleLogin('employer')}
-            className="bg-[#1572DB] px-6 py-3 rounded-lg items-center justify-center"
-          >
-            <Text className="text-white font-bold text-center">Login as Employer</Text>
+            className="items-center justify-center rounded-lg bg-[#1572DB] px-6 py-3">
+            <Text className="text-center font-bold text-white">Login as Employer</Text>
           </Pressable>
         </View>
 
@@ -201,10 +199,10 @@ export function LoginScreen() {
         <Text className="justify-center text-center mt-5">
           Don&apos;t have an account?
           <Text
-            className="text-[#6C63FF] font-bold"
-            onPress={() => navigation.navigate('accountType')}
-          >
-            {' '}Register now.
+            className="font-bold text-[#6C63FF]"
+            onPress={() => navigation.navigate('accountType')}>
+            {' '}
+            Register now.
           </Text>
         </Text>
       </View>
