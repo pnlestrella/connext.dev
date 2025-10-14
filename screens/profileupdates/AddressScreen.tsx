@@ -15,7 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "navigation/types/RootStackParamList";
 import { updateProfile } from "api/profile";
-
+import ConfirmationModal from "components/ConfirmationModal";
 const API_KEY = "pk.9d1a0a6102b95fdfcab79dc4a5255313"; // your key
 
 export const AddressScreen = () => {

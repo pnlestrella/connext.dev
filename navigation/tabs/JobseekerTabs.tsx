@@ -34,7 +34,7 @@ export default function JobseekerTabs() {
             tabBarInactiveTintColor: 'gray',
             headerShown: false,
             tabBarHideOnKeyboard: true,
-            tabBarStyle: { paddingTop: 0, marginTop: -50 },
+            tabBarStyle: { paddingTop: 0, marginTop: 0 },
 
 
         })}>

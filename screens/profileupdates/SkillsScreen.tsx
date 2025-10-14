@@ -17,6 +17,9 @@ import { updateProfile } from "api/profile";
 import Fuse from "fuse.js";
 import Skills from "../../data/cleaned_skills.json"; // array of strings
 
+// Brand color
+const BRAND_PURPLE = "#6D28D9";
+
 // 🔹 synonyms dictionary
 const synonyms: Record<string, string[]> = {
   js: ["javascript"],
@@ -24,10 +27,21 @@ const synonyms: Record<string, string[]> = {
   ts: ["typescript"],
 };
 
+// 🔹 fuzzy search instance
 const fuse = new Fuse(Skills, {
   threshold: 0.3, // fuzzy tolerance
   includeScore: true,
 });
+
+// 🔹 escape helper for building safe RegExp from user input
+const escapeRegex = (s: string) =>
+  s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// Optional: use native RegExp.escape when available
+const safeEscape = (s: string) => {
+  const maybeNative = (RegExp as any).escape;
+  return typeof maybeNative === "function" ? maybeNative(s) : escapeRegex(s);
+};
 
 export const SkillsScreen = () => {
   const { user, userType, setUserMDB } = useAuth();
@@ -116,10 +130,18 @@ export const SkillsScreen = () => {
     return unique.slice(0, 8);
   }, [debouncedSearch, selected]);
 
-  // 🔹 highlight component
+  // 🔹 highlight component (safe against regex metacharacters)
   function Highlighted({ text, query }: { text: string; query: string }) {
     if (!query) return <Text>{text}</Text>;
-    const regex = new RegExp(`(${query})`, "i");
+    const safe = safeEscape(query);
+    if (!safe) return <Text>{text}</Text>;
+    let regex: RegExp;
+    try {
+      regex = new RegExp(`(${safe})`, "i");
+    } catch {
+      // If anything unexpected happens, render plain text
+      return <Text>{text}</Text>;
+    }
     const parts = text.split(regex);
     return (
       <Text>
@@ -225,8 +247,6 @@ export const SkillsScreen = () => {
   );
 };
 
-const BRAND_PURPLE = "#6D28D9";
-
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#fff" },
   title: { fontSize: 26, fontWeight: "700", color: "#6C63FF", marginBottom: 8 },
@@ -281,7 +301,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     backgroundColor: "#fff",
-    padding:10,
+    padding: 10,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: "#E5E7EB",

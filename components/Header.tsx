@@ -31,7 +31,7 @@ export const Header = () => {
 
       {/* Notification */}
       <TouchableOpacity
-        onPress={() => alert('Feature is under construction')}
+        onPress={() => alert('This feature is coming soon.')}
         style={{
           width: 36,
           height: 36,

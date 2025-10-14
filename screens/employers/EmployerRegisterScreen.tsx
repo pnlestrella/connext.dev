@@ -25,8 +25,6 @@ import { useAuth } from 'context/auth/AuthHook';
 // firebase
 import { userRegister } from 'firebase/firebaseAuth';
 import { Loading } from 'components/Loading';
-// icons (replace with your icon lib if different)
-import { Eye, EyeOff } from 'lucide-react-native';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -309,6 +307,8 @@ export const EmployerRegisterScreen = () => {
                 <Pressable
                   onPress={pickFile}
                   className="border border-gray-300 rounded-md p-3 bg-gray-100"
+                  accessibilityRole="button"
+                  accessibilityLabel="Upload company documents"
                 >
                   <Text className="text-gray-700">Upload Documents</Text>
                 </Pressable>
@@ -332,6 +332,8 @@ export const EmployerRegisterScreen = () => {
                     <Pressable
                       style={{ flexDirection: "row", alignItems: "center" }}
                       onPress={() => openFile(file.uri, file.mimeType)}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Open file ${file.name}`}
                     >
                       <Image
                         source={getIcon(file.mimeType)}
@@ -356,6 +358,8 @@ export const EmployerRegisterScreen = () => {
                         alignItems: "center",
                         justifyContent: "center",
                       }}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Remove file ${file.name}`}
                     >
                       <Text style={{ color: "#fff", fontSize: 10 }}>✕</Text>
                     </TouchableOpacity>
@@ -374,9 +378,17 @@ export const EmployerRegisterScreen = () => {
                     secureTextEntry={!showPass}
                     value={password}
                     onChangeText={setPassword}
+                    autoComplete="password-new"
+                    returnKeyType="next"
                   />
-                  <Pressable onPress={() => setShowPass((p) => !p)} hitSlop={8} style={styles.eyeBtn}>
-                    {showPass ? <Eye size={20} color="#37424F" /> : <EyeOff size={20} color="#9CA3AF" />}
+                  <Pressable
+                    onPress={() => setShowPass((p) => !p)}
+                    hitSlop={8}
+                    style={styles.textToggleBtn}
+                    accessibilityRole="button"
+                    accessibilityLabel={showPass ? "Hide password" : "Show password"}
+                  >
+                    <Text style={styles.toggleText}>{showPass ? "Hide" : "Show"}</Text>
                   </Pressable>
                 </View>
               </View>
@@ -392,15 +404,28 @@ export const EmployerRegisterScreen = () => {
                     secureTextEntry={!showConfirmPass}
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
+                    autoComplete="password-new"
+                    returnKeyType="done"
                   />
-                  <Pressable onPress={() => setShowConfirmPass((p) => !p)} hitSlop={8} style={styles.eyeBtn}>
-                    {showConfirmPass ? <Eye size={20} color="#37424F" /> : <EyeOff size={20} color="#9CA3AF" />}
+                  <Pressable
+                    onPress={() => setShowConfirmPass((p) => !p)}
+                    hitSlop={8}
+                    style={styles.textToggleBtn}
+                    accessibilityRole="button"
+                    accessibilityLabel={showConfirmPass ? "Hide password" : "Show password"}
+                  >
+                    <Text style={styles.toggleText}>{showConfirmPass ? "Hide" : "Show"}</Text>
                   </Pressable>
                 </View>
               </View>
 
               <View style={{ height: 10 }} />
-              <TouchableOpacity onPress={handleSubmit} className="bg-[#6C63FF] px-6 py-4 rounded-xl w-full">
+              <TouchableOpacity
+                onPress={handleSubmit}
+                className="bg-[#6C63FF] px-6 py-4 rounded-xl w-full"
+                accessibilityRole="button"
+                accessibilityLabel="Proceed to verification"
+              >
                 <Text className="text-white font-bold text-center">Proceed</Text>
               </TouchableOpacity>
 
@@ -473,10 +498,15 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 8,
   },
-  eyeBtn: {
+  textToggleBtn: {
     height: 40,
-    width: 40,
+    minWidth: 44,
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 6,
+  },
+  toggleText: {
+    color: "#6C63FF",
+    fontWeight: "700",
   },
 });

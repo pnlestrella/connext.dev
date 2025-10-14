@@ -1,5 +1,15 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -12,12 +22,24 @@ import { userRegister } from 'firebase/firebaseAuth';
 import { OTPModal } from 'components/OTP.modal';
 import { Loading } from 'components/Loading';
 
-
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+function capitalizeFirst(input: string) {
+  const cleaned = input.replace(/\s+/g, ' '); // collapse multiple spaces
+  if (!cleaned) return '';
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+}
 
 export const JSRegisterScreen = () => {
   const { setLoading, userType, loading } = useAuth();
   const navigation = useNavigation<NavigationProp>();
+  const uType = "jobseeker"
+  console.log(uType,'babababa')
+  console.log(uType,'babababa')
+
+
+
+ 
 
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -26,43 +48,39 @@ export const JSRegisterScreen = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  // show/hide toggles
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
   // OTP modal
   const [showOTP, setShowOTP] = useState(false);
 
   async function handleRegister() {
-    // Required fields
     if (!email || !password || !firstName || !lastName) {
       alert('Please fill in all required fields');
       return;
     }
-
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert('Please enter a valid email address');
       return;
     }
-
-    // Password validation
     if (password !== confirmPassword) {
       alert("Passwords don't match");
       return;
     }
-
     if (password.length < 6) {
       alert('Password must be at least 6 characters');
       return;
     }
-
+    console.log("TESTYYYY")
     setShowOTP(true);
   }
 
   async function onVerify() {
-    setLoading(true)
-    // Register in Firebase
+    setLoading(true);
     const registerFirebaseUser = await userRegister(email, password);
 
-    // Build user object
     const user = {
       seekerUID: registerFirebaseUser.user.uid,
       email,
@@ -84,161 +102,211 @@ export const JSRegisterScreen = () => {
       );
       console.log(await response.json());
       console.log('Account created successfully');
-      setLoading(false)
+      setLoading(false);
     } catch (err) {
-      setLoading(false)
+      setLoading(false);
       console.log(err);
     }
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white pt-3 ">
-      {loading &&
-        <View className='absolute inset-0 z-50' style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
+    <SafeAreaView className="flex-1 bg-white pt-3">
+      {loading && (
+        <View className="absolute inset-0 z-50" style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
           <Loading />
         </View>
-      }
-      <View className="items-center justify-center  px-10">
-        {/* Header with logo and title */}
-        <View className="flex-row items-center ">
-          <Image source={require('../../assets/images/justLogo.png')} className="w-20 h-20" resizeMode="contain" />
-          <View className="ml-1 flex-1">
-            <Text style={style.titleText}>Create an account</Text>
-            <Text style={style.subHeaderText} className="ml-1">
-              Find your jobs with one swipe
-            </Text>
-          </View>
-        </View>
+      )}
 
-        {/* Form fields */}
-        <View className="w-full max-w-md mt-8">
-          {/* Email */}
-          <View className="mb-4">
-            <View className="flex-row items-center mb-2">
-              <Text style={style.fieldHeader} className="ml-2">
-                Email
+      {/* Keyboard-aware wrapper */}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 16}
+      >
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 24 }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View className="items-center justify-center px-10">
+            {/* Header with logo and title */}
+            <View className="flex-row items-center">
+              <Image
+                source={require('../../assets/images/justLogo.png')}
+                className="w-20 h-20"
+                resizeMode="contain"
+              />
+              <View className="ml-1 flex-1">
+                <Text style={style.titleText}>Create an account</Text>
+                <Text style={style.subHeaderText} className="ml-1">
+                  Find your jobs with one swipe
+                </Text>
+              </View>
+            </View>
+
+            {/* Form fields */}
+            <View className="w-full max-w-md mt-8">
+              {/* Email */}
+              <View className="mb-4">
+                <View className="flex-row items-center mb-2">
+                  <Text style={style.fieldHeader} className="ml-2">
+                    Email
+                  </Text>
+                </View>
+                <TextInput
+                  style={style.textInput}
+                  className="border border-gray-300 rounded-md p-3"
+                  placeholder="johndoe@gmail.com"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  value={email}
+                  onChangeText={setEmail}
+                  returnKeyType="next"
+                />
+              </View>
+
+              {/* First Name */}
+              <View className="mb-4">
+                <Text style={style.fieldHeader} className="mb-2">
+                  First Name
+                </Text>
+                <TextInput
+                  style={style.textInput}
+                  className="border border-gray-300 rounded-md p-3"
+                  placeholderTextColor="#9CA3AF"
+                  placeholder="John"
+                  autoCapitalize="words"
+                  value={firstName}
+                  onChangeText={(t) => setFirstName(capitalizeFirst(t))}
+                  returnKeyType="next"
+                />
+              </View>
+
+              {/* Middle Initial */}
+              <View className="mb-4">
+                <Text style={style.fieldHeader} className="mb-2">
+                  Middle Initial (If applicable)
+                </Text>
+                <TextInput
+                  style={style.textInput}
+                  className="border border-gray-300 rounded-md p-3"
+                  placeholderTextColor="#9CA3AF"
+                  placeholder="i.e M."
+                  maxLength={2}
+                  autoCapitalize="characters"
+                  value={middleInitial}
+                  onChangeText={setMiddleInitial}
+                  returnKeyType="next"
+                />
+              </View>
+
+              {/* Last Name */}
+              <View className="mb-4">
+                <Text style={style.fieldHeader} className="mb-2">
+                  Last Name
+                </Text>
+                <TextInput
+                  style={style.textInput}
+                  className="border border-gray-300 rounded-md p-3"
+                  placeholderTextColor="#9CA3AF"
+                  placeholder="Doe"
+                  autoCapitalize="words"
+                  value={lastName}
+                  onChangeText={(t) => setLastName(capitalizeFirst(t))}
+                  returnKeyType="next"
+                />
+              </View>
+
+              {/* Password */}
+              <View className="mb-4">
+                <View className="flex-row items-center mb-2">
+                  <Text style={style.fieldHeader} className="ml-2">
+                    Password
+                  </Text>
+                </View>
+                <View
+                  className="border border-gray-300 rounded-md px-3"
+                  style={{ flexDirection: 'row', alignItems: 'center' }}
+                >
+                  <TextInput
+                    style={[style.textInput, { flex: 1, paddingVertical: 12 }]}
+                    placeholderTextColor="#9CA3AF"
+                    placeholder="Create a password"
+                    secureTextEntry={!showPassword}
+                    value={password}
+                    onChangeText={setPassword}
+                    autoComplete="password-new"
+                    returnKeyType="next"
+                  />
+                  <TouchableOpacity
+                    accessibilityLabel={showPassword ? 'Hide password' : 'Show password'}
+                    onPress={() => setShowPassword((s) => !s)}
+                    style={{ paddingVertical: 8, paddingHorizontal: 6 }}
+                  >
+                    <Text style={{ color: '#6C63FF', fontWeight: '700' }}>
+                      {showPassword ? 'Hide' : 'Show'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* Confirm Password */}
+              <View className="mb-10">
+                <View className="flex-row items-center mb-2">
+                  <Text style={style.fieldHeader} className="ml-2">
+                    Confirm Password
+                  </Text>
+                </View>
+                <View
+                  className="border border-gray-300 rounded-md px-3"
+                  style={{ flexDirection: 'row', alignItems: 'center' }}
+                >
+                  <TextInput
+                    style={[style.textInput, { flex: 1, paddingVertical: 12 }]}
+                    placeholderTextColor="#9CA3AF"
+                    placeholder="Confirm your password"
+                    secureTextEntry={!showConfirm}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    autoComplete="password-new"
+                    returnKeyType="done"
+                  />
+                  <TouchableOpacity
+                    accessibilityLabel={showConfirm ? 'Hide password' : 'Show password'}
+                    onPress={() => setShowConfirm((s) => !s)}
+                    style={{ paddingVertical: 8, paddingHorizontal: 6 }}
+                  >
+                    <Text style={{ color: '#6C63FF', fontWeight: '700' }}>
+                      {showConfirm ? 'Hide' : 'Show'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* Submit Button */}
+              <TouchableOpacity onPress={handleRegister} className="bg-[#6C63FF] px-6 py-4 rounded-xl w-full">
+                <Text className="text-white font-bold text-center">Proceed</Text>
+              </TouchableOpacity>
+
+              {/* Already have account? */}
+              <Text className="mt-4 text-center">
+                Already have an account?{' '}
+                <Text className="text-[#6C63FF] font-bold" onPress={() => navigation.navigate('login')}>
+                  Sign In here
+                </Text>
               </Text>
             </View>
-            <TextInput
-              style={style.textInput}
-              className="border border-gray-300 rounded-md p-3"
-              placeholder="johndoe@gmail.com"
-              placeholderTextColor="#9CA3AF"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={email}
-              onChangeText={setEmail}
-            />
           </View>
-
-          {/* First Name */}
-          <View className="mb-4">
-            <Text style={style.fieldHeader} className="mb-2">
-              First Name
-            </Text>
-            <TextInput
-              style={style.textInput}
-              className="border border-gray-300 rounded-md p-3"
-              placeholderTextColor="#9CA3AF"
-              placeholder="John"
-              value={firstName}
-              onChangeText={setFirstName}
-            />
-          </View>
-
-          {/* Middle Initial */}
-          <View className="mb-4">
-            <Text style={style.fieldHeader} className="mb-2">
-              Middle Initial (If applicable)
-            </Text>
-            <TextInput
-              style={style.textInput}
-              className="border border-gray-300 rounded-md p-3"
-              placeholderTextColor="#9CA3AF"
-              placeholder="i.e M."
-              maxLength={2}
-              value={middleInitial}
-              onChangeText={setMiddleInitial}
-            />
-          </View>
-
-          {/* Last Name */}
-          <View className="mb-4">
-            <Text style={style.fieldHeader} className="mb-2">
-              Last Name
-            </Text>
-            <TextInput
-              style={style.textInput}
-              className="border border-gray-300 rounded-md p-3"
-              placeholderTextColor="#9CA3AF"
-              placeholder="Doe"
-              value={lastName}
-              onChangeText={setLastName}
-            />
-          </View>
-
-          {/* Password */}
-          <View className="mb-4">
-            <View className="flex-row items-center mb-2">
-              <Text style={style.fieldHeader} className="ml-2">
-                Password
-              </Text>
-            </View>
-            <TextInput
-              style={style.textInput}
-              className="border border-gray-300 rounded-md p-3"
-              placeholderTextColor="#9CA3AF"
-              placeholder="Create a password"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
-          </View>
-
-          {/* Confirm Password */}
-          <View className="mb-10">
-            <View className="flex-row items-center mb-2">
-              <Text style={style.fieldHeader} className="ml-2">
-                Confirm Password
-              </Text>
-            </View>
-            <TextInput
-              style={style.textInput}
-              className="border border-gray-300 rounded-md p-3"
-              placeholderTextColor="#9CA3AF"
-              placeholder="Confirm your password"
-              secureTextEntry
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-            />
-          </View>
-
-          {/* Submit Button */}
-          <TouchableOpacity
-            onPress={handleRegister}
-            className="bg-[#6C63FF] px-6 py-4 rounded-xl w-full"
-          >
-            <Text className="text-white font-bold text-center">Proceed</Text>
-          </TouchableOpacity>
-
-          {/* Already have account? */}
-          <Text className="mt-4 text-center">
-            Already have an account?{' '}
-            <Text
-              className="text-[#6C63FF] font-bold"
-              onPress={() => navigation.navigate('login')}
-            >
-              Sign In here
-            </Text>
-          </Text>
-        </View>
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       {/* OTP Modal */}
       <OTPModal
         loading={loading}
         setLoading={setLoading}
-        userType={userType}
+        userType={uType}
         email={email}
         onVerify={onVerify}
         visible={showOTP}

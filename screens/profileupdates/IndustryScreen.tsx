@@ -1,133 +1,235 @@
-import { useState } from 'react';
-import { Text, View, TextInput, FlatList, Pressable } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Industries } from '../../data/industries.json'
-import { Button } from 'components/Button';
-import Constants from 'expo-constants'
-import { useAuth } from 'context/auth/AuthHook';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "context/auth/AuthHook";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "navigation/types/RootStackParamList";
-//api
-import { updateProfile } from 'api/profile';
+import { updateProfile } from "api/profile";
+import { Button } from "components/Button";
+import { Industries } from "../../data/industries.json";
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>
-
-
-type Industry = {
-  name: String,
-  id: Number
-}
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type Industry = { name: string; id: number };
 
 export const IndustryScreen = () => {
-  const {user,userType,setUserMDB} = useAuth()
-  const [selected, setSelected] = useState<Industry[]>([])
-  const [search, setSearch] = useState("")
+  const { user, userType, setUserMDB } = useAuth();
+  const navigation = useNavigation<NavigationProp>();
 
-  const navigation = useNavigation()
+  const userPath = userType + "s";
+  const [selected, setSelected] = useState<Industry[]>([]);
+  const [search, setSearch] = useState("");
 
-  //jobseeker+s
-  const userPath = userType + 's'
-  console.log(userPath)
-  console.log(user?.uid)
-
-  function handleSelect(industry: object) {
+  function handleSelect(industry: Industry) {
     setSelected((prev) => {
-      const exist = prev.some(item => item.name === industry.name)
-      if (exist) {
-        return prev.filter(item => item.name !== industry.name)
+      const exists = prev.some((item) => item.name === industry.name);
+      if (exists) {
+        return prev.filter((item) => item.name !== industry.name);
       } else if (prev.length >= 3) {
-        alert("You can only pick 3 industries")
+        alert("⚠️ You can only pick up to 3 industries");
         return prev;
       } else {
-        return [...prev, industry]
+        return [...prev, industry];
       }
-    })
+    });
   }
-
 
   async function handleSubmit() {
     if (selected.length < 1) {
-      alert("Please pick atleast 1 Industry")
+      alert("⚠️ Please select at least one industry");
       return;
     }
-    //PAYLOAD Data
-   const data: String[] = []
-    selected.map(item => (
-      data.push(item.name)
-    ))
 
+    const data: string[] = selected.map((item) => item.name);
     const payload = {
       editType: "industries",
-      data: data
+      data,
+    };
+
+    const res = await updateProfile(userPath, user?.uid, payload);
+    if (res.success === false) {
+      alert(res.error);
+      return;
     }
 
-    const res = await updateProfile(userPath,user?.uid,payload);
-    console.log(res,'INDUSTRYYY')
-
-    setUserMDB(res)
-    alert("Successfully edited industries")
+    setUserMDB(res);
+    alert("✅ Successfully added industries");
   }
 
-  const filtered = Industries.filter(ind => {
-    return ind.name.toLowerCase().includes(search.toLowerCase())
-  }
-  )
+  const filtered = Industries.filter((ind) =>
+    ind.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <SafeAreaView className='flex-1 p-5 m-5 '>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <View style={{ flex: 1 }}>
+          <Text style={styles.title}>Which industry are you in?</Text>
+          <Text style={styles.subtitle}>
+            Knowing your industry helps us show you the right opportunities.
+          </Text>
 
-      <View >
-        <Text className='text-2xl mb-4 text-brand-purpleMain'>Which Industry are you in?</Text>
-        <Text className='text-base'>Knowing what industry you’re in will help us in choosing the right offers to you!</Text>
-        <View className='w-[100%] border-b-2 border-gray-300   my-3'></View>
+          <TextInput
+            style={styles.input}
+            placeholder="Search industry..."
+            value={search}
+            onChangeText={setSearch}
+          />
 
-      </View>
+          {/* Selected tags */}
+          {selected.length > 0 && (
+            <View style={styles.selectedContainer}>
+              {selected.map((item) => (
+                <Pressable
+                  key={item.id.toString()}
+                  onPress={() => handleSelect(item)}
+                  style={styles.tag}
+                >
+                  <Text style={styles.tagText}>{item.name}</Text>
+                  <Text style={styles.tagRemove}>×</Text>
+                </Pressable>
+              ))}
+            </View>
+          )}
 
-      <View className='my-2'>
-        <TextInput value={search} onChangeText={setSearch} placeholder='Search industry here' className='border border-gray-300 bg-gray-200 rounded-lg p-3 mb-3' />
-        <View className="flex flex-row flex-wrap">
-          {selected.map((item) => (
-            <Pressable
-              key={item.id.toString()}
-              className="bg-brand-purpleMain px-0.5 py-0.5 m-1 rounded-full justify-center"
-              onPress={() => handleSelect(item)}
-            >
-              <View className="flex flex-row bg-brand-purpleMain px-0.5 py-0.5 m-1 rounded-full items-center">
-                <Text className="text-white mr-2">{item.name}</Text>
-                <Text className="text-white font-bold">×</Text>
-              </View>
+          <Text style={styles.helperText}>
+            Select up to 3 industries you belong to:
+          </Text>
 
-            </Pressable>
-          ))}
+          <FlatList
+            data={filtered}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => {
+              const isSelected = selected.some((sel) => sel.id === item.id);
+              return (
+                <Pressable
+                  onPress={() => handleSelect(item)}
+                  style={[
+                    styles.option,
+                    isSelected && styles.optionSelected,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.optionText,
+                      isSelected && styles.optionTextSelected,
+                    ]}
+                  >
+                    {item.name}
+                  </Text>
+                </Pressable>
+              );
+            }}
+          />
         </View>
 
-        <Text>Please select atleast 1 Industries, Max of 3: </Text>
-
-      </View >
-
-
-
-      <FlatList
-        data={filtered}
-        keyExtractor={(ind) => ind.id.toString()}
-        renderItem={({ item }) => (
-          <Pressable className={`border border-gray-500 m-1 p-3 rounded-xl
-            ${selected.includes(item) ? 'bg-brand-purpleMain' : null} 
-            `}
-            onPress={() => handleSelect(item)}
-          >
-            <Text>
-              {item.name}
-            </Text>
-          </Pressable>
-        )}
-      />
-
-      <Button onPress={handleSubmit} title={"Submit"} />
-
-
+        <Pressable style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Save & Continue</Text>
+        </Pressable>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#fff", padding: 20 },
+  title: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#6C63FF",
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 15,
+    color: "#555",
+    marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 16,
+    backgroundColor: "#fafafa",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 1,
+    marginBottom: 10,
+  },
+  selectedContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginVertical: 8,
+  },
+  tag: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#6C63FF",
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    margin: 4,
+  },
+  tagText: {
+    color: "white",
+    marginRight: 5,
+    fontSize: 14,
+  },
+  tagRemove: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+    lineHeight: 16,
+  },
+  helperText: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 8,
+  },
+  option: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    marginBottom: 8,
+    backgroundColor: "#fff",
+  },
+  optionSelected: {
+    backgroundColor: "#6C63FF",
+    borderColor: "#6C63FF",
+  },
+  optionText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  optionTextSelected: {
+    color: "white",
+    fontWeight: "600",
+  },
+  button: {
+    backgroundColor: "#6C63FF",
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "white",
+  },
+});

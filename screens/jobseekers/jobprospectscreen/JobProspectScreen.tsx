@@ -9,6 +9,9 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import { useAuth } from 'context/auth/AuthHook';
 import { createApplication } from 'api/applications';
+import { getFileUrl } from 'api/employers/imagekit';
+import { Loading } from 'components/Loading';
+import AlertModal from 'components/AlertModal';
 
 dayjs.extend(relativeTime);
 
@@ -27,6 +30,19 @@ export const JobProspectScreen = () => {
   const [activeTab, setActiveTab] = useState<'shortlisted' | 'applied'>('shortlisted');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedJob, setSelectedJob] = useState<any>(null);
+
+  // For Alerts
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState<string>('Alert');
+  const [alertMessage, setAlertMessage] = useState<string>('');
+  const showAlert = (title: string, message: string) => {
+    setAlertTitle(title);
+    setAlertMessage(message);
+    setAlertVisible(true);
+  };
+
+  //for loading
+  const [loading, setLoading] = useState(false)
 
   useFocusEffect(
     useCallback(() => {
@@ -47,7 +63,7 @@ export const JobProspectScreen = () => {
     const job = item.jobDetails;
     if (!job.isExternal) {
       if (!userMDB.resume) {
-        alert("Please upload resume before applying");
+        showAlert("Resume Required", "Please upload resume before applying")
         return;
       }
 
@@ -62,13 +78,14 @@ export const JobProspectScreen = () => {
         const res = await createApplication(application);
         console.log(res, '-resssssssssyyyyyyyy')
         fetchShortlistedJobs();
-        alert("Successfully sent an application");
+        showAlert('Application Submitted', 'Successfully sent an application.'); // AlertModal
       } catch (err) {
         console.error("Apply Error:", err);
         alert("Failed to apply. Try again.");
       }
     } else {
-      alert("External jobs are currently being implemented");
+      showAlert('Notice', 'This feature is coming soon.'); // AlertModal
+      console.log(item.link, 'aaa')
     }
   };
 
@@ -397,7 +414,23 @@ export const JobProspectScreen = () => {
                     borderRadius: 10,
                     justifyContent: 'center',
                   }}
-                  onPress={() => Linking.openURL(selectedJob.application.resume)}
+                  onPress={async () => {
+                    try {
+                      setLoading(true);
+                      const filePaths = [selectedJob.application.resume];
+                      const res = await getFileUrl(filePaths);
+                      const resumeUrl = res.files[0].signedUrl;
+
+                      navigation.navigate('resumeViewerProspect' as never, { resumeUrl } as never);
+                      // setLoading(false);
+                    } catch (err) {
+                      alert('Could not open resume')
+                      // showAlert('Open failed', 'Could not open resume'); // AlertModal
+                      setLoading(false);
+                    }
+                    setLoading(false);
+
+                  }}
                 >
                   <FileText size={20} color="white" />
                   <Text style={{ color: 'white', fontFamily: 'Lexend-Bold', marginLeft: 8 }}>View Resume</Text>
@@ -421,6 +454,20 @@ export const JobProspectScreen = () => {
           </View>
         </Modal>
       )}
+
+      {loading ? (
+        <View className="z-999 absolute top-0 bottom-0 left-0 right-0 bg-white/50">
+          <Loading />
+        </View>
+      ) : null}
+
+      <AlertModal
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
+      />
+
     </SafeAreaView>
   );
 };

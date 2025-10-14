@@ -26,10 +26,14 @@ import AlertModal from 'components/AlertModal';
 type NavigationType = NativeStackNavigationProp<RootStackParamList>;
 
 export const ProfileScreenJS = () => {
-  const { userMDB, signOutUser, setLoading, loading, refreshAuth } = useAuth();
+  const { userMDB, signOutUser, refreshAuth } = useAuth();
   const navigation = useNavigation<NavigationType>();
+  const [loading, setLoading] = useState(false)
 
-  // Alerts (replaces all alert(...) calls)
+  console.log('test')
+
+
+  // For Alerts
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertTitle, setAlertTitle] = useState<string>('Alert');
   const [alertMessage, setAlertMessage] = useState<string>('');
@@ -111,6 +115,11 @@ export const ProfileScreenJS = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      {loading ? (
+        <View className="z-999 absolute top-0 bottom-0 left-0 right-0 bg-white/50">
+          <Loading />
+        </View>
+      ) : null}
       <Header />
 
       <ScrollView contentContainerStyle={{ padding: 20 }}>
@@ -612,11 +621,7 @@ export const ProfileScreenJS = () => {
         onClose={() => setAlertVisible(false)}
       />
 
-      {loading ? (
-        <View className="z-999 absolute top-0 bottom-0 left-0 right-0 bg-white/50">
-          <Loading />
-        </View>
-      ) : null}
+
     </SafeAreaView>
   );
 };

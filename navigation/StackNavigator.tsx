@@ -25,7 +25,7 @@ import { SplashScreen } from "screens/SplashScreen";
 
 // Types
 import { RootStackParamList } from "./types/RootStackParamList";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getVerification } from "api/employers/verification_requests";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -69,40 +69,64 @@ function JobseekerStack({ userMDB }: any) {
 
 function EmployerStack({ userMDB }: any) {
   const { location, industries } = userMDB || {};
-  const [verif, setVerif] = React.useState<VerificationRecord | null>(null);
-  const [ready, setReady] = React.useState(false);
+  const [status, setStatus] = React.useState<string>(""); // 'pending' | 'approved' | '' etc.
 
   React.useEffect(() => {
     let mounted = true;
     (async () => {
-      if (!userMDB?.employerUID) { setReady(true); return; }
       try {
+        if (!userMDB?.employerUID) return;
         const res = await getVerification(userMDB.employerUID);
         if (!mounted) return;
-        setVerif(res ?? null);
-      } finally {
-        if (mounted) setReady(true);
+        setStatus(res?.verificationStatus ?? "");
+      } catch (err) {
+        console.log(err);
       }
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [userMDB?.employerUID]);
 
-  if (!ready) return null; // or a loading splash
+  // Derive flow state
+  const needsAddress = !location;
+  const needsIndustries = !industries;
+  const needsConfirmation = status === "pending";
 
-  const initial = verif?.verificationStatus === 'pending' ? 'confirmation' : 'home';
+  // Priority: address -> industries -> confirmation -> home
+  const initial = needsAddress
+    ? "address"
+    : needsIndustries
+    ? "industries"
+    : needsConfirmation
+    ? "confirmation"
+    : "home";
+
+  // Force remount when prerequisites or status change so initialRouteName re-applies
+  const flowKey = [
+    needsAddress ? "addr" : "ok",
+    needsIndustries ? "ind" : "ok",
+    needsConfirmation ? "conf" : "ok",
+  ].join("-");
 
   return (
     <Stack.Navigator
-      screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'white' } }}
+      key={flowKey}
+      screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "white" } }}
       initialRouteName={initial}
     >
-      <Stack.Screen name="confirmation" component={RegistrationConfirmationScreen} />
-      {!location && <Stack.Screen name="address" component={AddressScreen} />}
-      {!industries && <Stack.Screen name="industries" component={IndustryScreen} />}
+      {needsAddress && <Stack.Screen name="address" component={AddressScreen} />}
+      {!needsAddress && needsIndustries && (
+        <Stack.Screen name="industries" component={IndustryScreen} />
+      )}
+      {!needsAddress && !needsIndustries && needsConfirmation && (
+        <Stack.Screen name="confirmation" component={RegistrationConfirmationScreen} />
+      )}
       <Stack.Screen name="home" component={EmployerTabs} />
     </Stack.Navigator>
   );
 }
+
 
 
 export default function StackNavigator() {

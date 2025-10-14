@@ -8,18 +8,29 @@ import { useState } from "react";
 import { useAuth } from 'context/auth/AuthHook';
 import { createApplication } from 'api/applications';
 import { useJobs } from 'context/jobs/JobHook';
+import AlertModal from 'components/AlertModal';
 
 dayjs.extend(relativeTime);
 
 export const JobProspectDetails = () => {
-    const {userMDB} = useAuth()
+    const { userMDB } = useAuth()
     const route = useRoute();
     const navigation = useNavigation();
     const { item } = route.params;
-      const { shortlistedJobs, fetchShortlistedJobs } = useJobs();
+    const { shortlistedJobs, fetchShortlistedJobs } = useJobs();
 
-      console.log(item,'tiei')
-    
+    console.log(item, 'tiei')
+
+    // For Alerts
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertTitle, setAlertTitle] = useState<string>('Alert');
+    const [alertMessage, setAlertMessage] = useState<string>('');
+    const showAlert = (title: string, message: string) => {
+        setAlertTitle(title);
+        setAlertMessage(message);
+        setAlertVisible(true);
+    };
+
 
     const job = item.jobDetails;
     const [showFeedback, setShowFeedback] = useState(false);
@@ -42,16 +53,17 @@ export const JobProspectDetails = () => {
                     .then((res) => {
                         fetchShortlistedJobs();
                         console.log(res)
-                        alert("Successfully sent an application")
+                        showAlert('Application Submitted', 'Successfully sent an application.'); // AlertModal
                         navigation.goBack()
                     })
                     .catch(err => console.log(err))
 
             } else {
-                alert("Please upload resume before applying")
+                showAlert('Resume Required', 'Please upload resume before applying'); // AlertModal
+
             }
         } else {
-            alert("External jobs is currently being implemented")
+            showAlert('Notice', 'This feature is coming soon.'); // AlertModal
         }
     }
 
@@ -181,8 +193,14 @@ export const JobProspectDetails = () => {
                 >
                     <Text className="text-white font-bold text-lg font-lexend">Apply Now</Text>
                 </Pressable>
-                22
             </ScrollView>
+            <AlertModal
+                visible={alertVisible}
+                title={alertTitle}
+                message={alertMessage}
+                onClose={() => setAlertVisible(false)}
+            />
+
         </SafeAreaView>
     );
 };
