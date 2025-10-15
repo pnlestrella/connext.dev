@@ -1,28 +1,13 @@
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Header } from 'components/Header';
 import {
-  ArrowLeft,
-  User,
-  Smile,
-  AlertTriangle,
-  Star,
-  Send,
-  Plus,
-  Camera,
-  Mic,
-  CalendarDays,
-  Check
+  ArrowLeft, User, Smile, AlertTriangle, Star, Send,
+  Plus, Camera, Mic, CalendarDays, Check
 } from 'lucide-react-native';
 import {
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Keyboard,
-  TouchableWithoutFeedback,
-  FlatList,
-  Pressable,
-  Animated,
+  Text, View, TouchableOpacity, TextInput, Keyboard,
+  TouchableWithoutFeedback, FlatList, Pressable, Animated,
+  KeyboardAvoidingView, Platform
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
@@ -35,7 +20,6 @@ import ConfirmationModal from 'components/ConfirmationModal';
 export const ChatScreen = () => {
   const { socket } = useSockets();
   const { userMDB, initializing } = useAuth();
-
   const route = useRoute();
   const navigation = useNavigation();
   const { item } = route.params;
@@ -44,17 +28,13 @@ export const ChatScreen = () => {
   const [message, setMessage] = useState('');
   const [history, setHistory] = useState([]);
   const [isHiredState, setIsHiredState] = useState(item.applicationStatus === 'hired');
-
   const hireBadgeAnim = useState(new Animated.Value(isHiredState ? 1 : 0))[0];
 
   // Animate badge when hired
   useEffect(() => {
     if (isHiredState) {
       Animated.spring(hireBadgeAnim, {
-        toValue: 1,
-        useNativeDriver: true,
-        friction: 5,
-        tension: 80,
+        toValue: 1, useNativeDriver: true, friction: 5, tension: 80,
       }).start();
     }
   }, [isHiredState]);
@@ -70,9 +50,7 @@ export const ChatScreen = () => {
   // Socket listeners
   useEffect(() => {
     if (initializing || !userMDB || !socket) return;
-
     socket.emit('joinConversation', item.conversationUID);
-
     socket.on('newMessage', (newMsg) => {
       setHistory((prev) => {
         const exists = prev.some((m) => m._id === newMsg._id);
@@ -80,7 +58,6 @@ export const ChatScreen = () => {
         return [newMsg, ...prev];
       });
     });
-
     return () => {
       socket.emit('leaveConversation', item.conversationUID);
       socket.off('newMessage');
@@ -89,7 +66,7 @@ export const ChatScreen = () => {
 
   if (initializing || !userMDB) {
     return (
-      <SafeAreaView className="flex-1 items-center justify-center bg-white">
+      <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' }}>
         <Text>Loading chat...</Text>
       </SafeAreaView>
     );
@@ -99,16 +76,13 @@ export const ChatScreen = () => {
 
   const handleSend = () => {
     if (!message.trim() || !socket) return;
-
     const senderUID = userMDB?.employerUID || userMDB?.seekerUID;
     if (!senderUID) return;
-
     socket.emit('sendMessage', {
       conversationUID: item.conversationUID,
       senderUID,
       text: message.trim(),
     });
-
     setMessage('');
   };
 
@@ -117,39 +91,40 @@ export const ChatScreen = () => {
       const res = await updateApplications(item.applicationID, 'hired');
       console.log(res, 'Successfully Hired the Jobseeker');
       setShowConfirm(false);
-      setIsHiredState(true); // Immediately reflect in UI
+      setIsHiredState(true);
     } catch (err) {
       console.log(err, 'Error Hiring the Jobseeker');
     }
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 30}
+      >
+        {/* Hire Confirmation Modal */}
+        <ConfirmationModal
+          visible={showConfirm}
+          type="hire"
+          title="Are you sure?"
+          message="Only press confirm if you have scheduled an interview and assessed the applicant personally."
+          onConfirm={handleHire}
+          onCancel={() => setShowConfirm(false)}
+        />
 
-      {/* Hire Confirmation Modal */}
-      <ConfirmationModal
-        visible={showConfirm}
-        type="hire"
-        title="Are you sure?"
-        message="Only press confirm if you have scheduled an interview and assessed the applicant personally."
-        onConfirm={handleHire}
-        onCancel={() => setShowConfirm(false)}
-      />
-
-      {/* Root KeyboardAvoidingView */}
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        {/* Dismiss Keyboard On Tap */}
         <View style={{ flex: 1 }}>
           {/* Top bar */}
-          <View className="flex-row items-center px-4 py-3 border-b border-gray-200">
+          <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderColor: '#e5e7eb' }}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <ArrowLeft width={24} height={24} color="#37424F" />
             </TouchableOpacity>
-
-            <View className="ml-3 w-10 h-10 rounded-full bg-gray-300 items-center justify-center">
+            <View style={{ marginLeft: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: '#d1d5db', alignItems: 'center', justifyContent: 'center' }}>
               <User width={20} height={20} color="#37424F" />
             </View>
-
-            <View className="ml-3 flex-1">
+            <View style={{ marginLeft: 12, flex: 1 }}>
               <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 16, color: '#37424F' }}>
                 {displayName || 'Applicant'}
               </Text>
@@ -157,9 +132,11 @@ export const ChatScreen = () => {
                 Active 2 hours ago
               </Text>
             </View>
-
             {!isHiredState && (
-              <Pressable className="bg-blue-500 rounded-lg px-3 py-1" onPress={() => setShowConfirm(true)}>
+              <Pressable
+                style={{ backgroundColor: '#3b82f6', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 4 }}
+                onPress={() => setShowConfirm(true)}
+              >
                 <Text style={{ color: 'white', fontFamily: 'Poppins-Medium' }}>Hire Applicant</Text>
               </Pressable>
             )}
@@ -178,24 +155,26 @@ export const ChatScreen = () => {
               flexDirection: "row",
               alignItems: "center",
               elevation: 1,
+              justifyContent:'space-between'
             }}
           >
-            <CalendarDays width={18} height={18} color={isHiredState ? "#10B981" : "#6C63FF"} />
-
-            <Text
-              style={{
-                marginLeft: 8,
-                fontFamily: "Poppins-Regular",
-                fontSize: 13,
-                color: "#37424F",
-                flexShrink: 1,
-              }}
-            >
-              Chat regarding{" "}
-              <Text style={{ fontFamily: "Poppins-SemiBold", color: isHiredState ? "#047857" : "#2563EB" }}>
-                {item.jobTitle}
+            <View style={{flexDirection:'row'}}>
+              <CalendarDays width={18} height={18} color={isHiredState ? "#10B981" : "#6C63FF"} />
+              <Text
+                style={{
+                  marginLeft: 8,
+                  fontFamily: "Poppins-Regular",
+                  fontSize: 13,
+                  color: "#37424F",
+                  flexShrink: 1,
+                }}
+              >
+                Chat regarding{" "}
+                <Text style={{ fontFamily: "Poppins-SemiBold", color: isHiredState ? "#047857" : "#2563EB" }}>
+                  {item.jobTitle}
+                </Text>
               </Text>
-            </Text>
+            </View>
 
             {isHiredState && (
               <Animated.View
@@ -233,7 +212,6 @@ export const ChatScreen = () => {
             renderItem={({ item: msg }) => {
               const myUID = userMDB?.employerUID || userMDB?.seekerUID;
               const isMe = msg.senderUID === myUID;
-
               return (
                 <View
                   style={{
@@ -274,15 +252,16 @@ export const ChatScreen = () => {
             contentContainerStyle={{ padding: 16 }}
             showsVerticalScrollIndicator={false}
             inverted
+            nestedScrollEnabled
+            style={{ flex: 1 }} // Ensures FlatList uses available space
           />
 
           {/* Bottom input bar */}
-          <View className="border-t border-gray-200 bg-white px-3 py-2">
-            <View className="flex-row items-center bg-gray-100 rounded-full px-3 py-2">
-              <Pressable className="mr-2">
+          <View style={{ borderTopWidth: 1, borderColor: '#e5e7eb', backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#f3f4f6', borderRadius: 999, paddingHorizontal: 12, paddingVertical: 8 }}>
+              <Pressable style={{ marginRight: 8 }}>
                 <Plus width={26} height={26} color="#2563EB" />
               </Pressable>
-
               <TextInput
                 value={message}
                 onChangeText={setMessage}
@@ -297,18 +276,16 @@ export const ChatScreen = () => {
                   paddingTop: 6,
                 }}
               />
-
-              <Pressable className="ml-2">
+              <Pressable style={{ marginLeft: 8 }}>
                 <Smile width={24} height={24} color="#6B7280" />
               </Pressable>
-
               {message.trim().length > 0 ? (
-                <Pressable className="ml-2 bg-blue-500 rounded-full p-2" onPress={handleSend}>
+                <Pressable style={{ marginLeft: 8, backgroundColor: '#3b82f6', borderRadius: 999, padding: 8 }} onPress={handleSend}>
                   <Send width={20} height={20} color="white" />
                 </Pressable>
               ) : (
-                <View className="flex-row items-center ml-2">
-                  <Pressable className="mr-3">
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
+                  <Pressable style={{ marginRight: 8 }}>
                     <Camera width={22} height={22} color="#6B7280" />
                   </Pressable>
                   <Pressable>
@@ -317,22 +294,9 @@ export const ChatScreen = () => {
                 </View>
               )}
             </View>
-
-            {/* Quick actions */}
-            {/* <View className="flex-row justify-between px-2 mt-2">
-              <TouchableOpacity className="flex-row items-center">
-                <AlertTriangle width={18} color="#EF4444" />
-                <Text className="text-xs text-red-500 ml-1">Report</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity className="flex-row items-center">
-                <Star width={18} color="#FACC15" />
-                <Text className="text-xs text-yellow-500 ml-1">Fav</Text>
-              </TouchableOpacity>
-            </View> */}
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
