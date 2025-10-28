@@ -4,6 +4,7 @@ export default {
   expo: {
     name: "connext",
     slug: "my-expo-app",
+    scheme:'connext',
     version: "1.0.0",
     web: {
       favicon: "./assets/favicon_v2.png",

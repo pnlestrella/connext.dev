@@ -12,8 +12,6 @@ export const ConversationsScreen = () => {
   const { user } = useAuth();
 
 
-  console.log(conversations,'testyyyyyyyyyyy')
-
   const route = useRoute();
   const { newConversation } = route.params || {};
 

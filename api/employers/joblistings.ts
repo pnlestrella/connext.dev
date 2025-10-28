@@ -59,7 +59,7 @@ export async function postJob(jobData: any) {
     return resJSON;
   } catch (err) {
     console.log('❌ Error posting job:', err);
-    return { success: false, error: err };
+    return { success: false, message: err };
   }
 }
 

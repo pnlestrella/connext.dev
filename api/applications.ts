@@ -80,7 +80,6 @@ export const updateApplications = async (applicationID: string, status: string) 
 };
 
 //post request
-
 export const createApplication = async (application: any) => {
   try {
     const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/applications/createApplication`;

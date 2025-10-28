@@ -61,8 +61,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-
-  // 🔧 No more shortlist/skip normalization
   const normalizeUser = (rawUser: any) => {
     if (!rawUser) return null;
     return rawUser;
@@ -151,8 +149,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   async function signOutUser() {
     try {
       await AsyncStorage.multiRemove(["userProfile", "unsyncedActions"]);
-
-      
       setUserMDB(null);
       setResetSignal(true);
       await userSignOut();
