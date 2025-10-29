@@ -3,33 +3,31 @@ import {
   ArrowLeft,
   User,
   Smile,
-  AlertTriangle,
-  Star,
   Send,
   Plus,
   Camera,
   Mic,
   CalendarDays,
-  Check
+  Check,
+  Copy,
 } from 'lucide-react-native';
 import {
   Text,
   View,
   TouchableOpacity,
   TextInput,
-  Keyboard,
-  TouchableWithoutFeedback,
   Platform,
   FlatList,
   KeyboardAvoidingView,
   Image,
-  ScrollView
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import { getMessages } from 'api/chats/message';
+import { getSchedulesByConversation } from 'api/schedules/schedules';
 import { useAuth } from 'context/auth/AuthHook';
 import { useSockets } from 'context/sockets/SocketHook';
+import * as Linking from 'expo-linking';
 
 export const ChatScreen = () => {
   const { socket } = useSockets();
@@ -38,30 +36,61 @@ export const ChatScreen = () => {
   const navigation = useNavigation();
   const { item } = route.params;
 
-  console.log(item.applicationStatus, "itemmss")
+  // Determine if user is employer or job seeker for view privileges
+  const isEmployer = !!item.employerUID && userMDB?.employerUID === item.employerUID;
+  const isJobSeeker = !!item.seekerUID && userMDB?.seekerUID === item.seekerUID;
 
   // Guard if auth still loading
   if (initializing || !userMDB) {
     return (
       <SafeAreaView className="flex-1 bg-white items-center justify-center">
-        <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 15, color: '#6B7280' }}>
+        <Text
+          style={{
+            fontFamily: 'Poppins-Regular',
+            fontSize: 15,
+            color: '#6B7280',
+          }}
+        >
           Loading chat...
         </Text>
       </SafeAreaView>
     );
   }
 
-  const displayName = item?.employerName || 'Employer';
-  const profilePic = item?.employerProfilePic;
+  const displayName = isEmployer
+    ? item?.seekerName
+      ? `${item.seekerName.firstName} ${item.seekerName.lastName}`
+      : 'Job Seeker'
+    : item?.employerName || 'Employer';
+
+  const profilePic = isEmployer ? null : item?.employerProfilePic;
 
   const [message, setMessage] = useState('');
   const [history, setHistory] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [copySuccessId, setCopySuccessId] = useState(null);
+  const [currentTime, setCurrentTime] = useState(Date.now());
 
-  // Load history
+  // Load message history combined with schedules for system/meeting messages
   useEffect(() => {
-    getMessages(item.conversationUID)
-      .then((res) => setHistory(res.reverse()))
-      .catch((err) => console.log(err));
+    const loadData = async () => {
+      try {
+        const [messagesRes, schedulesRes] = await Promise.all([
+          getMessages(item.conversationUID),
+          getSchedulesByConversation(item.conversationUID),
+        ]);
+
+        const messages = messagesRes.reverse();
+        const combined = [...schedulesRes, ...messages].sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
+        setHistory(combined.reverse());
+        setSchedules(schedulesRes);
+      } catch (err) {
+        console.log('Error loading chat or schedules:', err);
+      }
+    };
+    loadData();
   }, [item.conversationUID]);
 
   // Socket setup
@@ -72,8 +101,7 @@ export const ChatScreen = () => {
 
     socket.on('newMessage', (newMsg) => {
       setHistory((prev) => {
-        const exists = prev.find((m) => m._id === newMsg._id);
-        if (exists) return prev;
+        if (prev.some((m) => m._id === newMsg._id)) return prev;
         return [newMsg, ...prev];
       });
     });
@@ -84,10 +112,19 @@ export const ChatScreen = () => {
     };
   }, [socket, item.conversationUID]);
 
+  // Current time updater every 30 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000 * 30);
+    return () => clearInterval(timer);
+  }, []);
+
   const handleSend = () => {
     if (!message.trim() || !socket) return;
 
     const senderUID = userMDB?.employerUID || userMDB?.seekerUID;
+    if (!senderUID) return;
 
     socket.emit('sendMessage', {
       conversationUID: item.conversationUID,
@@ -98,13 +135,24 @@ export const ChatScreen = () => {
     setMessage('');
   };
 
+  const copyToClipboard = async (text, msgId) => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      await navigator.clipboard.writeText(text);
+      setCopySuccessId(msgId);
+      setTimeout(() => setCopySuccessId(null), 1500);
+    } else {
+      import('react-native').then(({ Clipboard }) => {
+        Clipboard.setString(text);
+        setCopySuccessId(msgId);
+        setTimeout(() => setCopySuccessId(null), 1500);
+      });
+    }
+  };
 
-  //to check if the user is hired already
-  const isHired = item.applicationStatus === "hired";
+  const isHired = item.applicationStatus === 'hired';
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -148,9 +196,7 @@ export const ChatScreen = () => {
             )}
 
             <View style={{ marginLeft: 12, flex: 1 }}>
-              <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 16, color: '#37424F' }}>
-                {displayName}
-              </Text>
+              <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 16, color: '#37424F' }}>{displayName}</Text>
               <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 12, color: '#6B7280' }}>
                 Active 2 hours ago
               </Text>
@@ -165,31 +211,31 @@ export const ChatScreen = () => {
               marginBottom: 4,
               paddingVertical: 10,
               paddingHorizontal: 12,
-              backgroundColor: isHired ? "#D1FAE5" : "#F9FAFB",
+              backgroundColor: isHired ? '#D1FAE5' : '#F9FAFB',
               borderRadius: 12,
-              flexDirection: "row",
-              alignItems: "center",
-              shadowColor: "#000",
+              flexDirection: 'row',
+              alignItems: 'center',
+              shadowColor: '#000',
               shadowOffset: { width: 0, height: 1 },
               shadowOpacity: 0.05,
               shadowRadius: 2,
               elevation: 1,
-              justifyContent: 'space-between',  // better spacing
+              justifyContent: 'space-between',
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-              <CalendarDays width={18} height={18} color={isHired ? "#10B981" : "#6C63FF"} />
+              <CalendarDays width={18} height={18} color={isHired ? '#10B981' : '#6C63FF'} />
               <Text
                 style={{
                   marginLeft: 8,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                   fontSize: 13,
-                  color: "#37424F",
+                  color: '#37424F',
                   flexShrink: 1,
                 }}
               >
-                Chat regarding{" "}
-                <Text style={{ fontFamily: "Poppins-SemiBold", color: isHired ? "#047857" : "#2563EB" }}>
+                Chat regarding{' '}
+                <Text style={{ fontFamily: 'Poppins-SemiBold', color: isHired ? '#047857' : '#2563EB' }}>
                   {item.jobTitle}
                 </Text>
               </Text>
@@ -198,21 +244,21 @@ export const ChatScreen = () => {
             {isHired && (
               <View
                 style={{
-                  backgroundColor: "#047857",
+                  backgroundColor: '#047857',
                   paddingHorizontal: 8,
                   paddingVertical: 2,
                   borderRadius: 999,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginLeft: 12, // spacing from text part
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginLeft: 12,
                 }}
               >
                 <Check width={14} height={14} color="white" />
                 <Text
                   style={{
-                    color: "white",
+                    color: 'white',
                     fontSize: 11,
-                    fontFamily: "Poppins-Medium",
+                    fontFamily: 'Poppins-Medium',
                     marginLeft: 4,
                   }}
                 >
@@ -222,17 +268,270 @@ export const ChatScreen = () => {
             )}
           </View>
 
-
-
           {/* Chat body */}
           <FlatList
             data={history}
-            keyExtractor={(msg, index) =>
-              `${msg._id ?? ''}-${msg.senderUID}-${msg.createdAt}-${index}`
-            }
+            keyExtractor={(msg, index) => `${msg._id ?? ''}-${msg.senderUID}-${msg.createdAt}-${index}`}
             renderItem={({ item: msg }) => {
               const myUID = userMDB?.employerUID || userMDB?.seekerUID;
               const isMe = msg.senderUID === myUID;
+
+              if (msg.type === 'meeting' || msg.type === 'system') {
+                const startDateObj = new Date(msg.startTime);
+                const endDateObj = new Date(msg.endTime);
+
+                const dateStr = startDateObj.toLocaleDateString([], {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                });
+                const startTimeStr = startDateObj
+                  .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
+                  .replace(/^0+/, '')
+                  .replace(' ', '');
+                const endTimeStr = endDateObj
+                  .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
+                  .replace(/^0+/, '')
+                  .replace(' ', '');
+
+                const thirtyMinutesBeforeStart = startDateObj.getTime() - 30 * 60 * 1000;
+                const canJoin = currentTime >= thirtyMinutesBeforeStart && currentTime <= endDateObj.getTime();
+
+                const meetingEnd = new Date(msg.endTime);
+                const isPastMeeting = new Date(currentTime) > meetingEnd;
+                const showEdit = !isPastMeeting && isEmployer;
+
+                return (
+                  <View
+                    style={{
+                      alignSelf: 'center',
+                      backgroundColor: '#F5F8FE',
+                      borderRadius: 14,
+                      paddingVertical: 14,
+                      paddingHorizontal: 18,
+                      marginVertical: 10,
+                      maxWidth: '85%',
+                      borderWidth: 1,
+                      borderColor: canJoin ? '#2563EB' : '#A5AAB6',
+                      shadowColor: '#2563EB',
+                      shadowOpacity: 0.05,
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowRadius: 2,
+                      elevation: 2,
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: 'Poppins-SemiBold',
+                          fontSize: 15,
+                          color: '#0B2745',
+                          flex: 1,
+                        }}
+                      >
+                        {msg.title}
+                      </Text>
+
+                      {showEdit && (
+                        <TouchableOpacity
+                          onPress={() => alert('Test Edit')}
+                          style={{
+                            backgroundColor: '#2563EB20',
+                            paddingVertical: 4,
+                            paddingHorizontal: 12,
+                            borderRadius: 6,
+                            marginLeft: 8,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: '#2563EB',
+                              fontFamily: 'Poppins-Medium',
+                              fontSize: 13,
+                            }}
+                          >
+                            Edit
+                          </Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+
+                    {msg.description && (
+                      <Text
+                        style={{
+                          fontFamily: 'Poppins-Regular',
+                          color: '#465063',
+                          fontSize: 13,
+                          marginVertical: 3,
+                        }}
+                      >
+                        {msg.description}
+                      </Text>
+                    )}
+
+                    <View
+                      style={{
+                        marginTop: 8,
+                        marginBottom: 4,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <CalendarDays width={17} height={17} color="#2563EB" />
+                      <Text
+                        style={{
+                          fontFamily: 'Poppins-Medium',
+                          color: '#2563EB',
+                          fontSize: 12,
+                          marginLeft: 5,
+                        }}
+                      >
+                        {dateStr}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginBottom: 4,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: 'Poppins-Regular',
+                          fontSize: 13,
+                          color: '#0B2745',
+                          marginRight: 7,
+                        }}
+                      >
+                        {startTimeStr} — {endTimeStr}
+                      </Text>
+                      {msg.status === 'pending' && (
+                        <Text
+                          style={{
+                            color: '#f59e42',
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 12,
+                            marginLeft: 3,
+                          }}
+                        >
+                          Pending
+                        </Text>
+                      )}
+                    </View>
+
+                    {/* Join Meeting button for both roles */}
+                    {msg.meetingLink && (
+                      <TouchableOpacity
+                        disabled={!canJoin}
+                        onPress={() => Linking.openURL(msg.meetingLink)}
+                        style={{
+                          backgroundColor: canJoin ? '#2563EB' : '#A5AAB6',
+                          borderRadius: 10,
+                          paddingVertical: 9,
+                          alignItems: 'center',
+                          marginTop: 8,
+                          opacity: canJoin ? 1 : 0.65,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: 'white',
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 14,
+                          }}
+                        >
+                          {canJoin ? 'Join Meeting' : 'Join Meeting (Locked)'}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+
+                    {/* Copy Link button is visible to both roles but disabled when locked */}
+                    {msg.meetingLink && (
+                      <TouchableOpacity
+                        onPress={() => copyToClipboard(msg.meetingLink, msg._id)}
+                        disabled={!canJoin}
+                        style={{
+                          marginTop: 8,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          paddingVertical: 8,
+                          paddingHorizontal: 12,
+                          borderRadius: 12,
+                          borderWidth: 1,
+                          borderColor: '#2563EB',
+                          backgroundColor: canJoin ? '#E0F2FE' : '#C0CAD8',
+                          shadowColor: '#2563EB',
+                          shadowOpacity: canJoin ? 0.2 : 0,
+                          shadowOffset: { width: 0, height: 1 },
+                          shadowRadius: 4,
+                          elevation: canJoin ? 4 : 0,
+                          opacity: canJoin ? 1 : 0.5,
+                        }}
+                      >
+                        {copySuccessId === msg._id && canJoin ? (
+                          <Check width={20} height={20} color="#10B981" style={{ marginRight: 8 }} />
+                        ) : (
+                          <Copy width={20} height={20} color={canJoin ? '#2563EB' : '#A0AEC0'} style={{ marginRight: 8 }} />
+                        )}
+
+                        <View style={{ flex: 1, maxWidth: '80%' }}>
+                          <Text
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={{
+                              fontSize: 14,
+                              color: canJoin ? '#2563EB' : '#A0AEC0',
+                              fontWeight: '600',
+                            }}
+                          >
+                            {msg.meetingLink}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    )}
+
+                    {!canJoin && (
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: '#A5AAB6',
+                          textAlign: 'center',
+                          marginTop: 7,
+                          fontFamily: 'Poppins-Regular',
+                        }}
+                      >
+                        You can join only during the scheduled meeting time.
+                      </Text>
+                    )}
+
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: '#6c757d',
+                        fontSize: 11,
+                        marginTop: 7,
+                      }}
+                    >
+                      {new Date(msg.createdAt).toLocaleString([], {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                      })}
+                    </Text>
+                  </View>
+                );
+              }
 
               return (
                 <View
@@ -266,7 +565,7 @@ export const ChatScreen = () => {
                     {new Date(msg.createdAt).toLocaleTimeString([], {
                       hour: '2-digit',
                       minute: '2-digit',
-                      hour12: true
+                      hour12: true,
                     })}
                   </Text>
                 </View>
@@ -277,6 +576,7 @@ export const ChatScreen = () => {
             inverted
             style={{ flex: 1 }}
           />
+
           {/* Input bar */}
           <View
             style={{
@@ -332,7 +632,9 @@ export const ChatScreen = () => {
                   <Send width={20} height={20} color="white" />
                 </TouchableOpacity>
               ) : (
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
+                <View
+                  style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}
+                >
                   <TouchableOpacity style={{ marginRight: 8 }}>
                     <Camera width={22} height={22} color="#6B7280" />
                   </TouchableOpacity>
@@ -342,7 +644,6 @@ export const ChatScreen = () => {
                 </View>
               )}
             </View>
-
           </View>
         </View>
       </KeyboardAvoidingView>

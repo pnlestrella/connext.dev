@@ -93,15 +93,13 @@ export default function MeetingModal({ visible, item, onClose, onConfirm }) {
                 description: meetingData.description,
                 startTime: meetingData.startTime.toISOString(),
                 endTime: meetingData.endTime.toISOString(),
-                meetingLink: meeting.hangoutLink, // optionally store or generate meeting link here
+                eventUID:meeting.eventUID,
+                eventLink: meeting.eventLink, 
+                meetingLink: meeting.hangoutLink, 
                 type: "meeting",
             }
 
             const scheduleCreation = await createSchedule(schedulePayload)
-
-            console.log(schedulePayload,'APPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP')
-            console.log(scheduleCreation,'APPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP222222222222222222222222')
-            
 
             // Pass the meeting data back to parent
             onConfirm?.(meeting);
