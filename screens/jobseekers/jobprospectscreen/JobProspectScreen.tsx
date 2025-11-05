@@ -5,14 +5,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useJobs } from 'context/jobs/JobHook';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useCallback, useState } from 'react';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from 'context/auth/AuthHook';
 import { createApplication } from 'api/applications';
 import { getFileUrl } from 'api/employers/imagekit';
 import { Loading } from 'components/Loading';
 import AlertModal from 'components/AlertModal';
-
 dayjs.extend(relativeTime);
 
 export function formatTimeAgo(dateString: any) {
@@ -30,6 +29,33 @@ export const JobProspectScreen = () => {
   const [activeTab, setActiveTab] = useState<'shortlisted' | 'applied'>('shortlisted');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedJob, setSelectedJob] = useState<any>(null);
+
+  const route = useRoute();
+  const { applicationID, activeTabSet, redirect } = route.params || {};
+
+  console.log(applicationID, activeTab, redirect, 'wawawawwawawawa')
+
+  useEffect(() => {
+    setActiveTab(activeTabSet)
+    console.log(displayedJobs, 'wawassss', applicationID)
+    if (applicationID && displayedJobs?.length > 0) {
+      const matchedJob = displayedJobs.find(
+        (job) => job.application?.applicationID === applicationID
+      );
+
+      if (matchedJob) {
+        console.log("Matched Job:", matchedJob);
+        // Optionally set it into a state
+        setSelectedJob(matchedJob);
+        setModalVisible(true); // ✅ Opens the modal
+      } else {
+        console.log("No matching job found for:", applicationID);
+      }
+    }
+
+
+  }, [redirect])
+
 
   // For Alerts
   const [alertVisible, setAlertVisible] = useState(false);
@@ -56,6 +82,7 @@ export const JobProspectScreen = () => {
 
   const handleAppliedClick = (item: any) => {
     setSelectedJob(item);
+    console.log(item, 'APPLIEDDD')
     setModalVisible(true);
   };
 

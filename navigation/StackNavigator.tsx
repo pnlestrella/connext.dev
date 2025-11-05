@@ -132,8 +132,6 @@ function EmployerStack({ userMDB }: any) {
 export default function StackNavigator() {
   const { user, userMDB, userType, firstLaunch, initializing } = useAuth();
 
-
-  console.log(userMDB, 'usermdbbbb')
   if (initializing) {
     return <SplashScreen />;
   }

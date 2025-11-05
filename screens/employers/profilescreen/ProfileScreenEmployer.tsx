@@ -16,7 +16,6 @@ export const ProfileScreenEmployer = () => {
   const { userMDB, signOutUser } = useAuth();
   const navigation = useNavigation<NavigationType>();
 
-  console.log(userMDB,'awaw')
 
   // Modal state
   const [logoutVisible, setLogoutVisible] = useState(false);

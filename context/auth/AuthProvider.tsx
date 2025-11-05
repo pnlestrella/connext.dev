@@ -17,8 +17,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [firstLaunch, setFirstLaunch] = useState<boolean | null>(null);
   const [resetSignal, setResetSignal] = useState(false); // for signout
   const [accountType, setAccountType] = useState(null); // user not logged in
+  //for notifications
+  const [hasUnread, setHasUnread] = useState(false);
 
-  console.log(userMDB)
 
   //sockest
   // 🔄 Refresh from MongoDB
@@ -167,6 +168,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       initializing,
       resetSignal,
       accountType,
+      hasUnread,
       setAccountType,
       setUserType,
       setLoading,
@@ -174,7 +176,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       signOutUser,
       setUserMDB,
       setResetSignal,
-      refreshAuth
+      refreshAuth,
+      setHasUnread
     }),
     [
       user,
@@ -185,6 +188,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       initializing,
       resetSignal,
       accountType,
+      hasUnread
     ]
   );
 

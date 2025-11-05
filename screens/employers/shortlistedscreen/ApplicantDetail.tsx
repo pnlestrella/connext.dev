@@ -81,12 +81,12 @@ export const ApplicantDetail = () => {
     const handleContact = async () => {
         try {
             // 1️⃣ Update applicant status
-            const res = await updateApplications(applicant.applicationID, "contacted");
-            if (!res?.success) {
-                console.log('Failed to update status', res);
-                return;
-            }
-            console.log('Status updated:', res);
+            // const res = await updateApplications(applicant.applicationID, "contacted");
+            // if (!res?.success) {
+            //     console.log('Failed to update status', res);
+            //     return;
+            // }
+            // console.log('Status updated:', res);
 
             // 2️⃣ Create conversation
             const conversation = await createConversation(userMDB.employerUID, profile.seekerUID, applicant.applicationID);

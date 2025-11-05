@@ -20,6 +20,7 @@ type CommonAuth = {
   initializing: boolean;
   resetSignal: boolean;
   accountType: string;
+  hasUnread: boolean
 
   setUserType: (t: AuthTypes["userType"] | null) => void;
   setUserMDB: (mdb: any) => void;
@@ -27,7 +28,7 @@ type CommonAuth = {
   setFirstLaunch: (f: boolean | null) => void;
   signOutUser: () => Promise<void>;
   setResetSignal: (val: boolean) => void;
-  setAccountType: (val: string) => void;
+  setAccountType: (val: string) => void
 
 };
 

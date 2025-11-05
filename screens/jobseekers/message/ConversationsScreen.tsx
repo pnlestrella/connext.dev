@@ -11,12 +11,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCallback, useEffect, useState } from 'react';
 import { getUserConversations } from 'api/chats/conversation';
 import { useAuth } from 'context/auth/AuthHook';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
+
 
 export const ConversationsScreen = () => {
   const [conversations, setConversations] = useState([]);
   const { user } = useAuth();
   const navigation = useNavigation();
+
 
   const fetchConversations = async () => {
     if (!user?.uid) return;
@@ -27,7 +29,38 @@ export const ConversationsScreen = () => {
       console.log(err);
     }
   };
+  //use route for redirection
+  const route = useRoute();
+  const { conversationUID, redirect } = route.params || {};
 
+  useEffect(() => {
+    const loadAndRedirect = async () => {
+      if (!conversationUID) return;
+
+      // If empty, fetch first
+      if (conversations.length === 0) {
+        const res = await getUserConversations(user.uid);
+        setConversations(res);
+
+        // ✅ Find the conversation *after* fetching
+        const conv = res.find((c) => c.conversationUID === conversationUID);
+        if (conv) {
+          navigation.navigate('chats', { item: conv });
+        }
+      } else {
+        // ✅ Otherwise, use existing data
+        const conv = conversations.find((c) => c.conversationUID === conversationUID);
+        if (conv) {
+          navigation.navigate('chats', { item: conv });
+        }
+      }
+    };
+
+    loadAndRedirect();
+  }, [redirect]);
+
+
+  //fetching conversations
   useEffect(() => {
     fetchConversations();
   }, [user]);
@@ -45,7 +78,7 @@ export const ConversationsScreen = () => {
     return (
       <Pressable
         style={styles.row}
-        onPress={() => navigation.navigate('chats', { item })}
+        onPress={() => { navigation.navigate('chats', { item }) }}
       >
         {profilePic ? (
           <Image source={{ uri: profilePic }} style={styles.avatar} />

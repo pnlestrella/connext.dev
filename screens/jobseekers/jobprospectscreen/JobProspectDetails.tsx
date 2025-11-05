@@ -41,7 +41,6 @@ export const JobProspectDetails = () => {
         const job = item.jobDetails
         if (!job.isExternal) {
             //check if the user has resume already
-            console.log(userMDB.resume)
             if (userMDB.resume) {
                 const application = {
                     jobUID: item.jobUID,

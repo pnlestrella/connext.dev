@@ -33,7 +33,13 @@ export const ShortlistedApplicants = () => {
     try {
       const res = await getShortlistedApplicants(jobUID, [activeStatus], page, 20);
       if (res?.success) {
-        setData(prev => [...prev, ...res.payload]);
+        setData(prev => {
+          const newItems = res.payload.filter(
+            newItem => !prev.some(oldItem => oldItem._id === newItem._id)
+          );
+          return [...prev, ...newItems];
+        });
+        ;
         setHasMore(res.hasMore);
         setPage(prev => prev + 1);
       } else {
@@ -45,10 +51,6 @@ export const ShortlistedApplicants = () => {
       setLoading(false);
     }
   }, [jobUID, page, activeStatus, hasMore, loading]);
-
-
-
-
 
   useEffect(() => {
     let isMounted = true; // avoid race if user switches quickly

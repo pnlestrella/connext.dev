@@ -23,9 +23,21 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     // only register after connection
     s.on("connect", () => {
       console.log("🔌 Socket Connected:", s.id);
-      const userId = user.uid;
-      s.emit("registerUser", userId);
+
+      // Use userMDB's correct user UID (employer or seeker)
+      let userId = null;
+
+      if (userMDB?.employerUID) userId = userMDB.employerUID;
+      else if (userMDB?.seekerUID) userId = userMDB.seekerUID;
+
+      if (userId) {
+        console.log('Registering user for socket:', userId);
+        s.emit("registerUser", userId);
+      } else {
+        console.warn('No valid user id found for socket registration!');
+      }
     });
+
 
     setSocket(s);
 

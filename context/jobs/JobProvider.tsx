@@ -83,8 +83,6 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
 
   }, [userMDB]);
 
-  console.log(userMDB,'usermdb')
-
 
   // Handle swipe action
   async function handleSwipe(job: Job, action: "shortlist" | "skip") {
