@@ -126,17 +126,18 @@ export const Header = () => {
 
       }
     } else if (item.type?.includes('application')) {
+      console.log('----',item,'itemmmmmm')
+      const split = item.type.split('_')[1]
       //application navigation
       navigation.navigate("Job Prospect", {
         screen: "jobProspect",
         params: {
           applicationID: item.data.applicationID,
           activeTabSet: 'applied',
-          redirect: Math.random()
+          redirect: Math.random(),
+          status:split
         }
-
       })
-
     }
     const updateData = {
       "read": true

@@ -41,6 +41,7 @@ export async function createJobInteraction(
 }
 
 export const getJobInteraction = async (seekerUID: string, action: string) => {
+  console.log('actionnnnnn',action, seekerUID)
   const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobinteraction/getJobInteraction?seekerUID=${seekerUID}&action=${action}`;
 
   try {
