@@ -7,6 +7,11 @@ import Constants from "expo-constants";
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const { userMDB, user } = useAuth();
+  //for notifications
+  const [hasUnread, setHasUnread] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
+  
 
   useEffect(() => {
     if (!userMDB) {
@@ -46,7 +51,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [userMDB]);
 
-  const value = useMemo(() => ({ socket }), [socket]);
+  const value = useMemo(() => ({ socket,hasUnread,notifications,setHasUnread,setNotifications }), [socket,hasUnread,notifications]);
 
   return (
     <SocketContext.Provider value={value}>

@@ -17,7 +17,7 @@ const Tab = createBottomTabNavigator();
 
 export default function JobseekerTabs() {
     return (
-        <Tab.Navigator screenOptions={({ route }) => ({
+        <Tab.Navigator lazy={false} screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
 
                 if (route.name === 'Browse') {

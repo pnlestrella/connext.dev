@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator();
 
 export default function EmployerTabs() {
     return (
-        <Tab.Navigator screenOptions={({ route }) => ({
+        <Tab.Navigator lazy={false} screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
 
                 if (route.name === 'Home') {

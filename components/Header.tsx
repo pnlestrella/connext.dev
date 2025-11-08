@@ -15,18 +15,25 @@ import { Bell } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from 'context/auth/AuthHook';
 import { getNotifications, updateNotification } from 'api/notifications/notifications';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useSockets } from 'context/sockets/SocketHook';
+
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const DROPDOWN_WIDTH = SCREEN_WIDTH * 0.8;
 
 export const Header = () => {
 
-  const { socket } = useSockets()
-  const { userMDB, hasUnread, setHasUnread } = useAuth();
-  console.log(hasUnread)
-  const [notifications, setNotifications] = useState([]);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Refresh notifications or update hasUnread state on tab focus
+      console.log(hasUnread, 'HAS UNREAQDD')
+      // fetchNotifications();
+    }, [])
+  );
+
+  const { socket, hasUnread, setHasUnread, notifications, setNotifications } = useSockets()
+  const { userMDB } = useAuth();
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -36,6 +43,8 @@ export const Header = () => {
 
   const navigation = useNavigation();
 
+
+
   //sockets
   useEffect(() => {
     if (!socket) return;
@@ -43,7 +52,6 @@ export const Header = () => {
     socket.on("newNotification", (notif) => {
       console.log("New notification received:", notif);
       fetchNotifications();
-
     });
 
     return () => {
@@ -126,7 +134,7 @@ export const Header = () => {
 
       }
     } else if (item.type?.includes('application')) {
-      console.log('----',item,'itemmmmmm')
+      console.log('----', item, 'itemmmmmm')
       const split = item.type.split('_')[1]
       //application navigation
       navigation.navigate("Job Prospect", {
@@ -135,7 +143,7 @@ export const Header = () => {
           applicationID: item.data.applicationID,
           activeTabSet: 'applied',
           redirect: Math.random(),
-          status:split
+          status: split
         }
       })
     }

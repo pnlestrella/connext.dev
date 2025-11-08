@@ -20,7 +20,6 @@ type CommonAuth = {
   initializing: boolean;
   resetSignal: boolean;
   accountType: string;
-  hasUnread: boolean
 
   setUserType: (t: AuthTypes["userType"] | null) => void;
   setUserMDB: (mdb: any) => void;

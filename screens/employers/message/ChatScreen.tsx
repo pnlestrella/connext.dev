@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView, Platform
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { getMessages } from 'api/chats/message';
 import { useAuth } from 'context/auth/AuthHook';
 import { useSockets } from 'context/sockets/SocketHook';
@@ -22,7 +22,6 @@ import Constants from 'expo-constants';
 import AlertModal from 'components/AlertModal';
 import EditMeetingModal from 'components/EditMeetingModal';
 
-//api
 import { getSchedulesByConversation } from 'api/schedules/schedules';
 import { updateMeeting } from 'api/employers/google';
 
@@ -33,32 +32,21 @@ export const ChatScreen = () => {
   const navigation = useNavigation();
   const { item } = route.params;
 
-  //SCHEDULES for modals
   const [schedules, setSchedules] = useState([]);
-  //confirmation modal
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmProps, setConfirmProps] = useState({ title: '', message: '', confirmButtonText: 'Confirm', onConfirm: () => { } });
-  //for messages and history
   const [message, setMessage] = useState('');
   const [history, setHistory] = useState([]);
-  //ux purpose whether the jobseeker is hired in a certain job
   const [isHiredState, setIsHiredState] = useState(item.applicationStatus === 'hired');
   const hireBadgeAnim = useState(new Animated.Value(isHiredState ? 1 : 0))[0];
   const [showMeetingModal, setShowMeetingModal] = useState(false);
-  //alert modal
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('Alert');
   const [onAlertClose, setOnAlertClose] = useState(null);
-
-  //check if user has google connected
   const [googleConnected, setGoogleConnected] = useState(false);
   const [currentTime, setCurrentTime] = useState(Date.now());
-
-  //for copy UIUX purpose
   const [copySuccessId, setCopySuccessId] = useState(null);
-
-  //for editing modal
   const [editMeetingModalVisible, setEditMeetingModalVisible] = useState(false);
   const [meetingToEdit, setMeetingToEdit] = useState(null);
 
@@ -68,29 +56,19 @@ export const ChatScreen = () => {
   };
 
   const handleSaveEditedMeeting = async (updatedMeeting) => {
-    // After success, update your schedules state locally:
-    console.log(updatedMeeting, "UPDATED MEETINGGGGGGGGGGGGGGGGGGGGGG")
-    // setSchedules((prevSchedules) =>
-    //   prevSchedules.map((m) => (m._id === updatedMeeting._id ? updatedMeeting : m))
-    // );
     try {
-      const res = await updateMeeting(updatedMeeting)
-      console.log(res, 'Edited Meeting Response')
+      const res = await updateMeeting(updatedMeeting);
       if (res.code === 'REFRESH_TOKEN_EXPIRED') {
         const redirectUri = Linking.createURL('/auth/success');
         const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/oauth/google?redirect_uri=${encodeURIComponent(redirectUri)}&userUID=${userMDB.employerUID}`;
         openConfirmModal({ title: "Google Re-Authentication", message: "Re-authenticate with your Google account.", confirmButtonText: "Proceed", onConfirm: () => { Linking.openURL(url); setShowConfirm(false); } });
       }
-      //fetching scheduels for real-time purpose
       fetchSchedules();
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
     setEditMeetingModalVisible(false);
   };
-
-
-
 
   const fetchSchedules = async () => {
     try {
@@ -180,13 +158,11 @@ export const ChatScreen = () => {
   const copyToClipboard = async (text, msgId) => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
       await navigator.clipboard.writeText(text);
-      // showAlert('Link copied to clipboard');
       setCopySuccessId(msgId);
       setTimeout(() => setCopySuccessId(null), 1500);
     } else {
       import('react-native').then(({ Clipboard }) => {
         Clipboard.setString(text);
-        // showAlert('Link copied to clipboard');
         setCopySuccessId(msgId);
         setTimeout(() => setCopySuccessId(null), 1500);
       });
@@ -195,7 +171,11 @@ export const ChatScreen = () => {
 
   useEffect(() => {
     if (!userMDB) return;
-    if (userMDB.oauth.accessToken === null || userMDB.oauth.refreshToken === null || new Date() >= new Date(userMDB.oauth.refreshTokenExpiresAt)) {
+    if (
+      userMDB.oauth.accessToken === null ||
+      userMDB.oauth.refreshToken === null ||
+      new Date() >= new Date(userMDB.oauth.refreshTokenExpiresAt)
+    ) {
       setGoogleConnected(false);
     } else {
       setGoogleConnected(true)
@@ -209,32 +189,55 @@ export const ChatScreen = () => {
     setOnAlertClose(() => onClose);
   };
 
+  const handleDoneMeeting = (msg) => {
+    console.log('Done clicked for meeting:', msg._id);
+    // your done logic here
+  };
+
+  const handleCancelMeeting = (msg) => {
+    console.log('Cancel clicked for meeting:', msg._id);
+    // your cancel logic here
+  };
+
+  const bgColorMap = {
+    completed: '#D1FAE5',
+    cancelled: '#FEE2E2',
+    missed: '#FEF3C7',
+    pending: '#F9FAFB',
+    "on-call": '#F9FAFB',
+  };
+
+  const borderColorMap = {
+    completed: '#10B981',
+    cancelled: '#EF4444',
+    missed: '#FBBF24',
+    pending: '#3B82F6',
+    "on-call": '#3B82F6',
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 30}>
         <AlertModal visible={alertVisible} title={alertTitle} message={alertMessage} onClose={() => { setAlertVisible(false); onAlertClose?.(); setOnAlertClose(null); }} />
         <ConfirmationModal visible={showConfirm} type="default" title={confirmProps.title} message={confirmProps.message} confirmButtonText={confirmProps.confirmButtonText} onConfirm={() => { confirmProps.onConfirm(); }} onCancel={() => setShowConfirm(false)} />
-        {/* meeting modal */}
         <MeetingModal visible={showMeetingModal} onClose={() => setShowMeetingModal(false)} item={item}
           onConfirm={(result) => {
             if (result === "REFRESH_TOKEN_EXPIRED") {
               const redirectUri = Linking.createURL('/auth/success');
               const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/oauth/google?redirect_uri=${encodeURIComponent(redirectUri)}&userUID=${userMDB.employerUID}`;
-              openConfirmModal({ title: "Google Re-Authentication", message: "Re-authenticate with your Google account.", confirmButtonText: "Proceed", onConfirm: () => { Linking.openURL(url);setShowConfirm(false); } });
+              openConfirmModal({ title: "Google Re-Authentication", message: "Re-authenticate with your Google account.", confirmButtonText: "Proceed", onConfirm: () => { Linking.openURL(url); setShowConfirm(false); } });
             } else if (result?.error) {
               alert(`❌ Failed to create meeting: ${result.message}`);
             } else {
               showAlert('Meeting created successfully.', 'Success!', fetchSchedules);
             }
           }} />
-        {/* editing meeting modal */}
         <EditMeetingModal
           visible={editMeetingModalVisible}
           meeting={meetingToEdit}
           onClose={() => setEditMeetingModalVisible(false)}
           onConfirm={handleSaveEditedMeeting}
         />
-
 
         <View style={{ flex: 1 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderColor: '#e5e7eb' }}>
@@ -270,6 +273,7 @@ export const ChatScreen = () => {
             </View>
           </View>
 
+
           <View style={{ marginHorizontal: 16, marginTop: 6, marginBottom: 4, paddingVertical: 10, paddingHorizontal: 12, backgroundColor: isHiredState ? "#D1FAE5" : "#F9FAFB", borderRadius: 12, flexDirection: "row", alignItems: "center", elevation: 1, justifyContent: 'space-between' }}>
             <View style={{ flexDirection: 'row' }}>
               <CalendarDays width={18} height={18} color={isHiredState ? "#10B981" : "#6C63FF"} />
@@ -285,12 +289,14 @@ export const ChatScreen = () => {
             )}
           </View>
 
+
           <FlatList
             data={history}
             keyExtractor={(msg, index) => `${msg._id ?? index}`}
             renderItem={({ item: msg }) => {
               const myUID = userMDB?.employerUID || userMDB?.seekerUID;
               const isMe = msg.senderUID === myUID;
+
 
               if (msg.type === 'system' || msg.type === 'meeting') {
                 const startDateObj = new Date(msg.startTime);
@@ -299,105 +305,143 @@ export const ChatScreen = () => {
                 const startTimeStr = startDateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).replace(/^0+/, '').replace(' ', '');
                 const endTimeStr = endDateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).replace(/^0+/, '').replace(' ', '');
 
+
                 const thirtyMinutesBeforeStart = startDateObj.getTime() - (30 * 60 * 1000);
                 const canJoin = currentTime >= thirtyMinutesBeforeStart && currentTime <= endDateObj.getTime();
 
+
                 const meetingEnd = new Date(msg.endTime);
                 const isPastMeeting = new Date(currentTime) > meetingEnd;
-                const showEdit = !isPastMeeting;
+                const isInactiveStatus = ['completed', 'cancelled', 'missed'].includes(msg.status);
+
 
                 return (
                   <View style={{
                     alignSelf: 'center',
-                    backgroundColor: '#F5F8FE',
+                    backgroundColor: bgColorMap[msg.status] ?? bgColorMap.pending,
                     borderRadius: 14,
                     paddingVertical: 14,
                     paddingHorizontal: 18,
                     marginVertical: 10,
                     maxWidth: '85%',
                     borderWidth: 1,
-                    borderColor: canJoin ? "#2563EB" : "#A5AAB6",
-                    shadowColor: "#2563EB",
+                    borderColor: borderColorMap[msg.status] ?? borderColorMap.pending,
+                    shadowColor: borderColorMap[msg.status] ?? borderColorMap.pending,
                     shadowOpacity: 0.05,
                     shadowOffset: { width: 0, height: 1 },
                     shadowRadius: 2,
                     elevation: 2,
                   }}>
 
+
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 15, color: '#0B2745', flex: 1 }}>{msg.title}</Text>
-                      {showEdit && (
+                      {!isInactiveStatus && !isPastMeeting && (
                         <Pressable onPress={() => handleEditMeeting(msg)} style={{ backgroundColor: '#2563EB20', paddingVertical: 4, paddingHorizontal: 12, borderRadius: 6, marginLeft: 8 }}>
                           <Text style={{ color: '#2563EB', fontFamily: 'Poppins-Medium', fontSize: 13 }}>Edit</Text>
                         </Pressable>
                       )}
+                      {msg.status === 'completed' && (
+                        <View style={{ backgroundColor: '#4B5563', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 999, marginLeft: 8 }}>
+                          <Text style={{ color: 'white', fontFamily: 'Poppins-Medium', fontSize: 12 }}>Completed</Text>
+                        </View>
+                      )}
                     </View>
+
 
                     {msg.description && (
                       <Text style={{ fontFamily: 'Poppins-Regular', color: '#465063', fontSize: 13, marginVertical: 3 }}>{msg.description}</Text>
                     )}
 
+
                     <View style={{ marginTop: 8, marginBottom: 4, flexDirection: 'row', alignItems: 'center' }}>
-                      <CalendarDays width={17} height={17} color="#2563EB" />
-                      <Text style={{ fontFamily: 'Poppins-Medium', color: '#2563EB', fontSize: 12, marginLeft: 5 }}>{dateStr}</Text>
+                      <CalendarDays width={17} height={17} color={borderColorMap[msg.status] ?? borderColorMap.pending} />
+                      <Text style={{ fontFamily: 'Poppins-Medium', color: borderColorMap[msg.status] ?? borderColorMap.pending, fontSize: 12, marginLeft: 5 }}>{dateStr}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
-                      <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 13, color: '#0B2745', marginRight: 7 }}>{startTimeStr} — {endTimeStr}</Text>
-                      {msg.status === "pending" && (
-                        <Text style={{ color: '#f59e42', fontFamily: 'Poppins-Medium', fontSize: 12, marginLeft: 3 }}>Pending</Text>
+                      <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 13, color: '#0B2745', marginRight: 7 }}>
+                        {startTimeStr} — {endTimeStr}
+                      </Text>
+                      {msg.status === 'pending' && (
+                        <Text style={{ color: '#f59e42', fontFamily: 'Poppins-Medium', fontSize: 12, marginLeft: 3 }}>
+                          Pending
+                        </Text>
+                      )}
+                      {msg.status === 'on-call' && (
+                        <Text style={{ color: '#10B981', fontFamily: 'Poppins-Medium', fontSize: 12, marginLeft: 3 }}>
+                          On-Call
+                        </Text>
+                      )}
+                      {msg.status === 'cancelled' && (
+                        <Text style={{ color: '#EF4444', fontFamily: 'Poppins-Medium', fontSize: 12, marginLeft: 3 }}>
+                          Cancelled
+                        </Text>
+                      )}
+                      {msg.status === 'missed' && (
+                        <Text style={{ color: '#FBBF24', fontFamily: 'Poppins-Medium', fontSize: 12, marginLeft: 3 }}>
+                          Missed
+                        </Text>
                       )}
                     </View>
 
-                    <Pressable disabled={!canJoin} onPress={() => Linking.openURL(msg.meetingLink)} style={{
-                      backgroundColor: canJoin ? "#2563EB" : "#A5AAB6",
-                      borderRadius: 10,
-                      paddingVertical: 9,
-                      alignItems: "center",
-                      marginTop: 8,
-                      opacity: canJoin ? 1 : 0.65
-                    }}>
-                      <Text style={{ color: "white", fontFamily: "Poppins-Medium", fontSize: 14 }}>{canJoin ? "Join Meeting" : "Join Meeting (Locked)"}</Text>
-                    </Pressable>
 
-                    <Pressable
-                      disabled={!canJoin}
-                      onPress={() => copyToClipboard(msg.meetingLink, msg._id)}
-                      style={{
+                    {!isInactiveStatus && (
+                      <Pressable disabled={!canJoin} onPress={() => Linking.openURL(msg.meetingLink)} style={{
+                        backgroundColor: canJoin ? "#2563EB" : "#A5AAB6",
+                        borderRadius: 10,
+                        paddingVertical: 9,
+                        alignItems: "center",
                         marginTop: 8,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        paddingVertical: 8,
-                        paddingHorizontal: 12,
-                        borderRadius: 12,
-                        borderWidth: 1,
-                        borderColor: '#2563EB',
-                        backgroundColor: canJoin ? '#E0F2FE' : '#C0CAD8', // lighter color when disabled
-                        shadowColor: '#2563EB',
-                        shadowOpacity: canJoin ? 0.2 : 0,
-                        shadowOffset: { width: 0, height: 1 },
-                        shadowRadius: 4,
-                        elevation: canJoin ? 4 : 0,
-                        opacity: canJoin ? 1 : 0.5, // reduced opacity when disabled
-                      }}
-                    >
-                      {copySuccessId === msg._id && canJoin ? (
-                        <Check width={20} height={20} color="#10B981" style={{ marginRight: 8 }} />
-                      ) : (
-                        <Copy width={20} height={20} color={canJoin ? "#2563EB" : "#A0AEC0"} style={{ marginRight: 8 }} />
-                      )}
-
-                      <View style={{ flex: 1, maxWidth: '80%' }}>
-                        <Text numberOfLines={1} ellipsizeMode="tail" style={{
-                          fontSize: 14,
-                          color: canJoin ? '#2563EB' : '#A0AEC0',
-                          fontWeight: '600',
-                        }}>
-                          {msg.meetingLink}
+                        opacity: canJoin ? 1 : 0.65
+                      }}>
+                        <Text style={{ color: "white", fontFamily: "Poppins-Medium", fontSize: 14 }}>
+                          {canJoin ? "Join Meeting" : "Join Meeting (Locked)"}
                         </Text>
-                      </View>
-                    </Pressable>
+                      </Pressable>
+                    )}
 
+
+                    {!isInactiveStatus && (
+                      <Pressable
+                        disabled={!canJoin}
+                        onPress={() => copyToClipboard(msg.meetingLink, msg._id)}
+                        style={{
+                          marginTop: 8,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          paddingVertical: 8,
+                          paddingHorizontal: 12,
+                          borderRadius: 12,
+                          borderWidth: 1,
+                          borderColor: '#2563EB',
+                          backgroundColor: canJoin ? '#E0F2FE' : '#C0CAD8',
+                          shadowColor: '#2563EB',
+                          shadowOpacity: canJoin ? 0.2 : 0,
+                          shadowOffset: { width: 0, height: 1 },
+                          shadowRadius: 4,
+                          elevation: canJoin ? 4 : 0,
+                          opacity: canJoin ? 1 : 0.5,
+                        }}
+                      >
+                        {copySuccessId === msg._id && canJoin ? (
+                          <Check width={20} height={20} color="#10B981" style={{ marginRight: 8 }} />
+                        ) : (
+                          <Copy width={20} height={20} color={canJoin ? "#2563EB" : "#A0AEC0"} style={{ marginRight: 8 }} />
+                        )}
+
+
+                        <View style={{ flex: 1, maxWidth: '80%' }}>
+                          <Text numberOfLines={1} ellipsizeMode="tail" style={{
+                            fontSize: 14,
+                            color: canJoin ? '#2563EB' : '#A0AEC0',
+                            fontWeight: '600',
+                          }}>
+                            {msg.meetingLink}
+                          </Text>
+                        </View>
+                      </Pressable>
+                    )}
 
 
                     {!canJoin && (
@@ -406,12 +450,14 @@ export const ChatScreen = () => {
                       </Text>
                     )}
 
+
                     <Text style={{ textAlign: 'center', color: "#6c757d", fontSize: 11, marginTop: 7 }}>
                       {new Date(msg.createdAt).toLocaleString([], { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}
                     </Text>
                   </View>
                 );
               }
+
 
               return (
                 <View style={{ alignSelf: isMe ? 'flex-end' : 'flex-start', backgroundColor: isMe ? '#2563EB' : '#E5E7EB', borderRadius: 16, paddingVertical: 8, paddingHorizontal: 12, marginBottom: 8, maxWidth: '75%' }}>
@@ -459,22 +505,3 @@ export const ChatScreen = () => {
     </SafeAreaView>
   );
 };
-
-const ClipboardIcon = () => (
-  <View style={{
-    width: 20,
-    height: 24,
-    borderWidth: 2,
-    borderColor: '#2563EB',
-    borderRadius: 3,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }}>
-    <View style={{
-      width: 12,
-      height: 14,
-      backgroundColor: '#2563EB',
-      borderRadius: 1,
-    }} />
-  </View>
-);
