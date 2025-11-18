@@ -31,6 +31,7 @@ import { useEmployers } from "context/employers/EmployerHook";
 import Fuse from "fuse.js";
 import Skills from "../../../data/cleaned_skills.json";
 import AlertModal from "components/AlertModal";
+import { Loading } from "components/Loading";
 
 const fuse = new Fuse(Skills, { threshold: 0.3, includeScore: true });
 const BRAND_PURPLE = "#2563EB";
@@ -79,8 +80,9 @@ const CheckboxItem = ({
 }) => (
   <TouchableOpacity onPress={onToggle} className="flex-row items-center mb-4 mr-5">
     <View
-      className={`w-8 h-8 mr-3 border-2 rounded-lg justify-center items-center ${isSelected ? "bg-blue-600 border-blue-600" : "border-gray-400"
-        }`}
+      className={`w-8 h-8 mr-3 border-2 rounded-lg justify-center items-center ${
+        isSelected ? "bg-blue-600 border-blue-600" : "border-gray-400"
+      }`}
     >
       {isSelected && <Check size={20} color="white" />}
     </View>
@@ -105,7 +107,10 @@ export const PostJob = () => {
     setAlertVisible(true);
   };
 
-  // form state (unchanged)
+  // Loading modal state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // form state
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [industries, setIndustries] = useState<string[]>([]);
@@ -120,7 +125,7 @@ export const PostJob = () => {
   const profilePic = userMDB.profilePic;
   const companyName = userMDB.companyName;
 
-  // industries modal (unchanged)
+  // industries modal
   const [industryModalVisible, setIndustryModalVisible] = useState(false);
   const initialIndustriesForModal = useMemo(() => {
     return industries
@@ -128,7 +133,7 @@ export const PostJob = () => {
       .filter((i): i is { id: number; name: string } => Boolean(i));
   }, [industries]);
 
-  // location (unchanged logic)
+  // location
   const [location, setLocation] = useState<any>(null);
   const [locationQuery, setLocationQuery] = useState("");
   const [locationResults, setLocationResults] = useState<any[]>([]);
@@ -157,7 +162,7 @@ export const PostJob = () => {
     }
   }
 
-  // skills search (unchanged logic)
+  // skills search
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [loading, setLoading] = useState(false);
@@ -182,6 +187,7 @@ export const PostJob = () => {
     return results.slice(0, 8);
   }, [debouncedSearch, jobSkills]);
 
+  // Add skill from suggestion or typed input
   function addSkill(skill: string) {
     if (jobSkills.includes(skill)) return;
     if (jobSkills.length >= 10) {
@@ -189,6 +195,20 @@ export const PostJob = () => {
       return;
     }
     setJobSkills((prev) => [...prev, skill]);
+    setSearch("");
+    Keyboard.dismiss();
+  }
+
+  // Add skill typed by user if not in suggestions
+  function addCustomSkill() {
+    const trimmed = search.trim();
+    if (!trimmed) return;
+    if (jobSkills.includes(trimmed)) return;
+    if (jobSkills.length >= 10) {
+      openAlert("Limit reached", "You can only select up to 10 skills.");
+      return;
+    }
+    setJobSkills((prev) => [...prev, trimmed]);
     setSearch("");
     Keyboard.dismiss();
   }
@@ -204,7 +224,6 @@ export const PostJob = () => {
 
   const confirmDiscard = () => {
     openAlert("Discard changes?", "Unsaved job details will be lost.");
-    // If you want 2-buttons, use a separate ConfirmationModal; AlertModal is single-action OK.
   };
 
   const handleSubmitJob = async () => {
@@ -243,13 +262,9 @@ export const PostJob = () => {
       profilePic,
     };
 
-
     try {
+      setIsSubmitting(true);
       const res = await postJob(jobData);
-
-      console.log('AAAAAAAAAAA', jobData)
-
-
       if (res.success) {
         openAlert("Success", "Job posted successfully!");
         setRefresh(!refresh);
@@ -260,6 +275,8 @@ export const PostJob = () => {
     } catch (err: any) {
       console.error("Error posting job:", err);
       openAlert("Error", err?.message || "An error occurred.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -369,6 +386,7 @@ export const PostJob = () => {
             onChangeText={searchPlaces}
             placeholder="e.g. Manila, Metro Manila"
             placeholderTextColor={PH}
+            style={{ fontFamily: "Poppins-Regular" }}
             className="border border-gray-300 rounded-xl px-4 py-3 mb-3 bg-gray-50"
           />
           {locLoading && (
@@ -435,13 +453,21 @@ export const PostJob = () => {
               </View>
             ))}
           </View>
-          <TextInput
-            value={search}
-            onChangeText={setSearch}
-            placeholder="e.g. React, TypeScript"
-            placeholderTextColor={PH}
-            className="border border-gray-300 rounded-xl px-4 py-3 mb-2"
-          />
+          <View style={{ flexDirection: "row", alignItems: "center", borderWidth: 1, borderColor: "#ccc", borderRadius: 12, paddingHorizontal: 12, marginBottom: 8 }}>
+            <TextInput
+              value={search}
+              onChangeText={setSearch}
+              placeholder="Type a skill to add or select from below"
+              placeholderTextColor={PH}
+              style={{ flex: 1, height: 44, fontFamily: "Poppins-Regular", color: "#37424F" }}
+              onSubmitEditing={addCustomSkill}
+            />
+            {search.trim().length > 0 && (
+              <Pressable onPress={addCustomSkill} style={{ padding: 8 }}>
+                <Check size={20} color={BRAND_PURPLE} />
+              </Pressable>
+            )}
+          </View>
           {search.length > 0 && (
             <View
               style={{
@@ -573,14 +599,21 @@ export const PostJob = () => {
             <TouchableOpacity
               onPress={confirmDiscard}
               className="flex-1 bg-gray-200 rounded-xl px-6 py-4 mr-3"
+              disabled={isSubmitting}
             >
               <Text className="text-center font-semibold text-gray-700">Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleSubmitJob}
-              className="flex-1 bg-blue-600 rounded-xl px-6 py-4 ml-3"
+              className="flex-1 rounded-xl px-6 py-4 ml-3"
+              style={{ backgroundColor: isSubmitting ? "#94a3b8" : "#2563eb" }}
+              disabled={isSubmitting}
             >
-              <Text className="text-center font-semibold text-white">Post Job</Text>
+              {isSubmitting ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="text-center font-semibold text-white">Post Job</Text>
+              )}
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -602,6 +635,25 @@ export const PostJob = () => {
         message={alertMessage}
         onClose={() => setAlertVisible(false)}
       />
+
+      {/* Loading overlay */}
+      {isSubmitting && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(255,255,255,0.6)",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <Loading />
+        </View>
+      )}
     </SafeAreaView>
   );
 };

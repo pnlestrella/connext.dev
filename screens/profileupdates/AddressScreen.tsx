@@ -38,6 +38,10 @@ export const AddressScreen = () => {
     }
 
     try {
+
+
+
+
       const res = await fetch(
         `https://api.locationiq.com/v1/autocomplete.php?key=${API_KEY}&q=${encodeURIComponent(
           text
@@ -46,7 +50,7 @@ export const AddressScreen = () => {
       const data = await res.json();
       setResults(data);
     } catch (err) {
-      console.error("Error fetching locations:", err);
+      console.error("Error fetching locations:", err.message);
     }
   }
 

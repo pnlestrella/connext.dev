@@ -6,6 +6,7 @@ import {
     GraduationCap,
     FileText,
     Clock,
+    Mail
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -30,7 +31,9 @@ export const ApplicantDetail = () => {
     const { applicant } = route.params as any;
     const { profile, appliedAt } = applicant;
 
-    console.log("TESTYYY", applicant.applicationID)
+
+
+    console.log("TESTYYY", applicant)
 
     const handleOpenResume = async () => {
         if (!profile?.resume) {
@@ -137,6 +140,13 @@ export const ApplicantDetail = () => {
                         {profile?.fullName?.firstName} {profile?.fullName?.lastName}
                     </Text>
 
+                      <View className="flex-row items-center mt-1">
+                        <Mail size={16} color="#6B7280" />
+                        <Text className="ml-1 text-gray-600 text-sm">
+                            {applicant.profile.email}
+                        </Text>
+                    </View>
+
                     <View className="flex-row items-center mt-1">
                         <MapPin size={16} color="#6B7280" />
                         <Text className="ml-1 text-gray-600 text-sm">
@@ -150,6 +160,7 @@ export const ApplicantDetail = () => {
                             Applied {new Date(appliedAt).toLocaleDateString()}
                         </Text>
                     </View>
+
                 </View>
 
                 {/* Profile Summary */}

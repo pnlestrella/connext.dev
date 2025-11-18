@@ -26,11 +26,14 @@ import { getSchedulesByConversation } from 'api/schedules/schedules';
 import { updateMeeting } from 'api/employers/google';
 
 export const ChatScreen = () => {
-  const { socket } = useSockets();
+  const { socket, onlineUsers } = useSockets();
   const { userMDB, initializing, refreshAuth } = useAuth();
   const route = useRoute();
   const navigation = useNavigation();
   const { item } = route.params;
+
+    const isOnline = onlineUsers.has(item.seekerUID);
+
 
   const [schedules, setSchedules] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -249,7 +252,7 @@ export const ChatScreen = () => {
             </View>
             <View style={{ marginLeft: 12, flex: 1 }}>
               <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 16, color: '#37424F' }}>{displayName || 'Applicant'}</Text>
-              <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 12, color: '#6B7280' }}>Active 2 hours ago</Text>
+              <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 12, color: isOnline?'green':'#6B7280' }}>{isOnline? 'Online' : 'Offline'}</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
               <View style={{ marginHorizontal: 8 }}>
