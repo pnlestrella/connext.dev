@@ -33,11 +33,15 @@ import * as Linking from 'expo-linking';
 import MeetIcon from '../../../assets/images/meet.png';
 
 export const ChatScreen = () => {
-  const { socket } = useSockets();
+  const { socket, onlineUsers } = useSockets();
   const { userMDB, initializing } = useAuth();
   const route = useRoute();
   const navigation = useNavigation();
   const { item } = route.params;
+
+  const isOnline = onlineUsers.has(item.employerUID);
+
+  console.log(onlineUsers,'online uses')
 
   const isEmployer = !!item.employerUID && userMDB?.employerUID === item.employerUID;
   const isJobSeeker = !!item.seekerUID && userMDB?.seekerUID === item.seekerUID;
@@ -182,7 +186,7 @@ export const ChatScreen = () => {
 
             <View style={{ marginLeft: 12, flex: 1 }}>
               <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 16, color: '#37424F' }}>{displayName}</Text>
-              <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 12, color: '#6B7280' }}>Active 2 hours ago</Text>
+              <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 12, color: isOnline?'green':'#6B7280' }}>{isOnline? 'Online' : 'Offline'}</Text>
             </View>
           </View>
 

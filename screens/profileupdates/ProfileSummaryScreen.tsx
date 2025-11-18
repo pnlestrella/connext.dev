@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import {
-  View,
   Text,
+  View,
   TextInput,
+  Pressable,
   StyleSheet,
-  ActivityIndicator,
   Keyboard,
   ScrollView,
-  Pressable,
   KeyboardAvoidingView,
+  ActivityIndicator,
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "components/Button";
 import { useAuth } from "context/auth/AuthHook";
 import { updateProfile } from "api/profile";
-import { Loading } from "components/Loading";
 import { generateProfileSummary } from "api/groq/groqAPI";
+import AlertModal from "components/AlertModal";
+import { Loading } from "components/Loading";
 
 const BRAND_PURPLE = "#6D28D9";
 const BRAND_PURPLE_DARK = "#5B21B6";
@@ -29,51 +30,85 @@ export const ProfileSummaryScreen = () => {
   const [generating, setGenerating] = useState(false);
   const userPath = userType + "s";
 
-  console.log(userMDB.fullName.firstName + ' '+userMDB.fullName.middleInitial + ' '+ userMDB.fullName.lastName)
+  // Alert Modal state
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Alert");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [onSuccessAction, setOnSuccessAction] = useState<(() => void) | null>(null);
 
-  // ✅ Save profile summary
+  // Save profile summary handler with modal instead of alert
   async function handleSave() {
     if (!summary.trim()) {
-      alert("Please enter your profile summary");
+      setAlertTitle("Validation error");
+      setAlertMessage("Please enter your profile summary");
+      setAlertVisible(true);
+      setOnSuccessAction(null);
       return;
     }
     try {
       setLoading(true);
       const payload = { editType: "profileSummary", data: summary.trim() };
       const res = await updateProfile(userPath, user?.uid, payload);
-      console.log(res,' test')
-      setUserMDB(res)
-      alert("Profile summary updated successfully!");
+      setUserMDB(res);
+      setAlertTitle("Success");
+      setAlertMessage("Profile summary updated successfully!");
+      setAlertVisible(true);
+      setOnSuccessAction(() => () => {
+        // You can optionally execute navigation or other actions here
+      });
     } catch (err) {
       console.error(err);
-      alert("Failed to update summary. Try again.");
+      setAlertTitle("Save error");
+      setAlertMessage("Failed to update summary. Try again.");
+      setAlertVisible(true);
+      setOnSuccessAction(null);
     } finally {
       setLoading(false);
       Keyboard.dismiss();
     }
   }
 
-  // ✅ Generate profile summary using Groq API
+  // Generate AI summary handler with modal error feedback
   async function handleGenerateAI() {
     if (generating) return;
     setGenerating(true);
 
     try {
-      const name = userMDB.fullName.firstName + ' '+userMDB.fullName.middleInitial + ' '+ userMDB.fullName.lastName || "Your name here";
-      const skills = userMDB.skills; // you can later make this dynamic
+      const name =
+        userMDB.fullName.firstName +
+          " " +
+          userMDB.fullName.middleInitial +
+          " " +
+          userMDB.fullName.lastName || "Your name here";
+      const skills = userMDB.skills; // can make dynamic
 
       const generatedText = await generateProfileSummary(name, skills);
 
       if (generatedText && generatedText !== "Error generating profile summary.") {
         setSummary(generatedText);
       } else {
-        alert("AI failed to generate a summary. Try again later.");
+        setAlertTitle("AI Generation Failed");
+        setAlertMessage("AI failed to generate a summary. Try again later.");
+        setAlertVisible(true);
+        setOnSuccessAction(null);
       }
     } catch (err) {
       console.error("Groq AI Error:", err);
-      alert("AI generation failed. Try again.");
+      setAlertTitle("AI Generation Error");
+      setAlertMessage("AI generation failed. Try again.");
+      setAlertVisible(true);
+      setOnSuccessAction(null);
     } finally {
       setGenerating(false);
+    }
+  }
+
+  // Alert modal OK handler triggers success action or nothing
+  function handleAlertClose() {
+    setAlertVisible(false);
+    if (onSuccessAction) {
+      onSuccessAction();
+      setOnSuccessAction(null);
     }
   }
 
@@ -121,7 +156,6 @@ export const ProfileSummaryScreen = () => {
             </Pressable>
           </View>
 
-          {/* ✅ Text area with loader inside */}
           <View style={styles.textAreaContainer}>
             <TextInput
               value={summary}
@@ -135,10 +169,8 @@ export const ProfileSummaryScreen = () => {
               editable={!loading && !generating}
             />
 
-            {/* Character count */}
             <Text style={styles.charCount}>{summary.length}/750</Text>
 
-            {/* Loader inside input */}
             {(loading || generating) && (
               <View style={styles.inputLoader}>
                 <Loading />
@@ -158,12 +190,19 @@ export const ProfileSummaryScreen = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      <AlertModal
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={handleAlertClose}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingHorizontal: 20, paddingVertical:10, backgroundColor: "#fff" },
+  container: { flex: 1, paddingHorizontal: 20, paddingVertical: 10, backgroundColor: "#fff" },
   title: { fontSize: 26, fontWeight: "700", color: BRAND_PURPLE, marginBottom: 8 },
   subtitle: { fontSize: 16, color: "#4B5563", marginBottom: 20, lineHeight: 22 },
   aiHelpBox: {
@@ -218,8 +257,6 @@ const styles = StyleSheet.create({
     color: "#9CA3AF",
   },
   footer: { marginTop: "auto" },
-
-  // ✅ Loader inside input
   inputLoader: {
     position: "absolute",
     top: 0,

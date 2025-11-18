@@ -16,6 +16,7 @@ import { useAuth } from "context/auth/AuthHook";
 import { updateProfile } from "api/profile";
 import Fuse from "fuse.js";
 import Skills from "../../data/cleaned_skills.json"; // array of strings
+import AlertModal from "components/AlertModal";
 
 // Brand color
 const BRAND_PURPLE = "#6D28D9";
@@ -50,6 +51,11 @@ export const SkillsScreen = () => {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Alert");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [onSuccessAction, setOnSuccessAction] = useState<(() => void) | null>(null);
+
   const userPath = userType + "s";
 
   // 🔹 debounce search input
@@ -69,7 +75,10 @@ export const SkillsScreen = () => {
   function addSkill(skill: string) {
     if (selected.includes(skill)) return;
     if (selected.length >= 10) {
-      alert("You can only select up to 10 skills");
+      setAlertTitle("Limit reached");
+      setAlertMessage("You can only select up to 10 skills");
+      setAlertVisible(true);
+      setOnSuccessAction(null);
       return;
     }
     setSelected((p) => [...p, skill]);
@@ -83,17 +92,35 @@ export const SkillsScreen = () => {
 
   async function handleSubmit() {
     if (selected.length < 1) {
-      alert("Please select at least 1 skill");
+      setAlertTitle("Selection required");
+      setAlertMessage("Please select at least 1 skill");
+      setAlertVisible(true);
+      setOnSuccessAction(null);
       return;
     }
     try {
       const payload = { editType: "skills", data: selected };
       const res = await updateProfile(userPath, user?.uid, payload);
+      if (res.success === false) {
+        setAlertTitle("Error");
+        setAlertMessage(res.error || "Failed to update skills. Try again.");
+        setAlertVisible(true);
+        setOnSuccessAction(null);
+        return;
+      }
       setUserMDB(res);
-      alert("Skills updated successfully!");
+      setAlertTitle("Success");
+      setAlertMessage("Skills successfully added");
+      setAlertVisible(true);
+      setOnSuccessAction(() => () => {
+        // You can add navigation or other actions here
+      });
     } catch (err) {
       console.error(err);
-      alert("Failed to update skills. Try again.");
+      setAlertTitle("Error");
+      setAlertMessage("Failed to update skills. Try again.");
+      setAlertVisible(true);
+      setOnSuccessAction(null);
     }
   }
 
@@ -130,7 +157,7 @@ export const SkillsScreen = () => {
     return unique.slice(0, 8);
   }, [debouncedSearch, selected]);
 
-  // 🔹 highlight component (safe against regex metacharacters)
+  // 🔹 highlight component
   function Highlighted({ text, query }: { text: string; query: string }) {
     if (!query) return <Text>{text}</Text>;
     const safe = safeEscape(query);
@@ -139,7 +166,6 @@ export const SkillsScreen = () => {
     try {
       regex = new RegExp(`(${safe})`, "i");
     } catch {
-      // If anything unexpected happens, render plain text
       return <Text>{text}</Text>;
     }
     const parts = text.split(regex);
@@ -147,26 +173,32 @@ export const SkillsScreen = () => {
       <Text>
         {parts.map((part, i) =>
           regex.test(part) ? (
-            <Text key={i} style={{ fontWeight: "700", color: "#6D28D9" }}>
+            <Text key={i} style={{ fontWeight: "700", color: BRAND_PURPLE }}>
               {part}
             </Text>
           ) : (
             <Text key={i}>{part}</Text>
-          )
+          ),
         )}
       </Text>
     );
+  }
+
+  function handleAlertClose() {
+    setAlertVisible(false);
+    if (onSuccessAction) {
+      onSuccessAction();
+      setOnSuccessAction(null);
+    }
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Add your skills</Text>
       <Text style={styles.subtitle}>
-        Select up to 10 skills that describe you. These help us match you with
-        better opportunities.
+        Select up to 10 skills that describe you. These help us match you with better opportunities.
       </Text>
 
-      {/* Selected skills as chips */}
       <View style={styles.chipsContainer}>
         {selected.length === 0 ? (
           <Text style={styles.helperText}>No skills selected yet</Text>
@@ -186,7 +218,6 @@ export const SkillsScreen = () => {
         )}
       </View>
 
-      {/* Search input */}
       <TextInput
         value={search}
         onChangeText={setSearch}
@@ -197,7 +228,6 @@ export const SkillsScreen = () => {
         returnKeyType="done"
       />
 
-      {/* Dropdown suggestions */}
       {search.length > 0 && (
         <View style={styles.dropdown}>
           {loading ? (
@@ -215,9 +245,8 @@ export const SkillsScreen = () => {
                   key={skill}
                   onPress={() => addSkill(skill)}
                   android_ripple={{ color: "#EDE9FE" }}
-                  style={({ pressed }) => [
+                  style={[
                     styles.dropdownItem,
-                    pressed && styles.dropdownItemPressed,
                     idx === filtered.length - 1 && { borderBottomWidth: 0 },
                   ]}
                 >
@@ -235,7 +264,6 @@ export const SkillsScreen = () => {
         </View>
       )}
 
-      {/* Footer */}
       <View style={styles.footer}>
         <Button
           onPress={handleSubmit}
@@ -243,6 +271,13 @@ export const SkillsScreen = () => {
           disabled={selected.length < 1}
         />
       </View>
+
+      <AlertModal
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={handleAlertClose}
+      />
     </SafeAreaView>
   );
 };
@@ -320,9 +355,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderBottomWidth: 1,
     borderBottomColor: "#F3F4F6",
-  },
-  dropdownItemPressed: {
-    backgroundColor: "#F3F4F6",
   },
   dropdownText: { fontSize: 17, color: "#111827", fontWeight: "500" },
   loadingBox: {
