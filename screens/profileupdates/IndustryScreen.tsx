@@ -15,8 +15,8 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "navigation/types/RootStackParamList";
 import { updateProfile } from "api/profile";
-import { Button } from "components/Button";
 import { Industries } from "../../data/industries.json";
+import AlertModal from "components/AlertModal";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type Industry = { name: string; id: number };
@@ -24,10 +24,16 @@ type Industry = { name: string; id: number };
 export const IndustryScreen = () => {
   const { user, userType, setUserMDB } = useAuth();
   const navigation = useNavigation<NavigationProp>();
-
   const userPath = userType + "s";
+
   const [selected, setSelected] = useState<Industry[]>([]);
   const [search, setSearch] = useState("");
+
+  // Alert modal state
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Alert");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [onSuccessAction, setOnSuccessAction] = useState<(() => void) | null>(null);
 
   function handleSelect(industry: Industry) {
     setSelected((prev) => {
@@ -35,7 +41,10 @@ export const IndustryScreen = () => {
       if (exists) {
         return prev.filter((item) => item.name !== industry.name);
       } else if (prev.length >= 3) {
-        alert("⚠️ You can only pick up to 3 industries");
+        setAlertTitle("Limit reached");
+        setAlertMessage("⚠️ You can only pick up to 3 industries");
+        setAlertVisible(true);
+        setOnSuccessAction(null);
         return prev;
       } else {
         return [...prev, industry];
@@ -45,7 +54,10 @@ export const IndustryScreen = () => {
 
   async function handleSubmit() {
     if (selected.length < 1) {
-      alert("⚠️ Please select at least one industry");
+      setAlertTitle("Selection required");
+      setAlertMessage("⚠️ Please select at least one industry");
+      setAlertVisible(true);
+      setOnSuccessAction(null);
       return;
     }
 
@@ -57,12 +69,28 @@ export const IndustryScreen = () => {
 
     const res = await updateProfile(userPath, user?.uid, payload);
     if (res.success === false) {
-      alert(res.error);
+      setAlertTitle("Error");
+      setAlertMessage(res.error || "Failed to save industries. Please try again.");
+      setAlertVisible(true);
+      setOnSuccessAction(null);
       return;
     }
 
     setUserMDB(res);
-    alert("✅ Successfully added industries");
+    setAlertTitle("Success");
+    setAlertMessage("✅ Successfully added industries");
+    setAlertVisible(true);
+    setOnSuccessAction(() => () => {
+      navigation.goBack();
+    });
+  }
+
+  function handleAlertClose() {
+    setAlertVisible(false);
+    if (onSuccessAction) {
+      onSuccessAction();
+      setOnSuccessAction(null);
+    }
   }
 
   const filtered = Industries.filter((ind) =>
@@ -116,16 +144,10 @@ export const IndustryScreen = () => {
               return (
                 <Pressable
                   onPress={() => handleSelect(item)}
-                  style={[
-                    styles.option,
-                    isSelected && styles.optionSelected,
-                  ]}
+                  style={[styles.option, isSelected && styles.optionSelected]}
                 >
                   <Text
-                    style={[
-                      styles.optionText,
-                      isSelected && styles.optionTextSelected,
-                    ]}
+                    style={[styles.optionText, isSelected && styles.optionTextSelected]}
                   >
                     {item.name}
                   </Text>
@@ -139,6 +161,13 @@ export const IndustryScreen = () => {
           <Text style={styles.buttonText}>Save & Continue</Text>
         </Pressable>
       </KeyboardAvoidingView>
+
+      <AlertModal
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={handleAlertClose}
+      />
     </SafeAreaView>
   );
 };
