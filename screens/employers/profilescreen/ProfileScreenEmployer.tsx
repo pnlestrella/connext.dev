@@ -24,7 +24,6 @@ export const ProfileScreenEmployer = () => {
     try {
       await signOutUser();
       setLogoutVisible(false);
-      alert("Signed out successfully");
       navigation.navigate("login");
     } catch (err) {
       alert("Failed to sign out. Try again.");

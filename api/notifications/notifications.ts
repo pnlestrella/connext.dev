@@ -3,9 +3,9 @@ import Constants from 'expo-constants';
 const API_URL = Constants.expoConfig?.extra?.BACKEND_BASE_URL;
 
 // Get notifications for a specific user (employer or jobseeker)
-export const getNotifications = async (receiverUID: string, role :string) => {
+export const getNotifications = async (receiverUID: string, role :string, limit : number) => {
   try {
-    const response = await fetch(`${API_URL}/api/notifications/getNotifications/${receiverUID}?role=${role}`);
+    const response = await fetch(`${API_URL}/api/notifications/getNotifications/${receiverUID}?role=${role}&limit=${limit}`);
     const data = await response.json();
 
     if (!data.success) {

@@ -24,7 +24,6 @@ export const Home = () => {
             const signout = signOutUser()
             console.log(signout)
             
-            alert("Signed out successfully")
             navigation.navigate('login')
 
           }catch(err){

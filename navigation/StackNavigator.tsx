@@ -16,6 +16,10 @@ import { SkillsScreen } from "screens/profileupdates/SkillsScreen";
 import { ProfileSummaryScreen } from "screens/profileupdates/ProfileSummaryScreen";
 import { RegistrationConfirmationScreen } from "screens/profileupdates/RegistrationConfirmationScreen";
 
+//notifications screen
+import { NotificationsScreen } from "screens/Notifications";
+
+
 // Tabs
 import JobseekerTabs from "./tabs/JobseekerTabs";
 import EmployerTabs from "./tabs/EmployerTabs";
@@ -56,11 +60,16 @@ function JobseekerStack({ userMDB }: any) {
     <Stack.Navigator screenOptions={{
       headerShown: false,
       contentStyle: { backgroundColor: 'white' },
-    }}>
+    }}
+      initialRouteName="home"
+    >
       {!location && <Stack.Screen name="address" component={AddressScreen} />}
       {!industries && <Stack.Screen name="industries" component={IndustryScreen} />}
       {!skills && <Stack.Screen name="skills" component={SkillsScreen} />}
       {(profileSummary?.length === 0) && <Stack.Screen name="profileSummary" component={ProfileSummaryScreen} />}
+      <Stack.Screen name="notifications" component={NotificationsScreen}
+        options={{ animation: 'fade' }}
+      />
 
       <Stack.Screen name="home" component={JobseekerTabs} />
     </Stack.Navigator>
@@ -97,10 +106,10 @@ function EmployerStack({ userMDB }: any) {
   const initial = needsAddress
     ? "address"
     : needsIndustries
-    ? "industries"
-    // : needsConfirmation
-    // ? "confirmation"
-    : "home";
+      ? "industries"
+      // : needsConfirmation
+      // ? "confirmation"
+      : "home";
 
   // Force remount when prerequisites or status change so initialRouteName re-applies
   const flowKey = [
@@ -122,6 +131,11 @@ function EmployerStack({ userMDB }: any) {
       {/* {!needsAddress && !needsIndustries && needsConfirmation && (
         <Stack.Screen name="confirmation" component={RegistrationConfirmationScreen} />
       )} */}
+
+      <Stack.Screen name="notifications" component={NotificationsScreen}
+        options={{ animation: 'fade' }}
+      />
+      
       <Stack.Screen name="home" component={EmployerTabs} />
     </Stack.Navigator>
   );

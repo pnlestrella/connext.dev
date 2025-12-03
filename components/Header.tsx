@@ -26,9 +26,7 @@ export const Header = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      // Refresh notifications or update hasUnread state on tab focus
       console.log(hasUnread, 'HAS UNREAQDD')
-      // fetchNotifications();
     }, [])
   );
 
@@ -42,8 +40,6 @@ export const Header = () => {
   const animation = useRef(new Animated.Value(0)).current;
 
   const navigation = useNavigation();
-
-
 
   //sockets
   useEffect(() => {
@@ -67,9 +63,9 @@ export const Header = () => {
     try {
       let results;
       if (userMDB.role === 'jobseeker') {
-        results = await getNotifications(userMDB.seekerUID, userMDB.role);
+        results = await getNotifications(userMDB.seekerUID, userMDB.role, 3);
       } else {
-        results = await getNotifications(userMDB.employerUID, userMDB.role);
+        results = await getNotifications(userMDB.employerUID, userMDB.role, 3);
       }
 
       console.log(results, 'Fetched Notifications');
@@ -163,7 +159,7 @@ export const Header = () => {
       onPress={() => handleNotifPress(item)}
     >
       <Image
-        source={item.logo ? { uri: item.logo } : require('../assets/icon.png')}
+        source={item.senderDetails.profilePic ? { uri: item.senderDetails.profilePic } : require('../assets/icon.png')}
         style={styles.avatar}
       />
       <View style={styles.notificationContent}>
@@ -270,16 +266,17 @@ export const Header = () => {
                   />
                 )}
 
-                <View style={styles.actionsRow}>
-                  <TouchableOpacity style={styles.actionButtonPrimary}>
-                    <Text style={styles.actionButtonLabelPrimary}>View all</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.actionButtonSecondary}>
-                    <Text style={styles.actionButtonLabelSecondary}>
-                      Clear all
+                <View style={[styles.actionsRow, { justifyContent: 'center', paddingVertical: 8 }]}>
+                  <TouchableOpacity
+                    style={[styles.actionButtonPrimary, { paddingVertical: 10, paddingHorizontal: 20 }]}
+                    onPress={() => navigation.navigate('notifications')}
+                  >
+                    <Text style={[styles.actionButtonLabelPrimary, { fontWeight: '600' }]}>
+                      View all 
                     </Text>
                   </TouchableOpacity>
                 </View>
+
               </Animated.View>
             </TouchableWithoutFeedback>
           </View>

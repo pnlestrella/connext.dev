@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 //screens
-import { BrowseScreen } from '../../screens/jobseekers/BrowseScreen'
+import { BrowseScreen } from '../../screens/jobseekers/browse/BrowseScreen'
 import { MessageScreenJS } from 'screens/jobseekers/MessageScreenJS';
 import ProfileStackScreen from './jobseeker/ProfileStackScreen';
 import MessageStackScreenJS from './jobseeker/MessageStackScreenJS';

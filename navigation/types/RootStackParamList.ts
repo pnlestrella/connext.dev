@@ -15,6 +15,9 @@ export type RootStackParamList = {
     skills:undefined
     profileSummary:undefined;
     confirmation: undefined;
+    
+    //notifications
+    notifications:undefined
 
     //splash
     splash:undefined

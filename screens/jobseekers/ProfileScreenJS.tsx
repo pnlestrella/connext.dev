@@ -241,7 +241,6 @@ export const ProfileScreenJS = () => {
                   const signout = signOutUser();
                   console.log(signout);
 
-                  alert('Signed out successfully');
                   navigation.navigate('login');
                 } catch (err) {
                   alert(err);
