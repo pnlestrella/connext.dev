@@ -28,10 +28,7 @@ type NavigationType = NativeStackNavigationProp<RootStackParamList>;
 export const ProfileScreenJS = () => {
   const { userMDB, signOutUser, refreshAuth } = useAuth();
   const navigation = useNavigation<NavigationType>();
-  const [loading, setLoading] = useState(false)
-
-  console.log('test')
-
+  const [loading, setLoading] = useState(false);
 
   // For Alerts
   const [alertVisible, setAlertVisible] = useState(false);
@@ -52,13 +49,14 @@ export const ProfileScreenJS = () => {
       setLogoutModalVisible(false);
       navigation.navigate('login');
     } catch (err) {
-      showAlert('Logout failed', 'Failed to log out. Try again.'); // AlertModal
+      showAlert('Logout failed', 'Failed to log out. Try again.');
     }
   };
 
-  // Resume modal
+  // Resume modal and local loading
   const [resumeModalVisible, setResumeModalVisible] = useState(false);
   const [pickedResume, setPickedResume] = useState<any>(null);
+  const [resumeLoading, setResumeLoading] = useState(false);
 
   const pickResume = async () => {
     try {
@@ -75,18 +73,17 @@ export const ProfileScreenJS = () => {
 
       const file = result.assets[0];
       setPickedResume(file);
-      // Optional: show file name in alert for confirmation
-      // showAlert('File picked', file.name || 'Selected file');
     } catch (err) {
-      showAlert('Document error', 'Could not pick a file.'); // AlertModal
+      showAlert('Document error', 'Could not pick a file.');
     }
   };
 
   const handleSaveResume = async () => {
     if (!pickedResume) {
-      showAlert('Missing file', 'Please pick a resume first!'); // AlertModal
+      showAlert('Missing file', 'Please pick a resume first!');
       return;
     }
+    setResumeLoading(true);
     try {
       const data = await getUploadKeys(pickedResume, '/resumes');
       const updated = { resume: data.filePath };
@@ -94,13 +91,13 @@ export const ProfileScreenJS = () => {
       const res = await updateProfile('jobseekers', userMDB.seekerUID, {
         updates: updated,
       });
-      // console.log(res, 'ressy');
       refreshAuth();
 
-      showAlert('Success', 'Successfully uploaded Resume'); // AlertModal
+      showAlert('Success', 'Successfully uploaded Resume');
     } catch (err) {
-      showAlert('Upload failed', 'There was a problem uploading the resume.'); // AlertModal
+      showAlert('Upload failed', 'There was a problem uploading the resume.');
     }
+    setResumeLoading(false);
     setResumeModalVisible(false);
   };
 
@@ -115,11 +112,12 @@ export const ProfileScreenJS = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      {loading ? (
-        <View className="z-999 absolute top-0 bottom-0 left-0 right-0 bg-white/50">
+      {loading && (
+        <View className="z-99999 absolute top-0 bottom-0 left-0 right-0 bg-white/50">
           <Loading />
         </View>
-      ) : null}
+      )}
+
       <Header />
 
       <ScrollView contentContainerStyle={{ padding: 20 }}>
@@ -134,7 +132,6 @@ export const ProfileScreenJS = () => {
           >
             Your Profile
           </Text>
-
           <Pressable
             style={{
               paddingVertical: 6,
@@ -160,7 +157,7 @@ export const ProfileScreenJS = () => {
           </Pressable>
         </View>
 
-        {/* Profile Info */}
+        {/* Profile Info Section */}
         <View className="space-y-2">
           {/* Name */}
           <View className="flex-row items-center">
@@ -184,7 +181,7 @@ export const ProfileScreenJS = () => {
             </Text>
           </View>
 
-          {/* Industry as chips (wrap) */}
+          {/* Industry chips */}
           <View className="flex-row items-start">
             <Text
               style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100, color: '#37424F' }}
@@ -254,7 +251,7 @@ export const ProfileScreenJS = () => {
             </Text>
           </View>
 
-          {/* Skills as chips (wrap) */}
+          {/* Skills chips */}
           <View className="flex-row items-start">
             <Text
               style={{ fontFamily: 'Lexend-Regular', fontSize: 14, width: 100, color: '#37424F' }}
@@ -339,7 +336,7 @@ export const ProfileScreenJS = () => {
                   {userMDB.profileSummary}
                 </Text>
 
-                {/* View More / View Less */}
+                {/* Toggle View More/Less */}
                 <Pressable
                   onPress={toggleSummary}
                   style={{ marginTop: 8, alignSelf: 'flex-start' }}
@@ -450,7 +447,7 @@ export const ProfileScreenJS = () => {
                       navigation.navigate('resumeViewer' as never, { resumeUrl } as never);
                       setLoading(false);
                     } catch (err) {
-                      showAlert('Open failed', 'Could not open resume'); // AlertModal
+                      showAlert('Open failed', 'Could not open resume');
                       setLoading(false);
                     }
                   }}
@@ -566,39 +563,91 @@ export const ProfileScreenJS = () => {
         animationType="fade"
         onRequestClose={() => setResumeModalVisible(false)}
       >
-        <View className="flex-1 bg-black/50 justify-center items-center">
-          <View className="bg-white w-80 rounded-2xl p-6">
-            <Text
-              style={{
-                fontFamily: 'Lexend-SemiBold',
-                fontSize: 16,
-                marginBottom: 16,
-                textAlign: 'center',
-              }}
-            >
+        <View style={{
+          flex: 1,
+          backgroundColor: 'rgba(0,0,0,0.5)', // full dark overlay
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <View style={{
+            width: 320,
+            padding: 20,
+            borderRadius: 16,
+            backgroundColor: 'white',
+            position: 'relative',
+          }}>
+            <Text style={{
+              fontFamily: 'Lexend-SemiBold',
+              fontSize: 16,
+              marginBottom: 16,
+              textAlign: 'center',
+            }}>
               Upload Resume
             </Text>
 
-            <Pressable className="p-3 rounded-xl bg-gray-100 mb-4" onPress={pickResume}>
+            <Pressable
+              style={{
+                backgroundColor: '#F0F0F0',
+                borderRadius: 8,
+                padding: 12,
+                marginBottom: 16,
+              }}
+              onPress={pickResume}
+              disabled={resumeLoading}
+            >
               <Text style={{ textAlign: 'center', fontFamily: 'Lexend-Regular' }}>
                 {pickedResume ? pickedResume.name : 'Upload Here'}
               </Text>
             </Pressable>
 
-            <View className="flex-row justify-between">
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Pressable
-                className="px-4 py-2 rounded-xl bg-gray-200"
+                style={{
+                  backgroundColor: '#E0E0E0',
+                  borderRadius: 8,
+                  paddingHorizontal: 20,
+                  paddingVertical: 10,
+                }}
                 onPress={() => {
                   setPickedResume(null);
                   setResumeModalVisible(false);
                 }}
+                disabled={resumeLoading}
               >
-                <Text>Cancel</Text>
+                <Text style={{ fontFamily: 'Lexend-Regular' }}>Cancel</Text>
               </Pressable>
-              <Pressable className="px-4 py-2 rounded-xl bg-[#1572DB]" onPress={() => handleSaveResume()}>
-                <Text style={{ color: 'white' }}>Save</Text>
+
+              <Pressable
+                style={{
+                  backgroundColor: '#1572DB',
+                  borderRadius: 8,
+                  paddingHorizontal: 20,
+                  paddingVertical: 10,
+                }}
+                onPress={handleSaveResume}
+                disabled={resumeLoading}
+              >
+                <Text style={{ color: 'white', fontFamily: 'Lexend-SemiBold' }}>Save</Text>
               </Pressable>
             </View>
+
+            {/* Modal loading overlay */}
+            {resumeLoading && (
+              <View style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0,0,0,0.2)',
+                borderRadius: 16,
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 999,
+              }}>
+                <Loading />
+              </View>
+            )}
           </View>
         </View>
       </Modal>
@@ -613,15 +662,13 @@ export const ProfileScreenJS = () => {
         onConfirm={handleLogoutConfirm}
       />
 
-      {/* Centralized Alert modal (replaces alert(...)) */}
+      {/* Centralized Alert modal */}
       <AlertModal
         visible={alertVisible}
         title={alertTitle}
         message={alertMessage}
         onClose={() => setAlertVisible(false)}
       />
-
-
     </SafeAreaView>
   );
 };

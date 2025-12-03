@@ -7,11 +7,13 @@ import Constants from "expo-constants";
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const { userMDB, user } = useAuth();
-  //for notifications
+  // For notifications
   const [hasUnread, setHasUnread] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
-  
+  // New state tracking online users
+  const [onlineUsers, setOnlineUsers] = useState(new Set<string>());
+
 
   useEffect(() => {
     if (!userMDB) {
@@ -43,6 +45,15 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       }
     });
 
+    // Listen for presence updates
+    s.on("userPresenceUpdate", ({ userId, online }) => {
+      setOnlineUsers(prev => {
+        const newSet = new Set(prev);
+        if (online) newSet.add(userId);
+        else newSet.delete(userId);
+        return newSet;
+      });
+    });
 
     setSocket(s);
 
@@ -51,7 +62,14 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [userMDB]);
 
-  const value = useMemo(() => ({ socket,hasUnread,notifications,setHasUnread,setNotifications }), [socket,hasUnread,notifications]);
+  const value = useMemo(() => ({
+    socket,
+    hasUnread,
+    notifications,
+    setHasUnread,
+    setNotifications,
+    onlineUsers,
+  }), [socket, hasUnread, notifications, onlineUsers]);
 
   return (
     <SocketContext.Provider value={value}>

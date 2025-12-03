@@ -6,6 +6,7 @@ import {
     GraduationCap,
     FileText,
     Clock,
+    Mail
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -22,7 +23,7 @@ import { useEmployers } from "context/employers/EmployerHook";
 import { updateApplications } from "api/applications";
 
 export const ApplicantDetail = () => {
-    const { resumeCache, setResumeCache } = useEmployers()
+    const { resumeCache, setResumeCache,setRefresh,refresh } = useEmployers()
 
     const { userMDB } = useAuth();
     const navigation = useNavigation();
@@ -30,7 +31,9 @@ export const ApplicantDetail = () => {
     const { applicant } = route.params as any;
     const { profile, appliedAt } = applicant;
 
-    console.log("TESTYYY", applicant.applicationID)
+
+
+    console.log("TESTYYY", applicant)
 
     const handleOpenResume = async () => {
         if (!profile?.resume) {
@@ -114,7 +117,7 @@ export const ApplicantDetail = () => {
         <SafeAreaView className="flex-1 bg-gray-50">
             {/* Header */}
             <View className="flex-row items-center px-5 py-4 border-b border-gray-200 bg-white">
-                <Pressable onPress={() => navigation.goBack()} className="mr-3">
+                <Pressable onPress={() => {navigation.goBack(); setRefresh(!refresh)}} className="mr-3">
                     <ArrowLeft size={24} color="black" />
                 </Pressable>
                 <Text style={{ fontFamily: "Poppins-Bold", fontSize: 20, color: "#37424F" }}>
@@ -137,6 +140,13 @@ export const ApplicantDetail = () => {
                         {profile?.fullName?.firstName} {profile?.fullName?.lastName}
                     </Text>
 
+                      <View className="flex-row items-center mt-1">
+                        <Mail size={16} color="#6B7280" />
+                        <Text className="ml-1 text-gray-600 text-sm">
+                            {applicant.profile.email}
+                        </Text>
+                    </View>
+
                     <View className="flex-row items-center mt-1">
                         <MapPin size={16} color="#6B7280" />
                         <Text className="ml-1 text-gray-600 text-sm">
@@ -150,6 +160,7 @@ export const ApplicantDetail = () => {
                             Applied {new Date(appliedAt).toLocaleDateString()}
                         </Text>
                     </View>
+
                 </View>
 
                 {/* Profile Summary */}

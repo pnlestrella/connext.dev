@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import * as IntentLauncher from "expo-intent-launcher";
@@ -10,7 +10,6 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Alert,
   StyleSheet,
   TextInput,
   KeyboardAvoidingView,
@@ -25,6 +24,7 @@ import { useAuth } from 'context/auth/AuthHook';
 // firebase
 import { userRegister } from 'firebase/firebaseAuth';
 import { Loading } from 'components/Loading';
+import AlertModal from 'components/AlertModal';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -53,10 +53,24 @@ export const EmployerRegisterScreen = () => {
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
   const MAX_FILES = 3;
 
+  // AlertModal state for replacing alerts
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Alert");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [onAlertClose, setOnAlertClose] = useState<(() => void) | null>(null);
+
+  // Reusable function to show alert modal
+  const showAlert = (message: string, title = "Alert", onClose: () => void = () => {}) => {
+    setAlertMessage(message);
+    setAlertTitle(title);
+    setAlertVisible(true);
+    setOnAlertClose(() => onClose);
+  };
+
   const pickFile = async () => {
     try {
       if (documents.length >= MAX_FILES) {
-        Alert.alert(`You can only upload up to ${MAX_FILES} documents.`);
+        showAlert(`You can only upload up to ${MAX_FILES} documents.`);
         return;
       }
 
@@ -68,7 +82,7 @@ export const EmployerRegisterScreen = () => {
       if (!result.assets?.length) return;
 
       if (documents.length + result.assets.length > MAX_FILES) {
-        Alert.alert(`You can only upload up to ${MAX_FILES} documents.`);
+        showAlert(`You can only upload up to ${MAX_FILES} documents.`);
         return;
       }
 
@@ -76,7 +90,7 @@ export const EmployerRegisterScreen = () => {
 
       for (const file of result.assets) {
         if (file.size && file.size > MAX_FILE_SIZE) {
-          Alert.alert(`File ${file.name} is too large. Max size is 5MB`);
+          showAlert(`File ${file.name} is too large. Max size is 5MB`);
           return;
         }
 
@@ -89,6 +103,7 @@ export const EmployerRegisterScreen = () => {
       setDocuments((prev) => [...prev, ...validFiles]);
     } catch (err) {
       console.log("Error picking file:", err);
+      showAlert("An error occurred while picking files.");
     }
   };
 
@@ -117,7 +132,7 @@ export const EmployerRegisterScreen = () => {
 
   const uploadAllDocuments = async () => {
     if (!documents || documents.length === 0) {
-      Alert.alert("No files to upload.");
+      showAlert("No files to upload.");
       return;
     }
 
@@ -168,11 +183,11 @@ export const EmployerRegisterScreen = () => {
       );
 
       console.log("Uploaded files:", uploadedUrls);
-      Alert.alert("Success", "All files uploaded!");
+      showAlert("All files uploaded!", "Success");
       return uploadedUrls;
     } catch (err) {
       console.error("Upload error:", err);
-      Alert.alert("Upload failed. Please try again.");
+      showAlert("Upload failed. Please try again.");
     }
   };
 
@@ -180,21 +195,22 @@ export const EmployerRegisterScreen = () => {
     const trimmedEmail = email.trim();
     const trimmedCompanyName = companyName.trim();
 
-    if (!trimmedEmail) return Alert.alert("Email is required.");
+    if (!trimmedEmail) return showAlert("Email is required.");
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(trimmedEmail)) return Alert.alert("Please enter a valid email address.");
+    if (!emailRegex.test(trimmedEmail)) return showAlert("Please enter a valid email address.");
 
-    if (!trimmedCompanyName) return Alert.alert("Company name is required.");
-    if (trimmedCompanyName.length < 3) return Alert.alert("Company name must be at least 3 characters long.");
+    if (!trimmedCompanyName) return showAlert("Company name is required.");
+    if (trimmedCompanyName.length < 3) return showAlert("Company name must be at least 3 characters long.");
 
-    if (!documents || documents.length === 0) return Alert.alert("At least one document must be uploaded.");
+    if (!documents || documents.length === 0) return showAlert("At least one document must be uploaded.");
 
-    if (!password) return Alert.alert("Password is required.");
-    if (password.length < 6) return Alert.alert("Password must be at least 6 characters long.");
+    if (!password) return showAlert("Password is required.");
+    if (password.length < 6) return showAlert("Password must be at least 6 characters long.");
 
-    if (password !== confirmPassword) return Alert.alert("Passwords do not match.");
+    if (password !== confirmPassword) return showAlert("Passwords do not match.");
 
-    setShowOTP(true);
+    onVerify()
+    // setShowOTP(true);
   }
 
   async function onVerify() {
@@ -230,18 +246,21 @@ export const EmployerRegisterScreen = () => {
         body: JSON.stringify(verification),
       });
 
-      Alert.alert("Success", "Successfully created the account");
+      showAlert("Successfully created the account", "Success", () => navigation.navigate("login"));
     } catch (err: any) {
-      Alert.alert("Error", err?.message || "Something went wrong");
+      showAlert(err?.message || "Something went wrong", "Error");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <View className="flex-1 bg-white">
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       {loading && (
-        <View className="absolute inset-0 z-50" style={{ backgroundColor: '#fff5f5', opacity: 0.5 }}>
+        <View style={{
+          position: 'absolute', inset: 0, zIndex: 50, backgroundColor: '#fff5f5', opacity: 0.5,
+          justifyContent: 'center', alignItems: 'center'
+        }}>
           <Loading />
         </View>
       )}
@@ -257,24 +276,23 @@ export const EmployerRegisterScreen = () => {
           bounces={false}
           showsVerticalScrollIndicator={false}
         >
-          <View className="items-center justify-center pt-6 mt-10 px-10">
-            {/* Header */}
-            <View className="flex-row items-center w-full max-w-md">
+          {/* Original form UI below unchanged */}
+
+          <View style={{ alignItems: "center", justifyContent: "center", paddingTop: 24, paddingHorizontal: 40 }}>
+            <View style={{ flexDirection: "row", alignItems: "center", width: "100%", maxWidth: 400 }}>
               <Image
                 source={require("../../assets/images/justLogo.png")}
-                className="w-20 h-20"
-                resizeMode="contain"
+                style={{ width: 80, height: 80, resizeMode: "contain" }}
               />
-              <View className="ml-4 flex-1">
+              <View style={{ marginLeft: 16, flex: 1 }}>
                 <Text style={style.titleText}>Create an account</Text>
                 <Text style={style.subHeaderText}>Find your employees with one swipe</Text>
               </View>
             </View>
 
-            {/* Form */}
-            <View className="w-full max-w-md mt-8">
+            <View style={{ width: "100%", maxWidth: 400, marginTop: 32 }}>
               {/* Email */}
-              <View className="mb-4">
+              <View style={{ marginBottom: 16 }}>
                 <Text style={style.fieldHeader}>Email</Text>
                 <TextInput
                   style={style.textInput}
@@ -289,7 +307,7 @@ export const EmployerRegisterScreen = () => {
               </View>
 
               {/* Company Name */}
-              <View className="mb-4">
+              <View style={{ marginBottom: 16 }}>
                 <Text style={style.fieldHeader}>Company Name</Text>
                 <TextInput
                   style={style.textInput}
@@ -302,23 +320,29 @@ export const EmployerRegisterScreen = () => {
               </View>
 
               {/* Documents */}
-              <View className="mb-4">
+              <View style={{ marginBottom: 16 }}>
                 <Text style={style.fieldHeader}>Company Documents (Required for verification)</Text>
                 <Pressable
                   onPress={pickFile}
-                  className="border border-gray-300 rounded-md p-3 bg-gray-100"
+                  style={{
+                    borderWidth: 1,
+                    borderColor: "#ccc",
+                    borderRadius: 8,
+                    padding: 12,
+                    backgroundColor: "#e5e7eb",
+                  }}
                   accessibilityRole="button"
                   accessibilityLabel="Upload company documents"
                 >
-                  <Text className="text-gray-700">Upload Documents</Text>
+                  <Text style={{ color: "#374151" }}>Upload Documents</Text>
                 </Pressable>
               </View>
 
               {/* File List */}
               <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                {documents.map((file, i) => (
+                {documents.map((file, index) => (
                   <View
-                    key={i}
+                    key={index}
                     style={{
                       width: 100,
                       margin: 4,
@@ -327,6 +351,7 @@ export const EmployerRegisterScreen = () => {
                       borderColor: "#ccc",
                       borderRadius: 8,
                       backgroundColor: "#f9f9f9",
+                      position: "relative",
                     }}
                   >
                     <Pressable
@@ -340,13 +365,13 @@ export const EmployerRegisterScreen = () => {
                         style={{ width: 16, height: 16, marginRight: 6 }}
                         resizeMode="contain"
                       />
-                      <Text style={{ fontSize: 10, flexShrink: 1 }} numberOfLines={1}>
+                      <Text numberOfLines={1} style={{ fontSize: 10, flexShrink: 1 }}>
                         {file.name}
                       </Text>
                     </Pressable>
 
                     <TouchableOpacity
-                      onPress={() => removeFile(i)}
+                      onPress={() => removeFile(index)}
                       style={{
                         position: "absolute",
                         top: 4,
@@ -368,7 +393,7 @@ export const EmployerRegisterScreen = () => {
               </View>
 
               {/* Password */}
-              <View className="mb-4">
+              <View style={{ marginBottom: 16 }}>
                 <Text style={style.fieldHeader}>Password</Text>
                 <View style={styles.inputWrap}>
                   <TextInput
@@ -394,7 +419,7 @@ export const EmployerRegisterScreen = () => {
               </View>
 
               {/* Confirm Password */}
-              <View className="mb-4">
+              <View style={{ marginBottom: 16 }}>
                 <Text style={style.fieldHeader}>Confirm Password</Text>
                 <View style={styles.inputWrap}>
                   <TextInput
@@ -419,19 +444,27 @@ export const EmployerRegisterScreen = () => {
                 </View>
               </View>
 
-              <View style={{ height: 10 }} />
               <TouchableOpacity
                 onPress={handleSubmit}
-                className="bg-[#6C63FF] px-6 py-4 rounded-xl w-full"
+                style={{
+                  backgroundColor: "#6C63FF",
+                  paddingVertical: 16,
+                  borderRadius: 12,
+                  alignItems: "center",
+                  marginTop: 20,
+                }}
                 accessibilityRole="button"
                 accessibilityLabel="Proceed to verification"
               >
-                <Text className="text-white font-bold text-center">Proceed</Text>
+                <Text style={{ color: "white", fontWeight: "bold" }}>Proceed</Text>
               </TouchableOpacity>
 
-              <Text className="mt-4 text-center">
+              <Text style={{ marginTop: 16, textAlign: "center" }}>
                 Already have an account?{' '}
-                <Text className="text-[#6C63FF] font-bold" onPress={() => navigation.navigate('login')}>
+                <Text
+                  style={{ color: "#6C63FF", fontWeight: "bold" }}
+                  onPress={() => navigation.navigate("login")}
+                >
                   Sign In here
                 </Text>
               </Text>
@@ -440,7 +473,6 @@ export const EmployerRegisterScreen = () => {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      {/* OTP Modal */}
       <OTPModal
         loading={loading}
         setLoading={setLoading}
@@ -450,6 +482,17 @@ export const EmployerRegisterScreen = () => {
         visible={showOTP}
         onClose={() => setShowOTP(false)}
         onSubmit={() => setShowOTP(false)}
+      />
+
+      <AlertModal
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={() => {
+          setAlertVisible(false);
+          onAlertClose?.();
+          setOnAlertClose(null);
+        }}
       />
     </View>
   );

@@ -1,127 +1,206 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { ArrowLeft, MapPin, Briefcase, Clock, User as UserIcon, Star } from 'lucide-react-native';
-import { Text, View, FlatList, Pressable, ActivityIndicator, Image } from 'react-native';
+import {
+  Text,
+  View,
+  FlatList,
+  Pressable,
+  ScrollView,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { getShortlistedApplicants } from 'api/applications';
 import { useEmployers } from 'context/employers/EmployerHook';
+import { getJob } from 'api/employers/joblistings';
+
+import { useFocusEffect } from '@react-navigation/native';
 
 export const ShortlistedApplicants = () => {
-  const { refresh, setRefresh } = useEmployers();
-  const route = useRoute();
-  const { jobUID } = route.params;
+  const { refresh, setRefresh, applicationCounts } = useEmployers();
   const navigation = useNavigation();
+  const route = useRoute();
+  const [job, setJob] = useState(null);
+  const { jobUID } = route.params;
 
+  useFocusEffect(
+    useCallback(() => {
+      setRefresh(!refresh);
+      return () => {};
+    }, [])
+  );
+
+  useEffect(() => {
+    // When refresh changes then reload applicants
+    setData([]);
+    setPage(1);
+    setHasMore(true);
+    fetchApplicants(1, true);
+  }, [refresh]);
+
+  useEffect(() => {
+    const getJobDesc = async () => {
+      const res = await getJob(jobUID);
+      setJob(res.message);
+    };
+    getJobDesc();
+  }, []);
+
+  console.log(job, 'jobbb');
 
   const [data, setData] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const statusOptions = ["shortlisted", "viewed", "contacted"];
-  const [activeStatus, setActiveStatus] = useState("shortlisted");
+  const statusOptions = ['shortlisted', 'viewed', 'contacted', 'hired'];
+  const [activeStatus, setActiveStatus] = useState('shortlisted');
 
-  // Map status to card & top bar styles
   const statusMap = {
-    shortlisted: { bgCard: "#E0E7FF", textCard: "#4338CA", icon: <Star size={12} color="#4338CA" />, label: "Shortlisted", topColor: "#4338CA" },
-    viewed: { bgCard: "#FECACA", textCard: "#B91C1C", icon: <Star size={12} color="#B91C1C" />, label: "Skipped", topColor: "#B91C1C" },
-    contacted: { bgCard: "#FEF3C7", textCard: "#B45309", icon: <Star size={12} color="#B45309" />, label: "Contacted", topColor: "#B45309" },
+    shortlisted: {
+      bgCard: '#E0E7FF',
+      textCard: '#4338CA',
+      icon: <Star size={12} color="#4338CA" />,
+      label: 'Shortlisted',
+      topColor: '#4338CA',
+      boxBg: '#EEF2FF',
+      boxBorder: '#4338CA',
+      boxText: '#4338CA',
+    },
+    viewed: {
+      bgCard: '#FECACA',
+      textCard: '#B91C1C',
+      icon: <Star size={12} color="#B91C1C" />,
+      label: 'Skipped',
+      topColor: '#B91C1C',
+      boxBg: '#FEE2E2',
+      boxBorder: '#B91C1C',
+      boxText: '#B91C1C',
+    },
+    contacted: {
+      bgCard: '#FEF3C7',
+      textCard: '#B45309',
+      icon: <Star size={12} color="#B45309" />,
+      label: 'Contacted',
+      topColor: '#B45309',
+      boxBg: '#FFFAEB',
+      boxBorder: '#B45309',
+      boxText: '#B45309',
+    },
+    hired: {
+      bgCard: '#D1FAE5',
+      textCard: '#047857',
+      icon: <Star size={12} color="#047857" />,
+      label: 'Hired',
+      topColor: '#047857',
+      boxBg: '#DCFCE7',
+      boxBorder: '#047857',
+      boxText: '#047857',
+    },
   };
-  const fetchApplicants = useCallback(async () => {
-    if (loading || !hasMore) return;
-    setLoading(true);
-    try {
-      const res = await getShortlistedApplicants(jobUID, [activeStatus], page, 20);
-      if (res?.success) {
-        setData(prev => {
-          const newItems = res.payload.filter(
-            newItem => !prev.some(oldItem => oldItem._id === newItem._id)
-          );
-          return [...prev, ...newItems];
-        });
-        ;
-        setHasMore(res.hasMore);
-        setPage(prev => prev + 1);
-      } else {
-        setHasMore(false);
-      }
-    } catch (err) {
-      console.log(err, '❌ Error fetching applicants');
-    } finally {
-      setLoading(false);
-    }
-  }, [jobUID, page, activeStatus, hasMore, loading]);
 
-  useEffect(() => {
-    let isMounted = true; // avoid race if user switches quickly
-    setLoading(true);
-    setData([]);
-    setPage(1);
-    setHasMore(true);
+  const currentCounts = applicationCounts?.find((c) => c._id === jobUID) || {};
+  const generalCount = statusOptions.reduce((sum, status) => {
+    const count = currentCounts[status];
+    return sum + (typeof count === 'number' ? count : 0);
+  }, 0);
 
-    (async () => {
+  /** FIXED FETCH FUNCTION */
+  const fetchApplicants = useCallback(
+    async (pageToFetch = page, isInitial = false) => {
+      if (loading) return;
+      if (!hasMore && !isInitial) return;
+
+      setLoading(true);
+
       try {
-        const res = await getShortlistedApplicants(jobUID, [activeStatus], 1, 20);
-        if (isMounted && res?.success) {
-          setData(res.payload);
+        const res = await getShortlistedApplicants(jobUID, [activeStatus], pageToFetch, 20);
+
+        if (res?.success) {
+          setData((prev) => {
+            const base = isInitial ? [] : prev;
+            const unique = res.payload.filter(
+              (newItem) => !base.some((oldItem) => oldItem._id === newItem._id)
+            );
+            return [...base, ...unique];
+          });
+
           setHasMore(res.hasMore);
-          setPage(2); // next page
+
+          if (!isInitial) {
+            setPage((prev) => prev + 1);
+          }
         } else {
           setHasMore(false);
         }
-      } catch (err) {
-        console.log(err, '❌ Error fetching applicants');
+      } catch (e) {
+        console.log('❌ fetchApplicants error:', e);
       } finally {
-        if (isMounted) setLoading(false);
+        setLoading(false);
       }
-    })();
+    },
+    [jobUID, activeStatus, page, loading, hasMore]
+  );
 
-    return () => { isMounted = false };
-  }, [activeStatus, jobUID]);
-
-
+  /** WHEN STATUS CHANGES — RESET + FETCH FIRST PAGE */
   useEffect(() => {
-    fetchApplicants();
-  }, []);
+    setData([]);
+    setPage(1);
+    setHasMore(true);
+    fetchApplicants(1, true); // first load for new tab
+  }, [activeStatus]);
+
+  /** PAGINATION FETCH */
+  useEffect(() => {
+    if (page > 1) {
+      fetchApplicants(page);
+    }
+  }, [page]);
 
   const handleBack = () => {
     navigation.goBack();
     setRefresh(!refresh);
   };
 
+  /** RENDER APPLICANT CARD */
   const renderApplicant = ({ item }) => {
     const { profile, appliedAt, status } = item;
-    const fullName = `${profile?.fullName?.firstName || ""} ${profile?.fullName?.lastName || ""}`.trim();
+    const fullName = `${profile?.fullName?.firstName || ''} ${
+      profile?.fullName?.lastName || ''
+    }`.trim();
 
-    const style = statusMap[status] || { bgCard: "#E5E7EB", textCard: "#37424F", icon: null, label: status };
+    const style = statusMap[status] || {
+      bgCard: '#E5E7EB',
+      textCard: '#37424F',
+      icon: null,
+      label: 'Unknown',
+      boxBorder: '#9CA3AF',
+      boxText: '#37424F',
+    };
 
     return (
       <Pressable
-        className="mb-4 mx-4 rounded-2xl"
         style={{
-          backgroundColor: style.bgCard,
-          borderBlockColor: "#dbd5d5",
-          borderWidth: 0.5,
-          shadowColor: "#dbd5d5",
-          shadowOpacity: 0.01,
-          shadowRadius: 6,
+          backgroundColor: '#fff',
+          borderRadius: 16,
+          marginHorizontal: 16,
+          marginVertical: 8,
+          shadowColor: '#000',
+          shadowOpacity: 0.06,
+          shadowRadius: 4,
           shadowOffset: { width: 0, height: 2 },
-          elevation: 3,
+          elevation: 2,
         }}
-        onPress={() => navigation.push("applicantDetail", { applicant: item })}
-      >
+        onPress={() => navigation.push('applicantDetail', { applicant: item })}>
+        {/* Header */}
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
             padding: 14,
             borderBottomWidth: 1,
-            borderColor: "#F3F4F6",
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
-            backgroundColor: "#ffffff", // keep top slightly white for contrast
-          }}
-        >
+            borderColor: '#F3F4F6',
+          }}>
           {profile?.avatarUrl ? (
             <Image
               source={{ uri: profile.avatarUrl }}
@@ -133,85 +212,100 @@ export const ShortlistedApplicants = () => {
                 width: 44,
                 height: 44,
                 borderRadius: 22,
-                backgroundColor: "#E5E7EB",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+                backgroundColor: '#E5E7EB',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <UserIcon size={20} color="#6B7280" />
             </View>
           )}
 
           <View style={{ marginLeft: 12, flex: 1 }}>
             <Text
-              style={{ fontFamily: "Poppins-Bold", fontSize: 16, color: "#111827" }}
-              numberOfLines={1}
-            >
-              {fullName || "Unnamed Applicant"}
+              style={{
+                fontSize: 16,
+                color: '#111827',
+                fontFamily: 'Poppins-Bold',
+              }}
+              numberOfLines={1}>
+              {fullName || 'Unnamed Applicant'}
             </Text>
-            <View className="flex-row items-center mt-1">
+
+            <View style={{ flexDirection: 'row', marginTop: 4, alignItems: 'center' }}>
               <MapPin size={14} color="#6B7280" />
-              <Text className="ml-1 text-gray-600 text-sm" numberOfLines={1}>
-                {profile?.location?.city}, {profile?.location?.province}
+              <Text style={{ marginLeft: 4, color: '#6B7280' }} numberOfLines={1}>
+                {profile?.location?.city || 'N/A'}, {profile?.location?.province || 'N/A'}
               </Text>
             </View>
           </View>
 
-          {status && (
-            <View
+          <View
+            style={{
+              backgroundColor: style.bgCard,
+              borderColor: style.boxBorder,
+              borderWidth: 1,
+              borderRadius: 16,
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            {style.icon}
+            <Text
               style={{
-                backgroundColor: style.bgCard,
-                paddingHorizontal: 8,
-                paddingVertical: 4,
-                borderRadius: 12,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              {style.icon}
-              <Text
-                style={{
-                  marginLeft: 4,
-                  fontSize: 12,
-                  fontWeight: "600",
-                  color: style.textCard,
-                }}
-              >
-                {style.label}
-              </Text>
-            </View>
-          )}
+                marginLeft: 6,
+                fontSize: 13,
+                fontWeight: '700',
+                color: style.boxText,
+              }}>
+              {style.label}
+            </Text>
+          </View>
         </View>
 
-        <View className="p-4">
+        {/* Body */}
+        <View style={{ padding: 16 }}>
+          {/* Skills */}
           {profile?.skills?.length > 0 && (
-            <View className="flex-row flex-wrap mb-2">
-              {profile.skills.slice(0, 3).map((skill, idx) => (
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 8 }}>
+              {profile.skills.slice(0, 3).map((skill, i) => (
                 <View
-                  key={idx}
-                  className="bg-indigo-50 px-3 py-1 rounded-full mr-2 mb-2"
-                >
-                  <Text className="text-xs text-indigo-700 font-medium">{skill}</Text>
+                  key={i}
+                  style={{
+                    backgroundColor: '#E0E7FF',
+                    paddingHorizontal: 10,
+                    paddingVertical: 4,
+                    borderRadius: 999,
+                    marginRight: 8,
+                    marginBottom: 8,
+                  }}>
+                  <Text style={{ fontSize: 12, color: '#4338CA', fontWeight: '600' }}>{skill}</Text>
                 </View>
               ))}
             </View>
           )}
 
+          {/* Industries */}
           {profile?.industries?.length > 0 && (
-            <View className="flex-row items-center mt-1">
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Briefcase size={14} color="#6B7280" />
               <Text
-                className="ml-1 text-gray-700 text-sm font-medium"
-                numberOfLines={1}
-              >
-                {profile.industries.slice(0, 2).join(" · ")}
+                style={{
+                  marginLeft: 4,
+                  fontSize: 12,
+                  color: '#37424F',
+                  fontWeight: '600',
+                }}
+                numberOfLines={1}>
+                {profile.industries.slice(0, 2).join(' · ')}
               </Text>
             </View>
           )}
 
-          <View className="flex-row items-center mt-3">
+          {/* Applied date */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
             <Clock size={14} color="#9CA3AF" />
-            <Text className="ml-1 text-gray-500 text-xs">
+            <Text style={{ marginLeft: 4, fontSize: 11, color: '#9CA3AF' }}>
               Applied {new Date(appliedAt).toLocaleDateString()}
             </Text>
           </View>
@@ -220,48 +314,130 @@ export const ShortlistedApplicants = () => {
     );
   };
 
+  /** EMPTY STATE */
+  const renderEmpty = () => {
+    if (loading) return null;
+    return (
+      <View style={{ paddingTop: 80, alignItems: 'center' }}>
+        <Text style={{ color: '#6B7280', fontSize: 16, fontFamily: 'Poppins-Medium' }}>
+          No applicants found.
+        </Text>
+      </View>
+    );
+  };
+
   return (
-    <SafeAreaView className="h-full" style={{ backgroundColor: "white" }}>
-      {/* Header */}
-      <View style={{ flexDirection: "row", alignItems: "center", padding: 16, backgroundColor: "white" }}>
-        <Pressable onPress={handleBack} className="mr-3">
-          <ArrowLeft size={24} color="black" />
-        </Pressable>
-        <Text style={{ fontFamily: "Poppins-Bold", fontSize: 20, color: "black" }}>
-          {statusMap[activeStatus].label} Applicants
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      {/* Minimal Header */}
+      <View
+        style={{
+          padding: 16,
+          borderBottomWidth: 1,
+          borderColor: '#e5e7eb',
+          backgroundColor: 'white',
+        }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+          <Pressable onPress={handleBack} style={{ marginRight: 12 }}>
+            <ArrowLeft size={24} color="black" />
+          </Pressable>
+          <Text
+            style={{
+              fontFamily: 'Poppins-Bold',
+              fontSize: 20,
+              color: '#111827',
+              flex: 1,
+            }}
+            numberOfLines={1}>
+            {job?.jobTitle || 'Job Title'}
+          </Text>
+        </View>
+
+        <Text
+          style={{
+            fontFamily: 'Poppins-Medium',
+            fontSize: 14,
+            color: '#6B7280',
+            marginBottom: 4,
+          }}>
+          Total Applicants: {generalCount}
+        </Text>
+
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 4 }}>
+          {job?.workTypes?.map((type, i) => (
+            <View
+              key={i}
+              style={{
+                backgroundColor: '#F3F4F6',
+                paddingHorizontal: 8,
+                paddingVertical: 4,
+                borderRadius: 12,
+              }}>
+              <Text style={{ fontSize: 12, color: '#37424F', fontWeight: '500' }}>{type}</Text>
+            </View>
+          ))}
+        </View>
+
+        <Text style={{ fontFamily: 'Poppins-Medium', fontSize: 12, color: '#9CA3AF' }}>
+          Posted: {job?.createdAt ? new Date(job.createdAt).toLocaleDateString() : 'N/A'}
         </Text>
       </View>
 
-      {/* Filter bar */}
-      <View className="flex-row justify-around my-3 px-4">
-        {statusOptions.map((s) => {
-          const map = statusMap[s];
-          return (
-            <Pressable
-              key={s}
-              className={`px-4 py-2 rounded-full`}
-              style={{ backgroundColor: activeStatus === s ? map.topColor : "#E5E7EB" }}
-              onPress={() => setActiveStatus(s)}
-            >
-              <Text style={{ color: activeStatus === s ? "white" : "#37424F", fontWeight: "600" }}>
-                {map.label}
-              </Text>
-            </Pressable>
-          );
-        })}
+      {/* Fixed Filter Bar */}
+      <View style={{ backgroundColor: 'white', paddingVertical: 12 }}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 10 }}>
+          {statusOptions.map((s) => {
+            const map = statusMap[s];
+            const isActive = activeStatus === s;
+
+            return (
+              <Pressable
+                key={s}
+                onPress={() => setActiveStatus(s)}
+                style={{
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  backgroundColor: isActive ? map.topColor : '#F3F4F6',
+                  borderRadius: 16,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginRight: 10,
+                  minWidth: 90,
+                  justifyContent: 'center',
+                  elevation: isActive ? 3 : 0,
+                }}>
+                {map.icon && React.cloneElement(map.icon, { size: 10 })}
+                <Text
+                  style={{
+                    marginLeft: 4,
+                    color: isActive ? 'white' : '#37424F',
+                    fontWeight: '600',
+                    fontSize: 12,
+                  }}>
+                  {map.label} {typeof currentCounts[s] === 'number' ? currentCounts[s] : 0}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
       </View>
 
       {/* List */}
       <FlatList
         data={data}
-        keyExtractor={(item, index) => `${item._id || item.applicationID || index}`}
+        ListEmptyComponent={renderEmpty}
+        keyExtractor={(item) => item._id}
         renderItem={renderApplicant}
         onEndReached={() => {
-          if (!loading && hasMore) fetchApplicants();
+          if (!loading && hasMore) setPage((prev) => prev + 1);
         }}
-        onEndReachedThreshold={0.5}
+        onEndReachedThreshold={0.4}
+        ListFooterComponent={
+          loading ? <ActivityIndicator style={{ marginVertical: 20 }} size="small" /> : null
+        }
       />
-
     </SafeAreaView>
   );
 };

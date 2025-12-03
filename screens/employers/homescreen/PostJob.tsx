@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,50 +10,52 @@ import {
   ActivityIndicator,
   Platform,
   KeyboardAvoidingView,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowLeft, Plus, Check } from "lucide-react-native";
-import { useNavigation } from "@react-navigation/native";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ArrowLeft, Plus, Check } from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import { IndustryModal } from "components/profileScreen/IndustryModal";
+import { IndustryModal } from 'components/profileScreen/IndustryModal';
 
-import { Industries } from "../../../data/industries.json";
-import EmploymentTypes from "../../../data/employmentTypes.json";
-import WorkTypes from "../../../data/workTypes.json";
-import CurrencyOptions from "../../../data/currency.json";
-import FrequencyOptions from "../../../data/frequency.json";
-import AutocompleteInput from "components/profileScreen/AutoCompleteInput";
+import { Industries } from '../../../data/industries.json';
+import EmploymentTypes from '../../../data/employmentTypes.json';
+import WorkTypes from '../../../data/workTypes.json';
+import CurrencyOptions from '../../../data/currency.json';
+import FrequencyOptions from '../../../data/frequency.json';
+import AutocompleteInput from 'components/profileScreen/AutoCompleteInput';
 
-import { useAuth } from "context/auth/AuthHook";
-import { postJob } from "api/employers/joblistings";
-import { useEmployers } from "context/employers/EmployerHook";
+import { useAuth } from 'context/auth/AuthHook';
+import { postJob } from 'api/employers/joblistings';
+import { useEmployers } from 'context/employers/EmployerHook';
 
-import Fuse from "fuse.js";
-import Skills from "../../../data/cleaned_skills.json";
-import AlertModal from "components/AlertModal";
+import Fuse from 'fuse.js';
+import Skills from '../../../data/cleaned_skills.json';
+import AlertModal from 'components/AlertModal';
+import { Loading } from 'components/Loading';
+import { createApplication } from 'api/applications';
 
 const fuse = new Fuse(Skills, { threshold: 0.3, includeScore: true });
-const BRAND_PURPLE = "#2563EB";
-const API_KEY = "pk.9d1a0a6102b95fdfcab79dc4a5255313"; // LocationIQ
-const PH = "#9CA3AF"; // explicit placeholder gray
+const BRAND_PURPLE = '#2563EB';
+const API_KEY = 'pk.9d1a0a6102b95fdfcab79dc4a5255313'; // LocationIQ
+const PH = '#9CA3AF'; // explicit placeholder gray
 const DESC_LIMIT = 2000;
 
 // Escape regex special characters in user input
 function escapeRegex(input: string) {
-  return input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 // Safe highlight matched text
 const Highlighted = ({ text, query }: { text: string; query: string }) => {
   if (!query) return <Text>{text}</Text>;
   const safe = escapeRegex(query);
-  const regex = new RegExp(`(${safe})`, "i");
+  const regex = new RegExp(`(${safe})`, 'i');
   const parts = text.split(regex);
   return (
     <Text>
       {parts.map((part, i) =>
         regex.test(part) ? (
-          <Text key={i} style={{ fontWeight: "700", color: BRAND_PURPLE }}>
+          <Text key={i} style={{ fontWeight: '700', color: BRAND_PURPLE }}>
             {part}
           </Text>
         ) : (
@@ -65,7 +67,7 @@ const Highlighted = ({ text, query }: { text: string; query: string }) => {
 };
 
 const SectionDivider = () => (
-  <View style={{ height: 1, backgroundColor: "#E5E7EB", marginVertical: 20 }} />
+  <View style={{ height: 1, backgroundColor: '#E5E7EB', marginVertical: 20 }} />
 );
 
 const CheckboxItem = ({
@@ -77,16 +79,14 @@ const CheckboxItem = ({
   isSelected: boolean;
   onToggle: () => void;
 }) => (
-  <TouchableOpacity onPress={onToggle} className="flex-row items-center mb-4 mr-5">
+  <TouchableOpacity onPress={onToggle} className="mb-4 mr-5 flex-row items-center">
     <View
-      className={`w-8 h-8 mr-3 border-2 rounded-lg justify-center items-center ${isSelected ? "bg-blue-600 border-blue-600" : "border-gray-400"
-        }`}
-    >
+      className={`mr-3 h-8 w-8 items-center justify-center rounded-lg border-2 ${
+        isSelected ? 'border-blue-600 bg-blue-600' : 'border-gray-400'
+      }`}>
       {isSelected && <Check size={20} color="white" />}
     </View>
-    <Text style={{ fontFamily: "Lexend-Regular", fontSize: 16, color: "#37424F" }}>
-      {label}
-    </Text>
+    <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 16, color: '#37424F' }}>{label}</Text>
   </TouchableOpacity>
 );
 
@@ -97,30 +97,33 @@ export const PostJob = () => {
 
   // AlertModal state
   const [alertVisible, setAlertVisible] = useState(false);
-  const [alertTitle, setAlertTitle] = useState("Alert");
-  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState('Alert');
+  const [alertMessage, setAlertMessage] = useState('');
   const openAlert = (title: string, message: string) => {
     setAlertTitle(title);
     setAlertMessage(message);
     setAlertVisible(true);
   };
 
-  // form state (unchanged)
-  const [jobTitle, setJobTitle] = useState("");
-  const [jobDescription, setJobDescription] = useState("");
+  // Loading modal state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // form state
+  const [jobTitle, setJobTitle] = useState('');
+  const [jobDescription, setJobDescription] = useState('');
   const [industries, setIndustries] = useState<string[]>([]);
   const [jobSkills, setJobSkills] = useState<string[]>([]);
   const [employment, setEmployment] = useState<string[]>([]);
   const [workTypes, setWorkTypes] = useState<string[]>([]);
-  const [salaryMin, setSalaryMin] = useState("");
-  const [salaryMax, setSalaryMax] = useState("");
-  const [currency, setCurrency] = useState("");
-  const [frequency, setFrequency] = useState("");
+  const [salaryMin, setSalaryMin] = useState('');
+  const [salaryMax, setSalaryMax] = useState('');
+  const [currency, setCurrency] = useState('');
+  const [frequency, setFrequency] = useState('');
 
   const profilePic = userMDB.profilePic;
   const companyName = userMDB.companyName;
 
-  // industries modal (unchanged)
+  // industries modal
   const [industryModalVisible, setIndustryModalVisible] = useState(false);
   const initialIndustriesForModal = useMemo(() => {
     return industries
@@ -128,9 +131,9 @@ export const PostJob = () => {
       .filter((i): i is { id: number; name: string } => Boolean(i));
   }, [industries]);
 
-  // location (unchanged logic)
+  // location
   const [location, setLocation] = useState<any>(null);
-  const [locationQuery, setLocationQuery] = useState("");
+  const [locationQuery, setLocationQuery] = useState('');
   const [locationResults, setLocationResults] = useState<any[]>([]);
   const [locLoading, setLocLoading] = useState(false);
 
@@ -150,21 +153,21 @@ export const PostJob = () => {
       const data = await res.json();
       setLocationResults(data);
     } catch (err) {
-      console.error("Error fetching locations:", err);
-      openAlert("Location error", "Unable to fetch locations right now. Please try again.");
+      console.error('Error fetching locations:', err);
+      openAlert('Location error', 'Unable to fetch locations right now. Please try again.');
     } finally {
       setLocLoading(false);
     }
   }
 
-  // skills search (unchanged logic)
-  const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  // skills search
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!search) {
-      setDebouncedSearch("");
+      setDebouncedSearch('');
       return;
     }
     setLoading(true);
@@ -182,14 +185,29 @@ export const PostJob = () => {
     return results.slice(0, 8);
   }, [debouncedSearch, jobSkills]);
 
+  // Add skill from suggestion or typed input
   function addSkill(skill: string) {
     if (jobSkills.includes(skill)) return;
     if (jobSkills.length >= 10) {
-      openAlert("Limit reached", "You can only select up to 10 skills.");
+      openAlert('Limit reached', 'You can only select up to 10 skills.');
       return;
     }
     setJobSkills((prev) => [...prev, skill]);
-    setSearch("");
+    setSearch('');
+    Keyboard.dismiss();
+  }
+
+  // Add skill typed by user if not in suggestions
+  function addCustomSkill() {
+    const trimmed = search.trim();
+    if (!trimmed) return;
+    if (jobSkills.includes(trimmed)) return;
+    if (jobSkills.length >= 10) {
+      openAlert('Limit reached', 'You can only select up to 10 skills.');
+      return;
+    }
+    setJobSkills((prev) => [...prev, trimmed]);
+    setSearch('');
     Keyboard.dismiss();
   }
 
@@ -203,24 +221,24 @@ export const PostJob = () => {
   };
 
   const confirmDiscard = () => {
-    openAlert("Discard changes?", "Unsaved job details will be lost.");
-    // If you want 2-buttons, use a separate ConfirmationModal; AlertModal is single-action OK.
+    openAlert('Discard changes?', 'Unsaved job details will be lost.');
   };
 
   const handleSubmitJob = async () => {
-    if (!jobTitle.trim()) return openAlert("Missing field", "Job Title is required.");
-    if (!jobDescription.trim()) return openAlert("Missing field", "Job Description is required.");
-    if (industries.length === 0) return openAlert("Missing field", "Select at least one Industry.");
-    if (!location) return openAlert("Missing field", "Please select a valid Location.");
-    if (jobSkills.length === 0) return openAlert("Missing field", "Add at least one Skill.");
-    if (employment.length === 0) return openAlert("Missing field", "Select at least one Employment type.");
-    if (workTypes.length === 0) return openAlert("Missing field", "Select at least one Work type.");
+    if (!jobTitle.trim()) return openAlert('Missing field', 'Job Title is required.');
+    if (!jobDescription.trim()) return openAlert('Missing field', 'Job Description is required.');
+    if (industries.length === 0) return openAlert('Missing field', 'Select at least one Industry.');
+    if (!location) return openAlert('Missing field', 'Please select a valid Location.');
+    if (jobSkills.length === 0) return openAlert('Missing field', 'Add at least one Skill.');
+    if (employment.length === 0)
+      return openAlert('Missing field', 'Select at least one Employment type.');
+    if (workTypes.length === 0) return openAlert('Missing field', 'Select at least one Work type.');
 
     const jobData = {
       employerUID: userMDB.employerUID,
       companyName,
       jobTitle,
-      jobIndustry: industries[0] || "",
+      jobIndustry: industries[0] || '',
       jobDescription,
       jobSkills,
       employment,
@@ -243,34 +261,91 @@ export const PostJob = () => {
       profilePic,
     };
 
-
     try {
+      setIsSubmitting(true);
       const res = await postJob(jobData);
-
-      console.log('AAAAAAAAAAA', jobData)
-
-
       if (res.success) {
-        openAlert("Success", "Job posted successfully!");
+        openAlert('Success', 'Job posted successfully!');
         setRefresh(!refresh);
         setTimeout(() => (navigation as any).goBack(), 100);
+
+        const job = res.payload;
+        // FOR TESTING
+        const Applicants = [
+          {
+            email: 'a@gmail.com',
+            seekerUID: '559n35MzROUsT4qgLRPKpeBRGuB2',
+            resume: '/resumes/res__1__0S5_2aact.pdf',
+          },
+          {
+            email: 'b@gmail.com',
+            seekerUID: 'jpJ9dGFfbhTCA2DJfDLAkkrvzWA2',
+            resume: '/resumes/res__1__0S5_2aact.pdf',
+          },
+          {
+            email: 'c@gmail.com',
+            seekerUID: 'Mt0JxrMFWVOdhAnyogATetCageu2',
+            resume: '/resumes/res__1__0S5_2aact.pdf',
+          },
+          {
+            email: 'd@gmail.com',
+            seekerUID: '1xGv7CJXafaiGZcmpL8KlFFZCaN2',
+            resume: '/resumes/res__1__0S5_2aact.pdf',
+          },
+          {
+            email: 'e@gmail.com',
+            seekerUID: 'TIMMhhC9usNkSEkLZduS00N6ZDn2',
+            resume: '/resumes/res__1__0S5_2aact.pdf',
+          },
+          {
+            email: 'f@gmail.com',
+            seekerUID: 'KfM0UXDxwWOybuUh0NTqyzRiOF33',
+            resume: '/resumes/res__1__0S5_2aact.pdf',
+          },
+          {
+            email: 'g@gmail.com',
+            seekerUID: 'Rji2QgcXwBfy1EMsegpRQYsqlUr2',
+            resume: '/resumes/res__1__0S5_2aact.pdf',
+          },
+          {
+            email: 'h@gmail.com',
+            seekerUID: 'zuukB8mzB3RUgkIuSNRiILMITax1',
+            resume: '/resumes/res__1__0S5_2aact.pdf',
+          },
+        ];
+
+        for (const applicant of Applicants) {
+          const application = {
+            jobUID: job.jobUID,
+            employerUID: job.employerUID,
+            seekerUID: applicant.seekerUID,
+            resume: applicant.resume,
+          };
+
+          const appRes = await createApplication(application);
+          console.log(`Created application for: ${applicant.email}`, appRes);
+        }
+
+        console.log('Application created:', appRes, application);
       } else {
-        openAlert("Failed", res.error || "Unknown error");
+        openAlert('Failed', res.error || 'Unknown error');
       }
     } catch (err: any) {
-      console.error("Error posting job:", err);
-      openAlert("Error", err?.message || "An error occurred.");
+      console.error('Error posting job:', err);
+      openAlert('Error', err?.message || 'An error occurred.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
       {/* Header */}
-      <View className="flex-row items-center justify-between px-5 py-4 border-b border-gray-200">
+      <View className="flex-row items-center justify-between border-b border-gray-200 px-5 py-4">
         <TouchableOpacity onPress={() => (navigation as any).goBack()}>
           <ArrowLeft size={28} color="#37424F" />
         </TouchableOpacity>
-        <Text style={{ fontFamily: "Poppins-Bold", fontSize: 22, color: "#37424F" }}>
+        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 22, color: '#37424F' }}>
           Post a Job
         </Text>
         <View style={{ width: 28 }} />
@@ -279,21 +354,19 @@ export const PostJob = () => {
       {/* Keyboard-aware scroller */}
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 12}
-      >
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 12}>
         <ScrollView
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}
           keyboardShouldPersistTaps="handled"
           bounces={false}
-          showsVerticalScrollIndicator={false}
-        >
+          showsVerticalScrollIndicator={false}>
           {/* Job Title */}
           <Text className="mb-2 text-gray-700">Job Title</Text>
           <TextInput
             value={jobTitle}
             onChangeText={setJobTitle}
-            className="border border-gray-300 rounded-xl px-4 py-3 mb-5"
+            className="mb-5 rounded-xl border border-gray-300 px-4 py-3"
             placeholder="e.g. Senior Frontend Engineer"
             placeholderTextColor={PH}
           />
@@ -304,16 +377,15 @@ export const PostJob = () => {
             style={{
               borderRadius: 14,
               borderWidth: 1,
-              borderColor: "#E5E7EB",
-              backgroundColor: "#FFFFFF",
-              overflow: "hidden",
+              borderColor: '#E5E7EB',
+              backgroundColor: '#FFFFFF',
+              overflow: 'hidden',
               marginBottom: 6,
-              shadowColor: "#000",
+              shadowColor: '#000',
               shadowOpacity: 0.03,
               shadowRadius: 6,
               shadowOffset: { width: 0, height: 2 },
-            }}
-          >
+            }}>
             <TextInput
               value={jobDescription}
               onChangeText={(val) => {
@@ -327,16 +399,20 @@ export const PostJob = () => {
                 minHeight: 200,
                 paddingHorizontal: 12,
                 paddingVertical: 12,
-                fontFamily: "Poppins-Regular",
-                color: "#111827",
+                fontFamily: 'Poppins-Regular',
+                color: '#111827',
               }}
             />
           </View>
-          <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
-            <Text style={{ color: "#6B7280", fontSize: 12 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+            <Text style={{ color: '#6B7280', fontSize: 12 }}>
               Tip: Use short paragraphs and bullet-like lines for readability.
             </Text>
-            <Text style={{ color: jobDescription.length > DESC_LIMIT - 50 ? "#DC2626" : "#6B7280", fontSize: 12 }}>
+            <Text
+              style={{
+                color: jobDescription.length > DESC_LIMIT - 50 ? '#DC2626' : '#6B7280',
+                fontSize: 12,
+              }}>
               {jobDescription.length} / {DESC_LIMIT}
             </Text>
           </View>
@@ -345,16 +421,15 @@ export const PostJob = () => {
 
           {/* Industries */}
           <Text className="mb-2 text-gray-700">Job Industries</Text>
-          <View className="flex-row flex-wrap mb-3">
+          <View className="mb-3 flex-row flex-wrap">
             {industries.map((industry, idx) => (
-              <View key={idx} className="bg-indigo-100 px-3 py-2 rounded-lg mr-2 mb-2">
-                <Text className="text-indigo-600 font-medium">{industry}</Text>
+              <View key={idx} className="mb-2 mr-2 rounded-lg bg-indigo-100 px-3 py-2">
+                <Text className="font-medium text-indigo-600">{industry}</Text>
               </View>
             ))}
             <TouchableOpacity
               onPress={() => setIndustryModalVisible(true)}
-              className="flex-row items-center border border-gray-300 px-3 py-2 rounded-lg"
-            >
+              className="flex-row items-center rounded-lg border border-gray-300 px-3 py-2">
               <Plus size={16} color="#37424F" />
               <Text className="ml-1 text-gray-700">Add new</Text>
             </TouchableOpacity>
@@ -369,7 +444,8 @@ export const PostJob = () => {
             onChangeText={searchPlaces}
             placeholder="e.g. Manila, Metro Manila"
             placeholderTextColor={PH}
-            className="border border-gray-300 rounded-xl px-4 py-3 mb-3 bg-gray-50"
+            style={{ fontFamily: 'Poppins-Regular' }}
+            className="mb-3 rounded-xl border border-gray-300 bg-gray-50 px-4 py-3"
           />
           {locLoading && (
             <View className="flex-row items-center p-3">
@@ -378,7 +454,7 @@ export const PostJob = () => {
             </View>
           )}
           {locationResults.length > 0 && (
-            <View className="border border-gray-200 rounded-lg mb-3 bg-white">
+            <View className="mb-3 rounded-lg border border-gray-200 bg-white">
               {locationResults.map((item, idx) => (
                 <TouchableOpacity
                   key={idx}
@@ -402,8 +478,7 @@ export const PostJob = () => {
                     setLocationQuery(item.display_name);
                     setLocationResults([]);
                   }}
-                  className="px-3 py-2 border-b border-gray-100"
-                >
+                  className="border-b border-gray-100 px-3 py-2">
                   <Text className="text-gray-800">{item.display_name}</Text>
                 </TouchableOpacity>
               ))}
@@ -415,43 +490,58 @@ export const PostJob = () => {
 
           {/* Skills */}
           <Text className="mb-2 text-gray-700">Skills</Text>
-          <View className="flex-row flex-wrap mb-2">
+          <View className="mb-2 flex-row flex-wrap">
             {jobSkills.map((skill) => (
               <View
                 key={skill}
                 style={{
-                  flexDirection: "row",
+                  flexDirection: 'row',
                   backgroundColor: BRAND_PURPLE,
                   borderRadius: 20,
                   paddingHorizontal: 12,
                   paddingVertical: 6,
                   margin: 4,
-                }}
-              >
-                <Text style={{ color: "white", marginRight: 6 }}>{skill}</Text>
+                }}>
+                <Text style={{ color: 'white', marginRight: 6 }}>{skill}</Text>
                 <Pressable onPress={() => removeSkill(skill)}>
-                  <Text style={{ color: "white", fontWeight: "700" }}>×</Text>
+                  <Text style={{ color: 'white', fontWeight: '700' }}>×</Text>
                 </Pressable>
               </View>
             ))}
           </View>
-          <TextInput
-            value={search}
-            onChangeText={setSearch}
-            placeholder="e.g. React, TypeScript"
-            placeholderTextColor={PH}
-            className="border border-gray-300 rounded-xl px-4 py-3 mb-2"
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              borderWidth: 1,
+              borderColor: '#ccc',
+              borderRadius: 12,
+              paddingHorizontal: 12,
+              marginBottom: 8,
+            }}>
+            <TextInput
+              value={search}
+              onChangeText={setSearch}
+              placeholder="Type a skill to add or select from below"
+              placeholderTextColor={PH}
+              style={{ flex: 1, height: 44, fontFamily: 'Poppins-Regular', color: '#37424F' }}
+              onSubmitEditing={addCustomSkill}
+            />
+            {search.trim().length > 0 && (
+              <Pressable onPress={addCustomSkill} style={{ padding: 8 }}>
+                <Check size={20} color={BRAND_PURPLE} />
+              </Pressable>
+            )}
+          </View>
           {search.length > 0 && (
             <View
               style={{
-                backgroundColor: "#fff",
+                backgroundColor: '#fff',
                 borderWidth: 1,
-                borderColor: "#E5E7EB",
+                borderColor: '#E5E7EB',
                 borderRadius: 12,
                 marginBottom: 16,
-              }}
-            >
+              }}>
               {loading ? (
                 <View className="flex-row items-center p-3">
                   <ActivityIndicator size="small" color={BRAND_PURPLE} />
@@ -463,14 +553,13 @@ export const PostJob = () => {
                     <Pressable
                       key={skill}
                       onPress={() => addSkill(skill)}
-                      android_ripple={{ color: "#EDE9FE" }}
+                      android_ripple={{ color: '#EDE9FE' }}
                       style={{
                         paddingVertical: 12,
                         paddingHorizontal: 16,
                         borderBottomWidth: idx === filtered.length - 1 ? 0 : 1,
-                        borderBottomColor: "#F3F4F6",
-                      }}
-                    >
+                        borderBottomColor: '#F3F4F6',
+                      }}>
                       <Text>
                         <Highlighted text={skill} query={debouncedSearch} />
                       </Text>
@@ -479,7 +568,7 @@ export const PostJob = () => {
                 </ScrollView>
               ) : (
                 <View className="p-3">
-                  <Text className="text-gray-400 italic">No results found</Text>
+                  <Text className="italic text-gray-400">No results found</Text>
                 </View>
               )}
             </View>
@@ -489,7 +578,7 @@ export const PostJob = () => {
 
           {/* Employment Type */}
           <Text className="mb-2 text-gray-700">Employment Type</Text>
-          <View className="flex-row flex-wrap mb-5">
+          <View className="mb-5 flex-row flex-wrap">
             {EmploymentTypes.map((et) => (
               <CheckboxItem
                 key={et.id}
@@ -504,7 +593,7 @@ export const PostJob = () => {
 
           {/* Work Type */}
           <Text className="mb-2 text-gray-700">Work Type</Text>
-          <View className="flex-row flex-wrap mb-5">
+          <View className="mb-5 flex-row flex-wrap">
             {WorkTypes.map((wt) => (
               <CheckboxItem
                 key={wt.id}
@@ -519,25 +608,25 @@ export const PostJob = () => {
 
           {/* Salary */}
           <Text className="mb-2 text-gray-700">Salary (Optional)</Text>
-          <View className="flex-row mb-5">
-            <View className="flex-1 mr-3">
+          <View className="mb-5 flex-row">
+            <View className="mr-3 flex-1">
               <Text className="mb-2 text-gray-700">Min</Text>
               <TextInput
                 value={salaryMin}
                 onChangeText={setSalaryMin}
                 keyboardType="numeric"
-                className="border border-gray-300 rounded-xl px-4 py-3"
+                className="rounded-xl border border-gray-300 px-4 py-3"
                 placeholder="e.g. 15000"
                 placeholderTextColor={PH}
               />
             </View>
-            <View className="flex-1 ml-3">
+            <View className="ml-3 flex-1">
               <Text className="mb-2 text-gray-700">Max</Text>
               <TextInput
                 value={salaryMax}
                 onChangeText={setSalaryMax}
                 keyboardType="numeric"
-                className="border border-gray-300 rounded-xl px-4 py-3"
+                className="rounded-xl border border-gray-300 px-4 py-3"
                 placeholder="e.g. 25000"
                 placeholderTextColor={PH}
               />
@@ -545,8 +634,8 @@ export const PostJob = () => {
           </View>
 
           {/* Currency & Frequency */}
-          <View className="flex-row mb-5">
-            <View className="flex-1 mr-3">
+          <View className="mb-5 flex-row">
+            <View className="mr-3 flex-1">
               <AutocompleteInput
                 label="Currency"
                 value={currency}
@@ -555,7 +644,7 @@ export const PostJob = () => {
                 displayKey="currency"
               />
             </View>
-            <View className="flex-1 ml-3">
+            <View className="ml-3 flex-1">
               <AutocompleteInput
                 label="Frequency"
                 value={frequency}
@@ -569,18 +658,23 @@ export const PostJob = () => {
           <SectionDivider />
 
           {/* Submit */}
-          <View className="flex-row justify-between px-5 mb-12">
+          <View className="mb-12 flex-row justify-between px-5">
             <TouchableOpacity
               onPress={confirmDiscard}
-              className="flex-1 bg-gray-200 rounded-xl px-6 py-4 mr-3"
-            >
+              className="mr-3 flex-1 rounded-xl bg-gray-200 px-6 py-4"
+              disabled={isSubmitting}>
               <Text className="text-center font-semibold text-gray-700">Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleSubmitJob}
-              className="flex-1 bg-blue-600 rounded-xl px-6 py-4 ml-3"
-            >
-              <Text className="text-center font-semibold text-white">Post Job</Text>
+              className="ml-3 flex-1 rounded-xl px-6 py-4"
+              style={{ backgroundColor: isSubmitting ? '#94a3b8' : '#2563eb' }}
+              disabled={isSubmitting}>
+              {isSubmitting ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="text-center font-semibold text-white">Post Job</Text>
+              )}
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -602,6 +696,24 @@ export const PostJob = () => {
         message={alertMessage}
         onClose={() => setAlertVisible(false)}
       />
+
+      {/* Loading overlay */}
+      {isSubmitting && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(255,255,255,0.6)',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 9999,
+          }}>
+          <Loading />
+        </View>
+      )}
     </SafeAreaView>
   );
 };

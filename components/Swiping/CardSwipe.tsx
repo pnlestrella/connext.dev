@@ -28,6 +28,7 @@ const INDEED =
   "https://ik.imagekit.io/mnv8wgsbk/Public%20Images/indeed_logo.png?updatedAt=1756757217985";
 const ZIPRECRUITER =
   "https://ik.imagekit.io/mnv8wgsbk/Public%20Images/ZipRecruiter-logo-full-color-black.webp?updatedAt=1756757383134";
+const remoteok = "https://ik.imagekit.io/x47ltkthe/images/External%20Job.png"
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
@@ -231,8 +232,9 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
       provider === "indeed"
         ? INDEED
         : provider === "ziprecruiter"
-        ? ZIPRECRUITER
-        : currentJob.company?.profilePic;
+          ? ZIPRECRUITER : provider === 'remoteok' ?
+            remoteok
+            : currentJob.company?.profilePic;
 
     const payMin = currentJob.salaryRange?.min;
     const payMax = currentJob.salaryRange?.max;
@@ -242,8 +244,8 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
       typeof payMin === "number" && typeof payMax === "number"
         ? `${payCur} ${payMin} - ${payMax}/${payFreq}`
         : payCur || payFreq
-        ? `${payCur} ${payFreq}`
-        : "—";
+          ? `${payCur} ${payFreq}`
+          : "—";
 
     const locationDisplay =
       currentJob.location?.display_name ||
@@ -260,7 +262,7 @@ export default function CardSwipe({ showModal, setShowModal, isExpanded, setIsEx
             backgroundColor: isActive ? bgColor : "#6C63FF",
             elevation: 0,
             shadowOpacity: 0,
-            marginBottom:60
+            marginBottom: 60
           }}
         >
           <Card.Content style={{ padding: 0 }}>

@@ -98,8 +98,8 @@ function EmployerStack({ userMDB }: any) {
     ? "address"
     : needsIndustries
     ? "industries"
-    : needsConfirmation
-    ? "confirmation"
+    // : needsConfirmation
+    // ? "confirmation"
     : "home";
 
   // Force remount when prerequisites or status change so initialRouteName re-applies
@@ -119,9 +119,9 @@ function EmployerStack({ userMDB }: any) {
       {!needsAddress && needsIndustries && (
         <Stack.Screen name="industries" component={IndustryScreen} />
       )}
-      {!needsAddress && !needsIndustries && needsConfirmation && (
+      {/* {!needsAddress && !needsIndustries && needsConfirmation && (
         <Stack.Screen name="confirmation" component={RegistrationConfirmationScreen} />
-      )}
+      )} */}
       <Stack.Screen name="home" component={EmployerTabs} />
     </Stack.Navigator>
   );

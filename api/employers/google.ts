@@ -39,6 +39,8 @@ export async function createMeeting(meetingData: any) {
 export async function updateMeeting(meetingData: any) {
   const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/oauth/google/updateSchedule`;
 
+  console.log("MEEEETING DATA", meetingData)
+
   const payload = {
     eventUID: meetingData.eventUID,        
     meetingUID: meetingData.meetingUID,   
@@ -52,6 +54,7 @@ export async function updateMeeting(meetingData: any) {
       dateTime: meetingData.endTime,
       timeZone: 'Asia/Manila',
     },
+    status:meetingData.status
   };
 
   try {

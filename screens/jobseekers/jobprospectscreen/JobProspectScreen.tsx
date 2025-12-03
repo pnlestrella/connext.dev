@@ -12,6 +12,7 @@ import { createApplication } from 'api/applications';
 import { getFileUrl } from 'api/employers/imagekit';
 import { Loading } from 'components/Loading';
 import AlertModal from 'components/AlertModal';
+import * as WebBrowser from 'expo-web-browser'; // in-app browser [web:11]
 
 dayjs.extend(relativeTime);
 
@@ -32,7 +33,7 @@ export const JobProspectScreen = () => {
   const [selectedJob, setSelectedJob] = useState<any>(null);
 
   const route = useRoute();
-  const { applicationID, activeTabSet, redirect, status } = route.params || {};
+  const { applicationID, activeTabSet, redirect, status } = (route as any).params || {};
   const matchedJobOpenedRef = useRef(false);
 
   useEffect(() => {
@@ -43,7 +44,6 @@ export const JobProspectScreen = () => {
 
     setActiveTab(activeTabSet);
     fetchShortlistedJobs();
-
   }, [redirect]);
 
   useEffect(() => {
@@ -57,16 +57,16 @@ export const JobProspectScreen = () => {
       (job) => job.application?.applicationID === applicationID
     );
 
-    matchedJob.application.status = status
-
-    console.log('------------------------------------',matchedJob,'MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATCHED')
+    if (matchedJob && matchedJob.application) {
+      matchedJob.application.status = status;
+    }
 
     if (matchedJob) {
       setSelectedJob(matchedJob);
       setModalVisible(true);
       matchedJobOpenedRef.current = true; // Mark as opened, prevent repeat
     }
-  }, [redirect, shortlistedJobs, applicationID]);
+  }, [redirect, shortlistedJobs, applicationID, status]);
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertTitle, setAlertTitle] = useState<string>('Alert');
@@ -96,6 +96,8 @@ export const JobProspectScreen = () => {
 
   const handleApply = async (item: any) => {
     const job = item.jobDetails;
+
+    // Internal jobs → normal application flow
     if (!job.isExternal) {
       if (!userMDB.resume) {
         showAlert("Resume Required", "Please upload resume before applying");
@@ -114,10 +116,28 @@ export const JobProspectScreen = () => {
         fetchShortlistedJobs();
         showAlert('Application Submitted', 'Successfully sent an application.');
       } catch (err) {
-        alert("Failed to apply. Try again.");
+        showAlert("Error", "Failed to apply. Try again.");
       }
-    } else {
-      showAlert('Notice', 'This feature is coming soon.');
+      return;
+    }
+
+    // External jobs → open in in‑app browser
+    const url = job.link;
+    if (!url) {
+      showAlert('Invalid link', 'No link is available for this job yet.');
+      return;
+    }
+
+    try {
+      await WebBrowser.openBrowserAsync(url, {
+        showTitle: true,
+        // optional styling:
+        // toolbarColor: '#6C63FF',
+        // secondaryToolbarColor: '#ffffff',
+        // showInRecents: false,
+      });
+    } catch (e) {
+      showAlert('Error', 'Something went wrong opening the job page.');
     }
   };
 
@@ -336,7 +356,7 @@ export const JobProspectScreen = () => {
             const hasApplied = !!item.application;
             const status = hasApplied ? item.application?.status || "pending" : null;
 
-            const StatusColors: Record<string, string> = {
+            const StatusColorsCard: Record<string, string> = {
               pending: "#F59E0B",
               viewed: "#3B82F6",
               shortlisted: "#8B5CF6",
@@ -345,7 +365,7 @@ export const JobProspectScreen = () => {
               closed: "#9CA3AF",
             };
 
-            const progressColor = status && status !== "closed" ? StatusColors[status] : "#6B7280";
+            const progressColor = status && status !== "closed" ? StatusColorsCard[status] : "#6B7280";
             const progressLabel = status ? status.charAt(0).toUpperCase() + status.slice(1) : null;
 
             const cardStyle = hasApplied
@@ -384,7 +404,7 @@ export const JobProspectScreen = () => {
                 onPress={() =>
                   hasApplied
                     ? handleAppliedClick(item)
-                    : navigation.navigate("jobProspectDetails", { item })
+                    : navigation.navigate("jobProspectDetails" as never, { item } as never)
                 }
               >
                 {/* Top section: Company & progress tag */}
@@ -494,7 +514,7 @@ export const JobProspectScreen = () => {
                         marginLeft: 8,
                       }}
                     >
-                      {job.location.display_name || job.location.city || "Location not specified"}
+                      {job.location?.display_name || job.location?.city || "Location not specified"}
                     </Text>
                   </View>
 
@@ -507,7 +527,7 @@ export const JobProspectScreen = () => {
                         marginLeft: 8,
                       }}
                     >
-                      {job.employment.join(", ")}
+                      {Array.isArray(job.employment) && job.employment.length > 0 ? job.employment.join(", ") : "Not provided"}
                     </Text>
                   </View>
 
@@ -597,13 +617,13 @@ export const JobProspectScreen = () => {
                     Job Details
                   </Text>
                   <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, marginBottom: 4 }}>
-                    <Text style={{ fontFamily: 'Lexend-Bold' }}>Location:</Text> {selectedJob.jobDetails.location.city || selectedJob.jobDetails.location.display_name}, {selectedJob.jobDetails.location.province || ''}
+                    <Text style={{ fontFamily: 'Lexend-Bold' }}>Location:</Text> {selectedJob.jobDetails.location?.city || selectedJob.jobDetails.location?.display_name || "Location not specified"}, {selectedJob.jobDetails.location?.province || ''}
                   </Text>
                   <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, marginBottom: 4 }}>
                     <Text style={{ fontFamily: 'Lexend-Bold' }}>Salary:</Text> {selectedJob.jobDetails.salaryRange.currency} {selectedJob.jobDetails.salaryRange.min || ''} - {selectedJob.jobDetails.salaryRange.max || ''}/{selectedJob.jobDetails.salaryRange.frequency || ''}
                   </Text>
                   <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, marginBottom: 4 }}>
-                    <Text style={{ fontFamily: 'Lexend-Bold' }}>Employment Type:</Text> {selectedJob.jobDetails.employment.join(', ')}
+                    {Array.isArray(selectedJob.jobDetails.employment) && selectedJob.jobDetails.employment.length > 0 ? selectedJob.jobDetails.employment.join(', ') : "Not provided"}
                   </Text>
                   <Text style={{ fontFamily: 'Lexend-Regular', fontSize: 14, marginBottom: 4 }}>
                     <Text style={{ fontFamily: 'Lexend-Bold' }}>Work Type:</Text> {selectedJob.jobDetails.workTypes.join(', ')}
@@ -626,12 +646,12 @@ export const JobProspectScreen = () => {
                       const filePaths = [selectedJob.application.resume];
                       const res = await getFileUrl(filePaths);
                       const resumeUrl = res.files[0].signedUrl;
-                      navigation.navigate('resumeViewerProspect' as never, { resumeUrl } as never);
+                      (navigation as any).navigate('resumeViewerProspect', { resumeUrl });
                     } catch {
-                      alert('Could not open resume');
+                      showAlert('Error', 'Could not open resume');
+                    } finally {
                       setLoading(false);
                     }
-                    setLoading(false);
                   }}
                 >
                   <FileText size={20} color="white" />

@@ -9,6 +9,8 @@
     { "id": 7, "name": "Virtual Assistance / BPO / Online Support" },
     { "id": 8, "name": "Technical Support / IT Support" },
     { "id": 9, "name": "Information Technology (Internships / Fresh Grad)" },
-    { "id": 10, "name": "Hospitality / Food Service" }
+    { "id": 10, "name": "Hospitality / Food Service" },
+    { "id": 11, "name": "Teaching / Education" }
+
   ]
 }

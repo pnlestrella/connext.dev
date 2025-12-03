@@ -22,7 +22,10 @@ export default function EditMeetingModal({ visible, meeting, onClose, onConfirm 
       : new Date(Date.now() + 30 * 60000),
     meetingLink: meeting?.meetingLink || "",
     eventLink: meeting?.eventLink || "",
+    status: meeting?.status || "pending",
   });
+
+  console.log('meeeeeeeeting',meeting)
 
   const [pickerMode, setPickerMode] = useState(null);
   const [durationPickerVisible, setDurationPickerVisible] = useState(false);
@@ -37,6 +40,7 @@ export default function EditMeetingModal({ visible, meeting, onClose, onConfirm 
         endTime: meeting.endTime ? new Date(meeting.endTime) : new Date(Date.now() + 30 * 60000),
         meetingLink: meeting.meetingLink || "",
         eventLink: meeting.eventLink || "",
+            status: meeting?.status || "pending",
       });
     }
   }, [meeting]);
