@@ -15,6 +15,8 @@ import { Loading } from 'components/Loading';
 import { useAuth } from 'context/auth/AuthHook';
 import { useJobs } from 'context/jobs/JobHook';
 import { getJobSeeker } from 'api/profile';
+import AlertModal from 'components/AlertModal';
+
 const filterOptions = [
     { id: "1", label: "Full-time" },
     { id: "2", label: "Part-time" },
@@ -38,6 +40,17 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
     const { setLoading, loading, userMDB } = useAuth()
     const { jobTypesTemp, setJobTypesTemp, profileCopyer, userProfile, setJobPostings, tempSearch } = useJobs()
 
+    // AlertModal state
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertTitle, setAlertTitle] = useState<string>('Alert');
+    const [alertMessage, setAlertMessage] = useState<string>('');
+
+    const showAlert = (title: string, message: string) => {
+        setAlertTitle(title);
+        setAlertMessage(message);
+        setAlertVisible(true);
+    };
+
     const toggle = (id: string) => {
         setJobTypesTemp((prev) => ({ ...prev, [id]: !prev[id] }));
     };
@@ -47,7 +60,8 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
         setLoading(true);
 
         if (!tempSearch) {
-            alert("Please search a Job First");
+            showAlert("Please search a Job First", "You need to search for jobs before applying filters.");
+            setLoading(false)
             return;
         }
         if (!userProfile) return;
@@ -73,7 +87,7 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
             // If recoSys expects an object
             const res = await recoSys(profileCopy);
 
-             if (Array.isArray(res)) {
+            if (Array.isArray(res)) {
                 setJobPostings(res);
             } else if (res?.message === "No Jobs was fetched" || res?.message?.code === "NO_JOBS") {
                 // support both string & object styles
@@ -92,20 +106,17 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
         } catch (err: any) {
             if (err.message === "Network request failed") {
                 console.log(err);
-                alert("Recosystem server is off");
+                showAlert("Server Offline", "Recosystem server is currently unavailable. Please try again later.");
                 return;
             }
             console.log(err, "nen");
         }
 
-          // after success
+        // after success
         setUserSearch(tempSearch.title);
         setShowFilter(false);
         setLoading(false);
     }
-
- 
-
 
 
 
@@ -167,13 +178,13 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
                         </View>
                     ))}
                 </View>
-                <Text className="mt-4 text-gray-500">
+                {/* <Text className="mt-4 text-gray-500">
                     Selected:{" "}
                     {Object.keys(selected)
                         .filter((id) => selected[id])
                         .map((id) => filterOptions.find((opt) => opt.id === id)?.label)
                         .join(", ") || "None"}
-                </Text>
+                </Text> */}
 
                 <Button title={'Save'} onPress={HandleSave}></Button>
 
@@ -199,6 +210,14 @@ export const Filtering = ({ showFilter, selected, setUserSearch, setShowSearch, 
 
 
             </Animated.View >
+
+            {/* AlertModal */}
+            <AlertModal
+                visible={alertVisible}
+                title={alertTitle}
+                message={alertMessage}
+                onClose={() => setAlertVisible(false)}
+            />
         </>
 
     );

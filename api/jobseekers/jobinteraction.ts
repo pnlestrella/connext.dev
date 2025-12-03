@@ -40,6 +40,48 @@ export async function createJobInteraction(
   }
 }
 
+
+//update
+
+export async function updateJobInteraction(
+  jobUID: string,
+  jobInteractionID:string,
+  action: string,
+  feedback: object | null,
+  score: number | null,
+  boostWeight: number | null
+) {
+  const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobinteraction/updateJobInteraction/${jobInteractionID}`;
+
+  const payload = {
+    jobUID,
+    action,
+    feedback,
+    score,
+    boostWeight
+  };
+
+  try {
+    console.log('📤 Creating Job Interaction:', payload);
+
+    const res = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const resJSON = await res.json();
+    console.log('📌 Job Interaction Response:', resJSON);
+
+    return resJSON;
+  } catch (err) {
+    console.log('❌ Error Updating Job Interaction:', err);
+    return { success: false, error: err };
+  }
+}
+
 export const getJobInteraction = async (seekerUID: string, action: string) => {
   console.log('actionnnnnn',action, seekerUID)
   const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobinteraction/getJobInteraction?seekerUID=${seekerUID}&action=${action}`;

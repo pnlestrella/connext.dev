@@ -9,6 +9,7 @@ import { useAuth } from 'context/auth/AuthHook';
 import { createApplication } from 'api/applications';
 import { useJobs } from 'context/jobs/JobHook';
 import AlertModal from 'components/AlertModal';
+import * as WebBrowser from 'expo-web-browser'; // Added for external job links
 
 dayjs.extend(relativeTime);
 
@@ -31,16 +32,16 @@ export const JobProspectDetails = () => {
         setAlertVisible(true);
     };
 
-
     const job = item.jobDetails;
     const [showFeedback, setShowFeedback] = useState(false);
 
     const postedAgo = job.createdAt ? dayjs(job.createdAt).fromNow() : "N/A";
 
-    const handleApply = (item: any) => {
+    const handleApply = async (item: any) => {
         const job = item.jobDetails
+        
         if (!job.isExternal) {
-            //check if the user has resume already
+            // Internal job - normal application flow
             if (userMDB.resume) {
                 const application = {
                     jobUID: item.jobUID,
@@ -48,25 +49,36 @@ export const JobProspectDetails = () => {
                     seekerUID: userMDB.seekerUID,
                     resume: userMDB.resume
                 }
-                createApplication(application)
-                    .then((res) => {
-                        fetchShortlistedJobs();
-                        console.log(res)
-                        showAlert('Application Submitted', 'Successfully sent an application.'); // AlertModal
-                        navigation.goBack()
-                    })
-                    .catch(err => console.log(err))
-
+                try {
+                    await createApplication(application);
+                    fetchShortlistedJobs();
+                    showAlert('Application Submitted', 'Successfully sent an application.');
+                    navigation.goBack();
+                } catch (err) {
+                    console.error(err);
+                    showAlert('Error', 'Failed to apply. Please try again.');
+                }
             } else {
-                showAlert('Resume Required', 'Please upload resume before applying'); // AlertModal
-
+                showAlert('Resume Required', 'Please upload resume before applying');
             }
         } else {
-            showAlert('Notice', 'This feature is coming soon.'); // AlertModal
+            // External job - open in in-app browser
+            const url = job.link;
+            if (!url) {
+                showAlert('Invalid link', 'No link is available for this job yet.');
+                return;
+            }
+
+            try {
+                await WebBrowser.openBrowserAsync(url, {
+                    showTitle: true,
+                });
+            } catch (e) {
+                console.error('WebBrowser error:', e);
+                showAlert('Error', 'Something went wrong opening the job page.');
+            }
         }
     }
-
-
 
     return (
         <SafeAreaView className="flex-1 bg-white">
@@ -80,7 +92,7 @@ export const JobProspectDetails = () => {
 
             <ScrollView contentContainerStyle={{ padding: 20 }}>
                 {/* Title & Company */}
-                <Text className="text-3xl font-extrabold text-gray-900 mb-1 font-lexend">
+                <Text className="text-3xl font-extrabold text-gray-800 mb-1 font-lexend">
                     {job.jobTitle}
                 </Text>
                 <Text className="text-xl text-gray-700 mb-4 font-semibold font-poppins">
@@ -96,7 +108,6 @@ export const JobProspectDetails = () => {
                         Posted internally on our platform
                     </Text>
                 )}
-
 
                 {/* Salary */}
                 {job.salaryRange?.min && (
@@ -199,7 +210,6 @@ export const JobProspectDetails = () => {
                 message={alertMessage}
                 onClose={() => setAlertVisible(false)}
             />
-
         </SafeAreaView>
     );
 };
