@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Pressable,
+  StyleSheet
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -17,9 +18,11 @@ import {
   Briefcase,
   CalendarDays,
   Tag,
+  Trash
 } from "lucide-react-native";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
-import { getJob } from "api/employers/joblistings";
+import { deleteJob, getJob } from "api/employers/joblistings";
+import ConfirmationModal from "components/ConfirmationModal";
 
 // Simple divider
 const SectionDivider = () => (
@@ -213,8 +216,26 @@ export const JobDetails = () => {
   const statusColor = isActive ? "#065F46" : "#991B1B";
   const statusBg = isActive ? "#ECFDF5" : "#FEF2F2";
 
+
+  const [showDelete, setShowDelete] = useState(false);
+
+  async function handleJobDeletion(jobUID: string) {
+    try {
+      setShowDelete(false)
+      const res = await deleteJob(jobUID)
+
+      console.log("Successfully deleted: ",res)
+      navigation.goBack()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-white">
+
+
+
       {/* Header */}
       <View
         style={{
@@ -231,13 +252,21 @@ export const JobDetails = () => {
             <ArrowLeft size={28} color="#37424F" />
           </TouchableOpacity>
           <Text style={{ fontSize: 18, fontWeight: "800", color: "#111827" }}>Job Details</Text>
-          <TouchableOpacity
-            onPress={() => (navigation as any).navigate("editDetails", { job: jobData })}
-            accessibilityRole="button"
-            accessibilityLabel="Edit job"
-          >
-            <Edit3 size={22} color="#37424F" />
-          </TouchableOpacity>
+          <View className="flex-row gap-5">
+            <TouchableOpacity
+              onPress={() => (navigation as any).navigate("editDetails", { job: jobData })}
+              accessibilityRole="button"
+              accessibilityLabel="Edit job"
+            >
+              <Edit3 size={22} color="#37424F" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setShowDelete(true)}
+            >
+              <Trash size={22} color="red" />
+            </TouchableOpacity>
+          </View>
+
         </View>
 
         {/* Title + Status */}
@@ -371,6 +400,18 @@ export const JobDetails = () => {
           <CollapsibleDescription text={jobData.jobDescription} />
         </View>
       </ScrollView>
+
+      <ConfirmationModal
+        visible={showDelete}
+        type="delete"
+        title="Delete Job?"
+        message="This job may already have applications associated with it. Deleting it cannot be undone. Are you sure you want to proceed?"
+        onConfirm={() => handleJobDeletion(jobData.jobUID)}
+        onCancel={() => setShowDelete(false)}
+      />
+
+
+
     </SafeAreaView>
   );
 };

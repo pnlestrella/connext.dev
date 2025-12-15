@@ -352,6 +352,7 @@ export const ChatScreen = () => {
           }}
           onCancel={() => setShowConfirm(false)}
         />
+        
         <MeetingModal
           visible={showMeetingModal}
           onClose={() => setShowMeetingModal(false)}

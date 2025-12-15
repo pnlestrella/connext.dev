@@ -35,8 +35,6 @@ export default function JobseekerTabs() {
             headerShown: false,
             tabBarHideOnKeyboard: true,
             tabBarStyle: { paddingTop: 0, marginTop: 0 },
-
-
         })}>
             <Tab.Screen name="Browse" component={BrowseScreen} />
             <Tab.Screen name="Job Prospect" component={JobProspectStackScreen} />

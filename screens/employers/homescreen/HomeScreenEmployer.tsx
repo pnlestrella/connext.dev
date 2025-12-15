@@ -75,6 +75,7 @@ export const HomeScreenEmployer = () => {
   };
 
   const renderJob = (item: any) => {
+    console.log(item.jobUID,'item', item.jobTitle)
     const isClosed = item.status === false;
     const headerBg = isClosed ? '#9CA3AF' : '#6C63FF';
     const cardOpacity = isClosed ? 0.6 : 1;

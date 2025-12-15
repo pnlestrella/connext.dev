@@ -24,7 +24,7 @@ export async function getJobs(employerUID: string[]) {
 export async function getJob(jobUID: string) {
   const params = new URLSearchParams();
 
-  console.log(jobUID)
+  console.log(jobUID);
 
   const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/joblistings/getJob?jobUID=${jobUID}`;
 
@@ -66,7 +66,7 @@ export async function postJob(jobData: any) {
 export async function updateJobs(jobUID: string, updates: any) {
   const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/joblistings/updateJobs/${jobUID}`;
 
-  console.log(updates, jobUID,'waw')
+  console.log(updates, jobUID, 'waw');
 
   console.log(url, 'URLLLLLLLLL');
   try {
@@ -85,6 +85,29 @@ export async function updateJobs(jobUID: string, updates: any) {
     return resJSON;
   } catch (err) {
     console.log('❌ Error updating job:', err);
+    return { success: false, error: err };
+  }
+}
+
+export async function deleteJob(jobUID: string) {
+  const url = `${Constants.expoConfig?.extra?.BACKEND_BASE_URL}/api/joblistings/deleteJob?jobUID=${jobUID}`;
+
+  try {
+    console.log('Deleting job: ', jobUID);
+
+    const res = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const resJSON = await res.json();
+    // console.log('TESTYYY', resJSON)
+    console.log(resJSON,'DELETE JOB')
+    return resJSON;
+  } catch (err) {
+    console.log('Error Deleting job:', err);
     return { success: false, error: err };
   }
 }

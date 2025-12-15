@@ -61,17 +61,18 @@ function JobseekerStack({ userMDB }: any) {
       headerShown: false,
       contentStyle: { backgroundColor: 'white' },
     }}
-      initialRouteName="home"
+    // initialRouteName="home"
     >
       {!location && <Stack.Screen name="address" component={AddressScreen} />}
       {!industries && <Stack.Screen name="industries" component={IndustryScreen} />}
       {!skills && <Stack.Screen name="skills" component={SkillsScreen} />}
       {(profileSummary?.length === 0) && <Stack.Screen name="profileSummary" component={ProfileSummaryScreen} />}
+
+
+      <Stack.Screen name="home" component={JobseekerTabs} />
       <Stack.Screen name="notifications" component={NotificationsScreen}
         options={{ animation: 'fade' }}
       />
-
-      <Stack.Screen name="home" component={JobseekerTabs} />
     </Stack.Navigator>
   );
 }
@@ -111,7 +112,6 @@ function EmployerStack({ userMDB }: any) {
       // ? "confirmation"
       : "home";
 
-  // Force remount when prerequisites or status change so initialRouteName re-applies
   const flowKey = [
     needsAddress ? "addr" : "ok",
     needsIndustries ? "ind" : "ok",
@@ -132,11 +132,13 @@ function EmployerStack({ userMDB }: any) {
         <Stack.Screen name="confirmation" component={RegistrationConfirmationScreen} />
       )} */}
 
+
+
+      <Stack.Screen name="home" component={EmployerTabs} />
+
       <Stack.Screen name="notifications" component={NotificationsScreen}
         options={{ animation: 'fade' }}
       />
-      
-      <Stack.Screen name="home" component={EmployerTabs} />
     </Stack.Navigator>
   );
 }

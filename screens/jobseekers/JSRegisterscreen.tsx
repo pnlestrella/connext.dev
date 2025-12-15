@@ -21,6 +21,7 @@ import { useAuth } from 'context/auth/AuthHook';
 import { userRegister } from 'firebase/firebaseAuth';
 import { OTPModal } from 'components/OTP.modal';
 import { Loading } from 'components/Loading';
+import AlertModal from 'components/AlertModal';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -35,11 +36,6 @@ export const JSRegisterScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const uType = "jobseeker"
   console.log(uType,'babababa')
-  console.log(uType,'babababa')
-
-
-
- 
 
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -55,23 +51,33 @@ export const JSRegisterScreen = () => {
   // OTP modal
   const [showOTP, setShowOTP] = useState(false);
 
+  // AlertModal state
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Alert");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [onAlertClose, setOnAlertClose] = useState<(() => void) | null>(null);
+
+  // Reusable function to show alert modal
+  const showAlert = (message: string, title = "Alert", onClose: () => void = () => {}) => {
+    setAlertMessage(message);
+    setAlertTitle(title);
+    setAlertVisible(true);
+    setOnAlertClose(() => onClose);
+  };
+
   async function handleRegister() {
     if (!email || !password || !firstName || !lastName) {
-      alert('Please fill in all required fields');
-      return;
+      return showAlert('Please fill in all required fields');
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      alert('Please enter a valid email address');
-      return;
+      return showAlert('Please enter a valid email address');
     }
     if (password !== confirmPassword) {
-      alert("Passwords don't match");
-      return;
+      return showAlert("Passwords don't match");
     }
     if (password.length < 6) {
-      alert('Password must be at least 6 characters');
-      return;
+      return showAlert('Password must be at least 6 characters');
     }
     console.log("TESTYYYY")
     //temporary
@@ -80,20 +86,20 @@ export const JSRegisterScreen = () => {
   }
 
   async function onVerify() {
-    setLoading(true);
-    const registerFirebaseUser = await userRegister(email, password);
-
-    const user = {
-      seekerUID: registerFirebaseUser.user.uid,
-      email,
-      fullName: { firstName, middleInitial, lastName },
-      industries: null,
-      skills: null,
-      status: true,
-      accountIncomplete: true,
-    };
-
     try {
+      setLoading(true);
+      const registerFirebaseUser = await userRegister(email, password);
+
+      const user = {
+        seekerUID: registerFirebaseUser.user.uid,
+        email,
+        fullName: { firstName, middleInitial, lastName },
+        industries: null,
+        skills: null,
+        status: true,
+        accountIncomplete: true,
+      };
+
       const response = await fetch(
         `${Constants?.expoConfig?.extra?.BACKEND_BASE_URL}/api/jobseekers/registerJobSeeker`,
         {
@@ -104,10 +110,15 @@ export const JSRegisterScreen = () => {
       );
       console.log(await response.json());
       console.log('Account created successfully');
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
+      
+      showAlert("Account created successfully", "Success", () => {
+        navigation.navigate("login");
+      });
+    } catch (err: any) {
       console.log(err);
+      showAlert(err?.message || "Something went wrong", "Error");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -314,6 +325,18 @@ export const JSRegisterScreen = () => {
         visible={showOTP}
         onClose={() => setShowOTP(false)}
         onSubmit={() => setShowOTP(false)}
+      />
+
+      {/* AlertModal */}
+      <AlertModal
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={() => {
+          setAlertVisible(false);
+          onAlertClose?.();
+          setOnAlertClose(null);
+        }}
       />
     </SafeAreaView>
   );

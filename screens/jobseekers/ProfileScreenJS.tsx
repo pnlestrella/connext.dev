@@ -139,7 +139,7 @@ export const ProfileScreenJS = () => {
               </Text>
             </Pressable>
 
-            <Pressable
+            {/* <Pressable
               className="flex-1  flex-row p-2 rounded-lg items-center justify-center"
               onPress={() => alert('Feature on progress')}
               style={{ backgroundColor: '#1572DB' }}
@@ -153,7 +153,7 @@ export const ProfileScreenJS = () => {
               >
                 Create Resume
               </Text>
-            </Pressable>
+            </Pressable> */}
           </View>
         </View>
 

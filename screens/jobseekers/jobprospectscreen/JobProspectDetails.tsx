@@ -9,7 +9,7 @@ import { useAuth } from 'context/auth/AuthHook';
 import { createApplication } from 'api/applications';
 import { useJobs } from 'context/jobs/JobHook';
 import AlertModal from 'components/AlertModal';
-import * as WebBrowser from 'expo-web-browser'; // Added for external job links
+import * as WebBrowser from 'expo-web-browser';
 
 dayjs.extend(relativeTime);
 
@@ -17,10 +17,28 @@ export const JobProspectDetails = () => {
     const { userMDB } = useAuth()
     const route = useRoute();
     const navigation = useNavigation();
-    const { item } = route.params;
+    const { item } = route.params as { item?: any };
     const { shortlistedJobs, fetchShortlistedJobs } = useJobs();
 
-    console.log(item, 'tiei')
+    console.log("Jobprdetai;ls", item)
+    console.log("Jobprdetai;ls", item.salaryRange)
+
+    // Early guard for missing route data
+    if (!item || !item.jobDetails) {
+        return (
+            <SafeAreaView className="flex-1 bg-white items-center justify-center px-4">
+                <Text className="text-base text-gray-700 text-center font-poppins mb-6">
+                    Job details are not available.
+                </Text>
+                <Pressable
+                    onPress={() => navigation.goBack()}
+                    className="bg-gray-800 px-6 py-3 rounded-2xl"
+                >
+                    <Text className="text-white font-semibold text-base font-lexend">Go Back</Text>
+                </Pressable>
+            </SafeAreaView>
+        );
+    }
 
     // For Alerts
     const [alertVisible, setAlertVisible] = useState(false);
@@ -38,34 +56,53 @@ export const JobProspectDetails = () => {
     const postedAgo = job.createdAt ? dayjs(job.createdAt).fromNow() : "N/A";
 
     const handleApply = async (item: any) => {
-        const job = item.jobDetails
-        
+        const job = item?.jobDetails;
+
+        if (!job) {
+            showAlert('Missing data', 'Job details are not available yet.');
+            return;
+        }
+
+        // Basic required fields for any kind of apply
+        if (!userMDB?.seekerUID) {
+            showAlert('Profile Incomplete', 'Please complete your seeker profile first.');
+            return;
+        }
+
+        if (!job.jobUID && !item.jobUID) {
+            showAlert('Invalid job', 'This job cannot be applied to right now.');
+            return;
+        }
+
         if (!job.isExternal) {
-            // Internal job - normal application flow
-            if (userMDB.resume) {
-                const application = {
-                    jobUID: item.jobUID,
-                    employerUID: job.employerUID,
-                    seekerUID: userMDB.seekerUID,
-                    resume: userMDB.resume
-                }
-                try {
-                    await createApplication(application);
-                    fetchShortlistedJobs();
-                    showAlert('Application Submitted', 'Successfully sent an application.');
-                    navigation.goBack();
-                } catch (err) {
-                    console.error(err);
-                    showAlert('Error', 'Failed to apply. Please try again.');
-                }
-            } else {
-                showAlert('Resume Required', 'Please upload resume before applying');
+            // Internal job validation
+            if (!userMDB?.resume) {
+                showAlert('Resume Required', 'Please upload your resume before applying.');
+                return;
+            }
+
+            const application = {
+                jobUID: item.jobUID ?? job.jobUID,
+                employerUID: job.employerUID,
+                seekerUID: userMDB.seekerUID,
+                resume: userMDB.resume,
+            };
+
+            try {
+                await createApplication(application);
+                fetchShortlistedJobs();
+                showAlert('Application Submitted', 'Successfully sent an application.');
+                navigation.goBack();
+            } catch (err) {
+                console.error(err);
+                showAlert('Error', 'Failed to apply. Please try again.');
             }
         } else {
-            // External job - open in in-app browser
+            // External job validation
             const url = job.link;
-            if (!url) {
-                showAlert('Invalid link', 'No link is available for this job yet.');
+
+            if (!url || typeof url !== 'string' || url.trim() === '') {
+                showAlert('Invalid link', 'No valid link is available for this job yet.');
                 return;
             }
 
@@ -93,7 +130,7 @@ export const JobProspectDetails = () => {
             <ScrollView contentContainerStyle={{ padding: 20 }}>
                 {/* Title & Company */}
                 <Text className="text-3xl font-extrabold text-gray-800 mb-1 font-lexend">
-                    {job.jobTitle}
+                    {job.jobTitle || 'Job Title Not Available'}
                 </Text>
                 <Text className="text-xl text-gray-700 mb-4 font-semibold font-poppins">
                     {job.companyName ?? (job.isExternal ? (job.profilePic === "ziprecruiter" ? "ZipRecruiter" : "Indeed") : "Internal Posting")}
@@ -118,7 +155,7 @@ export const JobProspectDetails = () => {
 
                 {/* Location */}
                 <Text className="text-base text-gray-700 mb-4 font-poppins leading-6">
-                    {job.location.display_name}
+                    {job.location?.display_name || 'Location not specified'}
                 </Text>
 
                 {/* Industry */}
@@ -177,13 +214,13 @@ export const JobProspectDetails = () => {
                     {showFeedback ? (
                         <View className="space-y-2">
                             <Text className="text-base text-gray-800 leading-6 font-poppins">
-                                🔹 {item.feedback.match_summary}
+                                🔹 {item.feedback?.match_summary || 'No summary available'}
                             </Text>
                             <Text className="text-base text-gray-800 leading-6 font-poppins">
-                                🛠 {item.feedback.skill_note}
+                                🛠 {item.feedback?.skill_note || 'No skills feedback'}
                             </Text>
                             <Text className="text-base text-gray-800 leading-6 font-poppins">
-                                📌 {item.feedback.extra_note}
+                                📌 {item.feedback?.extra_note || 'No additional notes'}
                             </Text>
                         </View>
                     ) : (

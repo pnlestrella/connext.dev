@@ -299,6 +299,112 @@ export const ProfileScreenJS = () => {
             </View>
           </View>
 
+          {/* Education Section */}
+          {/* Education Section */}
+          <View style={{ marginTop: 24 }}>
+            <Text
+              style={{
+                fontFamily: 'Lexend-SemiBold',
+                fontSize: 18,
+                color: '#37424F',
+                marginBottom: 12,
+              }}
+            >
+              Education
+            </Text>
+
+            {Array.isArray(userMDB?.education) && userMDB?.education?.length > 0 ? (
+              <View
+                style={{
+                  backgroundColor: '#F9FAFB',
+                  borderRadius: 16,
+                  padding: 16,
+                  shadowColor: '#000',
+                  shadowOpacity: 0.05,
+                  shadowRadius: 4,
+                  elevation: 2,
+                  maxHeight: 200, // Limit height
+                }}
+              >
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  {userMDB?.education.map((edu: any, idx: number) => (
+                    <View
+                      key={edu._id || idx}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        backgroundColor: 'white',
+                        borderRadius: 12,
+                        paddingHorizontal: 12,
+                        paddingVertical: 12,
+                        marginBottom: 8,
+                        shadowColor: '#000',
+                        shadowOpacity: 0.1,
+                        shadowRadius: 2,
+                        elevation: 1,
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          backgroundColor: '#EEF2FF',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginRight: 12,
+                        }}
+                      >
+                        <Text style={{ fontWeight: '700', color: '#4F46E5', fontSize: 14 }}>
+                          {edu.schoolName?.charAt(0) ?? 'E'}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text
+                          style={{ fontSize: 15, color: '#111827', fontWeight: '600', marginBottom: 2 }}
+                          numberOfLines={1}
+                        >
+                          {edu.schoolName}
+                        </Text>
+                        <Text style={{ fontSize: 13, color: '#6B7280' }} numberOfLines={1}>
+                          {edu.startYear ? `${edu.startYear}` : ''}
+                          {edu.startYear && (edu.isCurrent === 1 || edu.isCurrent === true) ? ' - Present' : ''}
+                          {edu.startYear && edu.endYear && edu.isCurrent !== 1 ? ` - ${edu.endYear}` : ''}
+                          {edu.degree || edu.fieldOfStudy ? ` • ${edu.degree || edu.fieldOfStudy}` : ''}
+                        </Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </View>
+            ) : (
+              <Pressable
+                style={{
+                  backgroundColor: '#F3F4F6',
+                  borderRadius: 16,
+                  padding: 24,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                android_ripple={{ color: 'rgba(0,0,0,0.05)' }}
+                onPress={() => navigation.navigate('editProfile')}
+              >
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-Italic',
+                    fontSize: 14,
+                    color: '#6B7280',
+                  }}
+                >
+                  No education yet. Tap to add.
+                </Text>
+              </Pressable>
+            )}
+          </View>
+
+
+
+
           {/* Profile Summary Section */}
           <View style={{ marginTop: 24 }}>
             <Text
@@ -413,7 +519,7 @@ export const ProfileScreenJS = () => {
                   </Text>
                 </Pressable>
 
-                <Pressable
+                {/* <Pressable
                   className="flex-row items-center p-4 rounded-2xl bg-[#1572DB] shadow-sm"
                   onPress={() => showAlert('Coming soon', 'Create flow coming soon')}
                 >
@@ -429,7 +535,7 @@ export const ProfileScreenJS = () => {
                   >
                     Create Resume
                   </Text>
-                </Pressable>
+                </Pressable> */}
               </>
             )}
 

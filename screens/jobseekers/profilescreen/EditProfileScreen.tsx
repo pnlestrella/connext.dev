@@ -13,7 +13,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from "react-native";
-import { ArrowLeft, Plus } from "lucide-react-native";
+import { ArrowLeft, Plus, Pencil } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "context/auth/AuthHook";
 import { IndustryModal } from "components/profileScreen/IndustryModal";
@@ -22,6 +22,7 @@ import { updateProfile } from "api/profile";
 
 import Skills from "../../../data/cleaned_skills.json";
 import Fuse from "fuse.js";
+import { EditSchoolModal, Education } from "components/profileScreen/EditSchoolModal";
 
 const BRAND_PURPLE = "#2563EB";
 const SUMMARY_LIMIT = 750;
@@ -68,6 +69,7 @@ export const EditProfileScreen = () => {
     location: userMDB?.location || null,
     skills: userMDB?.skills || [],
     profileSummary: userMDB?.profileSummary || "",
+    education: (userMDB?.education as Education[] | undefined) || [],
   };
 
   // states
@@ -77,10 +79,17 @@ export const EditProfileScreen = () => {
   const [industries, setIndustries] = useState(original.industries as string[]);
   const [location, setLocation] = useState<any>(original.location);
   const [skills, setSkills] = useState<string[]>(original.skills);
+  const [education, setEducation] = useState<Education[]>(original.education);
   const [profileSummary, setProfileSummary] = useState(original.profileSummary);
+
+  // which education entry is being edited (index), null = add new
+  const [editingEducationIndex, setEditingEducationIndex] = useState<number | null>(
+    null
+  );
 
   // modals
   const [industryModalVisible, setIndustryModalVisible] = useState(false);
+  const [schoolModalVisible, setSchoolModalVisible] = useState(false);
 
   const initialIndustriesForModal = useMemo(() => {
     return industries
@@ -158,10 +167,14 @@ export const EditProfileScreen = () => {
 
   // ===== Save / Cancel =====
   const handleSave = async () => {
-    if (firstName.length < 2) return Alert.alert("Invalid", "First Name must be at least 2 chars");
-    if (lastName.length < 2) return Alert.alert("Invalid", "Last Name must be at least 2 chars");
-    if (skills.length === 0) return Alert.alert("Missing", "Please add at least one skill");
-    if (!location?.display_name) return Alert.alert("Missing", "Please set your location");
+    if (firstName.length < 2)
+      return Alert.alert("Invalid", "First Name must be at least 2 chars");
+    if (lastName.length < 2)
+      return Alert.alert("Invalid", "Last Name must be at least 2 chars");
+    if (skills.length === 0)
+      return Alert.alert("Missing", "Please add at least one skill");
+    if (!location?.display_name)
+      return Alert.alert("Missing", "Please set your location");
 
     const updated = {
       fullName: { firstName, middleInitial, lastName },
@@ -169,6 +182,7 @@ export const EditProfileScreen = () => {
       location,
       skills,
       profileSummary,
+      education,
     };
 
     try {
@@ -190,7 +204,51 @@ export const EditProfileScreen = () => {
     setLocation(original.location);
     setSkills(original.skills);
     setProfileSummary(original.profileSummary);
+    setEducation(original.education);
     navigation.goBack();
+  };
+
+  // ===== Education helpers =====
+
+  const openAddEducation = () => {
+    setEditingEducationIndex(null);
+    setSchoolModalVisible(true);
+  };
+
+  const openEditEducation = (index: number) => {
+    setEditingEducationIndex(index);
+    setSchoolModalVisible(true);
+  };
+
+  const handleEducationSave = (data: Education) => {
+    if (editingEducationIndex == null) {
+      setEducation((prev) => [...prev, data]);
+    } else {
+      setEducation((prev) => {
+        const next = [...prev];
+        next[editingEducationIndex] = data;
+        return next;
+      });
+    }
+    setEditingEducationIndex(null);
+  };
+
+  const handleEducationDelete = () => {
+    if (editingEducationIndex == null) return;
+    setEducation((prev) => prev.filter((_, idx) => idx !== editingEducationIndex));
+    setEditingEducationIndex(null);
+  };
+
+  const formatYears = (edu: Education) => {
+    if (!edu.startYear && !edu.endYear && !edu.isCurrent) return "";
+    const start = edu.startYear ? edu.startYear.toString() : "";
+    const end = edu.isCurrent
+      ? "Present"
+      : edu.endYear
+      ? edu.endYear.toString()
+      : "";
+    if (!start && !end) return "";
+    return `${start} - ${end}`;
   };
 
   return (
@@ -201,7 +259,7 @@ export const EditProfileScreen = () => {
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 12}
       >
         {/* Header */}
-        <View className="flex-row items-center px-5 py-4 border-b border-gray-200 items-center">
+        <View className="flex-row items-center px-5 py-4 border-b border-gray-200">
           <TouchableOpacity onPress={handleCancel} className="mr-3">
             <ArrowLeft size={24} color="black" />
           </TouchableOpacity>
@@ -247,6 +305,110 @@ export const EditProfileScreen = () => {
             className="border border-gray-300 rounded-lg px-3 py-2 mb-4 w-24"
           />
 
+          {/* Education */}
+          <View
+            style={{
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: "#E5E7EB",
+              padding: 12,
+              marginBottom: 16,
+              backgroundColor: "white",
+            }}
+          >
+            <View className="flex-row justify-between items-center mb-3">
+              <Text className="text-gray-800 font-semibold text-base">Education</Text>
+              <View className="flex-row">
+                <TouchableOpacity
+                  onPress={openAddEducation}
+                  style={{ paddingHorizontal: 8, paddingVertical: 4 }}
+                >
+                  <Plus size={18} color="#37424F" />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {education.length === 0 ? (
+              <TouchableOpacity
+                onPress={openAddEducation}
+                style={{
+                  borderWidth: 1,
+                  borderColor: "#E5E7EB",
+                  borderStyle: "dashed",
+                  borderRadius: 10,
+                  paddingVertical: 12,
+                  paddingHorizontal: 10,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text className="text-gray-500">
+                  Add your school, degree, and years attended
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              education.map((edu, idx) => (
+                <View
+                  key={`${edu.schoolName}-${idx}`}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingVertical: 8,
+                  }}
+                >
+                  <View
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 999,
+                      backgroundColor: "#EEF2FF",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: 10,
+                    }}
+                  >
+                    <Text style={{ fontWeight: "700", color: "#4F46E5" }}>
+                      {edu.schoolName?.charAt(0) ?? "E"}
+                    </Text>
+                  </View>
+
+                  <Pressable
+                    onPress={() => openEditEducation(idx)}
+                    style={{ flex: 1, paddingRight: 8 }}
+                  >
+                    <Text
+                      style={{
+                        fontWeight: "600",
+                        color: "#111827",
+                        marginBottom: 2,
+                      }}
+                      numberOfLines={1}
+                    >
+                      {edu.schoolName}
+                    </Text>
+                    {edu.degree ? (
+                      <Text style={{ color: "#4B5563", fontSize: 13 }} numberOfLines={1}>
+                        {edu.degree}
+                        {edu.fieldOfStudy ? ` · ${edu.fieldOfStudy}` : ""}
+                      </Text>
+                    ) : edu.fieldOfStudy ? (
+                      <Text style={{ color: "#4B5563", fontSize: 13 }} numberOfLines={1}>
+                        {edu.fieldOfStudy}
+                      </Text>
+                    ) : null}
+                    <Text style={{ color: "#6B7280", fontSize: 12, marginTop: 2 }}>
+                      {formatYears(edu)}
+                    </Text>
+                  </Pressable>
+
+                  <Pressable onPress={() => openEditEducation(idx)}>
+                    <Pencil size={16} color="#9CA3AF" />
+                  </Pressable>
+                </View>
+              ))
+            )}
+          </View>
+
           {/* Profile Summary */}
           <Text className="mb-1 text-gray-700">Profile Summary</Text>
           <View
@@ -280,7 +442,6 @@ export const EditProfileScreen = () => {
               returnKeyType="default"
             />
 
-            {/* Counter */}
             <View style={{ flexDirection: "row", justifyContent: "flex-end", marginTop: 8 }}>
               <Text
                 style={{
@@ -297,7 +458,10 @@ export const EditProfileScreen = () => {
           <Text className="mb-2 text-gray-700 mt-4">Industries</Text>
           <View className="flex-row flex-wrap mb-4">
             {industries.map((industry, index) => (
-              <View key={index} className="bg-indigo-100 px-3 py-2 rounded-lg mr-2 mb-2">
+              <View
+                key={index}
+                className="bg-indigo-100 px-3 py-2 rounded-lg mr-2 mb-2"
+              >
                 <Text className="text-indigo-600 font-medium">{industry}</Text>
               </View>
             ))}
@@ -435,7 +599,6 @@ export const EditProfileScreen = () => {
           </View>
         </ScrollView>
 
-        {/* Industry Modal */}
         <IndustryModal
           visible={industryModalVisible}
           onClose={() => setIndustryModalVisible(false)}
@@ -446,6 +609,26 @@ export const EditProfileScreen = () => {
           maxSelection={3}
         />
       </KeyboardAvoidingView>
+
+      <EditSchoolModal
+        visible={schoolModalVisible}
+        onClose={() => {
+          setSchoolModalVisible(false);
+          setEditingEducationIndex(null);
+        }}
+        initialEducation={
+          editingEducationIndex != null ? education[editingEducationIndex] : null
+        }
+        onSave={(data) => {
+          handleEducationSave(data);
+          setSchoolModalVisible(false);
+        }}
+        onDelete={
+          editingEducationIndex != null
+            ? handleEducationDelete
+            : undefined
+        }
+      />
     </SafeAreaView>
   );
 };
