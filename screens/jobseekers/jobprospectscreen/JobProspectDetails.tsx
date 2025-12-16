@@ -1,7 +1,7 @@
 import { Text, View, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { ArrowLeft } from 'lucide-react-native';
+import { ArrowLeft, Check } from 'lucide-react-native';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useState } from "react";
@@ -117,6 +117,52 @@ export const JobProspectDetails = () => {
         }
     }
 
+    const StatusSteps = ["pending", "viewed", "shortlisted", "contacted", "hired"];
+    const renderStatusSteps = (currentStatus: string) => {
+        if (currentStatus === "closed") return null;
+
+        const currentIndex = StatusSteps.indexOf(currentStatus);
+        const totalSteps = StatusSteps.length - 1;
+
+        return (
+            <View style={{ flexDirection: "row", alignItems: "center", marginTop: 16, paddingHorizontal: 12 }}>
+                {/* Progress bar */}
+                <View style={{ position: "absolute", top: 14, left: 24, right: 24, height: 4, backgroundColor: "#E5E7EB", borderRadius: 2, zIndex: 0 }} />
+                {currentIndex > 0 && (
+                    <View style={{ position: "absolute", top: 14, left: 24, height: 4, backgroundColor: "#37424F", width: `${(currentIndex / totalSteps) * 100}%`, borderRadius: 2, zIndex: 1 }} />
+                )}
+
+                {/* Circles */}
+                {StatusSteps.map((step, index) => {
+                    const isCompleted = index <= currentIndex;
+                    const circleColor = isCompleted ? "#37424F" : "#FFFFFF";
+                    const borderColor = "#9CA3AF";
+
+                    return (
+                        <View key={step} style={{ flex: 1, alignItems: "center" }}>
+                            <View style={{
+                                width: 28,
+                                height: 28,
+                                borderRadius: 14,
+                                backgroundColor: circleColor,
+                                borderWidth: 2,
+                                borderColor,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                zIndex: 2,
+                            }}>
+                                {isCompleted && <Check size={16} color="white" />}
+                            </View>
+                            <Text style={{ marginTop: 6, fontSize: 12, color: "#9CA3AF", textTransform: "capitalize", maxWidth: 70, textAlign: "center" }} numberOfLines={1}>
+                                {step}
+                            </Text>
+                        </View>
+                    );
+                })}
+            </View>
+        );
+    };
+
     return (
         <SafeAreaView className="flex-1 bg-white">
             {/* Header */}
@@ -176,6 +222,23 @@ export const JobProspectDetails = () => {
                         </View>
                     ))}
                 </View>
+
+
+                {!job.isExternal ?
+                    <>
+                        {!job.isExternal ? (
+                            <View style={{ marginTop: 24, marginBottom: 20 }}>
+                                <Text style={{ fontFamily: 'Lexend-Bold', color: '#37424F', marginBottom: 12, fontSize: 16 }}>
+                                    Application Process
+                                </Text>
+                                {renderStatusSteps("")}
+                            </View>
+                        ) : null}
+
+                    </>
+
+                    : null
+                }
 
                 {/* Skills */}
                 {job.jobSkills && job.jobSkills.length > 0 && (

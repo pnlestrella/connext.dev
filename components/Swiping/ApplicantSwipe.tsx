@@ -22,6 +22,9 @@ import {
   BriefcaseBusiness,
 } from "lucide-react-native";
 import { updateApplications } from "api/applications";
+import { useNavigation } from "@react-navigation/native";
+import { getFileUrl } from "api/employers/imagekit";
+
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
@@ -67,6 +70,8 @@ export default function ApplicantSwipe({ applicants }: Props) {
   const [index, setIndex] = useState(0);
   const cardPan = useRef(new Animated.ValueXY()).current;
   const isProgrammaticSwipe = useRef(false);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (applicants && applicants.length > 0) {
@@ -229,6 +234,30 @@ export default function ApplicantSwipe({ applicants }: Props) {
 
     const isAbsoluteUrl = (u: string) => /^https?:\/\//i.test(u);
 
+
+
+     const handleOpenResume = async (filePath: string) => {
+
+            try {
+                // Fetch new signed URL
+                const res = await getFileUrl([filePath]);
+    
+                if (res?.files?.length > 0) {
+                    const signedUrl = res.files[0].signedUrl;
+    
+               
+                    navigation.navigate("resumeViewerHome" as never, {
+                        resumeUrl: signedUrl,
+                    } as never);
+                } else {
+                    alert("Error", "Failed to load resume link.");
+                }
+            } catch (err) {
+                console.log("❌ Error fetching resume:", err);
+                alert("Something went wrong while loading the resume.");
+            }
+        };
+
     return (
       <Animated.View style={{ borderRadius: 20, overflow: "hidden" }}>
         <Card
@@ -370,11 +399,7 @@ export default function ApplicantSwipe({ applicants }: Props) {
 
                 <TouchableOpacity
                   activeOpacity={resumeUrl && isAbsoluteUrl(resumeUrl) ? 0.85 : 1}
-                  onPress={() => {
-                    if (resumeUrl && isAbsoluteUrl(resumeUrl)) {
-                      Linking.openURL(resumeUrl).catch(() => {});
-                    }
-                  }}
+                  onPress={() => handleOpenResume(resumeUrl)}
                   style={{
                     backgroundColor: "rgba(255,255,255,0.18)",
                     paddingHorizontal: 16,

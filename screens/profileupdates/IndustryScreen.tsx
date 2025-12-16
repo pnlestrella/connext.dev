@@ -112,6 +112,7 @@ export const IndustryScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="Search industry..."
+            placeholderTextColor={'#808080'}
             value={search}
             onChangeText={setSearch}
           />

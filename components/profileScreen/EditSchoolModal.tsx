@@ -296,6 +296,7 @@ export const EditSchoolModal = ({
         onChangeText={(text) => {
           if (!selected) setValue(text);
         }}
+        placeholderTextColor={'#808080'}
         placeholder={placeholder}
         onFocus={() => {
           if (!selected) setIsFocused(true);
@@ -447,6 +448,7 @@ export const EditSchoolModal = ({
                     onChangeText={(text) => setStartYear(parseYear(text))}
                     placeholder="YYYY"
                     keyboardType="numeric"
+                    placeholderTextColor={'#808080'}
                     className="border border-gray-300 rounded-lg px-3 py-2"
                   />
                 </View>
@@ -458,6 +460,7 @@ export const EditSchoolModal = ({
                     value={endYear?.toString() || ""}
                     onChangeText={(text) => setEndYear(parseYear(text))}
                     placeholder="YYYY"
+                    placeholderTextColor={'#808080'}
                     keyboardType="numeric"
                     editable={!isCurrent}
                     className={`border border-gray-300 rounded-lg px-3 py-2 ${isCurrent ? "bg-gray-100" : ""

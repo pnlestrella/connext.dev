@@ -42,10 +42,10 @@ export const ApplicantDetail = () => {
         }
 
         const filePath = profile.resume;
+        console.log(filePath,'testtttttttt')
         const cached = resumeCache[filePath];
         const now = Date.now();
 
-        // ✅ Use cached if valid
         if (cached && cached.expiresAt > now) {
             navigation.navigate("resumeViewer" as never, {
                 resumeUrl: cached.url,

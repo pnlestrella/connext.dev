@@ -329,7 +329,7 @@ export const ChatScreen = () => {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 30}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 80}
       >
         <AlertModal
           visible={alertVisible}
@@ -1153,6 +1153,7 @@ export const ChatScreen = () => {
                 value={message}
                 onChangeText={setMessage}
                 placeholder="Message..."
+                placeholderTextColor={'#808080'}
                 multiline
                 style={{
                   flex: 1,

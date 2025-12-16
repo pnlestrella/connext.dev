@@ -125,6 +125,7 @@ export const AddressScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="Type a city..."
+            placeholderTextColor={'#808080'}
             value={query}
             onChangeText={searchPlaces}
           />
